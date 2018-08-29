@@ -1,0 +1,207 @@
+// ======== mixins ========
+
+
+// 清除浮动
+.clearfix () {
+  &::before,
+  &::after {
+    content: " ";
+    display: table;
+  }
+  &::after {
+    clear: both;
+  }
+}
+
+
+// 小箭头（vux）
+._setArrow (@arrowsize, @borderColor, @borderWidth) {
+  display: inline-block;
+  height: @arrowsize;
+  width: @arrowsize;
+  border-width: @borderWidth @borderWidth 0 0;
+  border-color: @borderColor;
+  border-style: solid;
+}
+
+.setArrow (@direction, @arrowsize, @borderColor, @borderWidth) when (@direction = top) {
+  ._setArrow(@arrowsize, @borderColor, @borderWidth);
+  transform: matrix(0.71,-0.71,0.71,0.71,0,0); // rotate(-45deg)
+}
+
+.setArrow (@direction, @arrowsize, @borderColor,@borderWidth) when (@direction = right) {
+  ._setArrow(@arrowsize, @borderColor, @borderWidth);
+  transform: matrix(0.71,0.71,-0.71,0.71,0,0); // rotate(45deg);
+
+  position: relative;
+  top: -2px;
+}
+
+.setArrow (@direction, @arrowsize, @borderColor,@borderWidth) when (@direction = down) {
+  ._setArrow(@arrowsize, @borderColor, @borderWidth);
+  transform: matrix(-0.71,0.71,-0.71,-0.71,0,0); // rotate(135deg);
+
+  position: relative;
+  top: -3px;
+}
+
+.setArrow (@direction, @arrowsize, @borderColor,@borderWidth) when (@direction = left) {
+  ._setArrow(@arrowsize, @borderColor, @borderWidth);
+  transform: matrix(-0.71,-0.71,0.71,-0.71,0,0); // rotate(-135deg);
+
+  position: relative;
+  top: -2px;
+}
+
+// 单行超出省略
+.setEllipsis (@width: 100%) {
+//width: @width;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+}
+
+// 多行超出省略
+.setEllipsisLn (@line: 2) {
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: @line;
+  overflow: hidden;
+}
+
+// 文本容器
+.setTextWrap () {
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+// 富文本容器
+.setRichTextWrap () {
+  .setTextWrap();
+  text-align: justify;
+
+  img,
+  table,
+  video,
+  audio {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+}
+
+// 英文连字号断行
+.setHyphens () {
+  word-wrap: break-word;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+// 设置flex
+.setFlex (@direction: row, @wrap: nowrap) {
+  display: flex;
+  flex-flow: @direction @wrap;
+}
+
+// 单选、复选框初始化
+.setCheck (@type: radio) {
+  position: relative;
+  display: inline-block;
+
+  & > input[type="@{type}"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    visibility: hidden;
+  }
+
+  & > label {
+    display: inline-block;
+  }
+}
+
+// modal
+.setModal () {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, .5);
+  width: 100%;
+  height: 100%;
+  z-index: 15;
+
+  .wrapper {
+    .setFlex();
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// 小红点标签
+.setTag () {
+  display: inline-block;
+  box-sizing: border-box;
+  background: #f12c20;
+  min-width: 18px;
+  height: 18px;
+  line-height: 18px;
+  padding: 0 3px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: normal;
+  text-align: center;
+  color: #fff;
+}
+
+// tabs通用
+.setTabs () {
+  font-size: 0;
+
+  .item {
+    position: relative;
+    box-sizing: border-box;
+    display: inline-block;
+    margin: 0 15px;
+    padding: 18px 11px 14px;
+    font-size: 14px;
+    color: #929292;
+
+    &::after {
+      display: block;
+      box-sizing: border-box;
+      position: absolute;
+      left: 0;
+      bottom: 3px;
+      background: #ffe266;
+      width: 100%;
+      height: 3px;
+      border-radius: 2px;
+    }
+
+    &.z-active {
+      font-weight: bold;
+      color: #354048;
+
+      &::after {
+        content: " ";
+      }
+    }
+
+    .text {
+      position: relative;
+      .addon {
+        .setTag();
+        position: absolute;
+        left: ~"calc(100% + 1px)";
+        top: -10px;
+      }
+    }
+  }
+}
