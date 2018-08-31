@@ -1,5 +1,5 @@
 <template>
-  <div id="app" v-cloak>
+  <div id="app-box" v-cloak>
     <router-view></router-view>
   </div>
 </template>

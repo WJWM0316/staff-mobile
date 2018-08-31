@@ -1,12 +1,22 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// 引入模块路由
-
-import store from './../store'
+// 引入路由模块
+import home from './home'
+import course from './course'
+import workCircle from './workCircle'
+import center from './center'
+import live from './live'
+import bookHouse from './bookHouse'
 
 Vue.use(Router)
 
 const routes = [
+  ...home,
+  ...course,
+  ...workCircle,
+  ...center,
+  ...live,
+  ...bookHouse
 ]
 
 const router = new Router({
@@ -16,13 +26,7 @@ const router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
-  // 控制导航条是否显示
-  if (to.matched.some(record => record.meta.navHide)) {
-    store.dispatch('hide_nav')
-  } else {
-    store.dispatch('show_nav')
-  }
-  next() // 确保一定要调用 next()
+  next()
 })
 //
 router.afterEach(function (to, from) {

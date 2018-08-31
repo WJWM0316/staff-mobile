@@ -18,21 +18,21 @@ exports.cssLoaders = function (options) {
   const cssLoader = {
     loader: 'css-loader',
     options: {
-      sourceMap: options.sourceMap
+      sourceMap: options.sourceMap,
+      importLoader: 5 // 在加载cssLoader之前加载的loader个数
     }
   }
 
-  const postcssLoader = {
-    loader: 'postcss-loader',
+  const px2remLoader = {
+    loader: 'px2rem-loader',
     options: {
-      sourceMap: options.sourceMap
+      remUnit: 75  //1rem=多少像素 这里的设计稿是750px。
     }
   }
 
   // generate loader string to be used with extract text plugin
   function generateLoaders (loader, loaderOptions) {
-    const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
-
+    const loaders = [cssLoader, px2remLoader]
     if (loader) {
       loaders.push({
         loader: loader + '-loader',
