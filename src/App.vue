@@ -11,4 +11,6 @@ export default {
 
 <style lang="less" type="text/less">
 @import "./styles/index";
+#app-box {
+}
 </style>

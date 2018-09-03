@@ -2,7 +2,8 @@
 import Vue from 'vue'
 import router from '@/router/index'
 import './components'
-import 'lib-flexible'
+import './util/lib-flexible/flexible'
+// import './util/lib-flexible/flexible'
 import App from './App'
 import store from './store/'
 

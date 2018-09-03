@@ -33,6 +33,8 @@ module.exports = {
     "no-new-require": "off",
     "no-tabs": "off",
     "no-unused-vars": ["warn", { "vars": "all", "args": "none", "ignoreRestSiblings": true }],
-    "eol-last": "off"
+    "eol-last": "off",
+    "no-useless-escape": "off",
+    "no-unused-vars": "off"
   }
 }

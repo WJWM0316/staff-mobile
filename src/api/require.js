@@ -34,27 +34,29 @@ function hideLoading (open) {
 // http request 拦截器  控制loading
 let num = 0
 axios.interceptors.request.use(
-    config => {
-      num ++
-      showLoading(true)
-      return config;
-    },
-    err => {
-      return Promise.reject(err);
-    });
+  config => {
+    num ++
+    showLoading(true)
+    return config;
+  },
+  err => {
+    return Promise.reject(err);
+  }
+);
  
 // http response 拦截器
 axios.interceptors.response.use(
-    response => {
-      num --
-      if (num <= 0) {
-        hideLoading(true)
-      }
-      return response;
-    },
-    error => {
-        return Promise.reject(error.response.data)   // 返回接口返回的错误信息
-    });
+  response => {
+    num --
+    if (num <= 0) {
+      hideLoading(true)
+    }
+    return response;
+  },
+  error => {
+      return Promise.reject(error.response.data)   // 返回接口返回的错误信息
+  }
+);
 
 
 let globalLoading = true
