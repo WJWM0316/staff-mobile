@@ -1,6 +1,6 @@
 const routers = [
   {
-    path: '/center/index',
+    path: '/center',
     name: 'personalCenter',
     component: resolve => require(['@/views/center/index'], resolve)
   }
