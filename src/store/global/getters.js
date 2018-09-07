@@ -1,5 +1,5 @@
 export default {
-  navIsShow: function (state) {
-    return state.nav_show
+  getUserInfo: function (state) {
+    return state.userInfo
   }
 }

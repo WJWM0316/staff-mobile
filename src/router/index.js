@@ -7,6 +7,7 @@ import workCircle from './workCircle'
 import center from './center'
 import live from './live'
 import bookHouse from './bookHouse'
+import login from './login'
 
 Vue.use(Router)
 
@@ -16,7 +17,8 @@ const routes = [
   ...workCircle,
   ...center,
   ...live,
-  ...bookHouse
+  ...bookHouse,
+  ...login
 ]
 
 const router = new Router({
@@ -26,6 +28,10 @@ const router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
+  document.title = to.meta.title // 设置页面title
+  if (!to.matched.length) {
+    router.push('/404')
+  }
   next()
 })
 //

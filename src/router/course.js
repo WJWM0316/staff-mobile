@@ -1,6 +1,6 @@
 const routers = [
   {
-    path: '/course/index',
+    path: '/course',
     name: 'courseIndex',
     component: resolve => require(['@/views/course/index'], resolve)
   },

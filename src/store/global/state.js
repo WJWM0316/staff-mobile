@@ -1,4 +1,3 @@
 export default {
-  // TabBar是否展示
-  nav_show: true
+  userInfo: {} // 用户信息
 }
