@@ -1,25 +1,35 @@
 <template>
-  <div class="wrap">
-  </div>
+	<div class="coursePage">
+		<contentheader></contentheader>
+	</div>
 </template>
+
+<style lang="less" scoped>
+.coursePage{
+  font-size: 32px;
+}
+</style>
+
 <script>
+import contentheader from '@/components/dynamicItem/dynamicItem'
+import { getCommunityApi } from '@/api/pages/course'
 export default {
+  name: 'course',
   components: {
+    contentheader
   },
   data () {
     return {
+      data: 1
     }
   },
-  computed: {
+  created () {
+    console.log(contentheader)
+    this.pageInt()
   },
   methods: {
+    //  初始化方法
+    pageInt () {}
   }
 }
 </script>
-<style lang="less" scoped>
-  @import url("../../styles/mixins.less");
-  .wrap {
-    font-size: 30px; /*px*/
-    width: 100%;
-  }
-</style>

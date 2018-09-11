@@ -35,32 +35,31 @@ function hideLoading (open) {
 let num = 0
 axios.interceptors.request.use(
   config => {
-    num ++
+    num++
     showLoading(true)
-    return config;
+    return config
   },
   err => {
-    return Promise.reject(err);
+    return Promise.reject(err)
   }
-);
- 
+)
 // http response 拦截器
 axios.interceptors.response.use(
   response => {
-    num --
+    num--
     if (num <= 0) {
       hideLoading(true)
     }
-    return response;
+    return response
   },
   error => {
-      return Promise.reject(error.response.data)   // 返回接口返回的错误信息
+    return Promise.reject(error.response.data) //  返回接口返回的错误信息
   }
-);
+)
 
 
 let globalLoading = true
-async function process(response) {
+async function process (response) {
   let {data} = response
   // console.log('请求接口路径', url)
   // console.log('接口请求参数', datas)
@@ -68,7 +67,7 @@ async function process(response) {
   if (typeof data === 'string') { // 转换返回json
     data = JSON.parse(data)
   }
-  if(data&&data.statusCode){
+  if (data && data.statusCode) {
     data.statusCode = parseInt(data.statusCode)
   }
   if (data && data.statusCode === 200) {
@@ -83,15 +82,13 @@ async function process(response) {
     try {
       console.log(`${settings.serverUrl}/wap/wechat/callback?zike_from=${hostname}&key=${hashParams}&time=${new Date().getTime()}`)
       window.location.href = `${settings.serverUrl}/wap/wechat/callback?zike_from=${location.href}`
-    }
-    catch (err) {
+    } catch (err) {
       alert(err, '微信登陆失败')
     }
     console.log(data.data)
     return data.data === undefined ? {} : data.data
   }
   if (data && data.statusCode === 426) { // 没有登录权限,跳去手机号登录
-//	alert("你没有绑定手机。。。。")
     store.dispatch('remove_userinfo')
     // hideLoading(globalLoading)
     router.replace({
@@ -177,11 +174,9 @@ async function process(response) {
     }
     return {}
   }
-
   // hideLoading(globalLoading)
   return Promise.reject(data)
 }
-
 export const request = ({type = 'post', url, data = {}, config = {}} = {}) => {
   // 正常r请
   // let datas = type === 'get' ? {params: data} :data
@@ -190,13 +185,10 @@ export const request = ({type = 'post', url, data = {}, config = {}} = {}) => {
     delete data.globalL
     globalLoading = data.globalLoadingoading
   }
-  
   // 开发环境才要绑定测试账号
   if (window.location.host !== 'demo2016.thetiger.com.cn' && window.location.host !== 'www.ziwork.com') {
     data.TestUid = 5
   }
-  
-
   // showLoading(globalLoading)
   let datas = type === 'get' ? {params: {...data}} : {...data}
   return Vue.axios[type](url, datas, config)

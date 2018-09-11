@@ -25,7 +25,7 @@ module.exports = {
     'generator-star-spacing': 'off',
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    "no-mixed-spaces-and-tabs": "off",
+    "no-mixed-spaces-and-tabs": [2, true],//禁止混用tab和空格
     "no-multi-str": "off",
     "no-multiple-empty-lines": ["off", { "max": 1, "maxEOF": 0 }],
     "no-new-func": "off",
