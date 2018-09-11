@@ -1,7 +1,8 @@
 const routers = [
   {
     path: '/course',
-    name: 'courseIndex',
+    name: 'course',
+    meta: { title: '选课', needBottomTab: true },
     component: resolve => require(['@/views/course/index'], resolve)
   }
 ]
