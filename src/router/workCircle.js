@@ -9,6 +9,11 @@ const routers = [
     path: '/workCircle/circleDetail',
     name: 'circleDetail',
     component: resolve => require(['@/views/workCircle/circleDetail'], resolve)
+  },
+  {
+    path: '/workCircle/circleEdit',
+    name: 'circleEdit',
+    component: resolve => require(['@/views/workCircle/circleEditting'], resolve)
   }
 ]
 

@@ -185,10 +185,10 @@ export const request = ({type = 'post', url, data = {}, config = {}} = {}) => {
     delete data.globalL
     globalLoading = data.globalLoadingoading
   }
+  
   // 开发环境才要绑定测试账号
-  if (window.location.host !== 'demo2016.thetiger.com.cn' && window.location.host !== 'www.ziwork.com') {
-    data.TestUid = 5
-  }
+  data.token = '6a8b42ded2991474c3ceaec50d6989e1'
+  
   // showLoading(globalLoading)
   let datas = type === 'get' ? {params: {...data}} : {...data}
   return Vue.axios[type](url, datas, config)

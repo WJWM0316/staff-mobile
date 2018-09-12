@@ -309,7 +309,8 @@ export default {
     /*  -----------------------跳转交互方法----------------------------  */
     /*  去帖子详情  */
     toDetail () {
-      console.log(' 88888888888888888888 ')
+      console.log(' 去详情页 ')
+      this.$router.push(`/course/detail`)
     },
     /* 跳转个人详情页 */
     toUserInfo (userId) {
@@ -339,26 +340,26 @@ export default {
 
 <style lang="less" scoped>
   .bottomBorder{
-    border-bottom: 1px solid #EDEDED;
+    border-bottom: 0.5px solid #EDEDED;
   }
   .dynamicItem {
     box-sizing: border-box;
     width: 100%;
-    padding: 50px 40px;
+    padding: 25px 20px;
     .header {
       display: flex;
       .headerPhoto {
-        width: 64px;
-        height: 64px;
-        border: 1px solid #EDEDED;
+        width: 32px;
+        height: 32px;
+        border: 0.5px solid #EDEDED;
         border-radius: 50%;
       }
       .appellation {
-        margin-left: 15px;
+        margin-left: 8px;
         display: flex;
         align-items: center;
         color: #4080AD;
-        font-size: 28px;
+        font-size: 28px;/*px*/
         /*px*/
         font-weight: 500;
       }
@@ -376,7 +377,7 @@ export default {
         &.ellipsis {
           -webkit-line-clamp: 6;
         }
-        margin-top: 20px;
+        margin-top: 10px;
         word-break: break-all;
         word-wrap: break-word;
         line-height: 1.5;
@@ -384,23 +385,23 @@ export default {
         white-space: pre-line;
       }
       .full-text-btn {
-        margin-top: 12px;
+        margin-top: 6px;
         font-size: 30px;/*px*/
         color: #4080ad;
         font-weight: 400;
-        line-height: 38px;
+        line-height: 19px;
       }
       /*  图片部分  */
       .content-images {
-        margin-top: 4px;
+        margin-top: 3px;
         width: 100%;
         display: flex;
         flex-flow: row wrap;
         .item-image {
-          margin-top: 10px;
-          margin-left: 10px;
-          width: 216px;
-          height: 216px;
+          margin-top: 5px;
+          margin-left: 5px;
+          width: 108px;
+          height: 108px;
           text-align: center;
           flex-grow:0;
           &:first-of-type,
@@ -416,20 +417,20 @@ export default {
           }
         }
         .item-image.one {
-          width: 272px;
-          height: 272px;
+          width: 136px;
+          height: 136px;
         }
       }
       /*  视频部分  */
       .content-video {
-        margin-top: 10px;
+        margin-top: 5px;
         position: relative;
         display: inline-block;
         .placeholder {
-          width: 670px;
-          height: 374px;
+          width: 335px;
+          height: 187px;
           background: rgba(0, 0, 0, .8) url('./../../assets/icon/video-play.png') no-repeat center;
-          background-size: 35px 35px;
+          background-size: 17.5px 17.5px;
           img {
             width: 100%;
             height: 100%;
@@ -441,33 +442,33 @@ export default {
       }
       /*  文件  */
       .content-file {
-        margin-top: 20px;
+        margin-top: 10px;
         display: flex;
         align-items: center;
         background-color: #F8F8F8;
-        padding: 15px 20px 17px;
-        border-radius: 6px;
+        padding: 7.5px 10px 8.5px;
+        border-radius: 3px;
         .file-logo {
-          width: 88px;
-          height: 88px;
-          border-radius: 6px;
+          width: 44px;
+          height: 44px;
+          border-radius: 3px;
         }
         .file-desc {
-          font-size: 28px;/*px*/
+          font-size: 14px;/*px*/
           color: #111111;
-          margin-left: 20px;
+          margin-left: 10px;
           .text {
             font-size: 26px;/*px*/
             font-weight: 400;
             display: block;
-            max-width: 522px;
+            max-width: 261px;
             overflow: hidden;
             text-overflow:ellipsis;
             white-space: nowrap;
           }
           .text:last-of-type {
             font-weight: 400;
-            margin-top: 2px;
+            margin-top: 1px;
             color: #bcbcbc;
           }
         }
@@ -476,11 +477,11 @@ export default {
     /*底部区域*/
     .info-area{
       display: flex;
-      margin-top: 40px;
+      margin-top: 20px;
       justify-content: space-between;
       align-items: center;
       font-size: 24px;/*px*/
-      line-height: 17px;
+      line-height: 8.5px;
       color: #929292;
       /*评论和点赞按钮*/
       .operation {
@@ -491,18 +492,18 @@ export default {
         .comment {
           display: flex;
           align-items: center;
-          height: 34px;
+          height: 17px;
           font-size: 24px;/*px*/
           color: #354048;
           line-height: 1;
-          padding: 0 4px;
+          padding: 0 2px;
           img{
-            width: 34px;
-            margin-right: 8px;
+            width: 17px;
+            margin-right: 4px;
           }
         }
         .comment {
-          margin-left: 29px;
+          margin-left: 15px;
         }
       }
       /*时间和删除按钮*/
@@ -512,24 +513,24 @@ export default {
         }
         .del-btn {
           color: #576b95;
-          margin-left: 20px;
+          margin-left: 10px;
         }
       }
     }
     .comment-area{
       background: #F8F8F8;
-      margin-top: 30px;
-      padding: 16px 20px;
+      margin-top: 15px;
+      padding: 8px 10px;
       /*点赞信息*/
      .praise-block {
-        padding: 5px 0;
-        margin-bottom: 20px;
+        padding: 2.5px 0;
+        margin-bottom: 10px;
         font-size: 28px;/*px*/
         display: flex;
         align-items: center;
         .icon-zan{
-          width: 30px;
-          height: 30px;
+          width: 15px;
+          height: 15px;
         }
         .praise-total {
           font-weight: 300;
@@ -538,7 +539,7 @@ export default {
         .praise-name {
           color: #4080AD;
           font-weight: 500;
-          margin: 0 12px;
+          margin: 0 6px;
           overflow: hidden;
           text-overflow:ellipsis;
           white-space: nowrap;
@@ -546,39 +547,39 @@ export default {
       }
       /*评论区域*/
       .reply-block {
-        padding: 10px 0;
+        padding: 5px 0;
         .reply {
           font-size: 28px;/*px*/
          font-weight: 300;
-          margin-top: 10px;
+          margin-top: 5px;
           .favor-name {
             font-size: 28px;/*px*/
             font-weight: 500;
             color: #4080AD;
           }
           &:nth-of-type(1) {
-            margin-top: 16px;
+            margin-top: 8px;
           }
         }
         /*热评标志样式*/
         .hot-reply {
           .hot-reply-icon {
-            width: 160px;
-            height: 40px;
-            padding: 0 0 0 16px;
+            width: 80px;
+            height: 20px;
+            padding: 0 0 0 8px;
             background: #FFE266;
-            border-radius: 0px 100px 100px 0px;
+            border-radius: 0px 50px 50px 0px;
             text-align: center;
-            line-height: 36px;
+            line-height: 18px;
             font-size: 28px;/*px*/
             color:#354048;
             position: relative;
             &::before {
               content: '';
-              width: 40px;
-              height: 40px;
+              width: 20px;
+              height: 20px;
               position: absolute;
-              left: -8px;
+              left: -4px;
               top: 0;
               background: url(../../assets/icon/icon_hotcomment@3x.png) no-repeat;
               background-size: 100% 100%;
