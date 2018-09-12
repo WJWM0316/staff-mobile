@@ -4,6 +4,7 @@
       <router-view v-if="$route.meta.keepAlive" class="pullDown"></router-view>
     </keep-alive>
     <router-view v-if="!$route.meta.keepAlive"></router-view>
+
     <tabbar slot="bottom" class="bottomTab"  v-show="$route.meta.needBottomTab" v-model="tabIndex">
       <tabbar-item
         v-for="(tab, index) in tabList"
@@ -16,15 +17,27 @@
         <span slot="label"  class="txt">{{tab.label}}</span>
       </tabbar-item>
     </tabbar>
+
+    <div class="loading" v-show="$store.getters.loadingStatus">
+      <div class="loadBox">
+        <div class="icon">
+          <img src="@/assets/icon/loading.png" alt="">
+        </div>
+        <p class="txt">{{$store.getters.loadingTxt}}</p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { Tabbar, TabbarItem } from 'vux'
+import { mapState } from 'vuex'
 export default {
   components: {
     Tabbar,
     TabbarItem
+  },
+  computer: {
   },
   data () {
     return {
@@ -59,7 +72,6 @@ export default {
   },
   watch: {
     '$route' (route) {
-      console.log(route)
       switch (route.name) {
         case 'home' : this.tabIndex = 0; break
         case 'course' : this.tabIndex = 1; break
@@ -77,13 +89,16 @@ export default {
     }
   },
   created () {
-    console.log(this.$route)
   }
 }
 </script>
 
 <style lang="less">
 @import "./styles/index";
+@keyframes rotate {
+  0 { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
+}
 #app-box {
   .bottomTab {
     position: fixed;
@@ -98,6 +113,43 @@ export default {
     .weui-tabbar__label {
       margin-top: 2px;
       line-height: 10px;
+    }
+  }
+  .loading {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    background: #000;
+    .loadBox {
+      width: 91px;
+      height: 91px;
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      border-radius:6px;
+      .icon {
+        width: 30px;
+        height: 30px;
+        display: block;
+        margin: 0 auto;
+        animation: rotate 1s linear infinite;
+      }
+      .txt {
+        color: #BCBCBC;
+        font-size: 24px; /*px*/
+        line-height: 24px; /*px*/
+        font-weight: 300;
+        text-align: center;
+        margin-top: 12px;
+      }
     }
   }
 }

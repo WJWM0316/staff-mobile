@@ -35,6 +35,7 @@ module.exports = {
     "no-unused-vars": ["warn", { "vars": "all", "args": "none", "ignoreRestSiblings": true }],
     "eol-last": "off",
     "no-useless-escape": "off",
-    "no-unused-vars": "off"
+    "no-unused-vars": "off",
+    "prefer-promise-reject-errors": "off"
   }
 }
