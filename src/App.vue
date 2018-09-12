@@ -6,7 +6,7 @@
     <router-view v-if="!$route.meta.keepAlive"></router-view>
 
     <tabbar slot="bottom" class="bottomTab" v-show="$route.meta.bottomTab"
-      @on-index-change="goSomeWhere">
+      >
       <tabbar-item
         :key="index"
         v-for="(tab, index) in tabList">
@@ -62,7 +62,6 @@ export default {
 @import "./styles/index";
 #app-box {
   .bottomTab {
-    
   }
 }
 </style>

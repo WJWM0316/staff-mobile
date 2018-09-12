@@ -1,6 +1,9 @@
 <template>
 	<div class="coursePage">
-		<contentheader></contentheader>
+	  <info-card></info-card>
+	  <info-card></info-card>
+	  <info-card></info-card>
+	  <info-card></info-card>
 	</div>
 </template>
 
@@ -11,12 +14,11 @@
 </style>
 
 <script>
-import contentheader from '@/components/dynamicItem/dynamicItem'
-import { getCommunityApi } from '@/api/pages/course'
+import infoCard from '@/components/infoCard/infoCard.vue'
 export default {
   name: 'course',
   components: {
-    contentheader
+    infoCard
   },
   data () {
     return {
@@ -24,7 +26,6 @@ export default {
     }
   },
   created () {
-    console.log(contentheader)
     this.pageInt()
   },
   methods: {

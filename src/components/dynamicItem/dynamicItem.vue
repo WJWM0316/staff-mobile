@@ -1,5 +1,5 @@
 <template>
-  <div class="dynamicItem" @click="toDetail">
+  <div class="dynamicItem" :class="{bottomBorder : showBorder}" @click="toDetail">
     <div class="header" @click.stop="toUserInfo">
       <img class="headerPhoto" src="http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLBNL2BQhCZO1J8VcvQp5xBf38Ufarf6r2VYyTic5ciaTY4QXAPzibOzuZD9cM56FXpxPgjyDVhO9FhqQ/132" />
       <div class="appellation">我是谁，我在哪里</div>
@@ -49,7 +49,6 @@
     </div>
     <!--  内容区结束  -->
     <!--  底部区   -->
-    <template v-if="showCommunicate">
       <div class="info-area">
         <div class="time-and-del">
           <span class="time">{{timeStr}}</span>
@@ -71,6 +70,7 @@
           </div>
         </div>
       </div>
+    <template v-if="showCommunicate">
       <div class="comment-area">
         <!-- 点赞信息 -->
         <div class="praise-block" v-if="true">
@@ -338,9 +338,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  .bottomBorder{
+    border-bottom: 1px solid #EDEDED;
+  }
   .dynamicItem {
     box-sizing: border-box;
-    border-bottom: 1px solid #EDEDED;
     width: 100%;
     padding: 50px 40px;
     .header {
