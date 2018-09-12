@@ -20,7 +20,7 @@
 </template>
 
 <script>
-//import { Tabbar, TabbarItem } from 'vux'
+import { Tabbar, TabbarItem } from 'vux'
 export default {
   components: {
     Tabbar,
@@ -58,7 +58,8 @@ export default {
     }
   },
   watch: {
-    $watch (route) {
+    '$route' (route) {
+      console.log(route)
       switch (route.name) {
         case 'home' : this.tabIndex = 0; break
         case 'course' : this.tabIndex = 1; break
