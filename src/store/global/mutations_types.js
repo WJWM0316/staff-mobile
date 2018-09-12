@@ -1,2 +1,4 @@
-// 显示导航条
+
 export const USERINFO = 'USERINFO'
+export const LOADINGSTATUS = 'LOADINGSTATUS'
+export const LOADINGTXT = 'LOADINGTXT'
