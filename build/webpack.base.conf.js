@@ -78,11 +78,16 @@ let webpackConfig = {
         }
       },
       {
-        test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: "css-loader"
-        })
+        test: /\.css/,
+        loader: ExtractTextPlugin.extract(['style','css'])
+      },
+      {
+        test: /\.less$/,
+        loader: ExtractTextPlugin.extract('style', 'css!less')
+      },
+      {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract('style', 'css!sass')
       }
     ]
   },
@@ -106,10 +111,8 @@ let webpackConfig = {
 
 const vuxLoader = require('vux-loader')
 module.exports = vuxLoader.merge(webpackConfig, {
-  options: {},
-  plugins: [
-    {
-      name: 'vux-ui'
-    }
-  ]
+  plugins: ['vux-ui', 'progress-bar', 'duplicate-style', {
+    name: 'less-theme',
+    path: 'src/styles/theme.less'
+  }]
 })

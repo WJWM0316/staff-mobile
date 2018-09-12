@@ -88,10 +88,10 @@
   }, false)
 
   if (doc.readyState === 'complete') {
-    doc.body.style.fontSize = 12 * dpr + 'px'
+    doc.body.style.fontSize = 16 * dpr + 'px'
   } else {
     doc.addEventListener('DOMContentLoaded', function (e) {
-      doc.body.style.fontSize = 12 * dpr + 'px'
+      doc.body.style.fontSize = 16 * dpr + 'px'
     }, false)
   }
   refreshRem()
