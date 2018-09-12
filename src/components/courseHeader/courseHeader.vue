@@ -9,9 +9,12 @@
     </div>
     <!--灯塔头部-->
 
-    <div class="info" >
+    <div class="info" v-if="false">
       <h3 class="title">通往百万年薪之路标题【注意标题字高，转行了再长一点看看</h3>
       <p class="desc">技术部 | William</p>
+    </div>
+    <div class="circleHeader" v-else>
+      产品UI设计交流圈
     </div>
     <div class="member">
       <div class="left">
@@ -58,10 +61,10 @@ export default {
       height: 174px;
       .header-photo{
           display:block;
-          width:220px;
-          height: 220px;
+          width:160px;
+          height: 160px;
           position: absolute;
-          top: 30px;
+          top: 84px;
           left:50%;
           transform:translateX(-50%);
           margin-bottom:7.5px;
@@ -74,6 +77,14 @@ export default {
           }
       }
     }
+  .circleHeader{
+    color: #354048;
+    font-size: 36px;/*px*/
+    font-weight: 500;
+    line-height: 44px;
+    margin: 57px 0 46px;
+    text-align: center;
+  }
   .info {
     .title {
       padding: 0 40px;
