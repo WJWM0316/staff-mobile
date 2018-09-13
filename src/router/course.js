@@ -17,6 +17,12 @@ const routers = [
     name: 'community',
     component: resolve => require(['@/views/course/community'], resolve)
   },
+  /* 课节 */
+  {
+    path: '/course/lesson',
+    name: 'lesson',
+    component: resolve => require(['@/views/course/lesson'], resolve)
+  },
   /* 打卡详情页 */
   {
     path: '/course/punchDetail',

@@ -3,14 +3,21 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
-// const address = location.href.split('/')[3]
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/xplus_wap': {
+        target: 'http://wap.xplus.ziwork.com/tiger',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/xplus_wap': '/'
+        },
+        logLevel: 'debug',
+      }
+    },
 
     // Various Dev Server settings
     host: '0.0.0.0', // can be overwritten by process.env.HOST
@@ -51,7 +58,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    // assetsPublicPath: `/${address}`,
+    assetsPublicPath: ``,
 
     /**
      * Source Maps

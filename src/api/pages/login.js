@@ -1,9 +1,10 @@
 import { request } from '../require.js'
 // 登录
-export const getCommunityApi = (data) => {
+export const loginApi = (data, needLoading) => {
   return request({
-    url: '/wap/beacon/community',
+    type: 'post',
+    url: '/auth/login',
     data,
-    isLoading: true
+    needLoading: needLoading
   })
 }

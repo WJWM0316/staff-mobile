@@ -6,6 +6,8 @@ import './components'
 import './util/lib-flexible/flexible'
 import App from './App'
 import store from './store/'
+import axios from 'axios'
+Vue.prototype.axios = axios
 
 Vue.config.productionTip = false
 

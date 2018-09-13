@@ -21,6 +21,7 @@
 
 <script>
 import infoCard from '@/components/infoCard/infoCard.vue'
+import { getJobcircleApi } from '@/api/pages/workCircle'
 export default {
   name: 'workCircle',
   components: {
@@ -39,10 +40,16 @@ export default {
     },
     init () {
       console.log(' 初始化方法 ')
+      getJobcircleApi().then(res => {
+        console.log(res)
+      })
     },
     cutoverTab (item) {
       this.showBorder = item
     }
+  },
+  created () {
+    this.init()
   }
 }
 </script>

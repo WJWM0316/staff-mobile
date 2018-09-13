@@ -16,7 +16,7 @@
       </div>
       <div class="lessonList">
         <div class="before">点击加载前面内容</div>
-        <div class="Lesson">
+        <div class="Lesson" @click.stop="toLesson">
           <span class="txt">1、如何快速获取第一批种子用户？-热身课程</span>
           <img src="../../assets/icon/icon_position@3x.png"/>
         </div>
@@ -52,6 +52,11 @@ export default {
   name: 'community',
   components: {
     topHeader
+  },
+  methods: {
+    toLesson () {
+      this.$router.push('/course/lesson')
+    }
   }
 }
 </script>

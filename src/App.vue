@@ -125,7 +125,6 @@ export default {
     justify-content: center;
     align-items: center;
     z-index: 99999;
-    background: #000;
     .loadBox {
       width: 91px;
       height: 91px;
