@@ -11,54 +11,30 @@ Vue.use(VueAxios, axios)
 Vue.axios.defaults.baseURL = settings.host
 
 
-// http request 拦截器  控制loading
 let num = 0
-axios.interceptors.request.use(
-  config => {
-    num++
-    store.dispatch('updata_loadingStatus', true)
-    return Promise.resolve(config)
-  },
-  err => {
-    return Promise.reject(err)
-  }
-)
-// http response 拦截器
-axios.interceptors.response.use(
-  response => {
-    num--
-    if (num <= 0) {
-      store.dispatch('updata_loadingStatus', false)
-    }
-    return response
-  },
-  error => {
-    num--
-    if (num <= 0) {
-      store.dispatch('updata_loadingStatus', false)
-    }
-    Vue.$vux.toast.text(error.response.data.msg, 'bottom')
-    return Promise.reject(error.response.data) //  返回接口返回的错误信息
-  }
-)
-
-export const request = ({type = 'post', url, data = {}, config = {}} = {}) => {
-  // 正常r请
-  // let datas = type === 'get' ? {params: data} :data
-  // let globalLoading = true
-  if (data.globalLoading !== undefined) {
-    delete data.globalL
-    globalLoading = data.globalLoadingoading
-  }
-  
-  // 开发环境才要绑定测试账号
-  data.token = '6a8b42ded2991474c3ceaec50d6989e1'
-  
-  // showLoading(globalLoading)
+export const request = ({type = 'post', url, data = {}, needLoading = true} = {}) => {
   let datas = type === 'get' ? {params: {...data}} : {...data}
-  return Vue.axios[type](url, datas, config).catch(response => {
+  if (needLoading) {
+    num++
+    if (!store.getters.loadingStatus) {
+      store.dispatch('updata_loadingStatus', true)
+    }
+  }
+
+  return Vue.axios[type](url, datas, needLoading).catch(response => {
+    num--
+    if (num <= 0) {
+      store.dispatch('updata_loadingStatus', false)
+    }
     return Promise.reject(response, {code: 500, message: '网络异常'})
-  }).then().catch(err => {
-    return Promise.reject(err)
+  }).then(res => {
+    return Promise.resolve(res)
+  }).catch(err => {
+    num--
+    if (num <= 0) {
+      store.dispatch('updata_loadingStatus', false)
+    }
+    Vue.$vux.toast.text(err.response.data.msg, 'bottom')
+    return Promise.reject(err.response.data.msg)
   })
 }
