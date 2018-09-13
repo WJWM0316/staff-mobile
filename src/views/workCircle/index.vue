@@ -8,13 +8,13 @@
       <span v-for="(item,index) in tabList" :key="index" :class="{ isFocusClassify:showBorder === item }" @click="cutoverTab(item)">{{item}}</span>
     </div>
     <div class="content">
-      <info-card :showIntroduction="false"></info-card>
-      <info-card :showIntroduction="false"></info-card>
-      <info-card :showIntroduction="false"></info-card>
-      <info-card :showIntroduction="false"></info-card>
-      <info-card :showIntroduction="false"></info-card>
-      <info-card :showIntroduction="false"></info-card>
-      <info-card :showIntroduction="false"></info-card>
+      <info-card :showIntroduction="false" :origin="false"></info-card>
+      <info-card :showIntroduction="false" :origin="false"></info-card>
+      <info-card :showIntroduction="false" :origin="false"></info-card>
+      <info-card :showIntroduction="false" :origin="false"></info-card>
+      <info-card :showIntroduction="false" :origin="false"></info-card>
+      <info-card :showIntroduction="false" :origin="false"></info-card>
+      <info-card :showIntroduction="false" :origin="false"></info-card>
     </div>
   </div>
 </template>
@@ -49,40 +49,40 @@ export default {
 
 <style lang="less" scoped>
   .workCircle{
-    padding-top: 178px;
+    padding-top: 89px;
     .header{
       position: fixed;
       top: 0;
       left: 0;
       background-color: #FFFFFF;
-      box-shadow:0px 6px 10px 0px #F8F8F8;
+      box-shadow:0px 3px 5px 0px #F8F8F8;
       width: 100%;
-      height: 98px;
+      height: 49px;
       display: flex;
       justify-content: center;
       align-items: center;
       >span{
-        line-height: 98px;
-        width: 70px;
+        line-height: 49px;
+        width: 35px;
         text-align: center;
         color: #354048;
         font-size: 34px;/*px*/
         display: inline-block;
       }
       .attention{
-        margin-right: 120px;
+        margin-right: 60px;
       }
       .bottom{
         position: relative;
         &::after{
           content: "";
           display: block;
-          height: 6px;
-          width: 50px;
+          height: 3px;
+          width: 25px;
           background: #FFE266;
           position: absolute;
-          border-radius: 22px;
-          left: 9px;
+          border-radius: 11px;
+          left: 4.5px;
           bottom: 0;
         }
       }
@@ -90,22 +90,22 @@ export default {
     /*分类栏*/
     .classify{
       background-color: #FFFFFF;
-      line-height: 80px;
+      line-height: 40px;
       white-space: nowrap;
       overflow-x: scroll;
-      padding: 0 40px;
-      height: 80px;
+      padding: 0 20px;
+      height: 40px;
       position: fixed;
-      top: 98px;
+      top: 49px;
       left: 0;
       right: 0;
       z-index: 999;
       >span{
         font-weight: 300;
         display: inline-block;
-        padding-right:46px;
+        margin-right:23px;
         &:last-child{
-          padding-right: 0;
+          margin-right: 0;
         }
         &:focus{
           font-weight: 700;
@@ -117,12 +117,13 @@ export default {
         &::after{
           content: "";
           display: block;
-          height: 6px;
-          width: 30px;
+          height: 3px;
+          width: 15px;
           background: #FFE266;
           position: absolute;
-          border-radius: 22px;
-          left: 8px;
+          border-radius: 11px;
+          left: 50%;
+          transform: translateX(-50%);
           bottom: 0;
         }
       }
