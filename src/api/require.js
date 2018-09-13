@@ -28,6 +28,10 @@ export const request = ({type = 'post', url, data = {}, needLoading = true} = {}
     }
     return Promise.reject(response, {code: 500, message: '网络异常'})
   }).then(res => {
+    num--
+    if (num <= 0) {
+      store.dispatch('updata_loadingStatus', false)
+    }
     return Promise.resolve(res)
   }).catch(err => {
     num--

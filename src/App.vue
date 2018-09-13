@@ -133,7 +133,8 @@ export default {
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      border-radius:6px;
+      border-radius: 3px;
+      box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.08);
       .icon {
         width: 30px;
         height: 30px;
