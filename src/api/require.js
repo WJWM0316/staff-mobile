@@ -43,6 +43,18 @@ axios.interceptors.response.use(
 )
 
 export const request = ({type = 'post', url, data = {}, config = {}} = {}) => {
+  // 正常r请
+  // let datas = type === 'get' ? {params: data} :data
+  // let globalLoading = true
+  if (data.globalLoading !== undefined) {
+    delete data.globalL
+    globalLoading = data.globalLoadingoading
+  }
+  
+  // 开发环境才要绑定测试账号
+  data.token = '6a8b42ded2991474c3ceaec50d6989e1'
+  
+  // showLoading(globalLoading)
   let datas = type === 'get' ? {params: {...data}} : {...data}
   return Vue.axios[type](url, datas, config).catch(response => {
     return Promise.reject(response, {code: 500, message: '网络异常'})

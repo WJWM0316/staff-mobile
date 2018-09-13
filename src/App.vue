@@ -52,13 +52,13 @@ export default {
         {
           icon: require('./assets/tab/tab_class@3x.png'),
           selectIcon: require('./assets/tab/tab_class_pre@3x.png'),
-          src: '/course',
+          src: '/course/index',
           label: '选课'
         },
         {
           icon: require('./assets/tab/tab_job@3x.png'),
           selectIcon: require('./assets/tab/tab_job_pre@3x.png'),
-          src: '/workCircle',
+          src: '/workCircle/index',
           label: '工作圈'
         },
         {

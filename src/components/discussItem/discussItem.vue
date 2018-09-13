@@ -217,39 +217,39 @@ export default {
 .discussItem{
   display: flex;
   flex-wrap: wrap;
-  padding:  30px 0;
+  padding:  15px 0;
   .left{
     height: 100%;
     .user-image{
-      width: 80px;
-      height: 80px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
-      border:1px solid #EDEDED;
+      border:0.5px solid #EDEDED;
     }
   }
   /*右边模块*/
   .right {
     box-sizing: border-box;
-    padding-bottom: 30px;
-    padding-left: 30px;
+    padding-bottom: 15px;
+    padding-left: 15px;
     flex-grow: 1;
     font-size: 30px;/*px*/
-    width: 560px;
+    width: 280px;
     .content-head{
       color: #4080AD;
       font-size: 28px;/*px*/
-      padding-bottom: 10px;
+      padding-bottom: 5px;
       .user-career{
         font-size: 24px;/*px*/
       }
     }
     &.border {
-      border-bottom: solid 1px #ededed; /* no */
+      border-bottom: solid 0.5px #ededed; /* no */
     }
 
     .info-area {
       display: flex;
-      margin-top: 25px;
+      margin-top: 12.5px;
       justify-content: space-between;
       font-size: 24px;/*px*/
       font-weight: 400;
@@ -259,18 +259,18 @@ export default {
         display: flex;
         flex: 0 0 auto;
         .praise , .comment{
-          font-size: 24px;
+          font-size: 12px;
           font-weight: 300;
           color: #929292;
           line-height: 1;
           display: flex;
           align-items: center;
-          padding: 0 4px;
-          margin-right: 29px;
+          padding: 0 2px;
+          margin-right: 14.5px;
           img{
-            width: 34px;
-            height: 34px;
-            margin-right: 8px;
+            width: 17px;
+            height: 17px;
+            margin-right: 4px;
           }
         }
         .comment{
@@ -279,31 +279,31 @@ export default {
       }
       .del-btn {
         color: #4080AD;
-        margin-left: 10px;
+        margin-left: 5px;
       }
     }
 
     /* 评论区 */
     & .comment-area {
-      margin-top: 13px;
-      padding: 5px 10px;
+      margin-top: 6.5px;
+      padding: 2.5px 5px;
       width: 100%;
-      border-radius: 3px;
+      border-radius: 1.5px;
       background-color: #f8f8f8;
       box-sizing: border-box;
-      font-size: 13px;
+      font-size: 13px;/*px*/
 
       & .praise-block {
-        padding: 18px 0 15px;
+        padding: 9px 0 7.5px;
         display: flex;
         box-sizing: border-box;
         width: 100%;
         justify-content: space-between;
         align-items: center;
         .icon-zan{
-          width: 30px;
-          height: 31px;
-          margin-right: 12px;
+          width: 15px;
+          height: 15.5px;
+          margin-right: 6px;
         }
         .praise-total {
           font-size: 28px;/*px*/
@@ -323,9 +323,9 @@ export default {
 
       .reply-block {
         font-size: 28px;/*px*/
-        padding: 5px 0;
+        padding: 2.5px 0;
         .reply {
-          margin-top: 4px;
+          margin-top: 2px;
         }
         .reply:first-of-type {
           margin-top: 0;

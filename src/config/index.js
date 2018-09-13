@@ -6,7 +6,7 @@ const settings = {
   dbPrefix: 'xplus_wap', // 本地存储的key
   serverUrl: process.env.NODE_ENV !== 'production' ? `http://wap.xplus.ziwork.com/tiger` : `/${address}`,
   productUrl: 'https://www.zike.com/beaconserver',
-  devUrl: 'http://demo2016.thetiger.com.cn/beaconserver'
+  devUrl: 'http://wap.xplus.ziwork.com/tiger'
 }
 
 export default settings
