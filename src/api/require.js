@@ -16,10 +16,8 @@ let num = 0
 axios.interceptors.request.use(
   config => {
     num++
-    if (config) {
-      this.$store.dispatch('updata_loadingStatus', true)
-    }
-    return config
+    store.dispatch('updata_loadingStatus', true)
+    return Promise.resolve(config)
   },
   err => {
     return Promise.reject(err)
@@ -30,21 +28,24 @@ axios.interceptors.response.use(
   response => {
     num--
     if (num <= 0) {
-      this.$store.dispatch('updata_loadingStatus', false)
+      store.dispatch('updata_loadingStatus', false)
     }
     return response
   },
   error => {
+    num--
+    if (num <= 0) {
+      store.dispatch('updata_loadingStatus', false)
+    }
+    Vue.$vux.toast.text(error.response.data.msg, 'bottom')
     return Promise.reject(error.response.data) //  返回接口返回的错误信息
   }
 )
 
-
-
 export const request = ({type = 'post', url, data = {}, config = {}} = {}) => {
   let datas = type === 'get' ? {params: {...data}} : {...data}
   return Vue.axios[type](url, datas, config).catch(response => {
-    return Promise.reject({code: 500, message: '网络异常'})
+    return Promise.reject(response, {code: 500, message: '网络异常'})
   }).then().catch(err => {
     return Promise.reject(err)
   })

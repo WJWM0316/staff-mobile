@@ -15,7 +15,7 @@
 import circleHeader from '@/components/courseHeader/courseHeader'
 export default {
   name: 'circleDetail',
-  components:{
+  components: {
     circleHeader
   }
 }
@@ -23,7 +23,6 @@ export default {
 
 <style lang="less" scoped>
 .circleDetail{
-  
   /*发帖悬浮窗样式*/
   .postBox{
     position: fixed;
