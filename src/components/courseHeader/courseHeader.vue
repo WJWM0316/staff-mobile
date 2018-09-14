@@ -30,10 +30,10 @@
         <img class="user_icon four" src="../../assets/icon/firends-call-more.png"/>
       </div>
       <!--右边入口按钮-->
-      <div class="right" v-if="type === 0 && !isCircle">
+      <div class="right" v-if="isJoin && !isCircle">
             课程介绍<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
       </div>
-      <div class="right" v-else>
+      <div class="right" v-if="isCircle">
             设置<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
       </div>
     </div>
@@ -44,13 +44,15 @@
 export default {
   name: 'courseHeader',
   props: {
-    type: {
-      type: Number,
-      default: 0
-    },
+    /* 是否工作圈 */
     isCircle: {
       type: Boolean,
       default: true
+    },
+    /* 是否已加入课程 */
+    isJoin: {
+      type: Boolean,
+      default: false
     }
   }
 }
@@ -73,6 +75,7 @@ export default {
           display:block;
           width:110px;
           height: 110px;
+          box-shadow:0px 4px 19px 0px rgba(75,65,50,0.17);
           position: absolute;
           top: 15px;
           left:50%;
@@ -93,6 +96,7 @@ export default {
         height: 101px;
       }
       .header-photo{
+        box-shadow: none;
         width: 80px;
         height: 80px;
         top: 42px;

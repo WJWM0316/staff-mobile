@@ -25,6 +25,11 @@ export default {
     showOther: {
       type: Boolean,
       default: false
+    },
+    /* 默认跳转课程详情 */
+    origin: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
@@ -34,7 +39,13 @@ export default {
   },
   methods: {
     toWorkCircleDetail () {
-      console.log(' 我是去工作圈详情 ')
+      if (this.origin) {
+        console.log(' 去课程详情 ')
+        this.$router.push('/course/introduce')
+      } else {
+        console.log(' 我是去工作圈详情 ')
+        this.$router.push('/workCircle/circleDetail')
+      }
     }
   }
 }
@@ -46,24 +57,24 @@ export default {
   display: flex;
   align-items: center;
   width:100%;
-  padding: 30px 40px;
+  padding: 15px 20px;
   .infoPhoto{
     display: block;
-    width: 160px;
-    height: 160px;
-    border-radius: 6px;
-    box-shadow: 0px 14px 20px 0px rgba(0,0,0,0.18);
-    margin-right: 30px;
+    width: 80px;
+    height: 80px;
+    border-radius: 3px;
+    box-shadow: 0px 7px 10px 0px rgba(0,0,0,0.18);
+    margin-right: 15px;
   }
   .right{
-    padding-top: 8px;
+    padding-top: 4px;
     box-sizing: border-box;
     width: 100%;
-    height: 160px;
+    height: 80px;
     .title{
       color: #354048;
       font-size: 30px;/*px*/
-      line-height: 40px;
+      line-height: 20px;
       font-weight: 400;
       overflow:hidden;
       text-overflow:ellipsis;
@@ -75,24 +86,24 @@ export default {
       color: #929292;
       font-size: 24px;/*px*/
       font-weight: 300;
-      line-height: 32px;
-      margin: 8px 0 32px;
+      line-height: 16px;
+      margin: 4px 0 16px;
     }
     /*人物标签*/
     .label{
       font-size: 24px;/*px*/
       font-weight: 400;
-      line-height: 32px;
-      margin: 21px 0 32px;
+      line-height: 16px;
+      margin: 11px 0 16px;
       .department{
-        max-width: 285px;
+        max-width: 142.5px;
         overflow: hidden;
         text-overflow:ellipsis;
         white-space: nowrap;
-        padding: 0 8px;
+        padding: 0 4px;
         text-align: center;
         display: inline-block;
-        height: 34px;
+        height: 17px;
         background-color: #354048;
         color: #FFFFFF;
       }
@@ -100,11 +111,11 @@ export default {
         overflow: hidden;
         text-overflow:ellipsis;
         white-space: nowrap;
-        padding: 0 8px;
+        padding: 0 4px;
         text-align: center;
         display: inline-block;
-        max-width: 187px;
-        height: 34px;
+        max-width: 93.5px;
+        height: 17px;
         background-color: rgba(255,226,102,0.25);
         color: #D7AB70;
       }
@@ -116,7 +127,7 @@ export default {
       align-items: center;
       font-size: 24px;/*px*/
       font-weight: 300;
-      line-height: 32px;
+      line-height: 16px;
       .time{
         color: #929292;
       }

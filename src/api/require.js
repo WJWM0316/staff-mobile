@@ -13,6 +13,7 @@ Vue.axios.defaults.baseURL = settings.host
 
 let num = 0
 export const request = ({type = 'post', url, data = {}, needLoading = true} = {}) => {
+  data.token = '17ee48397b6b80e6e1053c8958dfc438'
   let datas = type === 'get' ? {params: {...data}} : {...data}
   if (needLoading) {
     num++
@@ -20,7 +21,6 @@ export const request = ({type = 'post', url, data = {}, needLoading = true} = {}
       store.dispatch('updata_loadingStatus', true)
     }
   }
-
   return Vue.axios[type](url, datas, needLoading).catch(response => {
     num--
     if (num <= 0) {
