@@ -43,7 +43,7 @@ export default {
     TabbarItem
   },
   computer: {
-    ...mapState([userInfo])
+    // ...mapState([userInfo])
   },
   data () {
     return {
