@@ -1,6 +1,6 @@
-import { request } from '../require'
+import { request } from '../require.js'
 
-// 获取用户信息
+// 获取当前用户信息
 export const userInfoApi = (data, needLoading) => {
   return request({
     type: 'get',

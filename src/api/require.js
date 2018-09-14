@@ -4,7 +4,6 @@ import VueAxios from 'vue-axios'
 import settings from '@/config'
 import store from '../store/index.js'
 import router from '../router/index.js'
-// import localstorage from '@/util/localstorage/index'
 
 Vue.use(VueAxios, axios)
 // 动态设置本地和线上接口域名
@@ -13,8 +12,19 @@ Vue.axios.defaults.baseURL = settings.host
 
 let num = 0
 export const request = ({type = 'post', url, data = {}, needLoading = true} = {}) => {
-  data.token = '17ee48397b6b80e6e1053c8958dfc438'
   let datas = type === 'get' ? {params: {...data}} : {...data}
+  // 开发环境写死账号
+  if (process.env.NODE_ENV !== 'production') {
+    if (type === 'get') {
+      if (url.indexOf('?') !== -1) {
+        url = `${url}&token=3cc25a9831a5a6758f6f290afda79282`
+      } else {
+        url = `${url}?token=3cc25a9831a5a6758f6f290afda79282`
+      }
+    } else {
+      datas.token = '3cc25a9831a5a6758f6f290afda79282'
+    }
+  }
   if (needLoading) {
     num++
     if (!store.getters.loadingStatus) {
@@ -32,7 +42,7 @@ export const request = ({type = 'post', url, data = {}, needLoading = true} = {}
     if (num <= 0) {
       store.dispatch('updata_loadingStatus', false)
     }
-    return Promise.resolve(res)
+    return Promise.resolve(res.data)
   }).catch(err => {
     num--
     if (num <= 0) {

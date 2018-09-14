@@ -6,6 +6,7 @@
   </div>
 </template>
 <script>
+import { userInfoApi } from '@/api/pages/center'
 export default {
   components: {
   },
@@ -16,6 +17,14 @@ export default {
   computed: {
   },
   methods: {
+    init () {
+      return this.userInfo()
+    },
+    userInfo () {
+      return userInfoApi()
+    }
+  },
+  mounted () {
   }
 }
 </script>

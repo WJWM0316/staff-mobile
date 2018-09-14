@@ -11,6 +11,7 @@
   </div>
 </template>
 <script>
+import { userInfoApi } from '@/api/pages/center'
 import { loginApi } from '@/api/pages/login'
 export default {
   data () {
@@ -28,9 +29,26 @@ export default {
         password: this.password
       }
       loginApi(data).then(res => {
+        this.$store.dispatch('updata_userInfo', res.data)
         this.$showToast('登录成功', () => {
           this.$router.go(-1)
         })
+      })
+    },
+    userInfo () {
+      return userInfoApi('', false).then(res => {
+        return res
+      })
+    },
+    init () {
+      return Promise.all([this.userInfo(), this.userInfo()])
+    }
+  },
+  created () {
+    this.init()
+    this.$root.$children[0]._refresh = () => {
+      return this.init().then(res => {
+        return res
       })
     }
   }
@@ -43,7 +61,7 @@ export default {
       font-size: 52px; /*px*/
       line-height: 34px;
       font-weight: 300;
-      margin: 45px 0 55px;
+      padding: 45px 0 55px;
       text-align: center;
     }
     .inputBox {

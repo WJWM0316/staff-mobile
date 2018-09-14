@@ -1,7 +1,7 @@
 const routers = [
   {
     path: '/live',
-    name: 'liveIndex',
+    name: 'live',
     component: resolve => require(['@/views/live/index'], resolve)
   }
 ]
