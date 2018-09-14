@@ -1,7 +1,11 @@
 import { request } from '../require'
 
-// 写下说明
-export const getInformationApi = data => request({
-  url: '/wap/my/getInformation',
-  data
-})
+// 获取用户信息
+export const userInfoApi = (data, needLoading) => {
+  return request({
+    type: 'get',
+    url: '/cur/user_info',
+    data,
+    needLoading: needLoading
+  })
+}

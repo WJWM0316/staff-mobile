@@ -1,5 +1,8 @@
 <template>
   <div class="wrap">
+    <div>
+      <p v-for="n in 100" :key="n">{{n}}</p>
+    </div>
   </div>
 </template>
 <script>
