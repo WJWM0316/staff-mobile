@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import { getCircleDetailApi } from '@/api/pages/workCircle'
 import circleHeader from '@/components/courseHeader/courseHeader'
 import dynamicItem from '@/components/dynamicItem/dynamicItem'
 export default {
@@ -66,6 +67,11 @@ export default {
     circleHeader,
     dynamicItem
   },
+  data () {
+    return {
+      pageInfo: {}
+    }
+  },
   methods: {
     /* 倒序  */
     reverse () {
@@ -73,7 +79,20 @@ export default {
     },
     toEdit () {
       this.$router.push(`/workCircle/circleEdit`)
+    },
+    /* 初始化方法 */
+    async init () {
+      let res = await this.getgetCircleDetail()
+      this.pageInfo = res
+    },
+    /* ------------------ */
+    getgetCircleDetail () {
+      return getCircleDetailApi()
     }
+  },
+  created (param) {
+    console.log(param, ' 11111111111111111111111111 ')
+    this.init()
   }
 }
 </script>

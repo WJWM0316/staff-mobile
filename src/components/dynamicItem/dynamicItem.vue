@@ -360,7 +360,6 @@ export default {
         align-items: center;
         color: #4080AD;
         font-size: 28px;/*px*/
-        /*px*/
         font-weight: 500;
       }
     }

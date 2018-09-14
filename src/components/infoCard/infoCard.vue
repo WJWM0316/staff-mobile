@@ -1,10 +1,10 @@
 <template>
-  <div class="infoCard"  @click="toWorkCircleDetail">
-    <img class="infoPhoto" src="../../assets/icon/asda.jpg" />
+  <div class="infoCard"  @click="toWorkCircleDetail(item.id)">
+    <img class="infoPhoto" :src="item.coverImg" />
     <div class="right">
-      <div class="title">创业路上，每一个想法都是一个创业路上，每一个想法都是一个创业路上，每一个想法都是一个</div>
+      <div class="title">{{item.name}}</div>
       <div class="introduction" v-if="showIntroduction">课程介绍可以加这个字段吗？</div>
-      <div class="label"><span class="department">技术部</span><span class="name">浩彬</span></div>
+      <div class="label"><span class="department">{{item.groupName}}</span><span class="name">{{item.realname}}</span></div>
       <div class="other" v-if="showOther">
         <span class="time">{{time}}</span>
         <span class="status">正在直播</span>
@@ -18,6 +18,9 @@ import moment from 'moment'
 export default {
   name: 'infoCard',
   props: {
+    item: {
+      type: Object
+    },
     showIntroduction: {
       type: Boolean,
       default: true
@@ -38,16 +41,18 @@ export default {
     }
   },
   methods: {
-    toWorkCircleDetail () {
+    toWorkCircleDetail (id) {
+      console.log(id)
       if (this.origin) {
         console.log(' 去课程详情 ')
         this.$router.push('/course/introduce')
       } else {
         console.log(' 我是去工作圈详情 ')
-        this.$router.push('/workCircle/circleDetail')
+        this.$router.push({path: '/workCircle/circleDetail', query: {id: id}})
       }
     }
-  }
+  },
+  created () {}
 }
 </script>
 

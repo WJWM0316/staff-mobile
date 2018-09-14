@@ -89,6 +89,7 @@ export default {
     }
   },
   created () {
+    console.log(this.$router, ' 1111111111111 ')
   }
 }
 </script>

@@ -8,44 +8,57 @@
       <span v-for="(item,index) in tabList" :key="index" :class="{ isFocusClassify:showBorder === item }" @click="cutoverTab(item)">{{item}}</span>
     </div>
     <div class="content">
-      <info-card :showIntroduction="false" :origin="false"></info-card>
-      <info-card :showIntroduction="false" :origin="false"></info-card>
-      <info-card :showIntroduction="false" :origin="false"></info-card>
-      <info-card :showIntroduction="false" :origin="false"></info-card>
-      <info-card :showIntroduction="false" :origin="false"></info-card>
-      <info-card :showIntroduction="false" :origin="false"></info-card>
-      <info-card :showIntroduction="false" :origin="false"></info-card>
+      <template v-for="(item, index) in circleList">
+        <info-card :item="item" :showIntroduction="false" :origin="false" :key="index"></info-card>
+      </template>
     </div>
   </div>
 </template>
 
 <script>
 import infoCard from '@/components/infoCard/infoCard.vue'
-import { getJobcircleApi } from '@/api/pages/workCircle'
+import { getJobcircleApi, getAttentionsApi } from '@/api/pages/workCircle'
 export default {
   name: 'workCircle',
   components: {
-    infoCard
+    infoCard,
+    scroll
   },
   data () {
     return {
       isFocus: 'attention',
       tabList: ['全部', '设计组', '技术组', '市场组', '运营组', '校园组', '人力资源组', '财务组'],
-      showBorder: '全部'
+      showBorder: '全部',
+      circleList: []
     }
   },
   methods: {
-    tab (name) {
+    async tab (name) {
       this.isFocus = name
+      let res = {}
+      if (name === 'all') {
+        res = await this.getJobcircle()
+      } else {
+        res = await this.getAttentions()
+      }
     },
-    init () {
-      console.log(' 初始化方法 ')
-      getJobcircleApi().then(res => {
-        console.log(res)
-      })
+    /* 初始化方法 */
+    async init () {
+      let res = await this.getAttentions()
+      this.isFocus = 'attention'
+      this.circleList = res.data.data
     },
+    /* ------------------------ */
     cutoverTab (item) {
       this.showBorder = item
+    },
+    /* 请求全部圈子列表 */
+    getAttentions () {
+      return getAttentionsApi()
+    },
+    /* 请求关注圈子列表 */
+    getJobcircle () {
+      return getJobcircleApi()
     }
   },
   created () {
@@ -56,6 +69,7 @@ export default {
 
 <style lang="less" scoped>
   .workCircle{
+    padding-bottom: 49px;
     padding-top: 89px;
     .header{
       position: fixed;
