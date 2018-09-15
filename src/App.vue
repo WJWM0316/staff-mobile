@@ -1,13 +1,19 @@
 <template>
-  <div id="app-box" v-cloak>
+  <div id="app-box" v-cloak :class="{'hasTab' : $route.meta.needBottomTab}">
     <div id="page" @touchmove="touchMove" @touchstart="touchStart" @touchend="touchEnd" :style="{'transform' : `translate3d(0, ${moveY}px, 0)`}">
-      <div class="pulldown-tip" ref="pulldownTip">
+      <div class="pulldown-tip" ref="pulldownTip" v-show="$route.meta.pullDown">
         <img class="pull-icon" src="@/assets/icon/loading.png" alt="">
       </div>
       <keep-alive>
         <router-view v-if="$route.meta.keepAlive"></router-view>
       </keep-alive>
       <router-view v-if="!$route.meta.keepAlive"></router-view>
+      <div class="loading-pos" ref="pullUpTip">
+        <div class="loading-container">
+          <img class="loadmore" src="@/assets/icon/loadMore.gif">
+        </div>
+<!--         <p class="loading-connecting" v-else>没有更多数据</p>
+ -->      </div>
     </div>
     <tabbar slot="bottom" class="bottomTab"  v-show="$route.meta.needBottomTab" v-model="tabIndex">
       <tabbar-item
@@ -35,15 +41,12 @@
 <script>
 import { userInfoApi } from '@/api/pages/center'
 import { Tabbar, TabbarItem } from 'vux'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import './util/lib-flexible/flexible'
 export default {
   components: {
     Tabbar,
     TabbarItem
-  },
-  computer: {
-    // ...mapState([userInfo])
   },
   data () {
     return {
@@ -58,13 +61,13 @@ export default {
         {
           icon: require('./assets/tab/tab_class@3x.png'),
           selectIcon: require('./assets/tab/tab_class_pre@3x.png'),
-          src: '/course/index',
+          src: '/course',
           label: '选课'
         },
         {
           icon: require('./assets/tab/tab_job@3x.png'),
           selectIcon: require('./assets/tab/tab_job_pre@3x.png'),
-          src: '/workCircle/index',
+          src: '/workCircle',
           label: '工作圈'
         },
         {
@@ -91,56 +94,88 @@ export default {
     },
     tabIndex (index) {
       this.$router.push(this.tabList[index].src)
-    }
+    },
+    userInfo () {}
+  },
+  computed: {
+    ...mapState({
+      userInfo: state => state.global.userInfo,
+      pullUpStatus: state => state.global.pullUpStatus,
+      pullDownStatus: state => state.global.pullDownStatus
+    })
   },
   methods: {
+    ...mapActions([
+      'updata_userInfo',
+      'updata_loadingStatus',
+      'updata_pullUpStatus',
+      'updata_pullDownStatus'
+    ]),
     selectTab (n) {
       this.tabIndex = n
     },
     touchStart (e) {
-      if (window.scrollY === 0) {
+      if (window.scrollY === 0 && this.$route.meta.pullDown) {
         this.startY = e.touches[0].clientY
       }
     },
     touchMove (e) {
-      if (window.scrollY === 0) {
-        this.moveY = e.touches[0].clientY - this.startY
+      let move = e.touches[0].clientY - this.startY
+      if (window.scrollY === 0 && move > 0 && this.$route.meta.pullDown) {
+        this.moveY = move
       }
     },
     touchEnd (e) {
-      if (window.scrollY === 0) {
+      if (this.moveY !== 0 && this.$route.meta.pullDown) {
         this.moveY = e.changedTouches[0].clientY - this.startY
         if (this.moveY > 60) {
           this.pullDown = true
-          this.moveY = this.$refs.pulldownTip.clientHeight
-          if (this._refresh()) {
+          this.$nextTick(() => {
+            this.moveY = this.$refs.pulldownTip.clientHeight
+          })
+          try {
             this._refresh().then(res => {
-              console.log(res, 1111111111)
               setTimeout(res0 => {
                 this.moveY = 0
               }, 500)
-            }).catch(e => {
-              this.moveY = 0
             })
-          } else {
+          } catch (e) {
             setTimeout(res0 => {
               this.moveY = 0
               window.location.reload()
-            }, 100)
+            }, 500)
           }
+        } else {
+          this.moveY = 0
         }
       }
     },
-    _refresh () {},
+    _refresh () {}, // 用于页面组件的下拉刷新赋值， 不可删
+    _loadMore () {}, // 用于页面组件的上拉加载赋值， 不可删
     getUserInfo () {
-      return userInfoApi('', false).then(res => {
-        return Promise.resolve(res)
+      userInfoApi('', false).then(res => {
+        this.updata_userInfo(res.data)
       })
     }
   },
   created () {
-    console.log(this.userInfo)
-    this.getUserInfo()
+    if (!this.userInfo.id) {
+      this.getUserInfo()
+    }
+  },
+  mounted () {
+    let tabHeight = this.$refs.pullUpTip.clientHeight
+    let winHeight = window.screen.height * window.dpr
+    window.onscroll = (e) => {
+      if (window.scrollY >= document.body.clientHeight - winHeight) {
+        if (!this.pullUpStatus) {
+          console.log('测试111')
+          this.updata_pullUpStatus(true)
+          window.scrollTo(0, document.body.clientHeight - winHeight)
+          console.log('加载更多数据')
+        }
+      }
+    }
   }
 }
 </script>
@@ -152,9 +187,50 @@ export default {
   100% { transform: rotate(360deg); }
 }
 #app-box {
+  &.hasTab {
+    padding-bottom: 49px;
+  }
   #page {
     min-height: 100vh;
     position: relative;
+    .pulldown-tip {
+      height: 54px;
+      width: 100%;
+      line-height: 54px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: -54px;
+      left: 0;
+      .pull-icon {
+        width: 30px;
+        height: 30px;
+        display: block;
+        margin: 0 auto;
+        animation: rotate 1s linear infinite;
+      }
+    }
+    .loading-pos {
+      width: 100%;
+      .loading-container {
+        opacity: 1;
+      }
+      .loadmore {
+        padding: 15px 0 30px;
+        width: 34px;
+        height: 12px;
+        display: block;
+        margin: 0 auto;
+      }
+      .loading-connecting {
+        font-size: 28px; /*px*/
+        font-weight: 300;
+        color: #BCBCBC;
+        text-align: center;
+        padding: 5px 0 35px;
+      }
+    }
   }
   .bottomTab {
     position: fixed;
@@ -170,24 +246,6 @@ export default {
       margin-top: 2px;
       line-height: 10px;
     }
-  }
-  .pulldown-tip {
-    height: 54px;
-    width: 100%;
-    line-height: 54px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: -54px;
-    left: 0;
-  }
-  .pull-icon {
-    width: 30px;
-    height: 30px;
-    display: block;
-    margin: 0 auto;
-    animation: rotate 1s linear infinite;
   }
   .loading {
     width: 100%;
