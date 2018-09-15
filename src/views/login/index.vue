@@ -41,11 +41,10 @@ export default {
       })
     },
     init () {
-      return Promise.all([this.userInfo(), this.userInfo()])
+      return Promise.all([this.userInfo()])
     }
   },
   created () {
-    this.init()
     this.$root.$children[0]._refresh = () => {
       return this.init().then(res => {
         return res

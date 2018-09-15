@@ -8,9 +8,24 @@ export default {
       resolve()
     })
   },
+  // 更新loading文案
   updata_loadingTxt: ({commit}, data) => {
     return new Promise((resolve, reject) => {
       commit(types.LOADINGTXT, data)
+      resolve()
+    })
+  },
+  // 更新上拉加载状态
+  updata_pullUpStatus: ({commit}, data) => {
+    return new Promise((resolve, reject) => {
+      commit(types.PULLUPSTATUS, data)
+      resolve()
+    })
+  },
+  // 更新下拉刷新状态
+  updata_pullDownStatus: ({commit}, data) => {
+    return new Promise((resolve, reject) => {
+      commit(types.PULLDOWNSTATUS, data)
       resolve()
     })
   },
@@ -18,6 +33,7 @@ export default {
   updata_userInfo: ({commit}, data) => {
     return new Promise((resolve, reject) => {
       commit(types.USERINFO, data)
+      console.log('已存储用户信息', data)
       resolve()
     })
   }

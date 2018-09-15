@@ -5,7 +5,13 @@ export default {
   loadingTxt: function (state) {
     return state.loadingTxt
   },
-  getUserInfo: function (state) {
+  userInfo: function (state) {
     return state.userInfo
+  },
+  pullUpStatus: function (state) {
+    return state.pullUpStatus
+  },
+  pullDownStatus: function (state) {
+    return state.pullDownStatus
   }
 }
