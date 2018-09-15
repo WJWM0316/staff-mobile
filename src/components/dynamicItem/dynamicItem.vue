@@ -549,7 +549,7 @@ export default {
         padding: 5px 0;
         .reply {
           font-size: 28px;/*px*/
-         font-weight: 300;
+          font-weight: 300;
           margin-top: 5px;
           .favor-name {
             font-size: 28px;/*px*/

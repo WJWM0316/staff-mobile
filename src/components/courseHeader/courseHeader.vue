@@ -4,37 +4,41 @@
     <div class="cover-container" :class="{circle:isCircle}">
       <div class="cover"></div>
       <span class="header-photo">
-        <img src="https://cdnstatic.ziwork.com/Uploads/static/picture/2018-08-16/791ae930a11c0c8e26415f4151116ee8.jpeg"/>
+        <img :src="pageInfo.coverImg"/>
       </span>
     </div>
     <!--灯塔头部-->
 
     <div class="info" v-if="!isCircle">
-      <h3 class="title">通往百万年薪之路标题【注意标题字高，转行了再长一点看看</h3>
-      <p class="desc">技术部 | William</p>
+      <h3 class="title">{{pageInfo.name}}</h3>
+      <p class="desc">{{pageInfo.groupName}} | {{pageInfo.realname}}</p>
     </div>
     <div class="circleHeader" v-else>
-      产品UI设计交流圈
+      {{pageInfo.name}}
     </div>
     <!--左边加入人数-->
     <div class="member">
       <div class="left">
-        <p><span class="num">19</span> 人</p>
+        <p><span class="num">{{pageInfo.memberCount}}</span> 人</p>
         <p>和你一起学习</p>
       </div>
       <!--加入人员头像-->
       <div class="center">
+        <img class="user_icon" v-for="(item, index) in pageInfo.memberInfo" :src="item.avatarInfo.url" :key="index" />
+        <!--<img class="user_icon" src="http://thirdwx.qlogo.cn/mmopen/Qb07dBEKiaOGj5ne2EMGgmwAZnfJoNmxvrd1LIOy2Q5HY1ZtnricjJNpsYstFQwiaB2SX5SpGMShiaZffqblLa12ibVo3pMFgB20y/132"/>
         <img class="user_icon" src="http://thirdwx.qlogo.cn/mmopen/Qb07dBEKiaOGj5ne2EMGgmwAZnfJoNmxvrd1LIOy2Q5HY1ZtnricjJNpsYstFQwiaB2SX5SpGMShiaZffqblLa12ibVo3pMFgB20y/132"/>
-        <img class="user_icon" src="http://thirdwx.qlogo.cn/mmopen/Qb07dBEKiaOGj5ne2EMGgmwAZnfJoNmxvrd1LIOy2Q5HY1ZtnricjJNpsYstFQwiaB2SX5SpGMShiaZffqblLa12ibVo3pMFgB20y/132"/>
-        <img class="user_icon" src="http://thirdwx.qlogo.cn/mmopen/Qb07dBEKiaOGj5ne2EMGgmwAZnfJoNmxvrd1LIOy2Q5HY1ZtnricjJNpsYstFQwiaB2SX5SpGMShiaZffqblLa12ibVo3pMFgB20y/132"/>
-        <img class="user_icon four" src="../../assets/icon/firends-call-more.png"/>
+        <img class="user_icon" src="http://thirdwx.qlogo.cn/mmopen/Qb07dBEKiaOGj5ne2EMGgmwAZnfJoNmxvrd1LIOy2Q5HY1ZtnricjJNpsYstFQwiaB2SX5SpGMShiaZffqblLa12ibVo3pMFgB20y/132"/>-->
+        <img class="user_icon four" src="../../assets/icon/firends-call-more.png" v-if="pageInfo.memberCount > 3"/>
       </div>
       <!--右边入口按钮-->
       <div class="right" v-if="isJoin && !isCircle">
             课程介绍<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
       </div>
-      <div class="right" v-if="isCircle">
+      <div class="right" @click.stop="toSetting" v-if="isCircle && (pageInfo.isAttention || pageInfo.isOwner)">
             设置<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
+      </div>
+      <div class="focus" v-else>
+        + 关注
       </div>
     </div>
   </a>
@@ -53,7 +57,28 @@ export default {
     isJoin: {
       type: Boolean,
       default: false
+    },
+    pageInfo: {
+      type: Object
     }
+  },
+  methods: {
+    toSetting () {
+      this.$router.push({
+        path: '/workCircle/setting',
+        query: {
+          isOwner: this.pageInfo.isOwner, // 是否圈主
+          id: this.pageInfo.id,
+          coverImg: this.pageInfo.coverImg,
+          name: this.pageInfo.name,
+          isTop: this.pageInfo.isTop,
+          isAttention: this.pageInfo.isAttention
+        }
+      })
+    }
+  },
+  mounted () {
+    console.log(this.pageInfo, ' 22222222222222222222 ')
   }
 }
 </script>
@@ -180,6 +205,17 @@ export default {
         width: 12px;
         height: 12px;
       }
+    }
+    .focus{
+      width: 65px;
+      height: 25px;
+      border: 1px solid #D7AB70;/*px*/
+      text-align: center;
+      line-height: 25px;
+      font-size: 24px;/*px*/
+      color: #D7AB70;
+      font-weight: 500;
+      border-radius: 15px;
     }
   }
 }

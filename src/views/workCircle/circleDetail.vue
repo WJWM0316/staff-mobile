@@ -1,6 +1,6 @@
 <template>
   <div class="circleDetail">
-    <circle-header></circle-header>
+    <circle-header :pageInfo="pageInfo"></circle-header>
     <!--下载文件-->
     <div class="fileDownload">
       <div class="downloadImg">
@@ -81,18 +81,18 @@ export default {
       this.$router.push(`/workCircle/circleEdit`)
     },
     /* 初始化方法 */
-    async init () {
-      let res = await this.getgetCircleDetail()
-      this.pageInfo = res
+    async init (id) {
+      let res = await this.getgetCircleDetail(id)
+      this.pageInfo = res.data
     },
     /* ------------------ */
-    getgetCircleDetail () {
-      return getCircleDetailApi()
+    getgetCircleDetail (id) {
+      return getCircleDetailApi(id)
     }
   },
-  created (param) {
-    console.log(param, ' 11111111111111111111111111 ')
-    this.init()
+  created () {
+    const { id } = this.$route.query
+    this.init(id)
   }
 }
 </script>
@@ -181,7 +181,7 @@ export default {
             text-overflow: ellipsis;
             overflow: hidden;
             font-weight: 300;
-            font-size: 30;/*px*/
+            font-size: 30px;/*px*/
             color: #354048;
           }
           >.rightImg{

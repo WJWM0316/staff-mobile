@@ -1,10 +1,14 @@
 <template>
   <div id="app-box" v-cloak>
-    <keep-alive>
-      <router-view v-if="$route.meta.keepAlive" class="pullDown"></router-view>
-    </keep-alive>
-    <router-view v-if="!$route.meta.keepAlive"></router-view>
-
+    <div id="page" @touchmove="touchMove" @touchstart="touchStart" @touchend="touchEnd" :style="{'transform' : `translate3d(0, ${moveY}px, 0)`}">
+      <div class="pulldown-tip" ref="pulldownTip">
+        <img class="pull-icon" src="@/assets/icon/loading.png" alt="">
+      </div>
+      <keep-alive>
+        <router-view v-if="$route.meta.keepAlive"></router-view>
+      </keep-alive>
+      <router-view v-if="!$route.meta.keepAlive"></router-view>
+    </div>
     <tabbar slot="bottom" class="bottomTab"  v-show="$route.meta.needBottomTab" v-model="tabIndex">
       <tabbar-item
         v-for="(tab, index) in tabList"
@@ -17,7 +21,6 @@
         <span slot="label"  class="txt">{{tab.label}}</span>
       </tabbar-item>
     </tabbar>
-
     <div class="loading" v-show="$store.getters.loadingStatus">
       <div class="loadBox">
         <div class="icon">
@@ -30,15 +33,16 @@
 </template>
 
 <script>
+import { userInfoApi } from '@/api/pages/center'
 import { Tabbar, TabbarItem } from 'vux'
 import { mapState } from 'vuex'
+import './util/lib-flexible/flexible'
 export default {
   components: {
     Tabbar,
     TabbarItem
   },
-  computer: {
-  },
+  computer: {},
   data () {
     return {
       tabIndex: 0,
@@ -67,7 +71,11 @@ export default {
           src: '/center',
           label: '我的'
         }
-      ]
+      ],
+      startY: 0,
+      moveY: 0,
+      endY: 0,
+      pullDown: false
     }
   },
   watch: {
@@ -86,10 +94,51 @@ export default {
   methods: {
     selectTab (n) {
       this.tabIndex = n
+    },
+    touchStart (e) {
+      if (window.scrollY === 0) {
+        this.startY = e.touches[0].clientY
+      }
+    },
+    touchMove (e) {
+      if (window.scrollY === 0) {
+        this.moveY = e.touches[0].clientY - this.startY
+      }
+    },
+    touchEnd (e) {
+      if (window.scrollY === 0) {
+        this.moveY = e.changedTouches[0].clientY - this.startY
+        if (this.moveY > 60) {
+          this.pullDown = true
+          this.moveY = this.$refs.pulldownTip.clientHeight
+          if (this._refresh()) {
+            this._refresh().then(res => {
+              console.log(res, 1111111111)
+              setTimeout(res0 => {
+                this.moveY = 0
+              }, 500)
+            }).catch(e => {
+              this.moveY = 0
+            })
+          } else {
+            setTimeout(res0 => {
+              this.moveY = 0
+              window.location.reload()
+            }, 100)
+          }
+        }
+      }
+    },
+    _refresh () {},
+    getUserInfo () {
+      return userInfoApi('', false).then(res => {
+        return Promise.resolve(res)
+      })
     }
   },
   created () {
-    console.log(this.$router, ' 1111111111111 ')
+    console.log(this.userInfo)
+    this.getUserInfo()
   }
 }
 </script>
@@ -101,6 +150,10 @@ export default {
   100% { transform: rotate(360deg); }
 }
 #app-box {
+  #page {
+    min-height: 100vh;
+    position: relative;
+  }
   .bottomTab {
     position: fixed;
     bottom: 0;
@@ -115,6 +168,24 @@ export default {
       margin-top: 2px;
       line-height: 10px;
     }
+  }
+  .pulldown-tip {
+    height: 54px;
+    width: 100%;
+    line-height: 54px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -54px;
+    left: 0;
+  }
+  .pull-icon {
+    width: 30px;
+    height: 30px;
+    display: block;
+    margin: 0 auto;
+    animation: rotate 1s linear infinite;
   }
   .loading {
     width: 100%;
@@ -142,6 +213,11 @@ export default {
         display: block;
         margin: 0 auto;
         animation: rotate 1s linear infinite;
+        img {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
       }
       .txt {
         color: #BCBCBC;

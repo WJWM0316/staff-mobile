@@ -1,7 +1,7 @@
 const routers = [
   {
     path: '/bookHouse',
-    name: 'bookHouseIndex',
+    name: 'bookHouse',
     component: resolve => require(['@/views/bookHouse/index'], resolve)
   }
 ]

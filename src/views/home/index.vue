@@ -1,8 +1,12 @@
 <template>
   <div class="wrap">
+    <div>
+      <p v-for="n in 100" :key="n">{{n}}</p>
+    </div>
   </div>
 </template>
 <script>
+import { userInfoApi } from '@/api/pages/center'
 export default {
   components: {
   },
@@ -13,6 +17,14 @@ export default {
   computed: {
   },
   methods: {
+    init () {
+      return this.userInfo()
+    },
+    userInfo () {
+      return userInfoApi()
+    }
+  },
+  mounted () {
   }
 }
 </script>

@@ -1,6 +1,6 @@
 const routers = [
   {
-    path: '/',
+    path: '*',
     redirect: to => {
       return '/home'
     }

@@ -5,7 +5,7 @@
       <span class="all" :class="{bottom : isFocus==='all'}" @click="tab('all')">全部</span>
     </div>
     <div class="classify">
-      <span v-for="(item,index) in tabList" :key="index" :class="{ isFocusClassify:showBorder === item }" @click="cutoverTab(item)">{{item}}</span>
+      <span v-for="(item,index) in tabList" :key="index" :class="{ isFocusClassify:showBorder === item }" @click="cutoverTab(item)">{{item.groupName}}</span>
     </div>
     <div class="content">
       <template v-for="(item, index) in circleList">
@@ -17,7 +17,7 @@
 
 <script>
 import infoCard from '@/components/infoCard/infoCard.vue'
-import { getJobcircleApi, getAttentionsApi } from '@/api/pages/workCircle'
+import { getJobcircleApi, getAttentionsApi, getCircleClassfyApi } from '@/api/pages/workCircle'
 export default {
   name: 'workCircle',
   components: {
@@ -27,7 +27,7 @@ export default {
   data () {
     return {
       isFocus: 'attention',
-      tabList: ['全部', '设计组', '技术组', '市场组', '运营组', '校园组', '人力资源组', '财务组'],
+      tabList: [],
       showBorder: '全部',
       circleList: []
     }
@@ -45,8 +45,10 @@ export default {
     /* 初始化方法 */
     async init () {
       let res = await this.getAttentions()
+      let classfy = await getCircleClassfyApi()
       this.isFocus = 'attention'
-      this.circleList = res.data.data
+      this.circleList = res.data
+      this.tabList = classfy.data
     },
     /* ------------------------ */
     cutoverTab (item) {

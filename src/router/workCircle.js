@@ -16,6 +16,12 @@ const routers = [
     path: '/workCircle/circleEdit',
     name: 'circleEdit',
     component: resolve => require(['@/views/workCircle/circleEditting'], resolve)
+  },
+  /* 设置  */
+  {
+    path: '/workCircle/setting',
+    name: 'setting',
+    component: resolve => require(['@/views/workCircle/setting'], resolve)
   }
 ]
 
