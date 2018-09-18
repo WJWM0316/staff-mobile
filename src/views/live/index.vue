@@ -21,6 +21,7 @@
 import scroller from '@c/layout/scroller'
 import localstorage from '@u/localstorage'
 import ws from '@u/websocket'
+import { mapState } from 'vuex'
 export default {
   components: {
     scroller
@@ -56,6 +57,16 @@ export default {
         '测试111',
         '测试111'
       ]
+    }
+  },
+  computed: {
+    ...mapState({
+      resolveTime: state => state.websocket.resolveTime
+    })
+  },
+  watch: {
+    resolveTime (val) {
+      console.log(val)
     }
   },
   methods: {

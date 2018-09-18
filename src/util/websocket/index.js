@@ -1,5 +1,7 @@
 import router from '@/router/index.js'
 import localstorage from '@u/localstorage'
+import store from '@/store/index.js'
+
 class WS {
   ws = null
   isLogin = false
@@ -39,7 +41,7 @@ class WS {
       // 接收信息
       ws.onmessage = (evt) => {
         // evt.data如果等于a为心跳检测值，不需要转化成json格式
-        let data = evt.data !== 'a' ? JSON.parse(evt.data) : evt.data
+        let data = evt.data.cmd ? JSON.parse(evt.data) : evt.data
         // 判断登录状态
         if (data.cmd === 'login.token') {
           console.log('======WebSocket======' + data.msg)
@@ -50,7 +52,12 @@ class WS {
             router.push('/login')
           }
         }
-
+        // 不是心跳返回的数据, 存储起来
+        // if (evt.data.cmd && evt.data.cmd !== 'login.token') {
+        let time = new Date().getTime()
+        store.dispatch('updata_resolveTime', time)
+        store.dispatch('updata_resolveData', data.data)
+        // }
         // 收到消息，重置定时器, 因为已开启心跳检查，每秒都有发送
         clearTimeout(this.receiveMessageTimer)
         this.receiveMessageTimer = setTimeout(() => {
@@ -95,6 +102,10 @@ class WS {
   // 发送消息
   send = (data) => {
     this.ws.send(JSON.stringify(data))
+  }
+  // 接收数据
+  resolve = (data) => {
+    console.log(data)
   }
   // 关闭websocket
   close = () => {
