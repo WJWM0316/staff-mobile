@@ -46,9 +46,9 @@ export default {
     init () {
       this.headerPhoto = this.$route.query.coverImg
       this.name = this.$route.query.name
-      this.$route.query.isAttention ? this.isFocus = true : this.isFocus = false // 初始化关注
-      this.$route.query.isTop === 1 ? this.isToTop = true : this.isToTop = false // 初始化置顶
-      this.isOwner = this.$route.query.isOwner // 是否圈主
+      this.isFocus = JSON.parse(this.$route.query.isAttention) // 初始化关注
+      this.isToTop = JSON.parse(this.$route.query.isTop) // 初始化置顶
+      this.isOwner = JSON.parse(this.$route.query.isOwner) // 是否圈主
       console.log(this.$route.query)
     },
     /* 置顶工作圈 */
@@ -68,12 +68,13 @@ export default {
     },
     /* 保存 */
     async save () {
-      console.log(this.name)
       try {
+        let isTop = JSON.parse(this.$route.query.isTop)
         /* 置顶操作 */
-        if (this.isToTop && this.$route.query.isTop !== 1) {
+        if (this.isToTop !== isTop && this.isToTop) {
           await putStickApi(this.$route.query.id)
-        } else if (!this.isToTop && this.$route.query.isTop !== 0) {
+        } else if (this.isToTop !== isTop && !this.isToTop) {
+          console.log(this.isToTop, isTop, this.isToTop !== this.$route.query.isTop)
           await putNostickApi(this.$route.query.id)
         }
         /* 关注操作 */
@@ -81,9 +82,11 @@ export default {
           await putNoFocusApi(this.$route.query.id)
         }
         /* 修改名字或图片 */
-        if (this.name !== this.$route.query.name || this.headerPhoto !== this.$route.query.coverImg) {}
+        if (this.name !== this.$route.query.name || this.headerPhoto !== this.$route.query.coverImg) {
+          console.log(this.name)
+        }
       } catch (err) {
-        alert(11111111111)
+        alert(err)
       }
       this.$router.push({path: '/workCircle/circleDetail', query: {id: this.$route.query.id}})
     }

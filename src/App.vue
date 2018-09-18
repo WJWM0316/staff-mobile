@@ -1,5 +1,5 @@
 <template>
-  <div id="app-box" v-cloak :class="{'hasTab' : $route.meta.needBottomTab}">
+  <div id="app-box" style="height: 100%" v-cloak :class="{'hasTab' : $route.meta.needBottomTab}">
     <div id="page" @touchmove="touchMove" @touchstart="touchStart" @touchend="touchEnd" :style="{'transform' : `translate3d(0, ${moveY}px, 0)`}">
       <div class="pulldown-tip" ref="pulldownTip" v-show="$route.meta.pullDown">
         <img class="pull-icon" src="@/assets/icon/loading.png" alt="">
@@ -8,7 +8,7 @@
         <router-view v-if="$route.meta.keepAlive"></router-view>
       </keep-alive>
       <router-view v-if="!$route.meta.keepAlive"></router-view>
-      <div class="loading-pos" ref="pullUpTip">
+      <div class="loading-pos" ref="pullUpTip" v-show="$store.getters.loadingStatus">
         <div class="loading-container">
           <img class="loadmore" src="@/assets/icon/loadMore.gif">
         </div>
@@ -191,7 +191,7 @@ export default {
     padding-bottom: 49px;
   }
   #page {
-    min-height: 100vh;
+    height: 100%;
     position: relative;
     .pulldown-tip {
       height: 54px;

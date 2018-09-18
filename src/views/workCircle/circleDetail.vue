@@ -99,6 +99,8 @@ export default {
 
 <style lang="less" scoped>
 .circleDetail{
+  height: 100%;
+  overflow-y: scroll;
   /*文件下载区域*/
   .fileDownload{
     margin-top: 30px;

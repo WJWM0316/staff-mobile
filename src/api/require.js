@@ -14,18 +14,18 @@ let num = 0
 export const request = ({type = 'post', url, data = {}, needLoading = true} = {}) => {
   let datas = type === 'get' ? {params: {...data}} : {...data}
   if (type === 'put') {
-    url = `${url}&token=d4cbea803dc7c65159d90027760828ba`
+    url = `${url}&token=88ed0efff32c7041a8790acd8e44bff5`
   }
   // 开发环境写死账号
   if (process.env.NODE_ENV !== 'production') {
     if (type === 'get') {
       if (url.indexOf('?') !== -1) {
-        url = `${url}&token=d4cbea803dc7c65159d90027760828ba`
+        url = `${url}&token=88ed0efff32c7041a8790acd8e44bff5`
       } else {
-        url = `${url}?token=d4cbea803dc7c65159d90027760828ba`
+        url = `${url}?token=88ed0efff32c7041a8790acd8e44bff5`
       }
     } else {
-      datas.token = 'd4cbea803dc7c65159d90027760828ba'
+      datas.token = '88ed0efff32c7041a8790acd8e44bff5'
     }
   }
   if (needLoading) {

@@ -34,10 +34,10 @@
       <div class="right" v-if="isJoin && !isCircle">
             课程介绍<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
       </div>
-      <div class="right" @click.stop="toSetting" v-if="isCircle && (pageInfo.isAttention || pageInfo.isOwner)">
+      <div class="right" @click.stop="toSetting" v-if="isCircle && ((pageInfo.isMember || pageInfo.isOwner) || (!pageInfo.isMember && pageInfo.isAttention))">
             设置<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
       </div>
-      <div class="focus" v-else>
+      <div class="focus" @click.stop="focus" v-else>
         + 关注
       </div>
     </div>
@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import { putFocusApi } from '@/api/pages/workCircle'
 export default {
   name: 'courseHeader',
   props: {
@@ -75,6 +76,10 @@ export default {
           isAttention: this.pageInfo.isAttention
         }
       })
+    },
+    focus () {
+      console.log(' guanzhu ')
+      putFocusApi(this.pageInfo.id)
     }
   },
   mounted () {
