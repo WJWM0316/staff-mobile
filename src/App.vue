@@ -1,6 +1,6 @@
 <template>
-  <div id="app-box" style="height: 100%" v-cloak :class="{'hasTab' : $route.meta.needBottomTab}">
-    <div id="page" @touchmove="touchMove" @touchstart="touchStart" @touchend="touchEnd" :style="{'transform' : `translate3d(0, ${moveY}px, 0)`}">
+  <div id="app-box" v-cloak :class="{'hasTab' : $route.meta.needBottomTab}">
+    <div id="page" ref="page" @touchmove="touchMove" @touchstart="touchStart" @touchend="touchEnd" :style="{'transform' : `perspective(1px) translate3d(0, ${moveY}px, 0)`}">
       <div class="pulldown-tip" ref="pulldownTip" v-show="$route.meta.pullDown">
         <img class="pull-icon" src="@/assets/icon/loading.png" alt="">
       </div>
@@ -8,12 +8,6 @@
         <router-view v-if="$route.meta.keepAlive"></router-view>
       </keep-alive>
       <router-view v-if="!$route.meta.keepAlive"></router-view>
-      <div class="loading-pos" ref="pullUpTip" v-show="$store.getters.loadingStatus">
-        <div class="loading-container">
-          <img class="loadmore" src="@/assets/icon/loadMore.gif">
-        </div>
-<!--         <p class="loading-connecting" v-else>没有更多数据</p>
- -->      </div>
     </div>
     <tabbar slot="bottom" class="bottomTab"  v-show="$route.meta.needBottomTab" v-model="tabIndex">
       <tabbar-item
@@ -42,7 +36,7 @@
 import { userInfoApi } from '@/api/pages/center'
 import { Tabbar, TabbarItem } from 'vux'
 import { mapState, mapActions } from 'vuex'
-import './util/lib-flexible/flexible'
+import Vue from 'vue'
 export default {
   components: {
     Tabbar,
@@ -80,7 +74,21 @@ export default {
       startY: 0,
       moveY: 0,
       endY: 0,
-      pullDown: false
+      pullDown: false,
+      toast: {
+        show: false,
+        type: 'text',
+        content: '',
+        position: 'bottom'
+      },
+      comfirm: {
+        show: false,
+        title: '',
+        content: '',
+        comfirmTxt: '确定',
+        cancelTxt: '取消',
+        hasCancel: true
+      }
     }
   },
   watch: {
@@ -100,7 +108,6 @@ export default {
   computed: {
     ...mapState({
       userInfo: state => state.global.userInfo,
-      pullUpStatus: state => state.global.pullUpStatus,
       pullDownStatus: state => state.global.pullDownStatus
     })
   },
@@ -108,9 +115,10 @@ export default {
     ...mapActions([
       'updata_userInfo',
       'updata_loadingStatus',
-      'updata_pullUpStatus',
       'updata_pullDownStatus'
     ]),
+    comfirmFun () {}, // comfirm 确定回调
+    cancelFun () {}, // comfirm 取消回调
     selectTab (n) {
       this.tabIndex = n
     },
@@ -128,30 +136,21 @@ export default {
     touchEnd (e) {
       if (this.moveY !== 0 && this.$route.meta.pullDown) {
         this.moveY = e.changedTouches[0].clientY - this.startY
-        if (this.moveY > 60) {
+        if (this.moveY > 120) {
           this.pullDown = true
           this.$nextTick(() => {
             this.moveY = this.$refs.pulldownTip.clientHeight
           })
-          try {
-            this._refresh().then(res => {
-              setTimeout(res0 => {
-                this.moveY = 0
-              }, 500)
-            })
-          } catch (e) {
-            setTimeout(res0 => {
-              this.moveY = 0
-              window.location.reload()
-            }, 500)
-          }
+          setTimeout(res0 => {
+            this.moveY = 0
+            window.location.reload()
+          }, 500)
         } else {
           this.moveY = 0
         }
       }
     },
     _refresh () {}, // 用于页面组件的下拉刷新赋值， 不可删
-    _loadMore () {}, // 用于页面组件的上拉加载赋值， 不可删
     getUserInfo () {
       userInfoApi('', false).then(res => {
         this.updata_userInfo(res.data)
@@ -162,20 +161,11 @@ export default {
     if (!this.userInfo.id) {
       this.getUserInfo()
     }
+    window.onscroll = () => {
+      console.log(111111111)
+    }
   },
   mounted () {
-    let tabHeight = this.$refs.pullUpTip.clientHeight
-    let winHeight = window.screen.height * window.dpr
-    window.onscroll = (e) => {
-      if (window.scrollY >= document.body.clientHeight - winHeight) {
-        if (!this.pullUpStatus) {
-          console.log('测试111')
-          this.updata_pullUpStatus(true)
-          window.scrollTo(0, document.body.clientHeight - winHeight)
-          console.log('加载更多数据')
-        }
-      }
-    }
   }
 }
 </script>
@@ -191,7 +181,7 @@ export default {
     padding-bottom: 49px;
   }
   #page {
-    height: 100%;
+    min-height: 100vh;
     position: relative;
     .pulldown-tip {
       height: 54px;
@@ -209,26 +199,6 @@ export default {
         display: block;
         margin: 0 auto;
         animation: rotate 1s linear infinite;
-      }
-    }
-    .loading-pos {
-      width: 100%;
-      .loading-container {
-        opacity: 1;
-      }
-      .loadmore {
-        padding: 15px 0 30px;
-        width: 34px;
-        height: 12px;
-        display: block;
-        margin: 0 auto;
-      }
-      .loading-connecting {
-        font-size: 28px; /*px*/
-        font-weight: 300;
-        color: #BCBCBC;
-        text-align: center;
-        padding: 5px 0 35px;
       }
     }
   }

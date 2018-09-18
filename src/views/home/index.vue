@@ -1,36 +1,31 @@
 <template>
   <div class="wrap">
     <div>
-      <p v-for="n in list" :key="n" class="txt">{{n}}</p>
+      <p v-for="(n, index) in list" :key="index" class="txt">{{n}}</p>
     </div>
+    <pullUpUi :noData="noData" :pullUpStatus="pullUpStatus" @pullUp="pullUp"></pullUpUi>
   </div>
 </template>
 <script>
 import { userInfoApi } from '@/api/pages/center'
+import pullUpUi from '@c/layout/pullUpUi'
 import { mapState, mapActions } from 'vuex'
 export default {
   components: {
+    pullUpUi
   },
   data () {
     return {
-      list: 50
+      list: 200,
+      noData: false,
+      pullUpStatus: false
     }
   },
   watch: {
-    pullUpStatus (val) {
-      console.log('机制')
-      setTimeout(() => {
-        this.list = this.list + 10
-        this.updata_pullUpStatus(false)
-      }, 2000)
-      // this.getUserInfo().then(res => {
-      // })
-    }
   },
   computed: {
     ...mapState({
       userInfo: state => state.global.userInfo,
-      pullUpStatus: state => state.global.pullUpStatus,
       pullDownStatus: state => state.global.pullDownStatus
     })
   },
@@ -45,6 +40,16 @@ export default {
     },
     getUserInfo () {
       return userInfoApi('', false)
+    },
+    pullUp () {
+      this.pullUpStatus = true
+      setTimeout(() => {
+        this.list = this.list + 10
+        // 判断数组是否为空 为空则 this.noData = true
+        this.getUserInfo().then(res => {
+          this.pullUpStatus = false
+        })
+      }, 1000)
     }
   },
   mounted () {
@@ -56,13 +61,15 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-  @import url("../../styles/mixins.less");
+<style lang="less">
   .wrap {
     font-size: 30px; /*px*/
     width: 100%;
     .txt {
-      font-size: 24px;  /*px*/
+      display: flex;
+      font-size: 24px; /*px*/
+      line-height: 12px;
+      // color: @color;
     }
   }
 </style>

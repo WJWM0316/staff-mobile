@@ -37,6 +37,9 @@ let webpackConfig = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
+      '@s': resolve('src/styles'),
+      '@c': resolve('src/components'),
+      '@u': resolve('src/utils'),
       'STYLE': resolve('src/styles'),
     }
   },
@@ -88,6 +91,16 @@ let webpackConfig = {
       {
         test: /\.scss$/,
         loader: ExtractTextPlugin.extract('style', 'css!sass')
+      },
+      {
+        test: /\.less$/,
+        use: ['style-loader', 'css-loader', 'less-loader', {
+          loader: 'style-resources-loader',
+          options: {
+            patterns: path.resolve(__dirname, 'src/style/mixins.less'),
+            injector: 'append'
+          }
+        }]
       }
     ]
   },

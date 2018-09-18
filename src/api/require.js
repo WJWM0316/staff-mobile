@@ -13,19 +13,16 @@ Vue.axios.defaults.baseURL = settings.host
 let num = 0
 export const request = ({type = 'post', url, data = {}, needLoading = true} = {}) => {
   let datas = type === 'get' ? {params: {...data}} : {...data}
-  if (type === 'put') {
-    url = `${url}&token=88ed0efff32c7041a8790acd8e44bff5`
-  }
   // 开发环境写死账号
   if (process.env.NODE_ENV !== 'production') {
     if (type === 'get') {
       if (url.indexOf('?') !== -1) {
-        url = `${url}&token=88ed0efff32c7041a8790acd8e44bff5`
+        url = `${url}&token=a983b332670b6861fd4f32476f3bee9c`
       } else {
-        url = `${url}?token=88ed0efff32c7041a8790acd8e44bff5`
+        url = `${url}?token=a983b332670b6861fd4f32476f3bee9c`
       }
     } else {
-      datas.token = '88ed0efff32c7041a8790acd8e44bff5'
+      datas.token = 'a983b332670b6861fd4f32476f3bee9c'
     }
   }
   if (needLoading) {

@@ -3,7 +3,7 @@ import Vue from 'vue'
 import router from '@/router/index'
 import './components'
 // import './util/flexible'
-import './util/lib-flexible/flexible'
+import './util/flexible'
 import App from './App'
 import store from './store/'
 
