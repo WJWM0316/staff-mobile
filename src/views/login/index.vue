@@ -13,6 +13,7 @@
 <script>
 import { userInfoApi } from '@/api/pages/center'
 import { loginApi } from '@/api/pages/login'
+import localstorage from '@u/localstorage'
 export default {
   data () {
     return {
@@ -30,8 +31,13 @@ export default {
       }
       loginApi(data).then(res => {
         this.$store.dispatch('updata_userInfo', res.data)
-        this.$showToast('登录成功', () => {
-          this.$router.go(-1)
+        localstorage.set('token', res.data.token)
+        this.$toast({
+          text: '登录成功',
+          type: 'success',
+          callBack: () => {
+            this.$router.go(-1)
+          }
         })
       })
     },

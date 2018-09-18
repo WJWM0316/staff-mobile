@@ -61,7 +61,7 @@ export default {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .wrap {
     font-size: 30px; /*px*/
     width: 100%;
@@ -69,7 +69,6 @@ export default {
       display: flex;
       font-size: 24px; /*px*/
       line-height: 12px;
-      // color: @color;
     }
   }
 </style>

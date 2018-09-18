@@ -2,18 +2,18 @@
   <div ref="wrapper" class="better-scroll-root">  <!--该节点需要定位，内容以此节点的盒模型为基础滚动。另外，该节点的背景色配合上拉加载、下拉刷新的UI，正常情况下不可作它用。-->
     <div class="content-bg better-scroll-container" :style="{background: bgColor}">  <!--如果需要调滚动内容的背景色，则改该节点的背景色-->
       <div class="content-wrap"> <!--不太需要，待优化-->
-        <div class="pulldown-tip" :class="{'showStatus' : pulldownUi}" v-if="pulldown">
+<!--         <div class="pulldown-tip" :class="{'showStatus' : pulldownUi}" v-if="pulldown">
           <img class="pull-icon" src="../../assets/icon/loading.png" alt="">
-        </div>
-        <div class="content" :class="{'pulldownUi' : pulldownUi}">
+        </div> -->
+        <div class="content">
           <slot></slot>
         </div>
-        <div class="loading-pos" v-if="pullup" >
+        <!-- <div class="loading-pos" v-if="pullup" >
           <div class="loading-container" v-if="!noData" :class="{'pullupUi' : pullupUi}">
             <img class="loadmore" src="../../assets/icon/loadMore.gif">
           </div>
           <p class="loading-connecting" v-else>没有更多数据</p>
-        </div>
+        </div> -->
       </div>
     </div>
 </div>

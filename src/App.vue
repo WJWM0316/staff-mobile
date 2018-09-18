@@ -161,9 +161,6 @@ export default {
     if (!this.userInfo.id) {
       this.getUserInfo()
     }
-    window.onscroll = () => {
-      console.log(111111111)
-    }
   },
   mounted () {
   }

@@ -39,13 +39,23 @@ let webpackConfig = {
       '@': resolve('src'),
       '@s': resolve('src/styles'),
       '@c': resolve('src/components'),
-      '@u': resolve('src/utils'),
+      '@u': resolve('src/util'),
       'STYLE': resolve('src/styles'),
     }
   },
   module: {
     rules: [
       ...(config.dev.useEslint ? [createLintingRule()] : []),
+      {
+        test: /\.less$/,
+        use: ['style-loader', 'css-loader', 'less-loader', {
+          loader: 'style-resources-loader',
+          options: {
+            patterns: path.resolve(__dirname, 'src/styles/mixins.less'),
+            injector: 'append'
+          }
+        }]
+      },
       {
         test: /\.vue$/,
         loader: 'vue-loader',
@@ -91,16 +101,6 @@ let webpackConfig = {
       {
         test: /\.scss$/,
         loader: ExtractTextPlugin.extract('style', 'css!sass')
-      },
-      {
-        test: /\.less$/,
-        use: ['style-loader', 'css-loader', 'less-loader', {
-          loader: 'style-resources-loader',
-          options: {
-            patterns: path.resolve(__dirname, 'src/style/mixins.less'),
-            injector: 'append'
-          }
-        }]
       }
     ]
   },
