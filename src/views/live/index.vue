@@ -7,13 +7,30 @@
     </div>
     <div class="main">
       <scroller class="scroll"
+        ref="scroll"
         :pulldown=true
+        :pullup=true
         :listenScroll=true
         :list="list"
-        @pullingDown="loadMore">
-        <div class="btn" @click="closeWs()"></div>
+        downType='loadMore'
+        bgColor = '#F9F9F9'
+        @pullingDown="loadPrev"
+        @pullingUp="loadNext"
+        >
+        <div class="startTime">
+          <span class="txt">7月13日9:30 直播开始</span>
+        </div>
         <p v-for="(n, index) in list" :key="index">{{n}}</p>
+        <div class="endTime">
+          <span class="txt">7月13日9:30 直播介绍</span>
+        </div>
       </scroller>
+    </div>
+    <div class="footer">
+      <div class="txtBar border-1px">
+        <input class="bar" type="text" v-model="problemTxt" placeholder="请输入你的问题">
+      </div>
+      <div class="submit" @click.stop="send(problemTxt)">提问</div>
     </div>
   </div>
 </template>
@@ -56,29 +73,72 @@ export default {
         '测试111',
         '测试111',
         '测试111'
-      ]
+      ],
+      problemTxt: '',
+      resData: {}
     }
   },
   computed: {
     ...mapState({
-      resolveTime: state => state.websocket.resolveTime
+      resolveTime: state => state.websocket.resolveTime,
+      resolveData: state => state.websocket.resolveData
     })
   },
   watch: {
     resolveTime (val) {
       console.log(val)
+    },
+    resolveData (val) {
+      console.log(val)
     }
   },
   methods: {
-    loadMore () {
-      this.list = this.list.concat([
-        '测试22222',
-        '测试4444',
-        '测试777',
-        '测试122',
-        '测试122',
-        '测试42'
-      ])
+    loadPrev () {
+      setTimeout(() => {
+        this.$refs.scroll.pulldownUi = false
+        let data = [
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111'
+        ]
+        this.list = data.concat(this.list)
+      }, 2000)
+    },
+    loadNext () {
+      setTimeout(() => {
+        this.$refs.scroll.pullupUi = false
+        this.list = this.list.concat([
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111',
+          '11111111111111111111111111111'
+        ])
+      }, 2000)
+    },
+    send (data) {
+      ws.send(data)
     },
     closeWs () {
       ws.close()
@@ -86,6 +146,11 @@ export default {
   },
   mounted () {
     ws.create('ws://work-api.xplus.ziwork.com/tiger')
+    let resolveFun = (e) => {
+      console.log(e.detail, 1)
+    }
+    window.removeEventListener('wsOnMessage', resolveFun)
+    window.addEventListener('wsOnMessage', resolveFun)
   }
 }
 </script>
@@ -93,6 +158,7 @@ export default {
   .wrap {
     width: 100%;
     height: 100vh;
+    position: relative;
     .header {
       height: 52px;
       width: 100%;
@@ -127,11 +193,6 @@ export default {
         right: 12px;
       }
     }
-    .btn {
-      width: 50px;
-      height: 50px;
-      background: #000;
-    }
     .main {
       width: 100%;
       height: 100vh;
@@ -140,6 +201,55 @@ export default {
       margin-top: -52px;
       .scroll {
         height: 100%;
+        width: 100%;
+        background: #F9F9F9;
+        .startTime, .endTime {
+          padding: 20px 0 30px;
+          text-align: center;
+          .txt {
+            padding: 3px 20px;
+            color: #929292;
+            font-size: 24px; /*px*/
+            line-height: 16px;
+            font-weight: 400;
+            background: #EDEDED;
+            border-radius: 14px;
+          }
+        }
+      }
+    }
+    .footer {
+      width: 100%;
+      height: 52px;
+      padding: 6px 0 6px 10px;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      .txtBar {
+        height: 40px;
+        border-radius: 50px; /*px*/
+        background: #F8F8F8;
+        flex: 1;
+        overflow: hidden;
+        &.border-1px::after {
+          border-color: rgba(237,237,237,1);
+        }
+        .txtBar {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+      }
+      .submit {
+        font-size: 30px; /*px*/
+        line-height: 20px;
+        font-weight: 500;
+        color: #D7AB70;
+        padding: 0 17px 0 15px;
       }
     }
   }

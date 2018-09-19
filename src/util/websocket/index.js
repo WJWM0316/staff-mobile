@@ -4,6 +4,7 @@ import store from '@/store/index.js'
 
 class WS {
   ws = null
+  url = ''
   isLogin = false
   keepAliveTimer = null // 心跳定时器
   reconnectMark = false // 是否重连过
@@ -17,9 +18,9 @@ class WS {
       // 重新初始化
       this.ws = null // 垃圾回收释放缓存
       this.keepAliveTimer = null
-      this.reconnectMark = false
       this.lastTealthTime = 0
       this.ws = new WebSocket(url)
+      this.url = url
       let ws = this.ws
       // 握手
       ws.onopen = () => {
@@ -30,7 +31,7 @@ class WS {
           clearInterval(this.keepAliveTimer)
           this.keepAliveTimer = setInterval(() => { // 开启心跳检查
             this.checkConnect()
-          }, 5000)
+          }, 3000)
         }
         // 30s没收到信息，代表服务器出问题了，关闭连接。如果收到消息了，重置该定时器。
         clearTimeout(this.receiveMessageTimer)
@@ -41,7 +42,11 @@ class WS {
       // 接收信息
       ws.onmessage = (evt) => {
         // evt.data如果等于a为心跳检测值，不需要转化成json格式
-        let data = evt.data.cmd ? JSON.parse(evt.data) : evt.data
+        let data = evt.data !== 'a' ? JSON.parse(evt.data) : evt.data
+        if (data) {
+          var event = new CustomEvent('wsOnMessage', {detail: data})
+          window.dispatchEvent(event)
+        }
         // 判断登录状态
         if (data.cmd === 'login.token') {
           console.log('======WebSocket======' + data.msg)
@@ -52,12 +57,14 @@ class WS {
             router.push('/login')
           }
         }
-        // 不是心跳返回的数据, 存储起来
-        // if (evt.data.cmd && evt.data.cmd !== 'login.token') {
-        let time = new Date().getTime()
-        store.dispatch('updata_resolveTime', time)
-        store.dispatch('updata_resolveData', data.data)
-        // }
+        // 不是心跳返回的数据和登录的返回的数据, 存储起来
+        if (data.cmd === 'msg.push') {
+          let time = new Date().getTime()
+          store.dispatch('updata_resolveTime', time)
+          let lastData = store.getters.resolveData
+          let dataList = lastData.push(data.data)
+          store.dispatch('updata_resolveData', dataList)
+        }
         // 收到消息，重置定时器, 因为已开启心跳检查，每秒都有发送
         clearTimeout(this.receiveMessageTimer)
         this.receiveMessageTimer = setTimeout(() => {
@@ -67,24 +74,13 @@ class WS {
       // 关闭监听
       ws.onclose = (e) => {
         console.log('======WebSocket连接已关闭======')
-        clearInterval(this.keepAliveTimer)
-        clearTimeout(this.receiveMessageTimer)
-        if (!this.reconnectMark) { // 如果没有重连过，进行重连。
-          this.closeTime = new Date().getTime()
-          this.reconnectMark = true
-        }
-        if (new Date().getTime() - this.closeTime >= 10000) { // 10秒中重连，连不上就不连了
-          this.close()
-        } else {
-          this.create(url) // 断线重连
-        }
+        this.reConnect()
       }
       // 错误监听
       ws.onerror = (e) => {
-        clearInterval(this.keepAliveTimer)
         console.log('======WebSocket连接失败======')
-        this.create(url) // 断线重连
       }
+      // 断网检查
       this.keepalive()
     } else {
       alert('您的浏览器不支持 WebSocket，请更换浏览器')
@@ -101,11 +97,17 @@ class WS {
   }
   // 发送消息
   send = (data) => {
-    this.ws.send(JSON.stringify(data))
+    if (this.ws.readyState === 1) {
+      this.ws.send(JSON.stringify(data))
+    }
   }
   // 接收数据
   resolve = (data) => {
-    console.log(data)
+    this.ws.onmessage = (evt) => {
+      console.log(evt.data)
+      data = evt.data
+    }
+    return data
   }
   // 关闭websocket
   close = () => {
@@ -126,6 +128,21 @@ class WS {
       if (this.ws.bufferedAmount === 0 && this.ws.readyState === 1) {
         this.lastTealthTime = time
       }
+    }
+  }
+  // 断线重连
+  reConnect = () => {
+    clearInterval(this.keepAliveTimer)
+    clearTimeout(this.receiveMessageTimer)
+    if (!this.reconnectMark) { // 如果没有重连过，进行重连。
+      this.closeTime = new Date().getTime()
+      this.reconnectMark = true
+    }
+    if (new Date().getTime() - this.closeTime >= 10000) { // 10秒中重连，连不上就不连了
+      console.log('======websocket重连不上，自动关闭')
+      this.close()
+    } else {
+      this.create(this.url) // 断线重连
     }
   }
 }
