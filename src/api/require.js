@@ -13,6 +13,9 @@ Vue.axios.defaults.baseURL = settings.host
 let num = 0
 export const request = ({type = 'post', url, data = {}, needLoading = true} = {}) => {
   let datas = type === 'get' ? {params: {...data}} : {...data}
+  if (type === 'put') {
+    url = `${url}&token=${localstorage.get('token')}`
+  }
   // 开发环境写死账号
   if (process.env.NODE_ENV !== 'production' && localstorage.get('token')) {
     if (type === 'get') {

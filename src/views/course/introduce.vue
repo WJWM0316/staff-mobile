@@ -1,6 +1,6 @@
 <template>
   <div class="introduce">
-    <top-header :isCircle="false" :isJoin="false"></top-header>
+    <!--<top-header :pageInfo="pageInfo" :isCircle="false" :isJoin="false"></top-header>-->
     <div class="richText">
       <div class="title">关于文本</div>
       <div class="content">这里是富文本</div>
@@ -37,6 +37,7 @@ export default {
 
 <style lang="less" scoped>
   .introduce{
+    height: 100vh;
     .richText{
       margin-top: 50px;
       .title{

@@ -3,10 +3,15 @@
 	  <div class="classify">
       <span v-for="(item,index) in tabList" :key="index" :class="{ isFocusClassify:showBorder === item }" @click="cutoverTab(item)">{{item}}</span>
     </div>
+    <div class="content">
+      <template v-for="(item, index) in circleList">
+        <info-card :item="item" :showIntroduction="false" :origin="false" :key="index"></info-card>
+      </template>
+    </div>
+	  <!--<info-card></info-card>
 	  <info-card></info-card>
 	  <info-card></info-card>
-	  <info-card></info-card>
-	  <info-card></info-card>
+	  <info-card></info-card>-->
 	</div>
 </template>
 
@@ -66,7 +71,8 @@ export default {
     return {
       data: 1,
       tabList: ['全部', '设计组', '技术组', '市场组', '运营组', '校园组', '人力资源组', '财务组'],
-      showBorder: '全部'
+      showBorder: '全部',
+      circleList: []
     }
   },
   created () {

@@ -22,14 +22,20 @@
     <!--图片-->
     <div class="images" v-if="fileType === 0">
       <div class="item" v-for="(item, index) in images" :key="index">
-        <img class="image" :src="item.id" />
+        <img class="image" :src="item" />
         <button type="button" class="close u-btn" @click="handleDeleteImage(index, item)"><i class="u-icon-delete-image"></i></button>
       </div>
-      <a href="#" class="add item" v-if="images.length < lengths.imageMax" @click.prevent.stop="handleAdd"><i class="u-icon-plus"></i></a>
+      <input  @click.stop="showimg" type="file" accept="image/*" webkitdirectory>
+      <!--<a href="#" class="add item" v-if="images.length < lengths.imageMax" @click.prevent.stop="handleAdd"><i class="u-icon-plus"></i></a>-->
     </div>
     <!--视频-->
-    <div class="video" v-if="fileType === 1" @click.stop="showimg">
-      <input id="image" type="file" accept="image/*" >
+    <div class="video" v-if="fileType === 1">
+      <input @click.stop="showimg" type="file" id="image" accept="video/*" capture="camcorder" multiple>
+      <video width="320" height="240" controls v-if="movie">
+        <source :src="movie" type="video/mp4">
+        <source :src="movie" type="video/ogg">
+        您的浏览器不支持 HTML5 video 标签。
+      </video>
     </div>
     <div class="btn-container">
       <button type="button" class="u-btn-publish" :disabled="false" @click="handleSubmit">发布</button>
@@ -54,7 +60,8 @@ export default {
       lengths: {
         textMax: 1000, // 文本最大字数
         imageMax: 20 // 图片最大张数
-      }
+      },
+      movie: ''
     }
   },
   methods: {
@@ -80,6 +87,29 @@ export default {
     video () {
       this.isChoose = false
       this.fileType = 1
+    },
+    showimg () {
+      let that = this
+      document.getElementById('image').addEventListener('change', function (e) {
+        var reader = new FileReader()
+        reader.onload = function () {
+          let b = that.dataURLtoFile(this.result)
+          that.movie = this.result
+          console.log(this.result)
+        }
+      })
+    },
+    // 将base64转换为文件
+    dataURLtoFile (dataurl, filename) {
+      let arr = dataurl.split(',')
+      let mime = arr[0].match(/:(.*?);/)[1]
+      let bstr = atob(arr[1])
+      let n = bstr.length
+      let u8arr = new Uint8Array(n)
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n)
+      }
+      return new File([u8arr], filename, {type: mime})
     }
   }
 }
