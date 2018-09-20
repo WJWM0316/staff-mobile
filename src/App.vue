@@ -1,6 +1,6 @@
 <template>
   <div id="app-box" v-cloak :class="{'hasTab' : $route.meta.needBottomTab}">
-    <div id="page" ref="page" @touchmove="touchMove" @touchstart="touchStart" @touchend="touchEnd" :style="{'transform' : `perspective(1px) translate3d(0, ${moveY}px, 0)`}">
+    <div id="page" ref="page" @touchmove="touchMove" @touchstart="touchStart" @touchend="touchEnd" :style="scrollY">
       <div class="pulldown-tip" ref="pulldownTip" v-show="$route.meta.pullDown">
         <img class="pull-icon" src="@/assets/icon/loading.png" alt="">
       </div>
@@ -109,7 +109,14 @@ export default {
     ...mapState({
       userInfo: state => state.global.userInfo,
       pullDownStatus: state => state.global.pullDownStatus
-    })
+    }),
+    scrollY () {
+      if (this.moveY !== 0 && this.$route.meta.pullDown) {
+        return {
+          transform: `perspective(1px) translate3d(0, ${this.moveY}px, 0)`
+        }
+      }
+    }
   },
   methods: {
     ...mapActions([
@@ -163,6 +170,7 @@ export default {
     }
   },
   mounted () {
+    console.log(this.scrollY)
   }
 }
 </script>
