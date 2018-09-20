@@ -37,12 +37,25 @@ let webpackConfig = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
+      '@s': resolve('src/styles'),
+      '@c': resolve('src/components'),
+      '@u': resolve('src/util'),
       'STYLE': resolve('src/styles'),
     }
   },
   module: {
     rules: [
       ...(config.dev.useEslint ? [createLintingRule()] : []),
+      {
+        test: /\.less$/,
+        use: ['style-loader', 'css-loader', 'less-loader', {
+          loader: 'style-resources-loader',
+          options: {
+            patterns: path.resolve(__dirname, 'src/styles/mixins.less'),
+            injector: 'append'
+          }
+        }]
+      },
       {
         test: /\.vue$/,
         loader: 'vue-loader',

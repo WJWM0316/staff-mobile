@@ -7,13 +7,7 @@ Vue.use(WechatPlugin)
 Vue.use(ConfirmPlugin)
 
 
-Vue.prototype.$toast = function (text, position) {
-  this.$vux.toast.text(text, position)
-}
-
-
-// 带type的中间Toast
-Vue.prototype.$showToast = function (text, callBack, type = 'success') {
+Vue.prototype.$toast = function ({text, position = 'bottom', type = 'text', callBack}) {
   this.$vux.toast.show({
     isShowMask: true,
     text: text,
@@ -28,7 +22,7 @@ Vue.prototype.$showToast = function (text, callBack, type = 'success') {
 }
 
 // confirm
-Vue.prototype.$confirm = function (title, content, confirmBack, cancelBack, cancelText = '取消', confirmText = '确定') {
+Vue.prototype.$confirm = function ({title, content, confirmBack, cancelBack, cancelText = '取消', confirmText = '确定'}) {
   this.$vux.confirm.show({
     title: title,
     content: content,
@@ -44,7 +38,7 @@ Vue.prototype.$confirm = function (title, content, confirmBack, cancelBack, canc
 }
 
 // alert
-Vue.prototype.$alert = function (title, content, confirmBack, confirmText = '确定') {
+Vue.prototype.$alert = function ({title, content, confirmBack, confirmText = '确定'}) {
   this.$vux.alert.show({
     title: title,
     content: content,
