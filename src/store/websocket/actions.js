@@ -21,5 +21,12 @@ export default {
       commit(types.RESOLVEDATA, data)
       resolve()
     })
+  },
+  // 更新ws状态
+  updata_wsStatus: ({commit}, data) => {
+    return new Promise((resolve, reject) => {
+      commit(types.WSSTATUS, data)
+      resolve()
+    })
   }
 }

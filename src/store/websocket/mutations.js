@@ -9,5 +9,8 @@ export default {
   },
   [types.RESOLVEDATA] (state, data) {
     state.resolveData = data
+  },
+  [types.WSSTATUS] (state, data) {
+    state.wsStatus = data
   }
 }

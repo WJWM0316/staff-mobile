@@ -11,6 +11,7 @@ class WS {
   receiveMessageTimer = null // 接收定时器
   closeTime = 0 // ws断开的时间
   lastTealthTime = 0 // 上一次心跳发送的时间
+  event = null // 自定义事件
   // 创建一个websocket
   create = (url) => {
     // 判断浏览器是否支持webSocket, 不支持直接alert提示
@@ -44,14 +45,15 @@ class WS {
         // evt.data如果等于a为心跳检测值，不需要转化成json格式
         let data = evt.data !== 'a' ? JSON.parse(evt.data) : evt.data
         if (data) {
-          var event = new CustomEvent('wsOnMessage', {detail: data})
-          window.dispatchEvent(event)
+          this.event = new CustomEvent('wsOnMessage', {detail: data})
+          window.dispatchEvent(this.event)
         }
         // 判断登录状态
         if (data.cmd === 'login.token') {
           console.log('======WebSocket======' + data.msg)
           if (data.code === 200) {
             this.isLogin = true
+            store.dispatch('updata_wsStatus', 1)
           } else if (data.code === 401) { // 登录失败重新登录
             this.isLogin = false
             router.push('/login')
@@ -80,8 +82,6 @@ class WS {
       ws.onerror = (e) => {
         console.log('======WebSocket连接失败======')
       }
-      // 断网检查
-      this.keepalive()
     } else {
       alert('您的浏览器不支持 WebSocket，请更换浏览器')
     }
@@ -115,6 +115,8 @@ class WS {
   }
   // 用于心跳包检测websocket
   checkConnect = () => {
+    // 断网检查
+    this.keepalive()
     this.send('q')
     this.lastTealthTime = new Date().getTime()
   }
@@ -140,8 +142,10 @@ class WS {
     }
     if (new Date().getTime() - this.closeTime >= 10000) { // 10秒中重连，连不上就不连了
       console.log('======websocket重连不上，自动关闭')
+      store.dispatch('updata_wsStatus', 2)
       this.close()
     } else {
+      store.dispatch('updata_wsStatus', 0)
       this.create(this.url) // 断线重连
     }
   }

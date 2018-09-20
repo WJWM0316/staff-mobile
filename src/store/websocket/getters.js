@@ -7,5 +7,8 @@ export default {
   },
   resolveData: function (state) {
     return state.resolveData
+  },
+  wsStatus: function (state) {
+    return state.wsStatus
   }
 }

@@ -2,8 +2,21 @@
   <div class='wrap'>
     <div class='header'>
       <p class='title'>教你如何高效记单词</p>
-      <p class='msg'><span class='status'>直播进行中</span><span class='num'>1人参与</span></p>
-      <div class='more'>更多介绍</div>
+      <p class='msg'>
+        <span class='status green' v-show="wsStatus === 1">直播进行中</span>
+        <span class='status red'  v-show="wsStatus === 0">直播连接中</span>
+        <span class='status red'  v-show="wsStatus === 2">直播未连接</span>
+        <span class='num'>1人参与</span>
+      </p>
+      <div class='more'>
+        <span>更多介绍</span>
+        <i class="icon iconfont icon-list_live_icon_more"></i>
+      </div>
+    </div>
+    <div class="failShow" v-show="wsStatus === 2" @click.stop="creatWs">
+      <i class="icon iconfont icon-live_icon_question"></i>
+      <div class="txt">连接服务器失败，点击重新连接</div>
+      <i class="icon iconfont icon-list_live_icon_more"></i>
     </div>
     <div class="main">
       <scroller class="scroll"
@@ -20,7 +33,9 @@
         <div class="startTime">
           <span class="txt">7月13日9:30 直播开始</span>
         </div>
-        <p v-for="(n, index) in list" :key="index">{{n}}</p>
+        <div class="message">
+          <live-message></live-message>
+        </div>
         <div class="endTime">
           <span class="txt">7月13日9:30 直播介绍</span>
         </div>
@@ -32,26 +47,24 @@
       </div>
       <div class="submit" @click.stop="send(problemTxt)">提问</div>
     </div>
+    <div class="testBtn" @click="closeWs">断线测试</div>
   </div>
 </template>
 <script>
 import scroller from '@c/layout/scroller'
 import localstorage from '@u/localstorage'
 import ws from '@u/websocket'
+import liveMessage from '@c/business/liveMessage'
 import { mapState } from 'vuex'
+let resolveFun = null
 export default {
   components: {
-    scroller
+    scroller,
+    liveMessage
   },
   data () {
     return {
       list: [
-        '测试111',
-        '测试111',
-        '测试111',
-        '测试111',
-        '测试111',
-        '测试111',
         '测试111',
         '测试111',
         '测试111',
@@ -80,11 +93,13 @@ export default {
   },
   computed: {
     ...mapState({
+      wsStatus: state => state.websocket.wsStatus,
       resolveTime: state => state.websocket.resolveTime,
       resolveData: state => state.websocket.resolveData
     })
   },
   watch: {
+    wsStatus () {},
     resolveTime (val) {
       console.log(val)
     },
@@ -142,19 +157,37 @@ export default {
     },
     closeWs () {
       ws.close()
+    },
+    creatWs () {
+      ws.create('ws://work-api.xplus.ziwork.com/tiger')
     }
   },
   mounted () {
     ws.create('ws://work-api.xplus.ziwork.com/tiger')
-    let resolveFun = (e) => {
-      console.log(e.detail, 1)
+    resolveFun = (e) => {
+      console.log(e.detail)
     }
-    window.removeEventListener('wsOnMessage', resolveFun)
     window.addEventListener('wsOnMessage', resolveFun)
+  },
+  beforeDestroy () {
+    window.removeEventListener('wsOnMessage', resolveFun)
   }
 }
 </script>
 <style lang='less' scoped>
+  .testBtn {
+    color: #fff;
+    font-size: 14px;
+    border: 1px solid #000;
+    padding: 5px;
+    position: fixed;
+    top: 30%;
+    left: 40%;
+    background: red;
+  }
+  ::-webkit-input-placeholder {
+    color: #000;
+  }
   .wrap {
     width: 100%;
     height: 100vh;
@@ -181,6 +214,30 @@ export default {
         color: #929292;
         .status {
           margin-right: 10px;
+          margin-bottom: 2px;
+          position: relative;
+          &.green::before {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #0FD685;
+            content: '';
+            position: absolute;
+            top: 50%;
+            margin-top: -1px;
+            left: -10px;
+          }
+          &.red::before {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #FF3434;
+            content: '';
+            position: absolute;
+            top: 50%;
+            margin-top: -1px;
+            left: -10px;
+          }
         }
       }
       .more {
@@ -191,6 +248,38 @@ export default {
         position: absolute;
         top: 18px;
         right: 12px;
+        .icon-list_live_icon_more {
+          font-size: 22px; /*px*/
+          color: rgba(220, 220, 220, 1);
+        }
+      }
+    }
+    .failShow {
+      width: 100%;
+      height: 40px;
+      position: fixed;
+      top: 52px;
+      left: 0;
+      background: #FFF2F2;
+      color: #FF3434;
+      font-size: 28px; /*px*/
+      font-weight: 400;
+      padding: 0 14px 0 18px;
+      z-index: 1;
+      line-height: 40px;
+      box-sizing: border-box;
+      overflow: hidden;
+      .txt {
+        float: left;
+      }
+      .icon-live_icon_question {
+        font-size: 40px; /*px*/
+        margin-right: 14px;
+        float: left;
+      }
+      .icon-list_live_icon_more {
+        font-size: 24px; /*px*/
+        float: right;
       }
     }
     .main {
@@ -238,10 +327,11 @@ export default {
         &.border-1px::after {
           border-color: rgba(237,237,237,1);
         }
-        .txtBar {
+        .bar {
           width: 100%;
           height: 100%;
           display: block;
+          color: #354048;
         }
       }
       .submit {
