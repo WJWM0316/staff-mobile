@@ -1,7 +1,6 @@
 import router from '@/router/index.js'
 import localstorage from '@u/localstorage'
 import store from '@/store/index.js'
-
 class WS {
   ws = null
   url = ''
@@ -34,20 +33,16 @@ class WS {
             this.checkConnect()
           }, 3000)
         }
-        // 30s没收到信息，代表服务器出问题了，关闭连接。如果收到消息了，重置该定时器。
-        clearTimeout(this.receiveMessageTimer)
-        this.receiveMessageTimer = setTimeout(() => {
-          this.close()
-        }, 30000)
+        // 一分钟没收到信息，代表服务器出问题了，关闭连接。如果收到消息了，重置该定时器。
+        this.checkResolve()
       }
       // 接收信息
       ws.onmessage = (evt) => {
         // evt.data如果等于a为心跳检测值，不需要转化成json格式
         let data = evt.data !== 'a' ? JSON.parse(evt.data) : evt.data
-        if (data) {
-          this.event = new CustomEvent('wsOnMessage', {detail: data})
-          window.dispatchEvent(this.event)
-        }
+        // 自定义一个接收监听事件，暴露出去接收信息
+        this.event = new CustomEvent('wsOnMessage', {detail: data})
+        window.dispatchEvent(this.event)
         // 判断登录状态
         if (data.cmd === 'login.token') {
           console.log('======WebSocket======' + data.msg)
@@ -63,15 +58,11 @@ class WS {
         if (data.cmd === 'msg.push') {
           let time = new Date().getTime()
           store.dispatch('updata_resolveTime', time)
-          let lastData = store.getters.resolveData
-          let dataList = lastData.push(data.data)
-          store.dispatch('updata_resolveData', dataList)
         }
         // 收到消息，重置定时器, 因为已开启心跳检查，每秒都有发送
-        clearTimeout(this.receiveMessageTimer)
-        this.receiveMessageTimer = setTimeout(() => {
-          this.close()
-        }, 30000)
+        this.checkResolve()
+        // 重置心跳检查定时器
+        this.checkConnect()
       }
       // 关闭监听
       ws.onclose = (e) => {
@@ -115,10 +106,22 @@ class WS {
   }
   // 用于心跳包检测websocket
   checkConnect = () => {
-    // 断网检查
-    this.keepalive()
-    this.send('q')
-    this.lastTealthTime = new Date().getTime()
+    setTimeout(() => {
+      clearInterval(this.keepAliveTimer)
+      this.keepAliveTimer = setInterval(() => { // 开启心跳检查
+        // 断网检查
+        this.keepalive()
+        this.send('q')
+        this.lastTealthTime = new Date().getTime()
+      }, 3000)
+    }, 5000)
+  }
+  // 一分钟没有收到信息，说明已经死了，关闭连接
+  checkResolve = () => {
+    clearTimeout(this.receiveMessageTimer)
+    this.receiveMessageTimer = setTimeout(() => {
+      this.close()
+    }, 60000)
   }
   // 补充断网情况下，send发不出去的处理逻辑
   keepalive = () => {
