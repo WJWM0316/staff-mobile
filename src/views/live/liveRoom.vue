@@ -225,49 +225,6 @@ export default {
     //   this.send(messageList[0])
     //   num++
     // }, 3000)
-
-    this.list = [
-      {
-        messageId: 0,
-        type: 'audio',
-        avatar: 'https://cdnstatic.ziwork.com/Uploads/Picture/Company/CgYXBlXcP3KAV3sVAABgX6zFmbs348.png',
-        path: 'https://cdnstatic.ziwork.com/test/audio/2018-06-12/42e1cb3e80df6da33aaee09e266c513d.mp3',
-        duration: '12',
-        username: '测试测试测试'
-      },
-      {
-        messageId: 1,
-        type: 'text',
-        avatar: 'https://cdnstatic.ziwork.com/Uploads/Picture/Company/CgYXBlXcP3KAV3sVAABgX6zFmbs348.png',
-        duration: '12',
-        content: '测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊',
-        username: '测试测试测试'
-      },
-      {
-        messageId: 2,
-        type: 'text',
-        avatar: 'https://cdnstatic.ziwork.com/Uploads/Picture/Company/CgYXBlXcP3KAV3sVAABgX6zFmbs348.png',
-        duration: '12',
-        content: '测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊',
-        username: '测试测试测试'
-      },
-      {
-        messageId: 3,
-        type: 'audio',
-        avatar: 'https://cdnstatic.ziwork.com/Uploads/Picture/Company/CgYXBlXcP3KAV3sVAABgX6zFmbs348.png',
-        path: 'https://cdnstatic.ziwork.com/test/audio/2018-06-12/42e1cb3e80df6da33aaee09e266c513d.mp3',
-        duration: '12',
-        username: '测试测试测试'
-      },
-      {
-        messageId: 2,
-        type: 'text',
-        avatar: 'https://cdnstatic.ziwork.com/Uploads/Picture/Company/CgYXBlXcP3KAV3sVAABgX6zFmbs348.png',
-        duration: '12',
-        content: '测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊测试数据啊',
-        username: '测试测试测试'
-      }
-    ]
   },
   beforeDestroy () {
     window.removeEventListener('wsOnMessage', onMessage)
