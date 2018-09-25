@@ -3,10 +3,10 @@
     <top-header :pageInfo="pageInfo" :isCircle="false" :isJoin="false"></top-header>
     <div class="richText">
       <div class="title">关于文本</div>
-      <div class="content">这里是富文本</div>
+      <div class="content" v-html="pageInfo.intro"></div>
     </div>
-    <div class="bottomBtn" v-show="!isCourseIntroduce">
-      <div class="join" @click.stop="joinCourse" v-if="!isEnd">立即学习</div>
+    <div class="bottomBtn" v-if="!isCourseIntroduce && !pageInfo.isMaster && pageInfo.userRole.isJoin === 0">
+      <div class="join" @click.stop="joinCourse" v-if="pageInfo.status === '上线'">立即学习</div>
       <div class="end" v-else>课程已下线，无法加入学习</div>
     </div>
   </div>
@@ -14,7 +14,7 @@
 
 <script>
 import topHeader from '@/components/courseHeader/courseHeader'
-import { getCircleDetailApi } from '@/api/pages/workCircle'
+import { courseInfoApi, getCourseJoinApi } from '@/api/pages/course'
 export default {
   name: 'courseIntroduce',
   components: {
@@ -23,29 +23,39 @@ export default {
   data () {
     return {
       isEnd: false,
-      isCourseIntroduce: false,
-      pageInfo: {}
+      isCourseIntroduce: false, // 是否介绍页
+      pageInfo: {
+        userRole: {}
+      }
     }
   },
   methods: {
     /* 加入课程 */
     joinCourse () {
       console.log(' 加入课程 ')
-      this.$router.push('/course/community')
+      getCourseJoinApi({id: this.$route.query.id}).then(() => {
+        this.$router.push({path: '/course/community', query: {id: this.pageInfo.id}})
+      }).catch(res => {
+        console.log(res)
+      })
     },
     /* 初始化方法 */
     async init (id) {
-      let res = await this.getgetCircleDetail(id)
+      let res = await this.getcourseDetail(id)
       this.pageInfo = res.data
     },
-    /* ------------------ */
-    getgetCircleDetail (id) {
-      return getCircleDetailApi(id)
+    /* 课程详情接口 */
+    getcourseDetail (id) {
+      return courseInfoApi(id)
     }
   },
-  created () {
-    const { id } = this.$route.query
-    this.init(26)
+  async created () {
+    const { id, isCourseIntroduce } = this.$route.query
+    this.isCourseIntroduce = isCourseIntroduce || false
+    await this.init({id: id})
+    if (!this.$route.query.isCourseIntroduce && (this.pageInfo.userRole.isJoin === 1 || this.pageInfo.isMaster)) {
+      this.$router.push({path: '/course/community', query: {id: this.pageInfo.id}})
+    }
   }
 }
 </script>

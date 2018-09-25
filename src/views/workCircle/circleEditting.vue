@@ -6,15 +6,21 @@
       <p class="addon" :class="{ 'z-active': form.content.length > 0 }"><span class="current">{{form.content.length}}</span>/{{lengths.textMax}}</p>
     </div>
     <div class="select-box" v-show="isChoose">
+      <!--选择图片-->
       <div class="takePhoto" @click.stop="photo">
+        <input id="photo" type="file" accept="image/*" capture="camera" multiple>
         <img class="icon" src="@/assets/icon/btn_pic@3x.png" alt="" />
       </div>
+      <!--选择视频-->
       <div class="audio" @click.stop="video">
+        <input id="video" type="file" accept="video/*" capture="camcorder" multiple>
         <img class="icon" src="@/assets/icon/btn_video@3x.png"/>
       </div>
+      <!--选择文件-->
       <div class="file" @click.stop="file">
         <img class="icon" src="@/assets/icon/btn_doc@3x.png"/>
       </div>
+      <!--选择链接-->
       <div class="link" @click.stop="link">
         <img class="icon" src="@/assets/icon/btn_link@3x.png"/>
       </div>
@@ -23,17 +29,17 @@
     <div class="images" v-if="fileType === 0">
       <div class="item" v-for="(item, index) in images" :key="index">
         <img class="image" :src="item" />
-        <button type="button" class="close u-btn" @click="handleDeleteImage(index, item)"><i class="u-icon-delete-image"></i></button>
+        <div class="close" @click="handleDeleteImage(index, item)"><i class="icon iconfont icon-live_btn_close"></i></div>
+        <!--<button type="button" class="close u-btn" @click="handleDeleteImage(index, item)"><i class="u-icon-delete-image"></i></button>-->
       </div>
-      <input  @click.stop="showimg" type="file" accept="image/*" webkitdirectory>
+      <input id="image"  @click.stop="showimg" type="file" accept="image/*">
       <!--<a href="#" class="add item" v-if="images.length < lengths.imageMax" @click.prevent.stop="handleAdd"><i class="u-icon-plus"></i></a>-->
     </div>
     <!--视频-->
     <div class="video" v-if="fileType === 1">
-      <input @click.stop="showimg" type="file" id="image" accept="video/*" capture="camcorder" multiple>
-      <video width="320" height="240" controls v-if="movie">
+      <div class="delBtn" @click="del"><i class="icon iconfont icon-live_btn_close"></i></div>
+      <video width="416" height="234" controls v-if="movie">
         <source :src="movie" type="video/mp4">
-        <source :src="movie" type="video/ogg">
         您的浏览器不支持 HTML5 video 标签。
       </video>
     </div>
@@ -55,13 +61,13 @@ export default {
       },
       isChoose: true,
       fileType: '', // 0:图片，1：视频，2：文件，3：链接
-      images: [],
+      images: [], // 上传的是图片
       // 文本长度
       lengths: {
         textMax: 1000, // 文本最大字数
         imageMax: 20 // 图片最大张数
       },
-      movie: ''
+      movie: '' // 上传的视频
     }
   },
   methods: {
@@ -70,7 +76,7 @@ export default {
      */
     handleSubmit (e) {
       const self = this
-      console.log(this.$refs['image'].files[0])
+      console.log(this.fileType)
       this.$vux.confirm.show({
         content: '确定要发布？',
         onConfirm () {
@@ -80,21 +86,61 @@ export default {
     },
     /* 选择图片 */
     photo () {
-      this.isChoose = false
-      this.fileType = 0
       console.log(' 拍照 ')
+      let that = this
+      document.getElementById('photo').addEventListener('change', function (e) {
+        let reader = new FileReader()
+        reader.readAsDataURL(this.files[0])
+        reader.onload = function () {
+          let b = that.dataURLtoFile(this.result)
+          that.images.push(this.result)
+          console.log(b)
+          that.isChoose = false
+          that.fileType = 0
+        }
+      })
     },
+    /**
+     * 删除图片
+     */
+    handleDeleteImage (index, image) {
+      this.images.splice(index, 1)
+      console.log(this.images)
+    },
+    /* 上传视频 */
     video () {
-      this.isChoose = false
-      this.fileType = 1
+      let that = this
+      document.getElementById('video').addEventListener('change', function (e) {
+        let reader = new FileReader()
+        reader.readAsDataURL(this.files[0])
+        reader.onload = function () {
+          console.log(' 666666666666666 ')
+          let b = that.dataURLtoFile(this.result)
+          that.movie = this.result
+          console.log(b)
+          that.isChoose = false
+          that.fileType = 1
+        }
+      })
+    },
+    del () {
+      console.log(' 删除 ')
+      this.movie = ''
+      this.isChoose = true
+      this.fileType = ''
     },
     showimg () {
       let that = this
       document.getElementById('image').addEventListener('change', function (e) {
-        var reader = new FileReader()
+        let inp = this
+        console.log(this.files)
+        let reader = null
+        reader = new FileReader()
+        reader.readAsDataURL(this.files[0])
         reader.onload = function () {
           let b = that.dataURLtoFile(this.result)
-          that.movie = this.result
+          that.images.push(this.result)
+          debugger
           console.log(this.result)
         }
       })
@@ -133,6 +179,7 @@ export default {
     .select-box{
       display: flex;
       .takePhoto, .audio, .file, .link{
+        position: relative;
         margin-right: 9px;
         width: 77px;
         height: 77px;
@@ -140,6 +187,16 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+        >input{
+          color: #FFFFFF;
+          width: 77px;
+          height: 77px;
+          position: absolute;
+          top: 0;
+          left: 0;
+          opacity: 0;
+          z-index: 5;
+        }
         .icon{
           width: 23px;
           height: 23px;
@@ -178,6 +235,10 @@ export default {
       display: flex;
       margin: 0 -3px -6px;
       flex-flow: row wrap;
+      >input{
+        width: 108px;
+        height: 108px;
+      }
       .item {
         position: relative;
         display: block;
@@ -193,11 +254,14 @@ export default {
         }
         .close {
           position: absolute;
-          right: 0;
-          top: 2.5px;
-          width: 26px;
-          height: 26px;
-          background-image: url(../../assets/icon/icon-close.png) top 100%;
+          right: 3px;
+          top: 3px;
+          width: 20px;
+          height: 20px;
+          >i{
+            font-size: 30px;/*px*/
+           color: #FFFFFF;
+          }
         }
         &.add {
           width: 102px;
@@ -211,6 +275,27 @@ export default {
           background-position: 50% 50%;
           /* no */
         }
+      }
+    }
+    .video{
+      display: inline-block;
+      position: relative;
+      >.delBtn{
+        position: absolute;
+        right: 3px;
+        top: 3px;
+        z-index: 7;
+        >i{
+          font-size: 40px;/*px*/
+          color: #FFFFFF;
+          height: 20px;
+          width: 20px;
+        }
+      }
+      >video{
+        object-fit:fill;
+        width: 208px;
+        /*height: 117px;*/
       }
     }
     .btn-container {

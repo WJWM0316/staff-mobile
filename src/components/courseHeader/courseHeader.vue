@@ -4,13 +4,13 @@
     <div class="cover-container" :class="{circle:isCircle}">
       <div class="cover"></div>
       <span class="header-photo">
-        <img :src="pageInfo.coverImg"/>
+        <img v-if="pageInfo.coverImg" :src="pageInfo.coverImg.url"/>
       </span>
     </div>
     <!--灯塔头部-->
 
     <div class="info" v-if="!isCircle">
-      <h3 class="title">{{pageInfo.name}}</h3>
+      <h3 class="title">{{pageInfo.name || pageInfo.title}}</h3>
       <p class="desc">{{pageInfo.groupName}} | {{pageInfo.realname}}</p>
     </div>
     <div class="circleHeader" v-else>
@@ -31,14 +31,18 @@
         <img class="user_icon four" src="../../assets/icon/firends-call-more.png" v-if="pageInfo.memberCount > 3"/>
       </div>
       <!--右边入口按钮-->
-      <div class="right" v-if="isJoin && !isCircle">
-            课程介绍<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
+      <div class="right" v-if="!isCircle">
+        <div v-if="isJoin || pageInfo.isMaster" @click.stop="toIntroduction">
+          课程介绍<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
+        </div>
       </div>
-      <div class="right" @click.stop="toSetting" v-if="isCircle && ((pageInfo.isMember || pageInfo.isOwner) || (!pageInfo.isMember && pageInfo.isAttention))">
+      <div v-else>
+        <div class="right" @click.stop="toSetting" v-if="isCircle && ((pageInfo.isMember || pageInfo.isOwner) || (!pageInfo.isMember && pageInfo.isAttention))">
             设置<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
-      </div>
-      <div class="focus" @click.stop="focus" v-else>
-        + 关注
+        </div>
+        <div class="focus" @click.stop="focus" v-else>
+          + 关注
+        </div>
       </div>
     </div>
   </a>
@@ -80,11 +84,13 @@ export default {
     focus () {
       console.log(' guanzhu ')
       putFocusApi(this.pageInfo.id)
+    },
+    // 去课程介绍页
+    toIntroduction () {
+      this.$router.push({path: '/course/introduce', query: {id: this.pageInfo.id, isCourseIntroduce: true}})
     }
   },
-  mounted () {
-    console.log(this.pageInfo, ' 22222222222222222222 ')
-  }
+  mounted () {}
 }
 </script>
 

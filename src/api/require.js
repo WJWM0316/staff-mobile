@@ -25,6 +25,7 @@ export const request = ({type = 'post', url, data = {}, needLoading = true} = {}
         url = `${url}?token=${localstorage.get('token')}`
       }
     } else {
+      url = `${url}?token=${localstorage.get('token')}`
       datas.token = localstorage.get('token')
     }
   }

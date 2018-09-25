@@ -1,11 +1,11 @@
 <template>
 	<div class="coursePage">
 	  <div class="classify">
-      <span v-for="(item,index) in tabList" :key="index" :class="{ isFocusClassify:showBorder === item }" @click="cutoverTab(item)">{{item}}</span>
+      <span v-for="(item,index) in tabList" :key="index" :class="{ isFocusClassify:showBorder === item }" @click="cutoverTab(item)">{{item.categoryName}}</span>
     </div>
     <div class="content">
       <template v-for="(item, index) in circleList">
-        <info-card :item="item" :showIntroduction="false" :origin="false" :key="index"></info-card>
+        <info-card :item="item" :showIntroduction="false" :origin="true" :key="index"></info-card>
       </template>
     </div>
 	  <!--<info-card></info-card>
@@ -33,6 +33,7 @@
     right: 0;
     z-index: 999;
     >span{
+      color: #929292;
       font-weight: 300;
       display: inline-block;
       margin-right:23px;
@@ -41,6 +42,7 @@
       }
     }
     .isFocusClassify{
+      color: #354048;
       font-weight: 500;
       position: relative;
       &::after{
@@ -61,6 +63,7 @@
 </style>
 
 <script>
+import { courseListApi, categoryApi } from '@/api/pages/course'
 import infoCard from '@/components/infoCard/infoCard.vue'
 export default {
   name: 'course',
@@ -70,7 +73,7 @@ export default {
   data () {
     return {
       data: 1,
-      tabList: ['全部', '设计组', '技术组', '市场组', '运营组', '校园组', '人力资源组', '财务组'],
+      tabList: [],
       showBorder: '全部',
       circleList: []
     }
@@ -80,9 +83,22 @@ export default {
   },
   methods: {
     //  初始化方法
-    async pageInt () {},
+    async pageInt () {
+      let classfy = await this.getCategory()
+      let res = await this.getCourseList()
+      this.circleList = res.data
+      this.tabList = classfy.data
+    },
     cutoverTab (item) {
       this.showBorder = item
+    },
+    // 请求列表接口
+    getCourseList () {
+      return courseListApi({count: 20})
+    },
+    // 请求分类列表
+    getCategory () {
+      return categoryApi()
     }
   }
 }
