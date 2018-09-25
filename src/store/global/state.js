@@ -3,5 +3,6 @@ export default {
   loadingTxt: '努力加载中…', // loading显示文案
   userInfo: {}, // 用户信息
   pullUpStatus: false, // 上拉加载
-  pullDownStatus: false // 下拉刷新
+  pullDownStatus: false, // 下拉刷新
+  audioCurIndex: 0 // 当前播放音频在列表的索引
 }

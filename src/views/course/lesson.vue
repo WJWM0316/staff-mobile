@@ -7,7 +7,7 @@
         {{communityCourse.title}}
       </div>
       <div class="header-info">
-        <div><span class="mast-name">{{communityCourse.releaseUser.username}}</span><img :src="communityCourse.releaseUser"/></div>
+        <div><img :src="communityCourse.releaseUser.avatar.smallUrl"/><span class="mast-name">{{communityCourse.releaseUser.username}}</span></div>
         <div>{{communityCourse.createTime}}</div>
       </div>
     </div>
@@ -18,7 +18,7 @@
           <img v-if="communityCourse.people" :src="communityCourse.people.avatar"/>
           <span class="name" v-if="communityCourse.people">{{communityCourse.people.realname}}</span>
         </div>
-        <div class="date">{{communityCourse.createTime*1000 | date('YYYY-MM-DD')}}</div>
+        <div class="date">{{communityCourse.createTime*1000}}</div>
       </div>
       <!--视频-->
       <div class="Lesson-video" @click.stop="playVideo($event)" v-if="communityCourse.av && communityCourse.av.type==='video'">
@@ -238,7 +238,7 @@ export default {
     async init () {
       const { id } = this.$route.query
       let res = await this.getLessonData(id)
-      // let cardList = await this.getCourseCardListApi(id)
+      let cardList = await this.getCourseCardListApi(id)
       this.communityCourse = res.data
     },
     /* 获取课节详情 */
@@ -301,6 +301,14 @@ export default {
         display: flex;
         justify-content: space-between;
         font-size: 28px;/*px*/
+       .mast-name{
+         margin-left: 8px;
+       }
+       img{
+         width: 24px;
+         height: 24px;
+         border-radius: 50%;
+       }
       }
     }
     /*课节富文本*/

@@ -33,7 +33,13 @@ export default {
   updata_userInfo: ({commit}, data) => {
     return new Promise((resolve, reject) => {
       commit(types.USERINFO, data)
-      console.log('已存储用户信息', data)
+      resolve()
+    })
+  },
+  // 更新音频索引
+  updata_audioCurIndex: ({commit}, data) => {
+    return new Promise((resolve, reject) => {
+      commit(types.AUDIOCURINDEX, data)
       resolve()
     })
   }

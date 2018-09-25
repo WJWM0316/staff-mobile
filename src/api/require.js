@@ -12,29 +12,25 @@ Vue.axios.defaults.baseURL = settings.host
 
 let num = 0
 export const request = ({type = 'post', url, data = {}, needLoading = true} = {}) => {
-  let datas = type === 'get' ? {params: {...data}} : {...data}
-  if (type === 'put') {
-    url = `${url}&token=${localstorage.get('token')}`
-  }
   // 开发环境写死账号
-  if (process.env.NODE_ENV !== 'production' && localstorage.get('token')) {
-    if (type === 'get') {
-      if (url.indexOf('?') !== -1) {
-        url = `${url}&token=${localstorage.get('token')}`
-      } else {
-        url = `${url}?token=${localstorage.get('token')}`
-      }
-    } else {
-      url = `${url}?token=${localstorage.get('token')}`
-      datas.token = localstorage.get('token')
+  let token = localstorage.get('token')
+  if (process.env.NODE_ENV !== 'production' && token) {
+    if (data === '') {
+      data = {}
     }
+    if (type === 'post') {
+      url = `${url}?token=${token}`
+    }
+    data.token = token
   }
+  let datas = type === 'get' ? {params: {...data}} : {...data}
   if (needLoading) {
     num++
     if (!store.getters.loadingStatus) {
       store.dispatch('updata_loadingStatus', true)
     }
   }
+  // 请求
   return Vue.axios[type](url, datas, needLoading).catch(response => {
     num--
     if (num <= 0) {
@@ -55,7 +51,6 @@ export const request = ({type = 'post', url, data = {}, needLoading = true} = {}
     console.log(err.response)
     switch (err.response.status) {
       case 401: // 未登录或登录过期
-        console.log(111)
         router.push('/login')
     }
     Vue.$vux.toast.text(err.response.data.msg, 'bottom')

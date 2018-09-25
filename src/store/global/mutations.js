@@ -15,5 +15,8 @@ export default {
   },
   [types.PULLDOWNSTATUS] (state, data) {
     state.pullDownStatus = data
+  },
+  [types.AUDIOCURINDEX] (state, data) {
+    state.audioCurIndex = data
   }
 }

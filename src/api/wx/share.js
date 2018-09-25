@@ -8,7 +8,14 @@ export const share = async (wx, http, enter) => {
   }
   // 发起 http 请求，获取公众号配置
   let data = {url: window.document.location.href}
-  const res = await weixinApi(data)
+  // const res = await weixinApi(data)
+  const res = {
+    appId: "wx680900ec16ebb984",
+    jsApiList: ["onMenuShareTimeline", "onMenuShareAppMessage", "startRecord", "stopRecord", "onVoiceRecordEnd", "playVoice", "pauseVoice", "stopVoice", "onVoicePlayEnd", "uploadVoice", "downloadVoice", "chooseImage", "previewImage", "uploadImage", "downloadImage", "chooseWXPay", "getLocalImgData"],
+    nonceStr: "06l58SU6",
+    signature: "e527808a907cfb4326ddc4738350a9f8960619b0",
+    timestamp: "1537865156"
+  }
   let config = Object.assign(res, jsApiList)
   wx.config(config)
   wx.ready(() => {

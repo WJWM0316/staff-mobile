@@ -36,6 +36,7 @@ module.exports = {
     "eol-last": "off",
     "no-useless-escape": "off",
     "no-unused-vars": "off",
+    "no-extend-native": "off",
     "prefer-promise-reject-errors": "off"
   }
 }

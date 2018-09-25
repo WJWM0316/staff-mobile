@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import topHeader from '@/components/courseHeader/courseHeader'
+import topHeader from '@/components/business/commonHeader'
 import { courseInfoApi, CourseSectionApi } from '@/api/pages/course'
 export default {
   name: 'community',

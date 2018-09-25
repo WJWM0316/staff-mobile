@@ -13,5 +13,8 @@ export default {
   },
   pullDownStatus: function (state) {
     return state.pullDownStatus
+  },
+  audioCurIndex: function (state) {
+    return state.audioCurIndex
   }
 }

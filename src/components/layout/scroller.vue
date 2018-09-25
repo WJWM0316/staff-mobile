@@ -9,7 +9,7 @@
         <div class="content" :class="{'pulldownUi': pulldownUi}">
           <slot></slot>
         </div>
-        <div class="loading-pos" v-if="pullup && pullupUi" :class="{'pullupUi' : pullupUi}">
+        <div class="loading-pos" ref="loadingPos" v-if="pullup && pullupUi" :class="{'pullupUi' : pullupUi}">
           <div class="loading-container" v-if="!noData">
             <img class="loadmore" src="../../assets/icon/loadMore.gif">
           </div>
@@ -132,13 +132,17 @@ export default {
     pulldown () {},
     beforeScroll () {},
     refreshDelay () {},
-    noData (val) {
-      console.log(val)
-    },
+    noData (val) {},
     bgColor () {},
     freeScroll () {},
     // 监听数据的变化，延时refreshDelay时间后调用refresh方法重新计算，保证滚动效果正常
     list () {
+      setTimeout(() => {
+        this.scroll.finishPullUp()
+        this.refresh()
+      }, this.refreshDelay)
+    },
+    pullupUi () {
       setTimeout(() => {
         this.scroll.finishPullUp()
         this.refresh()
@@ -148,7 +152,7 @@ export default {
   data () {
     return {
       pulldownUi: false,
-      pullupUi: true
+      pullupUi: false
     }
   },
   mounted () {
@@ -190,7 +194,7 @@ export default {
         let me = this
         this.scroll.on('scroll', (pos) => {
           if (this.listenScroll) {
-            if (!this.pullupUi) {
+            if (!this.pullupUi && pos.y < 0) {
               this.pullupUi = true
             }
             me.$emit('scroll', pos)
@@ -205,6 +209,7 @@ export default {
       // 是否派发滚动到底部事件，用于上拉加载
       if (this.pullup) {
         this.scroll.on('pullingUp', () => {
+          console.log('加载更多数据')
           this.$emit('pullingUp', this.scroll)
         })
       }
@@ -242,9 +247,13 @@ export default {
       // 代理better-scroll的scrollTo方法
       this.scroll && this.scroll.scrollTo(x, y, time, easing)
     },
-    scrollToElement (el, time, offsetX, offsetY, easing) {
+    scrollToElement (el) {
       // 代理better-scroll的scrollToElement方法
-      this.scroll && this.scroll.scrollToElement(el, time, offsetX, offsetY, easing)
+      this.scroll && this.scroll.scrollToElement(el, 300)
+    },
+    scrollBottom () {
+      // 滚动最底部 + 1000
+      this.scroll && this.scroll.scrollTo(0, this.scroll.maxScrollY)
     }
   }
 }
@@ -315,10 +324,6 @@ export default {
         display: block;
         margin: 0 auto;
       }
-    }
-    @keyframes loading {
-      0 { transform: rotate(0); }
-      100% { transform: rotate(360deg); }
     }
 }
 </style>

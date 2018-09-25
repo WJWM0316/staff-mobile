@@ -38,6 +38,7 @@ let webpackConfig = {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
       '@s': resolve('src/styles'),
+      '@a': resolve('src/assets'),
       '@c': resolve('src/components'),
       '@u': resolve('src/util'),
       'STYLE': resolve('src/styles'),
