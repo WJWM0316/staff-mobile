@@ -4,7 +4,7 @@
       <img :src="messageData.avatar" alt="">
     </div>
     <div class="message-con">
-      <div class="name">{{messageData.username}}</div>
+      <div class="name">{{messageData.fromUserName}}</div>
       <div class="textType" v-if="messageData.type === 'text'">{{messageData.content}}</div>
       <audio-message
         v-if="messageData.type === 'audio'"
