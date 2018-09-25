@@ -1,6 +1,6 @@
 <template>
   <div class="introduce">
-    <!--<top-header :pageInfo="pageInfo" :isCircle="false" :isJoin="false"></top-header>-->
+    <top-header :pageInfo="pageInfo" :isCircle="false" :isJoin="false"></top-header>
     <div class="richText">
       <div class="title">关于文本</div>
       <div class="content">这里是富文本</div>
@@ -14,6 +14,7 @@
 
 <script>
 import topHeader from '@/components/courseHeader/courseHeader'
+import { getCircleDetailApi } from '@/api/pages/workCircle'
 export default {
   name: 'courseIntroduce',
   components: {
@@ -22,7 +23,8 @@ export default {
   data () {
     return {
       isEnd: false,
-      isCourseIntroduce: false
+      isCourseIntroduce: false,
+      pageInfo: {}
     }
   },
   methods: {
@@ -30,7 +32,20 @@ export default {
     joinCourse () {
       console.log(' 加入课程 ')
       this.$router.push('/course/community')
+    },
+    /* 初始化方法 */
+    async init (id) {
+      let res = await this.getgetCircleDetail(id)
+      this.pageInfo = res.data
+    },
+    /* ------------------ */
+    getgetCircleDetail (id) {
+      return getCircleDetailApi(id)
     }
+  },
+  created () {
+    const { id } = this.$route.query
+    this.init(26)
   }
 }
 </script>
