@@ -21,8 +21,8 @@
     <div class='main'>
       <scroller class='scroll'
         ref='scroll'
-        :pulldown=true
-        :pullup=true
+        :pulldown='isPulldown'
+        :pullup='isPullup'
         :listenScroll=true
         :freeScroll=true
         :list='list'
@@ -59,8 +59,10 @@
         <input class='bar' @focus.stop='focus' type='text' v-model='problemTxt' placeholder='请输入你的问题'>
       </div>
       <div class='submit' @click.stop='send(problemTxt)'>提问</div>
+      <div class="area icon iconfont icon-live_btn_answers" @click.stop="openArea = true"></div>
     </div>
     <div class='testBtn' @click='closeWs'>断线测试</div>
+    <questionArea v-if="openArea" @closeArea="_closeArea"></questionArea>
   </div>
 </template>
 <script>
@@ -68,20 +70,25 @@ import scroller from '@c/layout/scroller'
 import localstorage from '@u/localstorage'
 import ws from '@u/websocket'
 import liveMessage from '@c/business/liveMessage'
+import questionArea from '@c/business/questionArea'
 import { mapState, mapActions } from 'vuex'
 import { getLiveRoomMsgApi } from '@/api/pages/live'
 let onMessage = null
 export default {
   components: {
     scroller,
-    liveMessage
+    liveMessage,
+    questionArea
   },
   data () {
     return {
       roomId: '',
       list: [],
-      onlineNum: 0,
-      problemTxt: '',
+      onlineNum: 0, // 在线人数
+      problemTxt: '', // 提交的问题
+      openArea: true,
+      isPulldown: true, // 是否开启下拉
+      isPullup: true, // 是否开启上拉
       resData: {},
       audioList: [] // 音频列表
     }
@@ -118,19 +125,23 @@ export default {
           break
       }
     },
-    getMessage ({page, action}) {
+    _closeArea () {
+      this.openArea = false
+    },
+    getMessage ({msgId, action, needLoading = true}) {
       let data = {
         id: this.roomId,
         action: action || 1,
-        page: page || 1,
+        msgId: msgId || 0,
         count: 20
       }
-      getLiveRoomMsgApi(data).then(res => {
+      return getLiveRoomMsgApi(data, needLoading).then(res => {
         if (action) {
           this.list = this.list.concat(res.data)
         } else {
           this.list = res.data.concat(this.list)
         }
+        return res
       })
     },
     nextMusic (index) {
@@ -138,16 +149,24 @@ export default {
       this.$refs.messageItem[index].$children[0].play()
     },
     loadPrev () {
-      setTimeout(() => {
-        this.$refs.scroll.pulldownUi = false
-        let data = []
-        this.list = data.concat(this.list)
-      }, 2000)
+      if (this.isPulldown) {
+        this.getMessage({msgId: this.list[0].messageId, action: 2, needLoading: false}).then(res => {
+          this.$refs.scroll.pulldownUi = false
+          if (res.data.length === 0) {
+            this.isPulldown = false
+          }
+        })
+      }
     },
     loadNext () {
-      setTimeout(() => {
-        this.$refs.scroll.pullupUi = false
-      }, 2000)
+      if (this.isPullup) {
+        this.getMessage({msgId: this.list[this.list.length - 1].messageId, action: 1, needLoading: false}).then(res => {
+          this.$refs.scroll.pullupUi = false
+          if (res.data.length === 0) {
+            this.isPullup = false
+          }
+        })
+      }
     },
     focus () {
       // 强制输入框顶起
@@ -171,7 +190,8 @@ export default {
   },
   mounted () {
     let that = this
-    ws.create('ws://work-api.xplus.ziwork.com/tiger')
+    this.creatWs() // 开启直播
+    // 直播消息回调
     onMessage = (obj) => {
       let data = obj.detail
       // 登录和退出登录逻辑
@@ -417,7 +437,12 @@ export default {
         line-height: 20px;
         font-weight: 500;
         color: #D7AB70;
-        padding: 0 17px 0 15px;
+        padding: 0 0 0 16px;
+      }
+      .icon-live_btn_answers {
+        font-size: 30px; /*px*/
+        color: #D7AB70;
+        padding: 0 20px 0 22px;
       }
     }
   }

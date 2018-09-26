@@ -1,11 +1,11 @@
 import { request } from '../require.js'
 // 获取直播间信息
-export const getLiveRoomMsgApi = (data) => {
+export const getLiveRoomMsgApi = (data, needLoading) => {
   return request({
     type: 'get',
     url: `/live/messageList/${data.id}`,
     data,
-    isLoading: true
+    needLoading: needLoading
   })
 }
 
@@ -15,6 +15,6 @@ export const getLiveDetailApi = (data) => {
     type: 'get',
     url: `/live/info/${data.id}`,
     data,
-    isLoading: true
+    needLoading: true
   })
 }
