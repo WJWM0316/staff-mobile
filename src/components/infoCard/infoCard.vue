@@ -1,8 +1,8 @@
 <template>
   <div class="infoCard"  @click="toWorkCircleDetail(item.id)">
-    <img class="infoPhoto" :src="item.coverImg" />
+    <img class="infoPhoto" :src="item.coverImg.url || item.coverImg" />
     <div class="right">
-      <div class="title">{{item.name}}</div>
+      <div class="title">{{item.name || item.title}}</div>
       <div class="introduction" v-if="showIntroduction">课程介绍可以加这个字段吗？</div>
       <div class="label"><span class="department">{{item.groupName}}</span><span class="name">{{item.realname}}</span></div>
       <div class="other" v-if="showOther">
@@ -45,7 +45,11 @@ export default {
       console.log(id)
       if (this.origin) {
         console.log(' 去课程详情 ')
-        this.$router.push('/course/introduce')
+        if (this.item.isMaster || this.item.userRole.isJoin === 1) {
+          this.$router.push({path: '/course/community', query: {id: id}})
+        } else {
+          this.$router.push({path: '/course/introduce', query: {id: id}})
+        }
       } else {
         console.log(' 我是去工作圈详情 ')
         this.$router.push({path: '/workCircle/circleDetail', query: {id: id}})

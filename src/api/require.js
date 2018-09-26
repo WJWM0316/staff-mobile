@@ -18,6 +18,9 @@ export const request = ({type = 'post', url, data = {}, needLoading = true} = {}
     if (data === '') {
       data = {}
     }
+    if (type === 'post') {
+      url = `${url}?token=${token}`
+    }
     data.token = token
   }
   let datas = type === 'get' ? {params: {...data}} : {...data}

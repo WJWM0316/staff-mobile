@@ -41,6 +41,7 @@ export default {
       } else {
         res = await this.getAttentions()
       }
+      this.circleList = res.data
     },
     /* 初始化方法 */
     async init () {

@@ -59,7 +59,7 @@
 
 <script>
 import { getCircleDetailApi } from '@/api/pages/workCircle'
-import circleHeader from '@/components/courseHeader/courseHeader'
+import circleHeader from '@/components/business/commonHeader'
 import dynamicItem from '@/components/dynamicItem/dynamicItem'
 export default {
   name: 'circleDetail',
