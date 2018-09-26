@@ -4,30 +4,28 @@
     <div class="cover-container" :class="{circle:isCircle}">
       <div class="cover"></div>
       <span class="header-photo">
-        <img v-if="pageInfo.coverImg" :src="pageInfo.coverImg.url"/>
+        <img v-if="pageInfo.coverImg" :src="pageInfo.coverImg.middleUrl"/>
       </span>
     </div>
     <!--灯塔头部-->
 
     <div class="info" v-if="!isCircle">
-      <h3 class="title">{{pageInfo.name || pageInfo.title}}</h3>
+      <h3 class="title">{{pageInfo.title}}</h3>
       <p class="desc">{{pageInfo.groupName}} | {{pageInfo.realname}}</p>
     </div>
     <div class="circleHeader" v-else>
-      {{pageInfo.name}}
+      {{pageInfo.title}}
     </div>
     <!--左边加入人数-->
     <div class="member">
       <div class="left">
         <p><span class="num">{{pageInfo.memberCount}}</span> 人</p>
-        <p>和你一起学习</p>
+        <p v-if="isLive">参与了直播</p>
+        <p v-else>和你一起学习</p>
       </div>
       <!--加入人员头像-->
       <div class="center">
-        <img class="user_icon" v-for="(item, index) in pageInfo.memberInfo" :src="item.avatarInfo.url" :key="index" />
-        <!--<img class="user_icon" src="http://thirdwx.qlogo.cn/mmopen/Qb07dBEKiaOGj5ne2EMGgmwAZnfJoNmxvrd1LIOy2Q5HY1ZtnricjJNpsYstFQwiaB2SX5SpGMShiaZffqblLa12ibVo3pMFgB20y/132"/>
-        <img class="user_icon" src="http://thirdwx.qlogo.cn/mmopen/Qb07dBEKiaOGj5ne2EMGgmwAZnfJoNmxvrd1LIOy2Q5HY1ZtnricjJNpsYstFQwiaB2SX5SpGMShiaZffqblLa12ibVo3pMFgB20y/132"/>
-        <img class="user_icon" src="http://thirdwx.qlogo.cn/mmopen/Qb07dBEKiaOGj5ne2EMGgmwAZnfJoNmxvrd1LIOy2Q5HY1ZtnricjJNpsYstFQwiaB2SX5SpGMShiaZffqblLa12ibVo3pMFgB20y/132"/>-->
+        <img class="user_icon" v-for="(item, index) in pageInfo.memberInfo" :src="item.avatarInfo.middleUrl" :key="index" />
         <img class="user_icon four" src="../../assets/icon/firends-call-more.png" v-if="pageInfo.memberCount > 3"/>
       </div>
       <!--右边入口按钮-->
@@ -56,7 +54,12 @@ export default {
     /* 是否工作圈 */
     isCircle: {
       type: Boolean,
-      default: true
+      default: false
+    },
+    /* 是否直播 */
+    isLive: {
+      type: Boolean,
+      default: false
     },
     /* 是否已加入课程 */
     isJoin: {

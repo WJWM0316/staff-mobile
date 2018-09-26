@@ -86,7 +86,7 @@ export default {
       list: [],
       onlineNum: 0, // 在线人数
       problemTxt: '', // 提交的问题
-      openArea: true,
+      openArea: false,
       isPulldown: true, // 是否开启下拉
       isPullup: true, // 是否开启上拉
       resData: {},

@@ -36,8 +36,10 @@
 import { userInfoApi } from '@/api/pages/center'
 import { Tabbar, TabbarItem } from 'vux'
 import { mapState, mapActions } from 'vuex'
+import WechatMixin from '@/mixins/wechat'
 import Vue from 'vue'
 export default {
+  mixins: [WechatMixin],
   components: {
     Tabbar,
     TabbarItem

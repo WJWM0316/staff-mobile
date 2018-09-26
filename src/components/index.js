@@ -7,11 +7,12 @@ Vue.use(WechatPlugin)
 Vue.use(ConfirmPlugin)
 
 
-Vue.prototype.$toast = function ({text, position = 'bottom', type = 'text', callBack}) {
+Vue.prototype.$toast = function ({text, position = 'bottom', type = 'text', width = '7.6em', callBack}) {
   this.$vux.toast.show({
     isShowMask: true,
     text: text,
-    type: type,
+    width: width,
+    type: type, // 类型，可选值 success, warn, cancel, text
     position: 'middle'
   })
   if (callBack) {

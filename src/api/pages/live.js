@@ -18,3 +18,13 @@ export const getLiveDetailApi = (data) => {
     needLoading: true
   })
 }
+
+// 获取直播详情
+export const joinLiveApi = (data) => {
+  return request({
+    type: 'get',
+    url: `/live/join/${data.id}`,
+    data,
+    needLoading: true
+  })
+}
