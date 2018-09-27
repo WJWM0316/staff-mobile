@@ -1,13 +1,12 @@
 <template>
-  <a href="#" class="m-community">
+  <div class="m-community">
     <!--灯塔头部-->
     <div class="cover-container" :class="{circle:isCircle}">
       <div class="cover"></div>
-      <span class="header-photo">
-        <img v-if="pageInfo.coverImg" :src="pageInfo.coverImg.middleUrl"/>
+      <span class="header-photo"  v-if="pageInfo.coverImg">
+        <img :src="pageInfo.coverImg.middleUrl"/>
       </span>
     </div>
-    <!--灯塔头部-->
 
     <div class="info" v-if="!isCircle">
       <h3 class="title">{{pageInfo.title}}</h3>
@@ -43,7 +42,7 @@
         </div>
       </div>
     </div>
-  </a>
+  </div>
 </template>
 
 <script>

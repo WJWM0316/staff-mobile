@@ -19,12 +19,22 @@ export const getLiveDetailApi = (data) => {
   })
 }
 
-// 获取直播详情
+// 加入直播间
 export const joinLiveApi = (data) => {
   return request({
     type: 'get',
     url: `/live/join/${data.id}`,
     data,
     needLoading: true
+  })
+}
+
+// 获取已加入直播列表
+export const getJoinListApi = (data, needLoading) => {
+  return request({
+    type: 'get',
+    url: `/live/joinList`,
+    data,
+    needLoading: needLoading
   })
 }

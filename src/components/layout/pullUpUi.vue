@@ -1,5 +1,5 @@
 <template>
-   <div class="loading-pos" ref="pullUpTip">
+   <div class="loading-pos" ref="pullUpTip" v-show="isShow">
     <div class="loading-container" v-show="pullUpStatus && !noData">
       <img class="loadmore" src="@/assets/icon/loadMore.gif">
     </div>
@@ -29,13 +29,18 @@ export default {
   },
   data () {
     return {
+      isShow: false,
       status: false
     }
   },
   mounted () {
-    let tabHeight = this.$refs.pullUpTip.clientHeight
+    let tabHeight = 0
     let winHeight = window.screen.height * window.dpr
     window.onscroll = (e) => {
+      if (!this.isShow) {
+        this.isShow = true
+        tabHeight = this.$refs.pullUpTip.clientHeight
+      }
       if (window.scrollY + tabHeight / 4 >= document.body.clientHeight - winHeight) {
         if (!this.pullUpStatus) {
           this.$emit('pullUp')

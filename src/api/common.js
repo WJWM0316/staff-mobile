@@ -16,6 +16,7 @@ export const getUploadFileConfig = data => request({
  * @param {*} data
  */
 export const getWechatSignApi = data => request({
+  type: 'get',
   url: '/wechat/getWechatSign',
   data,
   needLoading: false

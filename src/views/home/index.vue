@@ -8,11 +8,9 @@
 </template>
 <script>
 import { userInfoApi } from '@/api/pages/center'
-import pullUpUi from '@c/layout/pullUpUi'
 import { mapState, mapActions } from 'vuex'
 export default {
   components: {
-    pullUpUi
   },
   data () {
     return {

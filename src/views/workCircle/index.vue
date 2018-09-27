@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import infoCard from '@/components/infoCard/infoCard.vue'
+import infoCard from '@c/business/infoCard.vue'
 import { getJobcircleApi, getAttentionsApi, getCircleClassfyApi } from '@/api/pages/workCircle'
 export default {
   name: 'workCircle',

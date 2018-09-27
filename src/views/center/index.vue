@@ -4,7 +4,7 @@
       <div class="msg">
         <p class="name">{{pageInfo.realname}}</p>
         <p class="desrc">a阿萨德</p>
-        <p class="edit">点击编辑资料</p>
+        <p class="edit" @click.stop="jumpEdit">点击编辑资料</p>
       </div>
       <div class="photo">
         <img :src="pageInfo.avatarInfo.middleUrl" alt="">
@@ -48,6 +48,9 @@ export default {
     })
   },
   methods: {
+    jumpEdit () {
+      this.$router.push('/center/edit')
+    }
   },
   async created () {
     this.pageInfo = this.userInfo

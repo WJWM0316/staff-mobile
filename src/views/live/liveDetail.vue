@@ -18,8 +18,8 @@
         <p class="txt" v-if="pageInfo.status === 3">直播已结束</p>
       </div>
       <div class="operBtn">
-        <p class="txt" v-if="!pageInfo.isJoin" @click.stop="joinLive">点击参与直播</p>
-        <p class="txt" v-else @click.stop="jumpLive">进入直播间</p>
+        <xButton class="btn" v-if="!pageInfo.isJoin" @click.stop="joinLive">点击参与直播</xButton>
+        <xButton class="btn" v-else @click.stop="jumpLive">进入直播间</xButton>
       </div>
     </div>
   </div>
@@ -87,7 +87,7 @@ export default {
           display: inline-block;
           vertical-align: -3px;
         }
-        .txt {
+        .btn {
           font-size: 40px; /*px*/
           line-height: 20px;
           font-weight: 500;
