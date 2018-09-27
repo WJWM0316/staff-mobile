@@ -185,9 +185,9 @@ export default {
 #app-box {
   &.hasTab {
     padding-bottom: 49px;
+    box-sizing: border-box;
   }
   #page {
-    min-height: 100vh;
     position: relative;
     .pulldown-tip {
       height: 54px;
