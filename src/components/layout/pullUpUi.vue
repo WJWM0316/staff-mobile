@@ -37,6 +37,7 @@ export default {
     let tabHeight = 0
     let winHeight = window.screen.height * window.dpr
     window.onscroll = (e) => {
+      console.log(e)
       if (!this.isShow) {
         this.isShow = true
         tabHeight = this.$refs.pullUpTip.clientHeight

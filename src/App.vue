@@ -1,6 +1,6 @@
 <template>
-  <div id="app-box" v-cloak>
-    <div id="page" ref="page" :class="{'hasTab' : $route.meta.needBottomTab}" @touchmove="touchMove" @touchstart="touchStart" @touchend="touchEnd" :style="scrollY">
+  <div id="app-box" v-cloak  :class="{'hasTab' : $route.meta.needBottomTab}">
+    <div id="page" ref="page" @touchmove="touchMove" @touchstart="touchStart" @touchend="touchEnd" :style="scrollY">
       <div class="pulldown-tip" ref="pulldownTip" v-show="$route.meta.pullDown">
         <img class="pull-icon" src="@/assets/icon/loading.png" alt="">
       </div>
@@ -139,6 +139,7 @@ export default {
     touchMove (e) {
       let move = e.touches[0].clientY - this.startY
       if (window.scrollY === 0 && move > 0 && this.$route.meta.pullDown) {
+        e.preventDefault() // 阻止上拉到最顶部露出网址的微信默认行为
         this.moveY = move
       }
     },
@@ -265,5 +266,8 @@ export default {
       }
     }
   }
+}
+.weui-toast.vux-toast-bottom {
+  bottom: 70px;
 }
 </style>

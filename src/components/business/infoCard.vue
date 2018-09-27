@@ -1,13 +1,15 @@
 <template>
-  <div class="infoCard"  @click="toDeatil(item.id)">
-    <img class="infoPhoto" :src="item.coverImg.url || item.coverImg" />
+  <div class="infoCard"  @click="toDeatil(item.id || item.liveId)">
+    <img class="infoPhoto" :src="item.coverImg.url || item.coverImg"/>
     <div class="right">
       <div class="title">{{item.name || item.title}}</div>
       <div class="introduction" v-if="showIntroduction">课程介绍可以加这个字段吗？</div>
       <div class="label"><span class="department">{{item.groupName}}</span><span class="name">{{item.realname}}</span></div>
-      <div class="other" v-if="showOther">
-        <span class="time">{{time}}</span>
-        <span class="status">正在直播</span>
+      <div class="other" v-if="type === '3'">
+        <span class="time">{{item.expectedStartTime * 1000 | date('MM-DD HH:mm')}}</span>
+        <span class="status notPlay" v-if="item.status === 1">即将开始</span>
+        <span class="status playing" v-if="item.status === 2">正在直播</span>
+        <span class="status played" v-if="item.status === 3">查看回顾</span>
       </div>
     </div>
   </div>
@@ -23,7 +25,7 @@ export default {
     },
     showIntroduction: {
       type: Boolean,
-      default: true
+      default: false
     },
     showOther: {
       type: Boolean,
@@ -35,22 +37,19 @@ export default {
     }
   },
   computed: {
-    time () {
-      return moment().format('MM-DD HH:mm')
-    }
   },
   methods: {
     toDeatil (id) {
-      if (this.type === 1) {
+      if (this.type === '1') {
         if (this.item.isMaster || this.item.userRole.isJoin === 1) {
           this.$router.push({path: '/course/community', query: {id: id}})
         } else {
           this.$router.push({path: '/course/introduce', query: {id: id}})
         }
-      } else if (this.type === 2) {
+      } else if (this.type === '2') {
         this.$router.push({path: '/workCircle/circleDetail', query: {id: id}})
       } else {
-        this.$router.push({path: '/live/detail', query: {id: id}})
+        this.$router.push({path: '/live/detail', query: {roomId: id}})
       }
     }
   },
@@ -67,17 +66,17 @@ export default {
   padding: 15px 20px;
   .infoPhoto{
     display: block;
+    flex-basis: 80px;
     width: 80px;
     height: 80px;
     border-radius: 3px;
-    box-shadow: 0px 7px 10px 0px rgba(0,0,0,0.18);
+    box-shadow:0px 2px 8px 0px rgba(0,0,0,0.14);
     margin-right: 15px;
   }
   .right{
-    padding-top: 4px;
     box-sizing: border-box;
-    width: 100%;
     height: 80px;
+    flex: 1;
     .title{
       color: #354048;
       font-size: 30px;/*px*/
@@ -139,7 +138,12 @@ export default {
         color: #929292;
       }
       .status{
-        color: #BCBCBC;
+        &.played {
+          color: #BCBCBC;
+        }
+        &.notPlay, &.playing {
+          color: #D7AB70;
+        }
       }
     }
   }

@@ -32,6 +32,7 @@ export default {
       tabList: ['我参与的直播', '所有直播'],
       joined: {
         list: [],
+        page: 1,
         noData: false,
         pullUpStatus: false
       },
@@ -41,22 +42,31 @@ export default {
     }
   },
   methods: {
-    pullUp () {},
+    pullUp () {
+      this.joined.page++
+      this.joined.pullUpStatus = true
+      this.getJoinList({page: this.joined.page}, false).then(res => {
+        this.joined.pullUpStatus = false
+      })
+    },
     getJoinList ({page, count}, needLoading) {
-      let data = {
-        page: page || 1,
-        count: 7
-      }
-      getJoinListApi(data, needLoading).then(res => {
-        this.joined.list = this.joined.list.concat(res.data || [])
-        if (res.data.length === 0) {
-          this.joined.noData = true
+      return new Promise((resolve, reject) => {
+        let data = {
+          page: page || 1,
+          count: 6
         }
+        getJoinListApi(data, needLoading).then(res => {
+          this.joined.list = this.joined.list.concat(res.data || [])
+          if (res.data.length === 0) {
+            this.joined.noData = true
+          }
+          resolve(res)
+        })
       })
     }
   },
   created () {
-    this.getJoinList({page: 1})
+    this.getJoinList({page: 1}, true)
   }
 }
 </script>

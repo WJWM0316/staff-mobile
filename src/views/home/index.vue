@@ -51,11 +51,6 @@ export default {
     }
   },
   mounted () {
-    this.$root.$children[0]._loadMore = () => {
-      return this.init().then(res => {
-        return res
-      })
-    }
   }
 }
 </script>
