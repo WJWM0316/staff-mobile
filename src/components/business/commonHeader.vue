@@ -10,7 +10,7 @@
     <!--灯塔头部-->
 
     <div class="info" v-if="!isCircle">
-      <h3 class="title">{{pageInfo.name || pageInfo.title}}</h3>
+      <h3 class="title">{{pageInfo.title}}</h3>
       <p class="desc">{{pageInfo.groupName}} | {{pageInfo.realname}}</p>
     </div>
     <div class="circleHeader" v-else>

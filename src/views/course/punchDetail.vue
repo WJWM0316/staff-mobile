@@ -1,7 +1,7 @@
 <template>
-  <div class="postDetail">
+  <div class="postDetail" v-if="item">
     <div class="header">
-      <contentheader :showCommunicate="false" :showBorder="false"></contentheader>
+      <contentheader :showCommunicate="false" :showBorder="false" :item="item"></contentheader>
     </div>
     <div class="container">
       <div class="fixed-box" ref="ceiling-box">
@@ -122,6 +122,7 @@
 import classmateItem from '@/components/classmateItem/classmateItem'
 import contentheader from '@/components/dynamicItem/dynamicItem'
 import discussItem from '@/components/discussItem/discussItem'
+import { getPunchCardDetailsApi } from '@/api/pages/course'
 export default {
   name: 'detail',
   components: {
@@ -131,7 +132,8 @@ export default {
   },
   data () {
     return {
-      navTabName: 'comment'
+      navTabName: 'comment',
+      item: ''
     }
   },
   methods: {
@@ -141,6 +143,13 @@ export default {
         this.navTabName = targetName
       }
     }
+  },
+  created () {
+    let { myPunch } = this.$route.query
+    getPunchCardDetailsApi({name: 'courseSectionCardId', id: myPunch}).then(res => {
+      console.log(res.data.peopleCourseCardInfo, ' 66666666666666666666666 ')
+      this.item = res.data.peopleCourseCardInfo
+    })
   }
 }
 </script>

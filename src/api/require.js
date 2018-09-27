@@ -9,16 +9,15 @@ Vue.use(VueAxios, axios)
 // 动态设置本地和线上接口域名
 Vue.axios.defaults.baseURL = settings.host
 
-
 let num = 0
-export const request = ({type = 'post', url, data = {}, needLoading = true} = {}) => {
+export const request = ({type = 'post', url, data = {}, needLoading = true, config = {}} = {}) => {
   // 开发环境写死账号
   let token = localstorage.get('token')
   if (process.env.NODE_ENV !== 'production' && token) {
     if (data === '') {
       data = {}
     }
-    if (type === 'post') {
+    if (type !== 'get') {
       url = `${url}?token=${token}`
     }
     data.token = token
@@ -31,7 +30,7 @@ export const request = ({type = 'post', url, data = {}, needLoading = true} = {}
     }
   }
   // 请求
-  return Vue.axios[type](url, datas, needLoading).catch(response => {
+  return Vue.axios[type](url, datas, config, needLoading).catch(response => {
     num--
     if (num <= 0) {
       store.dispatch('updata_loadingStatus', false)

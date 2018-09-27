@@ -28,6 +28,12 @@ const routers = [
     path: '/course/punchDetail',
     name: 'punchDetail',
     component: resolve => require(['@/views/course/punchDetail'], resolve)
+  },
+  /* 打卡编辑页 */
+  {
+    path: '/course/punchEditting',
+    name: 'punchEditting',
+    component: resolve => require(['@/views/course/punchEditting'], resolve)
   }
 ]
 
