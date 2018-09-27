@@ -59,8 +59,8 @@
 
 <script>
 import { getCircleDetailApi } from '@/api/pages/workCircle'
-import circleHeader from '@/components/business/commonHeader'
-import dynamicItem from '@/components/dynamicItem/dynamicItem'
+import circleHeader from '@c/business/commonHeader'
+import dynamicItem from '@c/business/dynamicItem'
 export default {
   name: 'circleDetail',
   components: {

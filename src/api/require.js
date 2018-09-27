@@ -8,6 +8,16 @@ import localstorage from '@u/localstorage'
 Vue.use(VueAxios, axios)
 // 动态设置本地和线上接口域名
 Vue.axios.defaults.baseURL = settings.host
+// 请求拦截器
+Vue.axios.interceptors.request.use(
+  config => {
+    config.headers.common['Authorization'] = localstorage.get('token')
+    return config
+  },
+  error => {
+    return Promise.error(error)
+  }
+)
 
 let num = 0
 export const request = ({type = 'post', url, data = {}, needLoading = true, config = {}} = {}) => {
@@ -17,12 +27,14 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
     if (data === '') {
       data = {}
     }
-    if (type !== 'get') {
-      url = `${url}?token=${token}`
-    }
-    data.token = token
   }
-  let datas = type === 'get' ? {params: {...data}} : {...data}
+  let datas
+  /* 是否发生formdata */
+  if (config.headers) {
+    datas = type === 'get' ? {params: {...data}} : data
+  } else {
+    datas = type === 'get' ? {params: {...data}} : {...data}
+  }
   if (needLoading) {
     num++
     if (!store.getters.loadingStatus) {

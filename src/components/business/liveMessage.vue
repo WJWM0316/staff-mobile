@@ -1,7 +1,7 @@
 <template>
   <div class="live-message">
     <div class="avatar">
-      <img :src="messageData.avatar" alt="">
+      <img :src="messageData.avatar.middleUrl" alt="">
     </div>
     <div class="message-con">
       <div class="name">{{messageData.fromUserName}}</div>
@@ -58,7 +58,7 @@ export default {
       width: 32px;
       height: 32px;
       float: left;
-      margin-right: 7px;
+      margin-right: 10px;
       border-radius: 50%;
       overflow: hidden;
       img {

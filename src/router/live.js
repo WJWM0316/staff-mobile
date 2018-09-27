@@ -2,6 +2,7 @@ const routers = [
   {
     path: '/live',
     name: 'live',
+    meta: { title: '直播列表', pullDown: true },
     component: resolve => require(['@/views/live/index'], resolve)
   },
   {

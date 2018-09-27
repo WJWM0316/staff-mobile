@@ -119,9 +119,9 @@
 </style>
 
 <script>
-import classmateItem from '@/components/classmateItem/classmateItem'
-import contentheader from '@/components/dynamicItem/dynamicItem'
-import discussItem from '@/components/discussItem/discussItem'
+import classmateItem from '@c/business/classmateItem'
+import contentheader from '@c/business/dynamicItem'
+import discussItem from '@c/business/discussItem'
 export default {
   name: 'detail',
   components: {

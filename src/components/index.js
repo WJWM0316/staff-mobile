@@ -1,17 +1,26 @@
 // 注册全局组件
 import Vue from 'vue'
 import { AlertPlugin, ToastPlugin, WechatPlugin, ConfirmPlugin } from 'vux'
+import xButton from '@c/layout/xButton'
+import actionSheet from '@c/layout/actionSheet'
+import pullUpUi from '@c/layout/pullUpUi'
+
+Vue.component('xButton', xButton) // 按钮
+Vue.component('actionSheet', actionSheet)
+Vue.component('pullUpUi', pullUpUi)
+
 Vue.use(AlertPlugin)
 Vue.use(ToastPlugin)
 Vue.use(WechatPlugin)
 Vue.use(ConfirmPlugin)
 
 
-Vue.prototype.$toast = function ({text, position = 'bottom', type = 'text', callBack}) {
+Vue.prototype.$toast = function ({text, position = 'bottom', type = 'text', width = '7.6em', callBack}) {
   this.$vux.toast.show({
     isShowMask: true,
     text: text,
-    type: type,
+    width: width,
+    type: type, // 类型，可选值 success, warn, cancel, text
     position: 'middle'
   })
   if (callBack) {

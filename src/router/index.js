@@ -22,8 +22,7 @@ const routes = [
 ]
 
 const router = new Router({
-  // mode: 'history',
-  base: '/beaconweb/',
+  mode: 'history',
   routes
 })
 

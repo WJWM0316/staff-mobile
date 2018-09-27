@@ -8,11 +8,9 @@
 </template>
 <script>
 import { userInfoApi } from '@/api/pages/center'
-import pullUpUi from '@c/layout/pullUpUi'
 import { mapState, mapActions } from 'vuex'
 export default {
   components: {
-    pullUpUi
   },
   data () {
     return {
@@ -53,11 +51,6 @@ export default {
     }
   },
   mounted () {
-    this.$root.$children[0]._loadMore = () => {
-      return this.init().then(res => {
-        return res
-      })
-    }
   }
 }
 </script>

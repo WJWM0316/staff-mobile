@@ -93,7 +93,7 @@ export default {
      */
     refreshDelay: {
       type: Number,
-      default: 20
+      default: 50
     },
     /**
      * 没有更多数据
@@ -142,7 +142,7 @@ export default {
         this.refresh()
       }, this.refreshDelay)
     },
-    pullupUi () {
+    pullupUi (val) {
       setTimeout(() => {
         this.scroll.finishPullUp()
         this.refresh()
@@ -194,7 +194,7 @@ export default {
         let me = this
         this.scroll.on('scroll', (pos) => {
           if (this.listenScroll) {
-            if (!this.pullupUi && pos.y < 0) {
+            if (!this.pullupUi && pos.y < 0 && this.pullup) {
               this.pullupUi = true
             }
             me.$emit('scroll', pos)

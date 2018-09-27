@@ -1,7 +1,6 @@
 // 微信jssdk mixin
 import { getWechatSignApi } from '@/api/common'
 import browser from '@/util/browser'
-
 export default {
   data () {
     return {
@@ -66,9 +65,7 @@ export default {
           sizeType: options.sizeType || ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
           sourceType: options.sourceType || ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
           success: async function (res) {
-//        	alert(res,"我是本地id列表")
             resolve(res)
-            // const localIds = res.localIds // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
           },
           fail: function (e) {
             reject(e)
@@ -81,16 +78,13 @@ export default {
      * 获取本地base64数据
      * @param {*} localId
      */
-    wechatGetLocalImgData(localId) {
+    wechatGetLocalImgData (localId) {
       return new Promise((resolve, reject) => {
-        console.log('是否支持getLocalImgData：', !!this.$wechat.getLocalImgData)
-        console.log('是否是ios', browser.isIos())
         if (browser.isIos() && this.$wechat.getLocalImgData) {
           this.$wechat.getLocalImgData({
             localId: localId, // 图片的localID
             success: function (res) {
               resolve(res)
-              // const localData = res.localData // localData是图片的base64数据，可以用img标签显示
             },
             fail: function (e) {
               reject(e)
@@ -107,7 +101,6 @@ export default {
      * @param {*} options
      */
     wechatPreviewImage (options = {}) {
-//  	console.log(options,"我是预览图片功能....")
       return new Promise((resolve, reject) => {
         this.$wechat.previewImage({
           current: options.img,
@@ -127,9 +120,7 @@ export default {
           localId: localId,
           isShowProgressTips: options.isShowProgressTips || 0, // sdk默认为1，显示进度提示
           success: function (res) {
-//        	alert(res,"图片上传微信服务器成功")
             resolve(res)
-            // const serverId = res.serverId // 返回图片的服务器端ID
           },
           fail: function (e) {
             reject(e)

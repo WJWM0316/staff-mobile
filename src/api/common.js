@@ -1,23 +1,5 @@
 // 通用接口api
-import { request, upload } from './require'
-
-// 获取个人详情
-export const personalDetailsApi = (data) => {
-  return request({
-    url: '/wx/my/personalDetails',
-    data,
-    isLoading: true
-  })
-}
-
-/**
- * 获取通用列表（行业列表，融资列表，工作年限列表等等）
- * @param {*} data { type } tpye: 列表类型（1行业，2融资，3自客工作年限，4内容分类，5全职工作年限，6年薪范围，7学历范围，8职位亮点，9公司规模）
- */
-export const getGeneralListApi = data => request({
-  url: '/wx/currency/getGeneralList',
-  data
-})
+import { request } from './require'
 
 /**
  * 获取上传配置信息
@@ -25,7 +7,7 @@ export const getGeneralListApi = data => request({
  */
 export const getUploadFileConfig = data => request({
   url: '/wx/currency/getUploadFileConfig',
-  isLoading: false,
+  needLoading: false,
   data
 })
 
@@ -34,9 +16,10 @@ export const getUploadFileConfig = data => request({
  * @param {*} data
  */
 export const getWechatSignApi = data => request({
-  url: '/wap/currency/getWxSign',
+  type: 'get',
+  url: '/wechat/getWechatSign',
   data,
-  isLoading: false
+  needLoading: false
 })
 
 /**
