@@ -59,12 +59,30 @@ exports.cssLoaders = function (options) {
       return ['vue-style-loader'].concat(loaders)
     }
   }
-
-  // https://vue-loader.vuejs.org/en/configurations/extract-css.html
+  function generateLessResourceLoader() {
+    let loaders = options.usePostCSS ? [cssLoader, postcssLoader, px2remLoader] : [cssLoader, px2remLoader]
+    loaders.push('less-loader', {
+      loader: 'sass-resources-loader',
+      options: {
+        resources: [
+          path.resolve(__dirname, '../src/styles/mixins.less'),
+          path.resolve(__dirname, '../src/styles/variable.less')
+        ]
+      }
+    })
+    if (options.extract) {
+      return ExtractTextPlugin.extract({
+        use: loaders,
+        fallback: 'vue-style-loader'
+      })
+    } else {
+      return ['vue-style-loader'].concat(loaders)
+    }
+  }
   return {
     css: generateLoaders(),
     postcss: generateLoaders(),
-    less: generateLoaders('less'),
+    less: generateLessResourceLoader(),
     sass: generateLoaders('sass', { indentedSyntax: true }),
     scss: generateLoaders('sass'),
     stylus: generateLoaders('stylus'),

@@ -63,7 +63,7 @@ export const getEndListApi = (data, needLoading) => {
 export const getMemberListApi = (data, needLoading) => {
   return request({
     type: 'get',
-    url: `/live/problemList/${data.id}`,
+    url: `/live/memberList/${data.id}`,
     data,
     needLoading: needLoading
   })

@@ -8,7 +8,7 @@
         <span class='status red' v-show='wsStatus === 2'>直播未连接</span>
         <span class='num'>{{onlineNum}}人参与</span>
       </p>
-      <div class='more'>
+      <div class='more' @click.stop="jumpMore">
         <span>更多介绍</span>
         <i class='icon iconfont icon-list_live_icon_more'></i>
       </div>
@@ -115,6 +115,9 @@ export default {
     ...mapActions([
       'updata_sendData'
     ]),
+    jumpMore () {
+      this.$router.push(`/live/detail?roomId=${this.roomId}`)
+    },
     scrollTo (type) {
       switch (type) {
         case 'top':
@@ -221,7 +224,7 @@ export default {
       let data = obj.detail
       // 登录和退出登录逻辑
       if (data.hasOwnProperty('cmd')) {
-        if (data.cmd === 'online_login') {
+        if (data.cmd === 'online_login' || data.cmd === 'login.token') {
           that.onlineNum++
         } else if (data.cmd === 'online_logout') {
           that.onlineNum--

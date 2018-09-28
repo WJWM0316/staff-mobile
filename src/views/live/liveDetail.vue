@@ -87,7 +87,7 @@ export default {
           display: inline-block;
           vertical-align: -3px;
         }
-        .btn {
+        .txt {
           font-size: 40px; /*px*/
           line-height: 20px;
           font-weight: 500;
