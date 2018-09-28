@@ -7,19 +7,12 @@
         {{communityCourse.title}}
       </div>
       <div class="header-info">
-        <div><img :src="communityCourse.releaseUser.avatar.smallUrl"/><span class="mast-name">{{communityCourse.releaseUser.username}}</span></div>
+        <div><img :src="communityCourse.tutorUser.avatar.smallUrl"/><span class="mast-name">{{communityCourse.tutorUser.username}}</span></div>
         <div>{{communityCourse.createTime}}</div>
       </div>
     </div>
     <!--富文本区-->
     <div class="Lesson-module">
-      <div class="module-header">
-        <div class="head-photobox">
-          <img v-if="communityCourse.people" :src="communityCourse.people.avatar"/>
-          <span class="name" v-if="communityCourse.people">{{communityCourse.people.realname}}</span>
-        </div>
-        <div class="date">{{communityCourse.createTime*1000}}</div>
-      </div>
       <!--视频-->
       <div class="Lesson-video" @click.stop="playVideo($event)" v-if="communityCourse.av && communityCourse.av.type==='video'">
         <video controls ref="video" v-show="!videoPlay"></video>
@@ -104,7 +97,7 @@
           </div>
         </div>
         <!--所有打卡区-->
-        <div class="all-punch" v-if="trialReading === '0' && peopleCourseCardList && peopleCourseCardList.length>0">
+        <div class="all-punch" v-if="peopleCourseCardList && peopleCourseCardList.length>0">
           <div class="Excellent-punch">
             <div class="Excellent-punch-title">所有打卡</div>
           </div>
@@ -113,16 +106,6 @@
              v-for="(item, index) in peopleCourseCardList"
              :key = "index"
              :item="item"
-             :showDelBtn="true"
-             :communityId="communityId"
-             :isFold="true"
-             :isNeedHot="true"
-             :hideBorder="false"
-             :isLesson="true"
-             :disableContentClick="false"
-             @disableOperationEvents="operation"
-             @reFresh="reFresh"
-             @showEvaluate='showEvaluate'
           ></lessondynamicItem>
           <div class="Expand-btn all-show" @click.stop="toPunchList('all')" v-if="countCardInfo.totalCardCount>5">
             <div>
@@ -132,15 +115,14 @@
         </div>
         <!--底部打卡按钮区-->
         <!--<div v-if="trialReading === '0' || (curPeopleInfo.roleId!==1 && curPeopleInfo.roleId!==2) || curPeopleInfo.roleId">-->
-        <div v-if="curPeopleInfo.roleId!==1 && curPeopleInfo.roleId!==2 && trialReading === '0'">
-          <div class="Lesson-footer" v-if="isPunch === 0">
+        <div v-if="communityCourse.isTutor !== 1">
+          <div class="Lesson-footer" v-if="communityCourse.statusInfo.isPunchCard === 0">
             <div class="toPunch" @click.stop="toPunch">
               打卡做任务，解锁下一节课
             </div>
           </div>
           <div class="Lesson-footer" v-else>
-              <div class="peacock" @click.stop="toPoster()">炫耀一下</div><span class="line"></span>
-              <div class="mine" @click.stop="toMindDetail(communityCourse.peopleId,communityCourse.id)">我的打卡</div>
+            <div class="mine" @click.stop="toMindDetail(communityCourse.peopleId,communityCourse.id)">我的打卡</div>
           </div>
         </div>
     </template>
@@ -203,11 +185,6 @@ export default {
       },
       // 试读。未加入相关
       lessonData: {},
-      usedUserCouponId: 0, // 支付时使用的优惠券id
-      selectCouponItem: {}, // 当前选择的优惠券信息
-      selectedPrice: '', // 选择其他优惠券后的价格
-      toPay: false, // 是否调起支付窗口
-      isHintShow: false, // 弹窗
       hintData: {
         title: '加入须知',
         buttonText: '马上加入',
@@ -220,9 +197,9 @@ export default {
           '3、提问导师或嘉宾，但不一定 能100%得到回答'
         ]
       },
-      jsonData: [ // 获取课节详情的筛选条件参数
-        {course_section_id: 1}
-      ],
+      jsonData: { // 获取课节详情的筛选条件参数
+        course_section_id: 1
+      },
       listPage: 1, // 当前打卡列表的页数
       endPayType: null // 已结束 加入时候的状态
     }
@@ -240,6 +217,8 @@ export default {
       let res = await this.getLessonData(id)
       let cardList = await this.getCourseCardListApi(id)
       this.communityCourse = res.data
+      this.peopleCourseCardList = cardList.data.peopleCourseCardList
+      this.excellentPunchList = cardList.data.excellentPeopleCourseCardList
     },
     /* 获取课节详情 */
     getLessonData (id) {
@@ -247,7 +226,7 @@ export default {
     },
     /* 获取课节打卡列表 */
     getCourseCardListApi (id) {
-      this.jsonData[0].course_section_id = id
+      this.jsonData.course_section_id = id
       let jsonDataString = JSON.stringify({search: this.jsonData})
       let UrlString = encodeURIComponent(jsonDataString)
       let param = {
@@ -266,7 +245,14 @@ export default {
      * @param {*} key
      * @param {*} item
      */
-    async handleAddActoinItem (key, item) {}
+    async handleAddActoinItem (key, item) {},
+    /* 去我的打卡 */
+    toMindDetail () {
+      this.$router.push({path: '/course/punchDetail', query: {myPunch: this.communityCourse.peopleCardInfo.id, courseId: this.communityCourse.courseSectionId}})
+    },
+    toPunch () {
+      this.$router.push({path: '/course/punchEditting', query: {courseSectionId: this.communityCourse.courseSectionId}})
+    }
   },
   created () {
     this.init()
@@ -314,31 +300,6 @@ export default {
     /*课节富文本*/
     .Lesson-module{
       margin-top: 15px;
-      .module-header{
-        padding: 0 20px;
-        box-sizing: border-box;
-        display: flex;
-        justify-content: space-between;
-        .head-photobox{
-          display: flex;
-          align-items: center;
-          img{
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-          }
-          .name{
-            margin-left: 8px;
-            font-size: 28px;/*px*/
-            color: #666666;
-          }
-        }
-        .date{
-          font-weight: 300;
-          color: #666666;
-          font-size: 28px;/*px*/
-        }
-      }
       /*课节视频*/
       .Lesson-video{
         margin-top: 28px;
@@ -534,9 +495,9 @@ export default {
         text-align: center;
         color: #354048;
       }
-      .peacock,.mine{
+      .mine{
+        width: 100%;
         height: 100%;
-        width: 50%;
         display: flex;
         justify-content: center;
         align-items: center;

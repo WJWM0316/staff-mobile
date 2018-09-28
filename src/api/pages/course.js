@@ -60,6 +60,40 @@ export const getCourseJoinApi = (data) => {
     data
   })
 }
+// 打卡点赞
+export const getPunchFavorApi = (data) => {
+  return request({
+    url: `/coursesectioncard/favor/post/${data}`,
+    type: 'put'
+  })
+}
+// 课节打卡提交
+export const postPunchCardApi = (data) => {
+  return request({
+    url: `/CourseSection/CourseSectionCard/setCourseSectionCard`,
+    type: 'post',
+    data
+  })
+}
+// 课节打卡详情和打卡内容详情
+export const getPunchCardDetailsApi = (data) => {
+  return request({
+    url: `/CourseSection/CourseSectionCard/getCourseSectionCardDetails?${data.name}=${data.id}`,
+    type: 'get'
+  })
+}
+// 上传图片
+export const attachesApi = (data, config) => {
+  return request({
+    url: `/attaches`,
+    type: 'post',
+    config,
+    data
+  })
+}
+
+
+
 
 
 

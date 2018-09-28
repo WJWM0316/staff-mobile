@@ -1,26 +1,26 @@
 <template>
   <div class="dynamicItem" :class="{bottomBorder : showBorder}" @click="toDetail">
     <div class="header" @click.stop="toUserInfo">
-      <img class="headerPhoto" src="http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLBNL2BQhCZO1J8VcvQp5xBf38Ufarf6r2VYyTic5ciaTY4QXAPzibOzuZD9cM56FXpxPgjyDVhO9FhqQ/132" />
-      <div class="appellation">我是谁，我在哪里</div>
+      <img class="headerPhoto" :src="dynamicItem.releaseUser.avatar.smallUrl" />
+      <div class="appellation">{{dynamicItem.releaseUser.realname}}</div>
     </div>
     <!--内容区-->
     <div class="content">
       <!--1.纯文本-->
       <!--限制六行-->
       <div ref="circle-content">
-        <p class="content-text ellipsis">我是很长很长的文字，我会超出范围。我是很长很长的文字，我会超出范围。我是很长很长的文字，我会超出范围。我是很长很长的文字，我会超出范围。我是很长很长的文字，我会超出范围。我是很长很长的文字，我会超出范围。我是很长很长的文字，我会超出范围。我是很长很长的文字，我会超出范围。我是很长很长的文字，我会超出范围。我是很长很长的文字，我会超出范围。我是很长很长的文字，我会超出范围。</p>
+        <p class="content-text ellipsis">{{dynamicItem.cardContent}}</p>
         <p class="full-text-btn">{{isFullText('circle-content')}}</p>
       </div>
       <!--2.图片-->
-      <div class="content-images" v-if="picList.length > 0">
+      <div class="content-images" v-if="dynamicItem.cardContentFile.length > 0">
         <!--  图片为 1 张时  -->
-        <div class="item-image one" v-if="picList.length === 1">
-          <img :src="picList[0].fileUrl || '../../assets/icon/img_head_default.png'" />
+        <div class="item-image one" v-if="dynamicItem.cardContentFile.length === 1">
+          <img :src="dynamicItem.cardContentFile[0].url || '../../assets/icon/img_head_default.png'" />
         </div>
         <!--  图片为 多 张时  -->
-        <div class="item-image" v-for="(item,index) in picList" :key="index" v-else>
-          <img :src="item.fileUrl || '../../assets/icon/img_head_default.png'" />
+        <div class="item-image" v-for="(item,index) in dynamicItem.cardContentFile" :key="index" v-else>
+          <img :src="item.url || '../../assets/icon/img_head_default.png'" />
         </div>
       </div>
       <!--  视频-->
@@ -32,7 +32,7 @@
         </div>
       </div>
       <!-- 文件 -->
-      <div>
+      <div v-if="false">
         <div class="content-file" @click.stop="fileOpen('https://cdnstatic.ziwork.com/test/file/2018-05-29/4475f3474790d39f9e051b46480fea02.xlsx')">
           <img class="file-logo" src="./../../assets/suffix/pdf.png" />
           <!--<img class="file-logo" src="./../../assets/suffix/ppt.png" />
@@ -52,7 +52,8 @@
       <div class="info-area">
         <div class="time-and-del">
           <span class="time">{{timeStr}}</span>
-          <span class="del-btn" @click.stop="del">删除</span>
+          <span v-if="isCourse" class="del-btn" @click.stop="edit">编辑</span>
+          <span v-else class="del-btn" @click.stop="del">删除</span>
         </div>
         <div class="operation">
           <!-- 点赞按钮 -->
@@ -105,10 +106,14 @@
 </template>
 
 <script>
+import { getPunchFavorApi } from '@/api/pages/course'
 import moment from 'moment'
 export default {
   name: 'dynamicItem',
   props: {
+    item: {
+      type: Object
+    },
     showBorder: {
       type: Boolean,
       default: true
@@ -116,7 +121,20 @@ export default {
     showCommunicate: {
       type: Boolean,
       default: true
+    },
+    isCourse: {
+      type: Boolean,
+      default: true
     }
+  },
+  watch: {
+    pageNo: {
+      immediate: true,
+      handler: function () {
+        this.dynamicItem = this.item
+      }
+    },
+    'item': (nal, oal) => {}
   },
   computed: {
     // 朋友圈发表时间展示规则
@@ -173,6 +191,7 @@ export default {
   },
   data () {
     return {
+      dynamicItem: {},
       favors: [
         {realName: 'S好'},
         {realName: 'S好'},
@@ -263,7 +282,6 @@ export default {
     /*  文字超过六行隐藏与展示 */
     isFullText (ref) {
       this.$nextTick(() => {
-        console.log(111111111111)
         const el = this.$refs[ref]
         if (el && el.firstChild) {
           const contentText = el.firstChild
@@ -310,7 +328,7 @@ export default {
     /*  去帖子详情  */
     toDetail () {
       console.log(' 去详情页 ')
-      this.$router.push(`/course/detail`)
+      this.$router.push({path: `/course/detail`, query: {myPunch: this.communityCourse.peopleCardInfo.id, courseId: this.communityCourse.courseSectionId}})
     },
     /* 跳转个人详情页 */
     toUserInfo (userId) {
@@ -320,8 +338,15 @@ export default {
       this.$router.push(`/userInfo/${userId}/details`)
     },
     /*  点赞  */
-    praise () {
-      console.log(' 我是点赞事件 ')
+    async praise () {
+      try {
+        if (this.isCourse) {
+          await getPunchFavorApi(this.item.courseSectionCardId)
+        }
+        this.$toast({text: '点赞成功', type: 'success'})
+      } catch (e) {
+        this.$toast(e)
+      }
     },
     /*  评论  */
     comment () {
@@ -330,11 +355,14 @@ export default {
     /* 删除 */
     del () {
       console.log(' 我是删除事件 ')
+    },
+    /* 编辑 */
+    edit () {
+      let { courseId } = this.$route.query
+      this.$router.push({path: '/course/punchEditting', query: {courseSectionId: courseId}})
     }
   },
-  mounted () {
-    console.log(222222222222222)
-  }
+  mounted () {}
 }
 </script>
 
