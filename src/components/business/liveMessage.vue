@@ -4,8 +4,8 @@
       <img :src="messageData.avatar.middleUrl" alt="">
     </div>
     <div class="message-con">
-      <div class="name">{{messageData.fromUserName}}</div>
-      <div class="textType" v-if="messageData.type === 'text'">{{messageData.content}}</div>
+      <div class="name">{{messageData.realname}}</div>
+      <div class="textType" v-if="messageData.type === 'text'" :style="{background: bgColor}">{{messageData.content}}</div>
       <audio-message
         v-if="messageData.type === 'audio'"
         :messageData="messageData"
@@ -22,6 +22,10 @@ export default {
     audioMessage
   },
   props: {
+    bgColor: {
+      type: String,
+      default: '#ffffff'
+    },
     audioList: {
       type: Array,
       default: () => {
@@ -50,7 +54,7 @@ export default {
   .live-message {
     padding: 0 20px;
     overflow: hidden;
-    margin-bottom: 25px;
+    padding-bottom: 25px;
     &::last-child {
       margin-bottom: 0;
     }

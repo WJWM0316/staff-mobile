@@ -4,8 +4,19 @@ import { request } from '../require.js'
 export const userInfoApi = (data, needLoading) => {
   return request({
     type: 'get',
-    url: '/cur/user_info',
+    url: '/my/info',
     data,
     needLoading: needLoading
   })
 }
+
+// 获取用户信息
+export const getUserInfoApi = (data, needLoading) => {
+  return request({
+    type: 'get',
+    url: `/user/${data.id}/info`,
+    data,
+    needLoading: needLoading
+  })
+}
+

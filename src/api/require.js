@@ -11,14 +11,13 @@ Vue.axios.defaults.baseURL = settings.host
 
 
 let num = 0
+let token = localstorage.get('token')
 export const request = ({type = 'post', url, data = {}, needLoading = true} = {}) => {
   // 开发环境写死账号
-  let token = localstorage.get('token')
   if (process.env.NODE_ENV !== 'production' && token) {
-    if (data === '') {
-      data = {}
+    if (token) {
+      Vue.axios.defaults.headers.common['Authorization'] = token
     }
-    data.token = token
   }
   let datas = type === 'get' ? {params: {...data}} : {...data}
   if (needLoading) {
@@ -28,7 +27,7 @@ export const request = ({type = 'post', url, data = {}, needLoading = true} = {}
     }
   }
   // 请求
-  return Vue.axios[type](url, datas, needLoading).catch(response => {
+  return Vue.axios[type](url, datas, {'token': token}).catch(response => {
     num--
     if (num <= 0) {
       store.dispatch('updata_loadingStatus', false)

@@ -7,7 +7,7 @@
         <p class="edit" @click.stop="jumpEdit">点击编辑资料</p>
       </div>
       <div class="photo">
-        <img :src="pageInfo.avatarInfo.middleUrl" alt="">
+        <img :src="pageInfo.avatar.middleUrl" alt="">
       </div>
     </div>
     <div class="main">
@@ -53,7 +53,7 @@ export default {
     }
   },
   async created () {
-    this.pageInfo = this.userInfo
+    this.pageInfo = this.userInfo.base
   }
 }
 </script>

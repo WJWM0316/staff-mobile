@@ -34,15 +34,14 @@ export default {
     }
   },
   mounted () {
-    let tabHeight = 0
+    let tabHeight = this.$refs.pullUpTip.clientHeight
     let winHeight = window.screen.height * window.dpr
     window.onscroll = (e) => {
       if (!this.isShow) {
         this.isShow = true
-        tabHeight = this.$refs.pullUpTip.clientHeight
       }
       if (window.scrollY + tabHeight / 4 >= document.body.clientHeight - winHeight) {
-        if (!this.pullUpStatus) {
+        if (!this.pullUpStatus && !this.noData) {
           this.$emit('pullUp')
           console.log('加载更多数据')
         }

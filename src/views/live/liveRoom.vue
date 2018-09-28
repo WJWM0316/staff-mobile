@@ -58,7 +58,7 @@
       <div class='txtBar'>
         <input class='bar' @focus.stop='focus' type='text' v-model='problemTxt' placeholder='请输入你的问题'>
       </div>
-      <div class='submit' @click.stop='send(problemTxt)'>提问</div>
+      <div class='submit' @click.stop='putQuestions'>提问</div>
       <div class="area icon iconfont icon-live_btn_answers" @click.stop="openArea = true"></div>
     </div>
     <div class='testBtn' @click='closeWs'>断线测试</div>
@@ -72,7 +72,7 @@ import ws from '@u/websocket'
 import liveMessage from '@c/business/liveMessage'
 import questionArea from '@c/business/questionArea'
 import { mapState, mapActions } from 'vuex'
-import { getLiveRoomMsgApi } from '@/api/pages/live'
+import { getLiveRoomMsgApi, putQuestionsApi } from '@/api/pages/live'
 let onMessage = null
 export default {
   components: {
@@ -173,6 +173,31 @@ export default {
       setTimeout(() => {
         document.body.scrollTop = document.body.scrollHeight
       }, 100)
+    },
+    putQuestions () {
+      if (this.problemTxt !== '') {
+        return new Promise((resolve, reject) => {
+          let data = {
+            live_id: this.roomId,
+            master_uid: 19,
+            content: this.problemTxt
+          }
+          putQuestionsApi(data).then(res => {
+            this.problemTxt = ''
+            this.$toast({
+              text: '提交成功',
+              type: 'success'
+            })
+            resolve(res)
+          })
+        })
+      } else {
+        this.$toast({
+          text: '提问内容不能为空',
+          type: 'text',
+          width: '10em'
+        })
+      }
     },
     send (data) {
       ws.send(data)
