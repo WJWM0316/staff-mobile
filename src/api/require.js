@@ -21,7 +21,7 @@ Vue.axios.interceptors.request.use(
 
 let num = 0
 let token = localstorage.get('token')
-export const request = ({type = 'post', url, data = {}, needLoading = true} = {}) => {
+export const request = ({type = 'post', url, data = {}, needLoading = true, config = {}} = {}) => {
   // 开发环境写死账号
   if (process.env.NODE_ENV !== 'production' && token) {
     if (token) {
