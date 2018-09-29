@@ -16,6 +16,12 @@ const routers = [
     name: 'liveDetail',
     meta: { title: '直播详情' },
     component: resolve => require(['@/views/live/liveDetail'], resolve)
+  },
+  {
+    path: '/live/memberList',
+    name: 'memberList',
+    meta: { title: '成员列表', pullDown: true },
+    component: resolve => require(['@/views/live/memberList'], resolve)
   }
 ]
 

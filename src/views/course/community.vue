@@ -47,10 +47,9 @@ export default {
       pageInfo: {},
       jsonData: { // 获取课节列表的筛选条件参数
         order: {
-          update_time: 'DESC',
-          favors_count: 'DESC',
-          comments_count: 'DESC'
+          sort: 'DESC'
         },
+        sort: 0,
         course_id: 1
       },
       listPage: 1,

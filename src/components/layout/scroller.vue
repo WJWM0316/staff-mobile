@@ -210,7 +210,9 @@ export default {
       if (this.pullup) {
         this.scroll.on('pullingUp', () => {
           console.log('加载更多数据')
-          this.$emit('pullingUp', this.scroll)
+          if (!this.noData) {
+            this.$emit('pullingUp', this.scroll)
+          }
         })
       }
 

@@ -8,7 +8,7 @@
         <span class='status red' v-show='wsStatus === 2'>直播未连接</span>
         <span class='num'>{{onlineNum}}人参与</span>
       </p>
-      <div class='more'>
+      <div class='more' @click.stop="jumpMore">
         <span>更多介绍</span>
         <i class='icon iconfont icon-list_live_icon_more'></i>
       </div>
@@ -58,7 +58,7 @@
       <div class='txtBar'>
         <input class='bar' @focus.stop='focus' type='text' v-model='problemTxt' placeholder='请输入你的问题'>
       </div>
-      <div class='submit' @click.stop='send(problemTxt)'>提问</div>
+      <div class='submit' @click.stop='putQuestions'>提问</div>
       <div class="area icon iconfont icon-live_btn_answers" @click.stop="openArea = true"></div>
     </div>
     <div class='testBtn' @click='closeWs'>断线测试</div>
@@ -72,7 +72,7 @@ import ws from '@u/websocket'
 import liveMessage from '@c/business/liveMessage'
 import questionArea from '@c/business/questionArea'
 import { mapState, mapActions } from 'vuex'
-import { getLiveRoomMsgApi } from '@/api/pages/live'
+import { getLiveRoomMsgApi, putQuestionsApi } from '@/api/pages/live'
 let onMessage = null
 export default {
   components: {
@@ -115,6 +115,9 @@ export default {
     ...mapActions([
       'updata_sendData'
     ]),
+    jumpMore () {
+      this.$router.push(`/live/detail?roomId=${this.roomId}`)
+    },
     scrollTo (type) {
       switch (type) {
         case 'top':
@@ -174,6 +177,31 @@ export default {
         document.body.scrollTop = document.body.scrollHeight
       }, 100)
     },
+    putQuestions () {
+      if (this.problemTxt !== '') {
+        return new Promise((resolve, reject) => {
+          let data = {
+            live_id: this.roomId,
+            master_uid: 19,
+            content: this.problemTxt
+          }
+          putQuestionsApi(data).then(res => {
+            this.problemTxt = ''
+            this.$toast({
+              text: '提交成功',
+              type: 'success'
+            })
+            resolve(res)
+          })
+        })
+      } else {
+        this.$toast({
+          text: '提问内容不能为空',
+          type: 'text',
+          width: '10em'
+        })
+      }
+    },
     send (data) {
       ws.send(data)
     },
@@ -196,7 +224,7 @@ export default {
       let data = obj.detail
       // 登录和退出登录逻辑
       if (data.hasOwnProperty('cmd')) {
-        if (data.cmd === 'online_login') {
+        if (data.cmd === 'online_login' || data.cmd === 'login.token') {
           that.onlineNum++
         } else if (data.cmd === 'online_logout') {
           that.onlineNum--

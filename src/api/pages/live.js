@@ -38,3 +38,68 @@ export const getJoinListApi = (data, needLoading) => {
     needLoading: needLoading
   })
 }
+
+// 获取近期直播列表
+export const getRecentListApi = (data, needLoading) => {
+  return request({
+    type: 'get',
+    url: `/live/recent`,
+    data,
+    needLoading: needLoading
+  })
+}
+
+// 获取直播回顾列表
+export const getEndListApi = (data, needLoading) => {
+  return request({
+    type: 'get',
+    url: `/live/end`,
+    data,
+    needLoading: needLoading
+  })
+}
+
+// 获取直播成员列表
+export const getMemberListApi = (data, needLoading) => {
+  return request({
+    type: 'get',
+    url: `/live/memberList/${data.id}`,
+    data,
+    needLoading: needLoading
+  })
+}
+
+// 获取直播成员列表
+export const getTeacherListApi = (data, needLoading) => {
+  return request({
+    type: 'get',
+    url: `/live/tutor/${data.id}`,
+    data,
+    needLoading: needLoading
+  })
+}
+
+// 获取问答列表
+export const getProblemListApi = (data, needLoading) => {
+  return request({
+    type: 'post',
+    url: `/live/problemList`,
+    data,
+    needLoading: needLoading
+  })
+}
+
+// 提问
+export const putQuestionsApi = (data, needLoading) => {
+  return request({
+    type: 'post',
+    url: `/live/addProblem`,
+    data,
+    needLoading: needLoading
+  })
+}
+
+
+
+
+

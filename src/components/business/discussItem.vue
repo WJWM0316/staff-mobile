@@ -1,8 +1,8 @@
 <template>
-  <div class="discussItem">
+  <div class="discussItem" v-if="item">
     <!-- 头像 -->
     <div class="left">
-      <img :src="item.toUserAvatar.smallUrl" class="user-image" @click.stop="toUserInfo(item.reviewer.userId)" />
+      <img v-if="item.toUserAvatar" :src="item.toUserAvatar.smallUrl" class="user-image" @click.stop="toUserInfo(item.reviewer.userId)" />
     </div>
     <div class="right" :class="{border: isShowBorder}">
       <div class="content-head">
@@ -57,28 +57,28 @@
       <div class="comment-area" v-if="item.replyCount > 0" @click="commentAreaClick">
         <!-- 点赞信息 -->
         <div class="praise-block" v-if="true">
-          <img class="icon-zan" src="./../../assets/icon/bnt_zan@3x.png" />
+          <img class="icon-zan" src="@/assets/icon/bnt_zan@3x.png" />
           <div class="praise-name">
             <span class="favor-name" v-for="(favor, favorIndex) in favorList" :key="favorIndex" @click.stop="toUserInfo(favor.userId)">{{favorIndex > 0 ?  ','+favor.realName : favor.realName}}</span>
           </div>
           <span class="praise-total" v-if="true">等{{favorList.length}}人觉得很赞</span>
         </div>
         <!-- 评论信息 -->
-        <div class="reply-block" v-if="true">
-          <div class="reply" v-for="(reply,index) in comments" :key="index" v-if="true">
-            <template v-if="true">
+        <div class="reply-block" v-if="item.replyCommentList.length > 0">
+          <div class="reply" v-for="(reply,index) in item.replyCommentList" :key="index">
+            <div v-if="reply.ancestorCommentId !== reply.parentCommentId">
               <p>
-                <span class="favor-name" @click.stop="toUserInfo(reply.reviewer.userId)">{{reply.reviewer.realName}}</span> 回复 <span class="favor-name" @click.stop="toUserInfo(reply.receiver.userId)">我是被回复的人</span>：{{reply.content}}
+                <span class="favor-name" @click.stop="toUserInfo(reply.reviewer.userId)">{{reply.userName}}</span> 回复 <span class="favor-name" @click.stop="toUserInfo(reply.receiver.userId)">{{reply.toUserName}}</span>：{{reply.content}}
               </p>
-            </template>
-            <template v-else>
+            </div>
+            <div v-else>
               <div>
-                <p v-if="true"><span class="favor-name" @click.stop="toUserInfo(reply.reviewer.userId)">我是谁</span>: {{reply.content}}</p>
+                <p v-if="true"><span class="favor-name" @click.stop="toUserInfo(reply.reviewer.userId)">{{reply.userName}}</span>: {{reply.content}}</p>
                 <p v-else><span class="favor-name" @click.stop="toUserInfo(reply.reviewer.userId)">{{reply.reviewer.realName}}</span>: {{reply.content}}</p>
               </div>
-            </template>
+            </div>
           </div>
-          <div class="reply" v-if="false">
+          <div class="reply" v-if="item.replyCommentList.length > 3">
             <span class="favor-name">查看全部{{item.commentTotal}}条回复</span>
           </div>
         </div>
@@ -111,42 +111,6 @@ export default {
         {realName: 'S好'},
         {realName: 'S好'},
         {realName: 'S好'}
-      ],
-      comments: [
-        {
-          commentId: 85,
-          commentTotal: 5,
-          content: '注意每条之间的间距，和每条评论的行间距注意每条之间的间距，和每条评论的行间距',
-          favorTotal: 2,
-          isFavor: 1,
-          isHot: 1,
-          isNew: 1,
-          isSelf: 0,
-          peopleCourseId: 1020,
-          releaseTime: 1534574115,
-          reviewer: {
-            avatar: 'http://thirdwx.qlogo.cn/mmopen/BMibibqZYibkicaJicQQ3zlN78Ibr0Xa8Fk6yt3zjvavI9Vgb5RjiarPAjJWAwkqMukJq8oicNyH7Pibzs9TDBG3PMMkWgPetlAdj42o/132',
-            avatarUrl: 'http://thirdwx.qlogo.cn/mmopen/BMibibqZYibkicaJicQQ3zlN78Ibr0Xa8Fk6yt3zjvavI9Vgb5RjiarPAjJWAwkqMukJq8oicNyH7Pibzs9TDBG3PMMkWgPetlAdj42o/132',
-            realName: 'LeonW'
-          }
-        },
-        {
-          commentId: 85,
-          commentTotal: 5,
-          content: '好厉害～',
-          favorTotal: 2,
-          isFavor: 1,
-          isHot: 1,
-          isNew: 1,
-          isSelf: 0,
-          peopleCourseId: 1020,
-          releaseTime: 1534574115,
-          reviewer: {
-            avatar: 'http://thirdwx.qlogo.cn/mmopen/BMibibqZYibkicaJicQQ3zlN78Ibr0Xa8Fk6yt3zjvavI9Vgb5RjiarPAjJWAwkqMukJq8oicNyH7Pibzs9TDBG3PMMkWgPetlAdj42o/132',
-            avatarUrl: 'http://thirdwx.qlogo.cn/mmopen/BMibibqZYibkicaJicQQ3zlN78Ibr0Xa8Fk6yt3zjvavI9Vgb5RjiarPAjJWAwkqMukJq8oicNyH7Pibzs9TDBG3PMMkWgPetlAdj42o/132',
-            realName: 'LeonW'
-          }
-        }
       ]
     }
   },
@@ -215,8 +179,16 @@ export default {
     comment () {
       if (this.$route.path !== '/course/commentDetail') {
         this.$router.push({path: '/course/commentDetail', query: {id: this.item.id}})
+        return
       }
-      console.log(this.$route, ' 我是点击评论按钮评论事件 ')
+      console.log(' 我是点击评论按钮评论事件 ')
+      let param = {
+        id: this.item.id // 评论的id
+      }
+      this.$emit('disableOperationEvents', {
+        eventType: 'comment',
+        param
+      })
     },
     async praise () {
       try {
@@ -277,7 +249,6 @@ export default {
     &.border {
       border-bottom: solid 0.5px #ededed; /* no */
     }
-
     .info-area {
       display: flex;
       margin-top: 12.5px;
@@ -313,9 +284,8 @@ export default {
         margin-left: 5px;
       }
     }
-
     /* 评论区 */
-    & .comment-area {
+    .comment-area {
       margin-top: 6.5px;
       padding: 2.5px 5px;
       width: 100%;
@@ -324,7 +294,7 @@ export default {
       box-sizing: border-box;
       font-size: 13px;/*px*/
 
-      & .praise-block {
+      .praise-block {
         padding: 9px 0 7.5px;
         display: flex;
         box-sizing: border-box;
@@ -342,7 +312,7 @@ export default {
           flex: 0 0 auto;
         }
 
-        & .praise-name {
+        .praise-name {
           font-size: 28px;/*px*/
           font-weight: 500;
           flex-grow: 1;

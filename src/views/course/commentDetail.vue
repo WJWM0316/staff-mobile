@@ -3,12 +3,17 @@
   <div class="all-reply">
     <!-- header -->
     <div class="header">
-      <discuss-item :item="discussInfo" :isShowBorder="false"></discuss-item>
+      <discuss-item :item="discussInfo" :isShowBorder="false" @disableOperationEvents="operation"></discuss-item>
     </div>
     <!-- container -->
     <div class="container">
-      <div class="container-title">回复(20)</div>
-      <discuss-item></discuss-item>
+      <div class="fixed-box" ref="ceiling-box">
+        <div class="ceiling-box" :class="navTabName">
+          <span @click="toggle('comment')">评论({{discussInfo.commentCount}})</span>
+          <span @click="toggle('praise')">点赞({{discussInfo.favorCount}})</span>
+        </div>
+      </div>
+      <discuss-item :item="discussInfo" :isShowBorder="false" @disableOperationEvents="operation"></discuss-item>
     </div>
       <!--<div class="ask-box {{isShowPumpBtn ? 'show' : ''}}">-->
       <!--<div class="user-input">-->
@@ -25,22 +30,6 @@
       <!--<text class="ask-btn" @tap="sendComment">发送</text>-->
       <!--</div>-->
     <!-- footer -->
-    <div class="footer" v-if="!displaySuspensionInput">
-      <div class="page-operation">
-        <!-- 点赞按钮 -->
-        <button @click="operation({eventType: 'praise'})">
-          <img v-if="item.isFavor" class="icon-zan" src="./../../assets/icon/bnt_zan_pre@3x.png" />
-          <img v-else class="icon-zan" src="./../../assets/icon/bnt_zan@3x.png" />
-          {{item.favorTotal > 0 ? item.favorTotal : '点赞'}}
-        </button>
-        <span class="split"></span>
-        <!-- 评论按钮 -->
-        <button @click="comment()">
-          <img class="icon-pinglun" src="./../../assets/icon/bnt_comment@3x.png" />
-          {{pagination.total > 0 ? pagination.total : '评论'}}
-        </button>
-      </div>
-    </div>
     <!-- 悬浮输入框 -->
     <suspension-input v-model="displaySuspensionInput"
                       :placeholder="suspensionInputPlaceholder"
@@ -48,6 +37,7 @@
                       :sendText="'发送'"
                       :isShow="isShow"
                       @send="sendComment"
+                      ref="input"
     ></suspension-input>
   </div>
 </template>
@@ -69,7 +59,8 @@ export default {
       commentIndex: -1,
       suspensionInputPlaceholder: '写评论',
       isShow: false,
-      displaySuspensionInput: true
+      displaySuspensionInput: true,
+      navTabName: 'comment'
     }
   },
   computed: {},
@@ -88,40 +79,61 @@ export default {
       let res = await getCommentDetailApi(id)
       this.discussInfo = res.data
     },
-    /* 触发事件类型 */
+    /* 组件触发的事件 */
     operation (e) {
-      const {eventType, itemIndex} = e
-      const item = this.discussItemList[itemIndex]
+      console.log(e, ' 我是带回来的数据 ')
+      const {eventType, param} = e
       switch (eventType) {
         case 'comment':
           // :todo 评论请求
-          this.comment({item, itemIndex}).then()
+          this.comment(param).then()
           break
         case 'praise':
-          this.praise({item, itemIndex}).then()
+          this.praise(param)
           break
         case 'del':
-          this.del({item, itemIndex}).then()
+          console.log(' 我是删除 ')
           break
+        case 'comment-area':
+          this.jumpCommentDetail(param)
       }
     },
     /* 调起底部输入框 */
-    async comment ({item, itemIndex}) {
-      if (itemIndex > -1) {
+    async comment (param) {
+      console.log(param.id)
+      this.isShow = true
+      /* if (itemIndex > -1) {
         this.suspensionInputPlaceholder = '回复' + item.reviewer.realName + ':'
         this.commentIndex = itemIndex
       } else {
         this.suspensionInputPlaceholder = '写评论'
         this.commentIndex = -1
-      }
+      } */
       this.displaySuspensionInput = true
     },
-    /* 点赞 */
-    async praise () {},
     /* 删除 */
     async del () {},
     /* 发送评论 */
-    async sendComment () {}
+    async sendComment ({value, commentIndex}) {
+      const params = {
+        sourceId: this.discussInfo.id, // 对应打卡或评论的id
+        sourceType: 'course_section_card_comment', // 对应评论类型是打卡或是回复评论
+        content: value // 评论内容
+      }
+      courseCardCommentApi(params).then(res => {
+        this.discussInfo.commentCount += 1
+        this.$toast({text: '评论成功', type: 'success'})
+      }).catch(e => {
+        this.$toast({text: '评论失败'})
+      })
+      console.log(' 已经发送 ')
+    },
+    /* 切换nav */
+    toggle (targetName) {
+      if (this.navTabName !== targetName) {
+        this.navTabName = targetName
+      }
+    }
   },
   created () {
     this.pageInit()
@@ -137,6 +149,39 @@ export default {
     & .container {
       margin-left: -20px;
       margin-right: -20px;
+      .fixed-box{
+        border-bottom: solid 0.5px #DCDCDC; /* no */
+      }
+      .ceiling-box {
+        display: flex;
+        padding: 0 20px;
+        align-items: center;
+        color: #354048;
+        font-size: 30px;/*px*/
+        span {
+          font-weight: 500;
+          line-height: 21px;
+          margin-right: 31.5px;
+          padding: 17.5px 0 8px;
+        }
+        &.comment span:nth-of-type(1),
+        &.praise span:nth-of-type(2) {
+          color: #354048;
+          font-weight: 700;
+          position: relative;
+        }
+        &.comment span:nth-of-type(1):after,
+        &.praise span:nth-of-type(2):after {
+          content: '';
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 2px;
+          border-radius: 2px;
+          background-color: #FFE266;
+        }
+      }
       & .container-title {
         font-size: 15px;
         font-weight: 500;
