@@ -94,8 +94,6 @@ export default {
       }
     }
   },
-  watch: {
-  },
   created () {
     this.getUserInfo()
   }
