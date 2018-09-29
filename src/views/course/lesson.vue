@@ -132,7 +132,6 @@
 <script>
 import Vue from 'vue'
 import lessondynamicItem from '@c/business/dynamicItem'
-// import WechatMixin from '@/mixins/wechat'
 import { Actionsheet } from 'vux'
 import { getCourseCardListApi, setExcellentCourseCardApi, lessonDetailApi } from '@/api/pages/course'
 export default {

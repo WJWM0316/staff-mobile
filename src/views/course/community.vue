@@ -6,28 +6,29 @@
       <div class="top">
         <div class="postNum">已更新<span style="color: #D7AB70;">10</span> 篇</div>
         <div class="rightBox" @click.stop="reverse">
-          <div class="study">
+          <div class="study" v-if="false">
             <img src="../../assets/icon/bnt_positioning@3x.png"/>上次学到
           </div>
-          <div class="reverse">
+          <div class="reverse" @click.stop="reverse">
             <img src="../../assets/icon/bnt_order@3x.png"/>倒序
           </div>
         </div>
       </div>
       <div class="lessonList">
-        <div class="before">点击加载前面内容</div>
+        <div class="before" v-if="false">点击加载前面内容</div>
         <div v-for="(item, index) in lessonList" class="Lesson" :key="index" @click.stop="toLesson(item.courseSectionId)">
           <span class="txt">{{index+1}}、{{item.title}}</span>
           <!--正在学习-->
           <img v-show="item.statusInfo.isCurrentStudy === 1" src="@/assets/icon/icon_position@3x.png"/>
           <!--未解锁-->
-          <img v-show="item.statusInfo.isUnlock === 1" src="@/assets/icon/icon_lock@3x.png"/>
+          <img v-show="item.statusInfo.isUnlock === 0" src="@/assets/icon/icon_lock@3x.png"/>
           <!--已解锁-->
-          <img v-show="item.statusInfo.isUnlock === 0 && item.statusInfo.isCurrentStudy === 0 && item.statusInfo.isPunchCard === 0" src="@/assets/icon/icon_unlock@3x.png"/>
+          <img v-show="item.statusInfo.isUnlock === 1 && item.statusInfo.isCurrentStudy === 0 && item.statusInfo.isPunchCard === 0" src="@/assets/icon/icon_unlock@3x.png"/>
           <!--已完成-->
           <img v-show="item.statusInfo.isPunchCard === 1 && item.statusInfo.isCurrentStudy !== 1" src="@/assets/icon/icon_complete@3x.png"/>
         </div>
-        <div class="after">点击加载后面内容</div>
+        <div class="after" v-if="lessonTotal > lessonList.length" @click.stop="loadMoreLesson">点击加载后面内容</div>
+        <div class="after" v-else>没有更多内容了~</div>
       </div>
     </div>
   </div>
@@ -53,7 +54,9 @@ export default {
         course_id: 1
       },
       listPage: 1,
-      lessonList: []
+      lessonList: [],
+      lessonTotal: '', // 课节数量
+      isReverse: false // 是否倒序
     }
   },
   methods: {
@@ -65,6 +68,7 @@ export default {
       let res = await this.getcourseDetail(id)
       let lessonList = await this.getCourseSectionApi()
       this.lessonList = lessonList.data
+      this.lessonTotal = lessonList.meta.total
       this.pageInfo = res.data
     },
     /* 课程详情接口 */
@@ -82,6 +86,23 @@ export default {
         pageCount: 20
       }
       return CourseSectionApi(param)
+    },
+    /* 倒序 */
+    reverse () {
+      this.lessonList.reverse()
+      this.isReverse = !this.isReverse
+    },
+    /* 加载下一页课节 */
+    async loadMoreLesson () {
+      this.listPage += 1
+      let lessonList = await this.getCourseSectionApi()
+      if (this.isReverse) {
+        this.lessonList.reverse()
+        this.lessonList.push(...lessonList.data)
+        this.lessonList.reverse()
+      } else {
+        this.lessonList.push(...lessonList.data)
+      }
     }
   },
   created () {

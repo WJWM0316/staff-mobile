@@ -31,9 +31,9 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
   let datas
   /* 是否发生formdata */
   if (config.headers) {
-    datas = type === 'get' ? {params: {...data}} : data
+    datas = type === 'post' ? data : {params: {...data}}
   } else {
-    datas = type === 'get' ? {params: {...data}} : {...data}
+    datas = type === 'post' ? {...data} : {params: {...data}}
   }
   if (needLoading) {
     num++

@@ -2,16 +2,16 @@
   <div class="discussItem">
     <!-- 头像 -->
     <div class="left">
-      <img src="http://thirdwx.qlogo.cn/mmopen/ajNVdqHZLLBNL2BQhCZO1J8VcvQp5xBf38Ufarf6r2VYyTic5ciaTY4QXAPzibOzuZD9cM56FXpxPgjyDVhO9FhqQ/132" class="user-image" @click.stop="toUserInfo(item.reviewer.userId)" />
+      <img :src="item.toUserAvatar.smallUrl" class="user-image" @click.stop="toUserInfo(item.reviewer.userId)" />
     </div>
     <div class="right" :class="{border: isShowBorder}">
       <div class="content-head">
         <div class="user-box" v-if="true">
           <div>
             <!-- 用户名 -->
-            <p class="user-name master" @click.stop="toUserInfo(item.reviewer.userId)">我是谁，我在哪</p>
+            <p class="user-name master" @click.stop="toUserInfo(item.reviewer.userId)">{{item.userName}}</p>
             <!-- 用户头衔 -->
-            <p class="user-career" v-if="false">我是头衔</p>
+            <p class="user-career" v-if="item.userTitle">{{item.userTitle}}</p>
           </div>
         </div>
         <div class="other-box" v-else>
@@ -28,34 +28,33 @@
       <!-- 发表内容 类型: 指定回复人 无指定回复人 -->
       <div class="publish-content">
         <!-- 指定回复人 -->
-        <p class="content-text" v-if="true">回复<span style="color: #4080AD; display: inline-block; z-index: 9;" @click.stop="toUserInfo(item.receiver.userId)">我是指定回复人的名称</span>：我是回复的内容</p>
+        <p class="content-text" v-if="false">回复<span style="color: #4080AD; display: inline-block; z-index: 9;" @click.stop="toUserInfo(item.receiver.userId)">我是指定回复人的名称</span>：我是回复的内容</p>
         <!-- 无指定回复人 -->
-        <p class="content-text" v-else>我是没有指定回复人的内容</p>
+        <p class="content-text" v-else>{{item.content}}</p>
       </div>
       <!------------------------------------------------------>
       <!-- 尾部 -->
       <div class="info-area">
         <div>
-          <span>{{timeStr}}</span>
-          <span v-if="true" class="del-btn" @click.stop="del">删除</span>
+          <span>{{item.createdAt}}</span>
+          <span v-if="item.isOwner === 1" class="del-btn" @click.stop="del">删除</span>
         </div>
-
         <div class="operation">
           <!-- 点赞按钮 -->
           <div class="praise" v-if="true" @click.stop="praise">
-            <img v-if="true" class="icon-zan" src="./../../assets/icon/bnt_zan_pre@3x.png" />
+            <img v-if="item.isFavor === 1" class="icon-zan" src="./../../assets/icon/bnt_zan_pre@3x.png" />
             <img v-else class="icon-zan" src="./../../assets/icon/bnt_zan@3x.png" />
-            12
+            {{item.favorCount > 0? item.favorCount : ''}}
           </div>
           <!-- 评论按钮 -->
           <div class="comment" v-if="true" @click.stop="comment">
             <img class="icon-pinglun" src="./../../assets/icon/bnt_comment@3x.png" />
-            30
+            {{item.commentCount > 0? item.commentCount : ''}}
           </div>
         </div>
       </div>
       <!-- 评论区 -->
-      <div class="comment-area" v-if="true" @click="commentAreaClick">
+      <div class="comment-area" v-if="item.replyCount > 0" @click="commentAreaClick">
         <!-- 点赞信息 -->
         <div class="praise-block" v-if="true">
           <img class="icon-zan" src="./../../assets/icon/bnt_zan@3x.png" />
@@ -67,7 +66,7 @@
         <!-- 评论信息 -->
         <div class="reply-block" v-if="true">
           <div class="reply" v-for="(reply,index) in comments" :key="index" v-if="true">
-            <template v-if="false">
+            <template v-if="true">
               <p>
                 <span class="favor-name" @click.stop="toUserInfo(reply.reviewer.userId)">{{reply.reviewer.realName}}</span> 回复 <span class="favor-name" @click.stop="toUserInfo(reply.receiver.userId)">我是被回复的人</span>：{{reply.content}}
               </p>
@@ -90,12 +89,19 @@
 
 <script>
 import moment from 'moment'
+import { getFavorApi, delCommentApi } from '@/api/pages/course'
 export default {
   name: 'discussItem',
   props: {
     isShowBorder: {
       type: Boolean,
       default: true
+    },
+    item: {
+      type: Object
+    },
+    index: {
+      type: Number
     }
   },
   data () {
@@ -207,9 +213,34 @@ export default {
       console.log(' 我是去个人详情页的事件 ')
     },
     comment () {
-      console.log(' 我是点击评论按钮评论事件 ')
+      if (this.$route.path !== '/course/commentDetail') {
+        this.$router.push({path: '/course/commentDetail', query: {id: this.item.id}})
+      }
+      console.log(this.$route, ' 我是点击评论按钮评论事件 ')
+    },
+    async praise () {
+      try {
+        let param = {
+          id: this.item.id,
+          sourceType: 'course_section_card_comment'
+        }
+        await getFavorApi(param)
+        this.$toast({text: '点赞成功', type: 'success'})
+      } catch (err) {
+        this.$toast({text: err})
+      }
+      console.log(' 我是点击点赞按钮点赞事件 ')
+    },
+    del () {
+      delCommentApi(this.item.id).then(res => {
+        this.$toast({text: '评论已删除', type: 'success'})
+        this.$emit('delComment', {index: this.index})
+      }).catch(err => {
+        this.$toast({text: err})
+      })
     }
-  }
+  },
+  created () {}
 }
 </script>
 

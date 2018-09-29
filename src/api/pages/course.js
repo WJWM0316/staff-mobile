@@ -60,10 +60,17 @@ export const getCourseJoinApi = (data) => {
     data
   })
 }
-// 打卡点赞
-export const getPunchFavorApi = (data) => {
+// 打卡或评论点赞
+export const getFavorApi = (data) => {
   return request({
-    url: `/coursesectioncard/favor/post/${data}`,
+    url: `/coursesectioncard/commonFavor/${data.id}?sourceType=${data.sourceType}`,
+    type: 'put'
+  })
+}
+// 打卡或评论取消点赞
+export const delFavorApi = (data) => {
+  return request({
+    url: `/coursesectioncard/commonCancelFavor/${data.id}?sourceType=${data.sourceType}`,
     type: 'put'
   })
 }
@@ -91,6 +98,52 @@ export const attachesApi = (data, config) => {
     data
   })
 }
+// 打卡点赞列表
+export const getFavorListApi = (data) => {
+  return request({
+    url: `/coursesectioncard/favor/postFavorUsers/1?page=${data.page}`,
+    type: 'get'
+  })
+}
+// 请求一级评论列表
+export const getCommentListApi = (data) => {
+  return request({
+    url: `/coursesectioncard/comment/commentList/${data.postId}?page=${data.page}`,
+    type: 'get'
+  })
+}
+// 请求一级热门评论列表
+export const getHotCommentListApi = (data) => {
+  return request({
+    url: `/coursesectioncard/comment/hot/${data.postId}?count=${data.count}`,
+    type: 'get'
+  })
+}
+// 评论打卡或回复评论
+export const courseCardCommentApi = (data) => {
+  return request({
+    url: `/coursesectioncard/commoneComment/${data.sourceId}?sourceType=${data.sourceType}&content=${data.content}`,
+    type: 'put'
+  })
+}
+// 评论打卡或回复评论
+export const getCommentDetailApi = (data) => {
+  return request({
+    url: `/coursesectioncard/comment/${data}`,
+    type: 'get'
+  })
+}
+// 评论打卡或回复评论
+export const delCommentApi = (data) => {
+  return request({
+    url: `/coursesectioncard/comment/${data}`,
+    type: 'delete'
+  })
+}
+
+
+
+
 
 
 

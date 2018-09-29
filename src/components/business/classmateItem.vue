@@ -1,11 +1,11 @@
 <template>
-  <div class="classmateItem">
+  <div class="classmateItem" v-if="item">
     <div class="userInfo-img">
-      <img class="headImg" :src="item.avatar || '../../assets/icon/img_head_default.png'">
+      <img class="headImg" :src="item.fromUserAvatar.smallUrl || '../../assets/icon/img_head_default.png'">
     </div>
     <div class="userInfo-desc">
-      <div class="name">我是谁 <span class="managerTitle" v-show="showMangerTitle">管理员</span></div>
-      <div class="persion-info">我做啥   |  我是谁是是是是是</div>
+      <div class="name">{{item.fromUserName}}<span class="managerTitle" v-show="showMangerTitle">管理员</span></div>
+      <div class="persion-info">{{item.fromUserGroup}}   |  {{item.fromUserOccupation}}</div>
     </div>
   </div>
 </template>
@@ -18,36 +18,35 @@ export default {
     showMangerTitle: {
       type: Boolean,
       default: false
+    },
+    item: {
+      type: Object
     }
   },
   data () {
-    return {
-      item: {
-        avatar: 'http://thirdwx.qlogo.cn/mmopen/BMibibqZYibkicaJicQQ3zlN78Ibr0Xa8Fk6yt3zjvavI9Vgb5RjiarPAjJWAwkqMukJq8oicNyH7Pibzs9TDBG3PMMkWgPetlAdj42o/132',
-        avatarUrl: 'http://thirdwx.qlogo.cn/mmopen/BMibibqZYibkicaJicQQ3zlN78Ibr0Xa8Fk6yt3zjvavI9Vgb5RjiarPAjJWAwkqMukJq8oicNyH7Pibzs9TDBG3PMMkWgPetlAdj42o/132',
-        realName: 'LeonW'
-      }
-    }
+    return {}
+  },
+  created () {
+    console.log(this.item, ' 33333333333333 ')
   }
 }
 </script>
 
 <style lang="less" scoped>
 .classmateItem {
-  border-bottom: 1px solid #dcdcdc; /* no */
-  padding: 30px 0;
+  padding: 15px 0;
   display: flex;
   align-items: center;
 
   .userInfo-img {
     .headImg{
-      width: 100px;
-      height: 100px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
     }
   }
   .userInfo-desc {
-    margin-left: 30px;
+    margin-left: 15px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -61,20 +60,20 @@ export default {
       .managerTitle{
         display: inline-block;
         font-size: 24px;/*px*/
-        line-height: 36px;
+        line-height: 18px;
         color: #D7AB70;
-        margin-left: 27px;
+        margin-left: 13px;
         text-align: center;
-        border-radius: 20px;
-        width: 102px;
-        height: 36px;
+        border-radius: 10px;
+        width: 51px;
+        height: 18px;
         border: 1px solid #D7AB70;/*no*/
       }
     }
     .persion-info{
-      padding-top: 10px;
+      padding-top: 5px;
       font-size: 26px;/*px*/
-      line-height: 34px;
+      line-height: 17px;
       color: #929292;
     }
   }
