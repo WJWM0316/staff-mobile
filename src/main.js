@@ -7,7 +7,7 @@ import './util/flexible'
 import App from './App'
 import store from './store/'
 import wx from 'weixin-js-sdk'
-import LazyLoad from '@u/imgLazyLoad/lazyLoad.js'
+import LazyLoad from './util/imgLazyLoad/lazyLoad'
 import VueClipboard from 'vue-clipboard2'
 Vue.use(VueClipboard)
 Vue.use(LazyLoad)
@@ -21,4 +21,3 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app-box')
-
