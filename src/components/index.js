@@ -14,7 +14,6 @@ Vue.use(ToastPlugin)
 Vue.use(WechatPlugin)
 Vue.use(ConfirmPlugin)
 
-
 Vue.prototype.$toast = function ({text, position = 'bottom', type = 'text', width = '7.6em', callBack}) {
   this.$vux.toast.show({
     isShowMask: true,
