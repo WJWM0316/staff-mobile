@@ -54,6 +54,7 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import { userInfoApi } from '@/api/pages/center'
 export default {
   data () {
     return {
@@ -81,10 +82,18 @@ export default {
           this.$router.push('/center/help')
           break
       }
+    },
+    async getUserInfo () {
+      if (!this.userInfo.base) {
+        let res = await userInfoApi()
+        this.pageInfo = res.data.base
+      } else {
+        this.pageInfo = this.userInfo.base
+      }
     }
   },
-  async created () {
-    this.pageInfo = this.userInfo.base
+  created () {
+    this.getUserInfo()
   }
 }
 </script>

@@ -53,6 +53,7 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import { userInfoApi } from '@/api/pages/center'
 import WechatMixin from '@/mixins/wechat'
 export default {
   mixins: [WechatMixin],
@@ -72,7 +73,7 @@ export default {
   },
   computed: {
     ...mapState({
-      userInfo: state => state.global.userInfo.base
+      userInfo: state => state.global.userInfo
     })
   },
   methods: {
@@ -83,12 +84,20 @@ export default {
     },
     editPhoto () {
       this.wechatChooseImage()
+    },
+    async getUserInfo () {
+      if (!this.userInfo.base) {
+        let res = await userInfoApi()
+        this.pageInfo = res.data.base
+      } else {
+        this.pageInfo = this.userInfo.base
+      }
     }
   },
   watch: {
   },
   created () {
-    this.pageInfo = this.userInfo
+    this.getUserInfo()
   }
 }
 </script>
