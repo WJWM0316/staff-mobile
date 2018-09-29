@@ -140,8 +140,6 @@ export default {
         reader.onload = function () {
           let b = that.dataURLtoFile(this.result)
           that.images.push(this.result)
-          debugger
-          console.log(this.result)
         }
       })
     },

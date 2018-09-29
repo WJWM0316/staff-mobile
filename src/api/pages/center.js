@@ -14,9 +14,52 @@ export const userInfoApi = (data, needLoading) => {
 export const getUserInfoApi = (data, needLoading) => {
   return request({
     type: 'get',
-    url: `/user/${data.id}/info`,
+    url: `/user/${data.uid}/info`,
     data,
     needLoading: needLoading
   })
 }
+
+// 获取当前用户的已加入列表
+export const getMyJoinedListApi = (data, needLoading) => {
+  return request({
+    type: 'get',
+    url: `/my/joins`,
+    data,
+    needLoading: needLoading
+  })
+}
+// 获取用户的已加入列表
+export const getUserJoinedListApi = (data, needLoading) => {
+  return request({
+    type: 'get',
+    url: `/user/${data.uid}/joins`,
+    data,
+    needLoading: needLoading
+  })
+}
+
+// 获取当前用户的帖子列表
+export const getMyPostListApi = (data, needLoading) => {
+  return request({
+    type: 'get',
+    url: `/my/posts`,
+    data,
+    needLoading: needLoading
+  })
+}
+// 获取用户的帖子列表
+export const getUserPostListApi = (data, needLoading) => {
+  return request({
+    type: 'get',
+    url: `/user/${data.uid}/posts`,
+    data,
+    needLoading: needLoading
+  })
+}
+
+
+
+
+
 

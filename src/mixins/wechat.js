@@ -39,7 +39,7 @@ export default {
           url: location.href.split('#')[0]
         }
         const res = await getWechatSignApi(params)
-        this.wechatConfig = Object.assign({}, this.wechatConfig, res)
+        this.wechatConfig = Object.assign({}, this.wechatConfig, res.data)
         this.setWechatConfig()
       } catch (error) {
         this.$vux.toast.text(error.message, 'bottom')
@@ -316,7 +316,6 @@ export default {
   created () {
     this.getWechatSign()
     this.$wechat.ready(() => {
-      this.$store.dispatch('wechat_ready')
     })
     this.$wechat.checkJsApi({
       jsApiList: this.wechatConfig.jsApiList, // 需要检测的JS接口列表，所有JS接口列表见附录2,

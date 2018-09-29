@@ -3,7 +3,6 @@
     <div class="loading-container" v-show="pullUpStatus && !noData">
       <img class="loadmore" src="@/assets/icon/loadMore.gif">
     </div>
-    <p class="loading-connecting" v-show="!pullUpStatus && !noData">上拉加载数据</p>
     <p class="loading-connecting" v-show="noData">没有更多数据</p>
   </div>
 </template>

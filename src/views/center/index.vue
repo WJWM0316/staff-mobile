@@ -1,41 +1,60 @@
 <template>
-  <div class="center">
+  <div class="center" v-if="pageInfo">
     <div class="head">
       <div class="msg">
         <p class="name">{{pageInfo.realname}}</p>
         <p class="desrc">a阿萨德</p>
-        <p class="edit" @click.stop="jumpEdit">点击编辑资料</p>
+        <p class="edit" @click.stop="jump('edit')">点击编辑资料</p>
       </div>
       <div class="photo">
         <img :src="pageInfo.avatar.middleUrl" alt="">
       </div>
     </div>
     <div class="main">
-      <div class="item">
-        <i class="icon1 iconfont icon-mypage_homepage"></i>
-        <span class="txt">个人主页</span>
-        <i class="icon2 iconfont icon-list_live_icon_more"></i>
+      <div class="item" @click.stop="jump('main')">
+        <div>
+          <i class="icon1 iconfont icon-mypage_homepage"></i>
+          <span class="txt">个人主页</span>
+        </div>
+        <i class="icon2">
+          <img src="@a/icon/btn_enter@2x.png" alt="">
+        </i>
       </div>
-      <div class="item red">
-        <i class="icon1 iconfont icon-btn_comment"></i>
-        <span class="txt">我的消息</span>
-        <i class="icon2 iconfont icon-list_live_icon_more"></i>
+      <div class="item red"  @click.stop="jump('main')">
+        <div>
+          <i class="icon1 iconfont icon-btn_comment"></i>
+          <span class="txt">我的消息</span>
+        </div>
+        <i class="icon2">
+          <img src="@a/icon/btn_enter@2x.png" alt="">
+        </i>
       </div>
-      <div class="item">
-        <i class="icon1 iconfont icon-icon_list_help"></i>
-        <span class="txt">使用帮助</span>
-        <i class="icon2 iconfont icon-list_live_icon_more"></i>
+      <div class="item"  @click.stop="jump('main')">
+        <div>
+          <i class="icon1 iconfont icon-icon_list_help"></i>
+          <span class="txt">使用帮助</span>
+        </div>
+        <i class="icon2">
+          <img src="@a/icon/btn_enter@2x.png" alt="">
+        </i>
       </div>
-      <div class="item">
-        <i class="icon1 iconfont icon-mypage_homepage"></i>
-        <span class="txt">账号管理</span>
-        <i class="icon2 iconfont icon-list_live_icon_more"></i>
+      <div class="item"  @click.stop="jump('main')">
+        <div>
+          <i class="icon">
+            <img src="@a/icon/112430611557630831.png" alt="">
+          </i>
+          <span class="txt">账号管理</span>
+        </div>
+        <i class="icon2">
+          <img src="@a/icon/btn_enter@2x.png" alt="">
+        </i>
       </div>
     </div>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
+import { userInfoApi } from '@/api/pages/center'
 export default {
   data () {
     return {
@@ -48,12 +67,33 @@ export default {
     })
   },
   methods: {
-    jumpEdit () {
-      this.$router.push('/center/edit')
+    jump (type) {
+      switch (type) {
+        case 'edit':
+          this.$router.push('/center/edit')
+          break
+        case 'main':
+          this.$router.push('/center/personalPage')
+          break
+        case 'message':
+          this.$router.push('/center/message')
+          break
+        case 'help':
+          this.$router.push('/center/help')
+          break
+      }
+    },
+    async getUserInfo () {
+      if (!this.userInfo.base) {
+        let res = await userInfoApi()
+        this.pageInfo = res.data.base
+      } else {
+        this.pageInfo = this.userInfo.base
+      }
     }
   },
-  async created () {
-    this.pageInfo = this.userInfo.base
+  created () {
+    this.getUserInfo()
   }
 }
 </script>
@@ -111,6 +151,9 @@ export default {
         margin-bottom: 40px;
         font-size: 0;
         position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         &.red::after {
           content: '';
           width: 7px;
@@ -128,13 +171,29 @@ export default {
         }
         .icon1 {
           font-size: 34px; /*px*/
-          color: #929292;
+          color: rgb(188, 188, 188);
           margin-right: 12px;
         }
+        .icon {
+          width: 17px;
+          height: 17px;
+          margin-right: 0.32rem;
+          display: inline-block;
+          img {
+            width: 100%;
+            height: 100%;
+            display: block;
+          }
+        }
         .icon2 {
-          font-size: 30px; /*px*/
-          color: #929292;
-          float: right;
+          width: 20px;
+          height: 20px;
+          display: inline-block;
+          img {
+            width: 100%;
+            height: 100%;
+            display: block;
+          }
         }
       }
     }

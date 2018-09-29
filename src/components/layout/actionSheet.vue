@@ -2,6 +2,7 @@
   <div class="actionsheet">
     <actionsheet
       v-model="isShow"
+      show-cancel
       :menus="menus"
       @on-click-menu="choseResult"
     ></actionsheet>
