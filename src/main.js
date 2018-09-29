@@ -8,6 +8,8 @@ import App from './App'
 import store from './store/'
 import wx from 'weixin-js-sdk'
 import LazyLoad from '@u/imgLazyLoad/lazyLoad.js'
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
 Vue.use(LazyLoad)
 Vue.prototype.$wechat = wx
 Vue.wechat = wx

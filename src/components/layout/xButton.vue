@@ -28,6 +28,12 @@ export default {
       default: false
     }
   },
+  watch: {
+    type (val) {
+    }
+  },
+  created () {
+  },
   data () {
     return {
       active: false

@@ -1,10 +1,10 @@
 <template>
   <div class="infoCard"  @click="toDeatil(item.id || item.liveId)">
-    <img class="infoPhoto" :src="item.coverImg.url || item.coverImg"/>
+    <img class="infoPhoto" :src="item.coverImg.url || item.coverImg || item.courseCoverImg.smallUrl"/>
     <div class="right">
       <div class="title">{{item.name || item.title}}</div>
       <div class="introduction" v-if="showIntroduction">课程介绍可以加这个字段吗？</div>
-      <div class="label"><span class="department">{{item.groupName}}</span><span class="name">{{item.realname}}</span></div>
+      <div class="label"><span class="department" v-if="item.groupName">{{item.groupName}}</span><span class="name" v-if="item.realname">{{item.realname}}</span></div>
       <div class="other" v-if="type === '3'">
         <span class="time">{{item.expectedStartTime * 1000 | date('MM-DD HH:mm')}}</span>
         <span class="status notPlay" v-if="item.status === 1">即将开始</span>

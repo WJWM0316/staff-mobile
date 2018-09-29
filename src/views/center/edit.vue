@@ -1,15 +1,15 @@
 <template>
-  <div class="edit">
+  <div class="edit" v-if="pageInfo">
     <div class="item border-bottom-1px">
       <span class="txt">头像</span>
       <span class="editBox">
-        <i class="photo" @click.stop="editPhoto" v-if="pageInfo.avatarInfo"><img :src="pageInfo.avatarInfo.middleUrl" alt=""></i>
+        <i class="photo" @click.stop="editPhoto" v-if="pageInfo.avatar"><img :src="pageInfo.avatar.middleUrl" alt=""></i>
       </span>
     </div>
     <div class="item border-bottom-1px">
       <span class="txt must">姓名</span>
       <span class="editBox">
-        <input type="text" placeholder="请输入姓名">
+        <input type="text" placeholder="请输入姓名" v-model="pageInfo.realname">
       </span>
     </div>
     <div class="item border-bottom-1px">
@@ -27,25 +27,25 @@
     <div class="item border-bottom-1px">
       <span class="txt must">岗位</span>
       <span class="editBox">
-        <input type="text" placeholder="请输入岗位">
+        <input type="text" placeholder="请输入岗位" v-model="pageInfo.occupation">
       </span>
     </div>
     <div class="item border-bottom-1px">
       <span class="txt must">邮箱</span>
       <span class="editBox">
-        <input type="text" placeholder="请输入邮箱">
+        <input type="text" placeholder="请输入邮箱" v-model="pageInfo.email">
       </span>
     </div>
     <div class="item border-bottom-1px">
       <span class="txt">手机号</span>
       <span class="editBox">
-        <input type="text" placeholder="请输入手机号">
+        <input type="text" placeholder="请输入手机号" v-model="pageInfo.mobile">
       </span>
     </div>
     <div class="item border-bottom-1px">
       <span class="txt">微信</span>
       <span class="editBox">
-        <input type="text" placeholder="请输入微信">
+        <input type="text" placeholder="请输入微信" v-model="pageInfo.wechat">
       </span>
     </div>
     <xButton class="saveBtn">保存</xButton>
@@ -53,7 +53,9 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import WechatMixin from '@/mixins/wechat'
 export default {
+  mixins: [WechatMixin],
   components: {
   },
   data () {
@@ -70,7 +72,7 @@ export default {
   },
   computed: {
     ...mapState({
-      userInfo: state => state.global.userInfo
+      userInfo: state => state.global.userInfo.base
     })
   },
   methods: {
@@ -80,13 +82,12 @@ export default {
       this.sexShow = false
     },
     editPhoto () {
-      console.log(111111)
       this.wechatChooseImage()
     }
   },
   watch: {
   },
-  async created () {
+  created () {
     this.pageInfo = this.userInfo
   }
 }

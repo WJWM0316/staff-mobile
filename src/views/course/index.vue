@@ -8,59 +8,8 @@
         <info-card :item="item" :showIntroduction="false" :origin="true" :key="index"></info-card>
       </template>
     </div>
-	  <!--<info-card></info-card>
-	  <info-card></info-card>
-	  <info-card></info-card>
-	  <info-card></info-card>-->
 	</div>
 </template>
-
-<style lang="less" scoped>
-.coursePage{
-  padding-top: 40px;
-  /*分类栏*/
-  .classify{
-    font-size: 28px;/*px*/
-    background-color: #FFFFFF;
-    line-height: 40px;
-    white-space: nowrap;
-    overflow-x: scroll;
-    padding: 0 20px;
-    height: 40px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 999;
-    >span{
-      color: #929292;
-      font-weight: 300;
-      display: inline-block;
-      margin-right:23px;
-      &:last-child{
-        margin-right: 0;
-      }
-    }
-    .isFocusClassify{
-      color: #354048;
-      font-weight: 500;
-      position: relative;
-      &::after{
-        content: "";
-        display: block;
-        height: 3px;
-        width: 15px;
-        background: #FFE266;
-        position: absolute;
-        border-radius: 11px;
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: 0;
-      }
-    }
-  }
-}
-</style>
 
 <script>
 import { courseListApi, categoryApi } from '@/api/pages/course'
@@ -103,3 +52,49 @@ export default {
   }
 }
 </script>
+
+<style lang="less" scoped>
+.coursePage{
+  padding-top: 40px;
+  .classify{
+    font-size: 28px;/*px*/
+    background-color: #FFFFFF;
+    line-height: 40px;
+    white-space: nowrap;
+    overflow-x: scroll;
+    padding: 0 20px;
+    height: 40px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    >span{
+      color: #929292;
+      font-weight: 300;
+      display: inline-block;
+      margin-right:23px;
+      &:last-child{
+        margin-right: 0;
+      }
+    }
+    .isFocusClassify{
+      color: #354048;
+      font-weight: 500;
+      position: relative;
+      &::after{
+        content: "";
+        display: block;
+        height: 3px;
+        width: 15px;
+        background: #FFE266;
+        position: absolute;
+        border-radius: 11px;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 0;
+      }
+    }
+  }
+}
+</style>
