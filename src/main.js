@@ -7,7 +7,7 @@ import './util/flexible'
 import App from './App'
 import store from './store/'
 import wx from 'weixin-js-sdk'
-import LazyLoad from './util/imgLazyLoad/lazyLoad'
+import LazyLoad from './util/imgLazyload/lazyload'
 import VueClipboard from 'vue-clipboard2'
 Vue.use(VueClipboard)
 Vue.use(LazyLoad)
