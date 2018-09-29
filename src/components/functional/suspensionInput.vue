@@ -1,0 +1,143 @@
+<template>
+  <!-- 悬浮输入框 -->
+  <div class="suspension-input" :class="{ 'z-focused': isFocused }" v-show="isShow">
+    <div class="ask-box">
+      <div class="user-input">
+        <input type="text"
+               :placeholder="placeholder"
+               v-model="suspensionInputContent"
+               @blur="hide()"
+               @focus="handleFocus"
+               ref="suspension-input"
+               maxlength="1999"
+                />
+      </div>
+      <span class="ask-btn" @click="send">{{sendText}}</span>
+    </div>
+  </div>
+</template>
+
+<style lang="less" scoped type="text/less">
+  .suspension-input {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    background-color: #f8f8f8;
+    &.z-focused {
+      padding-bottom: 33px;
+    }
+    .ask-box {
+      height: 54px;
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      & .user-input {
+        margin-top: 0;
+        width: 315px;
+        height: 34px;
+        border-radius: 3px;
+        background-color: #fff;
+        font-size: 14px;
+        padding: 0 10px;
+        & input {
+          line-height: 34px;
+          width: 100%;
+          height: 100%;
+          border-style: none;
+          outline: none;
+        }
+      }
+      & .ask-btn {
+        flex: 0 0 auto;
+        margin-right: -10px;
+        padding: 0 10px;
+        border-radius: 0;
+        font-size: 15px;
+        font-weight: 500;
+        color: #d7ab70;
+      }
+    }
+  }
+</style>
+
+<script>
+export default {
+  name: 'suspension-input',
+  props: {
+    placeholder: String,
+    sendText: String,
+    commentIndex: Number,
+    isShow: {
+      type: Boolean,
+      default: false
+    },
+    value: {
+      type: Boolean,
+      default: false
+    },
+    content: {
+      type: String,
+      default: ''
+    }
+  },
+  data () {
+    return {
+      suspensionInputContent: '',
+      suspensionInput: '',
+      isFocused: false
+    }
+  },
+  watch: {
+    isShow (val) {},
+    value (val) {
+      // this.isShow = val
+      if (val && this.suspensionInput) {
+        this.$nextTick(() => {
+          this.$refs['suspension-input'].focus()
+        })
+      }
+    },
+    commentIndex (index, oldIndex) {
+      if (index !== oldIndex) {
+        this.suspensionInputContent = ''
+      }
+    },
+    content (val) {
+      this.suspensionInputContent = val
+    }
+  },
+  methods: {
+    send () {
+      const value = this.suspensionInputContent
+      const commentIndex = this.commentIndex
+      console.log(1111)
+      if (!value) {
+        this.$vux.toast.text('内容不能为空', 'bottom')
+        return
+      }
+      this.$emit('send', {
+        value,
+        commentIndex
+      })
+      // 清除数据
+      this.suspensionInputContent = ''
+    },
+    hide () {
+      this.isFocused = false
+      this.$emit('input', false)
+    },
+    handleFocus () {
+      this.$emit('focus')
+      this.isFocused = true
+    }
+  },
+  mounted () {
+    this.suspensionInput = this.$refs['suspension-input']
+  }
+}
+</script>

@@ -1,25 +1,25 @@
 <template>
   <div class="dynamicItem" :class="{bottomBorder : showBorder}" @click="toDetail">
     <div class="header" @click.stop="toUserInfo">
-      <img class="headerPhoto" :src="dynamicItem.releaseUser.avatar.smallUrl" />
-      <div class="appellation">{{dynamicItem.releaseUser.realname}}</div>
+      <img class="headerPhoto" :src="item.releaseUser.avatar.smallUrl" />
+      <div class="appellation">{{item.releaseUser.realname}}</div>
     </div>
     <!--内容区-->
     <div class="content">
       <!--1.纯文本-->
       <!--限制六行-->
       <div ref="circle-content">
-        <p class="content-text ellipsis">{{dynamicItem.cardContent}}</p>
+        <p class="content-text ellipsis">{{item.cardContent}}</p>
         <p class="full-text-btn">{{isFullText('circle-content')}}</p>
       </div>
       <!--2.图片-->
-      <div class="content-images" v-if="dynamicItem.cardContentFile.length > 0">
+      <div class="content-images" v-if="item.cardContentFile.length > 0">
         <!--  图片为 1 张时  -->
-        <div class="item-image one" v-if="dynamicItem.cardContentFile.length === 1">
-          <img :src="dynamicItem.cardContentFile[0].url || '../../assets/icon/img_head_default.png'" />
+        <div class="item-image one" v-if="item.cardContentFile.length === 1">
+          <img :src="item.cardContentFile[0].url || '../../assets/icon/img_head_default.png'" />
         </div>
         <!--  图片为 多 张时  -->
-        <div class="item-image" v-for="(item,index) in dynamicItem.cardContentFile" :key="index" v-else>
+        <div class="item-image" v-for="(item,index) in item.cardContentFile" :key="index" v-else>
           <img :src="item.url || '../../assets/icon/img_head_default.png'" />
         </div>
       </div>
@@ -52,22 +52,22 @@
       <div class="info-area">
         <div class="time-and-del">
           <span class="time">{{timeStr}}</span>
-          <span v-if="isCourse" class="del-btn" @click.stop="edit">编辑</span>
-          <span v-else class="del-btn" @click.stop="del">删除</span>
+          <span v-if="item.isSelf" class="del-btn" @click.stop="edit">编辑</span>
+          <!--<span v-else class="del-btn" @click.stop="del">删除</span>-->
         </div>
         <div class="operation">
           <!-- 点赞按钮 -->
           <div class="praise" @click.stop="praise">
-            <img v-if="false" class="icon-zan" src="./../../assets/icon/bnt_zan_pre@3x.png" />
+            <img v-if="isfavor" class="icon-zan" src="./../../assets/icon/bnt_zan_pre@3x.png" />
             <img v-else class="icon-zan" src="./../../assets/icon/bnt_zan@3x.png" />
-            <span>1</span>
+            <span>{{item.favorTotal}}</span>
           </div>
           <!-- 评论按钮 -->
           <div class="comment" @click.stop="comment">
             <span class="icon-pinglun">
               <img src="./../../assets/icon/bnt_comment@3x.png" />
             </span>
-            <span>1</span>
+            <span>{{item.commentTotal}}</span>
           </div>
         </div>
       </div>
@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import { getPunchFavorApi } from '@/api/pages/course'
+import { getFavorApi, delFavorApi } from '@/api/pages/course'
 import moment from 'moment'
 export default {
   name: 'dynamicItem',
@@ -131,10 +131,9 @@ export default {
     pageNo: {
       immediate: true,
       handler: function () {
-        this.dynamicItem = this.item
+        this.isfavor = this.item.isFavor
       }
-    },
-    'item': (nal, oal) => {}
+    }
   },
   computed: {
     // 朋友圈发表时间展示规则
@@ -191,7 +190,7 @@ export default {
   },
   data () {
     return {
-      dynamicItem: {},
+      isfavor: false,
       favors: [
         {realName: 'S好'},
         {realName: 'S好'},
@@ -327,8 +326,9 @@ export default {
     /*  -----------------------跳转交互方法----------------------------  */
     /*  去帖子详情  */
     toDetail () {
-      console.log(' 去详情页 ')
-      this.$router.push({path: `/course/detail`, query: {myPunch: this.communityCourse.peopleCardInfo.id, courseId: this.communityCourse.courseSectionId}})
+      if (this.showCommunicate) {
+        this.$router.push({path: `/course/detail`, query: {myPunch: this.communityCourse.peopleCardInfo.id, courseId: this.communityCourse.courseSectionId}})
+      }
     },
     /* 跳转个人详情页 */
     toUserInfo (userId) {
@@ -340,17 +340,49 @@ export default {
     /*  点赞  */
     async praise () {
       try {
-        if (this.isCourse) {
-          await getPunchFavorApi(this.item.courseSectionCardId)
+        let param = {
+          sourceId: this.item.courseSectionCardId,
+          sourceType: 'course_section_card'
         }
-        this.$toast({text: '点赞成功', type: 'success'})
+        /* 点赞或取消点赞 */
+        if (this.isfavor !== true) {
+          if (this.isCourse) { // 课节打卡点赞
+            await getFavorApi(param)
+          } else { // 工作圈打卡点赞
+            await getFavorApi(this.item.courseSectionCardId)
+          }
+          this.isfavor = true
+          this.$toast({text: '点赞成功', type: 'success'})
+        } else {
+          /* 取消点赞 */
+          if (this.isCourse) { // 课节打卡取消点赞
+            await delFavorApi(param)
+          } else { // 工作圈打卡取消点赞
+            await delFavorApi(this.item.courseSectionCardId)
+          }
+          this.isfavor = false
+          this.$toast({text: '取消点赞成功'})
+        }
       } catch (e) {
+        /* 弹出报错信息 */
         this.$toast(e)
       }
     },
     /*  评论  */
     comment () {
-      console.log(' 我是评论事件 ')
+      console.log(this.$route, ' 我是评论事件 ')
+      if (this.$route.path !== '/course/punchDetail') {
+        this.$router.push({path: '/course/punchDetail', query: {myPunch: this.item.courseSectionCardId}})
+        return
+      }
+      let param = {
+        id: this.item.courseSectionCardId, // 打卡id
+        releaseUser: this.item.releaseUser // 对应打卡信息的个人信息
+      }
+      this.$emit('disableOperationEvents', {
+        eventType: 'comment',
+        param
+      })
     },
     /* 删除 */
     del () {
@@ -362,7 +394,9 @@ export default {
       this.$router.push({path: '/course/punchEditting', query: {courseSectionId: courseId}})
     }
   },
-  mounted () {}
+  mounted () {
+    console.log(this.item)
+  }
 }
 </script>
 

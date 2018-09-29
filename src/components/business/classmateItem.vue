@@ -1,5 +1,5 @@
 <template>
-  <div class="classmateItem">
+  <div class="classmateItem" v-if="item">
     <div class="userInfo-img">
       <img class="headImg" :src="item.avatarInfo.smallUrl">
     </div>
@@ -58,7 +58,6 @@ export default {
       font-size: 30px;/*px*/
       color: #354048;
       font-weight: 400;
-      .setEllipsis();
       .managerTitle{
         display: inline-block;
         font-size: 24px;/*px*/
@@ -75,7 +74,6 @@ export default {
       }
     }
     .persion-info{
-      .setEllipsis();
       padding-top: 4px;
       font-size: 26px;/*px*/
       line-height: 17px;
