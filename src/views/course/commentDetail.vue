@@ -13,7 +13,7 @@
           <span @click="toggle('praise')">点赞({{discussInfo.favorCount}})</span>
         </div>
       </div>
-      <discuss-item :item="discussInfo" :isShowBorder="false" @disableOperationEvents="operation"></discuss-item>
+      <discuss-item v-for="(reply,index) in replyList" :key="index" :item="reply" :isShowBorder="index === replyList.length-1? false : true" @disableOperationEvents="operation"></discuss-item>
     </div>
       <!--<div class="ask-box {{isShowPumpBtn ? 'show' : ''}}">-->
       <!--<div class="user-input">-->
@@ -44,7 +44,7 @@
 <script>
 import discussItem from '@c/business/discussItem'
 import suspensionInput from '@c/functional/suspensionInput'
-import { getFavorApi, delFavorApi, courseCardCommentApi, getCommentDetailApi } from '@/api/pages/course'
+import { getFavorApi, delFavorApi, courseCardCommentApi, getCommentDetailApi, getReplyListApi } from '@/api/pages/course'
 export default {
   name: 'all-reply',
   components: {
@@ -54,13 +54,16 @@ export default {
   data () {
     return {
       discussInfo: {},
+      replyList: [],
       dynamicList: [],
       discussItemList: [],
       commentIndex: -1,
       suspensionInputPlaceholder: '写评论',
       isShow: false,
       displaySuspensionInput: true,
-      navTabName: 'comment'
+      navTabName: 'comment',
+      replyId: '', // 当前回复id
+      nowReplyListPage: 1 // 二级评论当前页数
     }
   },
   computed: {},
@@ -71,13 +74,25 @@ export default {
   },
   methods: {
     async pageInit () {
-      this.getCommentDetail()
+      await this.getCommentDetail()
+      await this.getReplyList()
     },
-    /* 获取评论详情 */
+    /* 获取一级评论详情 */
     async getCommentDetail () {
       const { id } = this.$route.query
       let res = await getCommentDetailApi(id)
       this.discussInfo = res.data
+    },
+    /* 获取二级评论 */
+    async getReplyList () {
+      let param = {
+        id: this.discussInfo.id,
+        page: this.nowReplyListPage,
+        count: 20,
+        sort: 'desc'
+      }
+      let res = await getReplyListApi(param)
+      this.replyList = res.data
     },
     /* 组件触发的事件 */
     operation (e) {
@@ -101,6 +116,7 @@ export default {
     /* 调起底部输入框 */
     async comment (param) {
       console.log(param.id)
+      this.replyId = param.id
       this.isShow = true
       /* if (itemIndex > -1) {
         this.suspensionInputPlaceholder = '回复' + item.reviewer.realName + ':'
@@ -116,12 +132,13 @@ export default {
     /* 发送评论 */
     async sendComment ({value, commentIndex}) {
       const params = {
-        sourceId: this.discussInfo.id, // 对应打卡或评论的id
+        sourceId: this.replyId, // 对应打卡或评论的id
         sourceType: 'course_section_card_comment', // 对应评论类型是打卡或是回复评论
         content: value // 评论内容
       }
       courseCardCommentApi(params).then(res => {
         this.discussInfo.commentCount += 1
+        this.getReplyList()
         this.$toast({text: '评论成功', type: 'success'})
       }).catch(e => {
         this.$toast({text: '评论失败'})
@@ -149,6 +166,10 @@ export default {
     & .container {
       margin-left: -20px;
       margin-right: -20px;
+      .discussItem{
+        padding-left: 20px;
+        padding-right: 20px ;
+      }
       .fixed-box{
         border-bottom: solid 0.5px #DCDCDC; /* no */
       }

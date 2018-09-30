@@ -4,7 +4,7 @@
     <top-header :pageInfo="pageInfo" :isCircle="false" :isJoin="true"></top-header>
     <div class="content">
       <div class="top">
-        <div class="postNum">已更新<span style="color: #D7AB70;">10</span> 篇</div>
+        <div class="postNum">已更新<span style="color: #D7AB70;">{{lessonTotal}}</span> 篇</div>
         <div class="rightBox" @click.stop="reverse">
           <div class="study" v-if="false">
             <img src="../../assets/icon/bnt_positioning@3x.png"/>上次学到
@@ -47,7 +47,7 @@ export default {
       pageInfo: {},
       jsonData: { // 获取课节列表的筛选条件参数
         order: {
-          sort: 'DESC'
+          sort: 'asc'
         },
         sort: 0,
         course_id: 1

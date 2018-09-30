@@ -58,14 +58,14 @@
         <div class="operation">
           <!-- 点赞按钮 -->
           <div class="praise" @click.stop="praise">
-            <img v-if="isfavor" class="icon-zan" src="./../../assets/icon/bnt_zan_pre@3x.png" />
-            <img v-else class="icon-zan" src="./../../assets/icon/bnt_zan@3x.png" />
+            <img v-if="isfavor" class="icon-zan" src="@/assets/icon/bnt_zan_pre@3x.png" />
+            <img v-else class="icon-zan" src="@/assets/icon/bnt_zan@3x.png" />
             <span>{{item.favorTotal}}</span>
           </div>
           <!-- 评论按钮 -->
           <div class="comment" @click.stop="comment">
             <span class="icon-pinglun">
-              <img src="./../../assets/icon/bnt_comment@3x.png" />
+              <img src="@/assets/icon/bnt_comment@3x.png" />
             </span>
             <span>{{item.commentTotal}}</span>
           </div>
@@ -75,19 +75,19 @@
       <div class="comment-area">
         <!-- 点赞信息 -->
         <div class="praise-block" v-if="true">
-          <img class="icon-zan" src="./../../assets/icon/bnt_zan@3x.png" />
+          <img class="icon-zan" src="@/assets/icon/bnt_zan@3x.png" />
           <div class="praise-name">
-            <span class="favor-name" v-for="(favor,favorIndex) in favors" :key="favorIndex" @click.stop="toUserInfo(favor.userId)">{{favorIndex > 0 ?  ','+favor.realName : favor.realName}}</span>
+            <span class="favor-name" v-for="(favor,favorIndex) in item.favorList" :key="favorIndex" @click.stop="toUserInfo(favor.userId)">{{favorIndex > 0 ?  ','+favor.realname : favor.realname}}</span>
           </div>
-          <span class="praise-total" v-if="favors.length > 3">等{{favors.length}}人觉得很赞</span>
+          <span class="praise-total" v-if="item.favorTotal > 3">等{{item.favorTotal}}人觉得很赞</span>
         </div>
         <!-- 评论信息 -->
         <div class="reply-block">
-          <template  v-if="true">
+          <template  v-if="item.hotComments.length > 0">
             <div class="hot-reply">
               <div class="hot-reply-icon">热门评论</div>
-              <div class="reply" v-for="(reply,index) in comments" :key="index">
-                <p class="favor-content ellipsis3"><span class="favor-name">{{reply.reviewer.realName}}：</span>{{reply.content}}</p>
+              <div class="reply" v-for="(reply,index) in item.hotComments" :key="index">
+                <p class="favor-content ellipsis3"><span class="favor-name">{{reply.userName}}：</span>{{reply.content}}</p>
               </div>
             </div>
           </template>
@@ -327,7 +327,7 @@ export default {
     /*  去帖子详情  */
     toDetail () {
       if (this.showCommunicate) {
-        this.$router.push({path: `/course/detail`, query: {myPunch: this.communityCourse.peopleCardInfo.id, courseId: this.communityCourse.courseSectionId}})
+        this.$router.push({path: '/course/punchDetail', query: {myPunch: this.item.courseSectionCardId}})
       }
     },
     /* 跳转个人详情页 */
@@ -620,6 +620,13 @@ export default {
           }
           &:nth-of-type(1) {
             margin-top: 8px;
+          }
+          .ellipsis3{
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            -webkit-line-clamp: 2;
           }
         }
         /*热评标志样式*/
