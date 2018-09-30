@@ -65,10 +65,10 @@ export default {
           sizeType: options.sizeType || ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
           sourceType: options.sourceType || ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
           success: async function (res) {
-            resolve(res)
+            resolve(res, 1111)
           },
           fail: function (e) {
-            reject(e)
+            reject(e, 2222)
           }
         })
       })

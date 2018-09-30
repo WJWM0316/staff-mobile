@@ -97,7 +97,7 @@
   </div>
 </template>
 <script>
-import { getUserInfoApi, getUserJoinedListApi, getMyJoinedListApi, getMyPostListApi, getUserPostListApi } from '@/api/pages/center'
+import { userInfoApi, getUserInfoApi, getUserJoinedListApi, getMyJoinedListApi, getMyPostListApi, getUserPostListApi } from '@/api/pages/center'
 import infoCard from '@c/business/infoCard.vue'
 import noDataShow from '@c/layout/noDataShow'
 export default {
@@ -174,9 +174,14 @@ export default {
     getUserInfo () {
       if (!this.$route.query.uid) {
         this.userInfo = this.$store.getters.userInfo
-        if (this.userInfo.base.mobile) this.contactInformation.menus.mobile = `手机号：${this.userInfo.base.mobile}`
-        if (this.userInfo.base.wechat) this.contactInformation.menus.wechat = `微信号：${this.userInfo.base.wechat}`
-        if (this.userInfo.base.email) this.contactInformation.menus.email = `邮箱：${this.userInfo.base.email}`
+        if (!this.userInfo) {
+          userInfoApi().then(res => {
+            this.userInfo = res.data
+            if (this.userInfo.base.mobile) this.contactInformation.menus.mobile = `手机号：${this.userInfo.base.mobile}`
+            if (this.userInfo.base.wechat) this.contactInformation.menus.wechat = `微信号：${this.userInfo.base.wechat}`
+            if (this.userInfo.base.email) this.contactInformation.menus.email = `邮箱：${this.userInfo.base.email}`
+          })
+        }
       } else {
         let data = {
           uid: this.$route.query.uid

@@ -4,7 +4,7 @@
       <div class="msg">
         <p class="name">{{pageInfo.realname}}</p>
         <p class="desrc">a阿萨德</p>
-        <p class="edit" @click.stop="jump('edit')">点击编辑资料</p>
+        <p class="editBtn" @click.stop="jump('edit')">点击编辑资料</p>
       </div>
       <div class="photo">
         <img :src="pageInfo.avatar.middleUrl" alt="">
@@ -121,7 +121,7 @@ export default {
           color: #929292;
           margin-top: 5px;
         }
-        .edit {
+        .editBtn {
           font-size: 24px; /*px*/
           font-weight: 400;
           line-height: 16px;
