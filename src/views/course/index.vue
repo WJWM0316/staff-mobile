@@ -8,6 +8,7 @@
         <info-card :item="item" :showIntroduction="false" :origin="true" :key="index"></info-card>
       </template>
     </div>
+    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
 	</div>
 </template>
 
@@ -20,10 +21,17 @@ export default {
   },
   data () {
     return {
-      data: 1,
       tabList: [],
       showBorder: '全部',
-      circleList: []
+      circleList: [],
+      classfy: 0, // 0:默认全部
+      all: {
+        list: [],
+        page: 1,
+        noData: false,
+        pullUpStatus: false
+      },
+      isLastPage: false
     }
   },
   created () {
@@ -34,19 +42,50 @@ export default {
     async pageInt () {
       let classfy = await this.getCategory()
       let res = await this.getCourseList()
+      classfy.data.unshift({
+        categoryId: 0,
+        categoryName: '全部',
+        sort: 1
+      })
       this.circleList = res.data
       this.tabList = classfy.data
+      res.meta.currentPage === res.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
     },
-    cutoverTab (item) {
+    // 切换分类
+    async cutoverTab (item) {
+      this.classfy = item.categoryId
+      let res = await this.getCourseList()
+      res.meta.currentPage === res.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
+      this.circleList = res.data
       this.showBorder = item
     },
     // 请求列表接口
     getCourseList () {
-      return courseListApi({count: 20})
+      let param = {
+        page: this.all.page,
+        count: 20,
+        category: this.classfy
+      }
+      return courseListApi(param)
     },
     // 请求分类列表
     getCategory () {
       return categoryApi()
+    },
+    /* 滚动触发事件 */
+    async pullUp () {
+      if (this.isLastPage) {
+        console.log(' 111111 ')
+        this.all.pullUpStatus = false
+        this.all.noData = true
+      } else {
+        this.all.pullUpStatus = true
+        this.all.page += 1
+        let res = await this.getCourseList()
+        res.meta.currentPage === res.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
+        this.circleList.push(...res.data)
+        this.all.pullUpStatus = false
+      }
     }
   }
 }
@@ -93,6 +132,9 @@ export default {
         transform: translateX(-50%);
         bottom: 0;
       }
+    }
+    .content{
+      height: 100%;
     }
   }
 }

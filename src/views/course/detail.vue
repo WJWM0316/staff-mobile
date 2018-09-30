@@ -14,20 +14,23 @@
     <div class="community" v-else>
       <div class="content">
         <div class="top">
-          <div class="postNum">已更新<span style="color: #D7AB70;">10</span> 篇</div>
+          <div class="postNum">已更新<span style="color: #D7AB70;">{{lessonTotal}}</span> 篇</div>
           <div class="rightBox" @click.stop="reverse">
             <div class="study" v-if="false">
               <img src="../../assets/icon/bnt_positioning@3x.png"/>上次学到
             </div>
-            <div class="reverse" @click.stop="reverse">
+            <div class="reverse" @click.stop="reverse" v-if="isReverse">
+              <img src="../../assets/icon/bnt_order@3x.png"/>正序
+            </div>
+            <div class="reverse" @click.stop="reverse" v-else>
               <img src="../../assets/icon/bnt_order@3x.png"/>倒序
             </div>
           </div>
         </div>
         <div class="lessonList">
           <div class="before" v-if="false">点击加载前面内容</div>
-          <div v-for="(item, index) in lessonList" class="Lesson" :key="index" @click.stop="toLesson(item.courseSectionId)">
-            <span class="txt">{{index+1}}、{{item.title}}</span>
+          <div v-for="(item, index) in lessonList" class="Lesson" :key="index" @click.stop="toLesson(item)">
+            <span class="txt">{{item.showId}}、{{item.title}}</span>
             <!--正在学习-->
             <img v-show="item.statusInfo.isCurrentStudy === 1" src="@/assets/icon/icon_position@3x.png"/>
             <!--未解锁-->
@@ -59,7 +62,7 @@ export default {
       pageInfo: null,
       jsonData: { // 获取课节列表的筛选条件参数
         order: {
-          sort: 'DESC'
+          sort: 'asc'
         },
         sort: 0,
         course_id: 1
@@ -67,7 +70,7 @@ export default {
       listPage: 1,
       lessonList: [],
       lessonTotal: '', // 课节数量
-      isReverse: false // 是否倒序
+      isReverse: true // 是否倒序：true正序，false：倒序
     }
   },
   methods: {
@@ -76,8 +79,13 @@ export default {
         this.init()
       })
     },
-    toLesson (id) {
-      this.$router.push(`/courseLesson?id=${id}`)
+    toLesson (item) {
+      console.log(item)
+      if (item.statusInfo.isUnlock === 0) {
+        this.$toast({text: '请先解锁前面课节'})
+        return
+      }
+      this.$router.push(`/courseLesson?id=${item.courseSectionId}`)
     },
     async init (id) {
       let res = await this.getcourseDetail(id)
@@ -97,20 +105,16 @@ export default {
       }
       return CourseSectionApi(param)
     },
-    reverse () {
-      this.lessonList.reverse()
+    async reverse () {
+      this.jsonData.order.sort = 'desc'
+      let lessonList = await this.getCourseSectionApi()
+      this.lessonList = lessonList.data
       this.isReverse = !this.isReverse
     },
     async loadMoreLesson () {
       this.listPage += 1
       let lessonList = await this.getCourseSectionApi()
-      if (this.isReverse) {
-        this.lessonList.reverse()
-        this.lessonList.push(...lessonList.data)
-        this.lessonList.reverse()
-      } else {
-        this.lessonList.push(...lessonList.data)
-      }
+      this.lessonList.push(...lessonList.data)
     },
     getcourseDetail (id) {
       return courseInfoApi(id)

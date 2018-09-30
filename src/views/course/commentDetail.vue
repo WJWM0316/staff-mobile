@@ -118,13 +118,6 @@ export default {
       console.log(param.id)
       this.replyId = param.id
       this.isShow = true
-      /* if (itemIndex > -1) {
-        this.suspensionInputPlaceholder = '回复' + item.reviewer.realName + ':'
-        this.commentIndex = itemIndex
-      } else {
-        this.suspensionInputPlaceholder = '写评论'
-        this.commentIndex = -1
-      } */
       this.displaySuspensionInput = true
     },
     /* 删除 */

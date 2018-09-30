@@ -57,7 +57,7 @@
         <div class="praise-block" v-if="item.favorList.length > 0">
           <img class="icon-zan" src="./../../assets/icon/bnt_zan@3x.png" />
           <div class="praise-name">
-            <span class="favor-name" v-for="(favor,favorIndex) in item.favorList" :key="favorIndex" @click.stop="toUserInfo(favor.userId)">{{favorIndex > 0 ?  ','+favor.realName : favor.realName}}</span>
+            <span class="favor-name" v-for="(favor,favorIndex) in item.favorList" :key="favorIndex" @click.stop="toUserInfo(favor.userId)">{{favorIndex > 0 ?  ','+favor.realname : favor.realname}}</span>
           </div>
           <span class="praise-total" v-if="item.favorList.length > 3">等{{item.favors.length}}人觉得很赞</span>
         </div>
@@ -66,7 +66,7 @@
             <div class="hot-reply">
               <div class="hot-reply-icon">热门评论</div>
               <div class="reply" v-for="(reply,index) in item.hotComments" :key="index">
-                <p class="favor-content"><span class="favor-name">{{reply.reviewer.realName}}：</span>{{reply.content}}</p>
+                <p class="favor-content"><span class="favor-name">{{reply.userName}}：</span>{{reply.content}}</p>
               </div>
             </div>
           </template>
@@ -108,8 +108,7 @@ export default {
   },
   data () {
     return {
-      isfavor: false,
-      picList: []
+      isfavor: false
     }
   },
   methods: {
@@ -158,7 +157,7 @@ export default {
     },
     toDetail () {
       if (this.showCommunicate) {
-        this.$router.push({path: '/course/punchDetail', query: {id: this.item.courseSectionCardId}})
+        this.$router.push({path: '/punchDetail', query: {myPunch: this.item.courseSectionCardId}})
       }
     },
     toUserInfo (userId) {
@@ -191,8 +190,7 @@ export default {
     /*  评论  */
     comment () {
       if (this.$route.path !== '/punchDetail') {
-        this.$router.push({path: '/punchDetail', query: {id: this.item.courseSectionCardId}})
-        return
+        this.$router.push({path: '/punchDetail', query: {myPunch: this.item.courseSectionCardId}})
       }
       let param = {
         id: this.item.courseSectionCardId, // 打卡id
@@ -209,11 +207,10 @@ export default {
     /* 编辑 */
     edit () {
       let { courseId } = this.$route.query
-      this.$router.push({path: '/punchEditting', query: {courseSectionId: courseId}})
+      this.$router.push({path: '/punchEdit', query: {courseSectionId: courseId}})
     }
   },
-  mounted () {
-  }
+  mounted () {}
 }
 </script>
 

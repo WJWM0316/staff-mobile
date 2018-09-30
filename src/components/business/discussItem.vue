@@ -177,8 +177,8 @@ export default {
       console.log(' 我是去个人详情页的事件 ')
     },
     comment () {
-      if (this.$route.path !== '/course/commentDetail') {
-        this.$router.push({path: '/course/commentDetail', query: {id: this.item.id}})
+      if (this.$route.path !== '/commentDetail') {
+        this.$router.push({path: '/commentDetail', query: {id: this.item.id}})
         return
       }
       console.log(' 我是点击评论按钮评论事件 ')

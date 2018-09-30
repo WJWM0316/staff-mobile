@@ -112,7 +112,6 @@
           </div>
         </div>
         <!--底部打卡按钮区-->
-        <!--<div v-if="trialReading === '0' || (curPeopleInfo.roleId!==1 && curPeopleInfo.roleId!==2) || curPeopleInfo.roleId">-->
         <div v-if="communityCourse.isTutor !== 1">
           <div class="lesson-footer" v-if="communityCourse.statusInfo.isPunchCard === 0">
             <div class="toPunch" @click.stop="toPunch">
@@ -168,25 +167,11 @@ export default {
           value: ' disSelect '
         }]
       },
-      // 试读。未加入相关
       lessonData: {},
-      hintData: {
-        title: '加入须知',
-        buttonText: '马上加入',
-        cancelText: '我再想想',
-        content: [
-          '该课程已经全部更新完毕了！',
-          '加入后你获得以下内容：',
-          '1、塔主课程以及小伙伴们沉淀 下来的宝贵内容；',
-          '2、和成员们一起交流学习；',
-          '3、提问导师或嘉宾，但不一定 能100%得到回答'
-        ]
-      },
       jsonData: { // 获取课节详情的筛选条件参数
         course_section_id: 1
       },
-      listPage: 1, // 当前打卡列表的页数
-      endPayType: null // 已结束 加入时候的状态
+      listPage: 1 // 当前打卡列表的页数
     }
   },
   computed: {
