@@ -9,15 +9,17 @@
     <div class="item border-bottom-1px">
       <span class="txt">姓名</span>
       <span class="editBox">
-        <input type="text" placeholder="请输入姓名" v-model="pageInfo.realname">
+        <input type="text" placeholder="请输入姓名" v-model="pageInfo.realname" disabled>
       </span>
     </div>
     <div class="item border-bottom-1px">
       <span class="txt">性别</span>
       <span class="editBox">
-        <span class="placeholder" v-if="pageInfo.gender !== 0 && pageInfo.gender !== 1"  @click.stop="sexShow = true">请选择性别</span>
-        <span class="operResult" v-else  @click.stop="sexShow = true">{{pageInfo.gender === 0 ? '女' : '男'}}</span>
+        <!-- 暂时不做编辑， 需要开启即可 -->
+        <!-- <span class="placeholder" v-if="pageInfo.gender !== 0 && pageInfo.gender !== 1"  @click.stop="sexShow = true">请选择性别</span> -->
+        <span class="operResult" @click.stop="sexShow = true">{{pageInfo.gender === 0 ? '女' : '男'}}</span>
         <actionSheet
+          v-if="false"
           :showSheet="sexShow"
           :menus="sexList"
           @choseResult="_choseResult"
@@ -27,13 +29,13 @@
     <div class="item border-bottom-1px">
       <span class="txt">岗位</span>
       <span class="editBox">
-        <input type="text" placeholder="请输入岗位" v-model="pageInfo.occupation">
+        <input type="text" placeholder="请输入岗位" v-model="pageInfo.occupation" disabled>
       </span>
     </div>
     <div class="item border-bottom-1px">
       <span class="txt">邮箱</span>
       <span class="editBox">
-        <input type="text" placeholder="请输入邮箱" v-model="pageInfo.email">
+        <input type="text" placeholder="请输入邮箱" v-model="pageInfo.email" disabled>
       </span>
     </div>
     <div class="item border-bottom-1px">
@@ -97,6 +99,23 @@ export default {
         mobile: this.pageInfo.mobile,
         wechat: this.pageInfo.wechat
       }
+      let text = ''
+      let moblieRegex = /0?(13|14|15|17|18|19)[0-9]{9}/
+      let wxRegex = /^[\u4E00-\u9FA5]/
+      if (!moblieRegex.test(data.mobile)) {
+        text = '手机号格式不正确'
+      }
+      if (wxRegex.test(data.wechat)) {
+        text = '微信号格式不正确'
+      }
+      if (text !== '') {
+        this.$toast({
+          text: text,
+          type: 'text',
+          width: '10em'
+        })
+        return
+      }
       editUserInfoApi(data).then(res => {
         this.$toast({
           text: '保存成功',
@@ -125,15 +144,6 @@ export default {
       align-items: center;
       padding-left: 17px;
       position: relative;
-      &::after {
-        content: '*';
-        font-size: 30px; /*px*/
-        color: #D7AB70;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        left: 0;
-      }
     }
     .editBox {
       flex: 2;

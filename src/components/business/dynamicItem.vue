@@ -77,7 +77,6 @@
 </template>
 <script>
 import { getFavorApi, delFavorApi } from '@/api/pages/course'
-import moment from 'moment'
 export default {
   name: 'dynamicItem',
   props: {
@@ -140,7 +139,6 @@ export default {
             el.lastChild.innerHTML = ''
             el.lastChild.appendChild(fullText)
           } else {
-            // 删除倒叙后不符合条件的展开全文标识
             if (el.lastChild.firstChild) {
               el.lastChild.removeChild(el.lastChild.firstChild)
             }
@@ -155,59 +153,45 @@ export default {
         itemIndex
       })
     },
-    /*  打开文件  */
     fileOpen (url) {
       window.location.href = url
     },
-    /*  -----------------------跳转交互方法----------------------------  */
-    /*  去帖子详情  */
     toDetail () {
       if (this.showCommunicate) {
-        this.$router.push({path: '/course/punchDetail', query: {myPunch: this.item.courseSectionCardId}})
+        this.$router.push({path: '/course/punchDetail', query: {id: this.item.courseSectionCardId}})
       }
     },
-    /* 跳转个人详情页 */
     toUserInfo (userId) {
       if (this.disableUserClick) {
-        return
       }
-      this.$router.push(`/userInfo/${userId}/details`)
     },
     /*  点赞  */
     async praise () {
-      try {
-        let param = {
-          sourceId: this.item.courseSectionCardId || this.item.courseSectionCardId,
-          sourceType: 'course_section_card'
+      let param = {
+        sourceId: this.item.courseSectionCardId,
+        sourceType: 'course_section_card'
+      }
+      /* 点赞或取消点赞 */
+      if (this.isfavor !== true) {
+        if (this.isCourse) { // 课节打卡点赞
+          await getFavorApi(param)
+        } else { // 工作圈打卡点赞
+          await getFavorApi(this.item.courseSectionCardId)
         }
-        /* 点赞或取消点赞 */
-        if (this.isfavor !== true) {
-          if (this.isCourse) { // 课节打卡点赞
-            await getFavorApi(param)
-          } else { // 工作圈打卡点赞
-            await getFavorApi(this.item.courseSectionCardId)
-          }
-          this.isfavor = true
-          this.$toast({text: '点赞成功', type: 'success'})
-        } else {
-          /* 取消点赞 */
-          if (this.isCourse) { // 课节打卡取消点赞
-            await delFavorApi(param)
-          } else { // 工作圈打卡取消点赞
-            await delFavorApi(this.item.courseSectionCardId)
-          }
-          this.isfavor = false
-          this.$toast({text: '取消点赞成功'})
+        this.isfavor = true
+      } else {
+        if (this.isCourse) { // 课节打卡取消点赞
+          await delFavorApi(param)
+        } else { // 工作圈打卡取消点赞
+          await delFavorApi(this.item.courseSectionCardId)
         }
-      } catch (e) {
-        /* 弹出报错信息 */
-        this.$toast(e)
+        this.isfavor = false
       }
     },
     /*  评论  */
     comment () {
-      if (this.$route.path !== '/course/punchDetail') {
-        this.$router.push({path: '/course/punchDetail', query: {myPunch: this.item.courseSectionCardId}})
+      if (this.$route.path !== '/punchDetail') {
+        this.$router.push({path: '/punchDetail', query: {id: this.item.courseSectionCardId}})
         return
       }
       let param = {
@@ -225,7 +209,7 @@ export default {
     /* 编辑 */
     edit () {
       let { courseId } = this.$route.query
-      this.$router.push({path: '/course/punchEditting', query: {courseSectionId: courseId}})
+      this.$router.push({path: '/punchEditting', query: {courseSectionId: courseId}})
     }
   },
   mounted () {

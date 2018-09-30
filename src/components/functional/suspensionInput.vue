@@ -95,7 +95,6 @@ export default {
   watch: {
     isShow (val) {},
     value (val) {
-      // this.isShow = val
       if (val && this.suspensionInput) {
         this.$nextTick(() => {
           this.$refs['suspension-input'].focus()

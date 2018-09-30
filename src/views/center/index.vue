@@ -84,7 +84,7 @@ export default {
       }
     },
     async getUserInfo () {
-      if (!this.userInfo.base) {
+      if (!this.userInfo) {
         let res = await userInfoApi()
         this.pageInfo = res.data.base
       } else {
