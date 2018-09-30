@@ -1,8 +1,8 @@
 <template>
   <!--课节页面-->
-  <div class="Lesson" v-if="communityCourse">
+  <div class="lesson" v-if="communityCourse">
     <!--头部图片标题区-->
-    <div class="Lesson-header">
+    <div class="lesson-header">
       <div class="header-title">
         {{communityCourse.title}}
       </div>
@@ -12,9 +12,9 @@
       </div>
     </div>
     <!--富文本区-->
-    <div class="Lesson-module">
+    <div class="lesson-module">
       <!--视频-->
-      <div class="Lesson-video" @click.stop="playVideo($event)" v-if="communityCourse.av && communityCourse.av.type==='video'">
+      <div class="lesson-video" @click.stop="playVideo($event)" v-if="communityCourse.av && communityCourse.av.type==='video'">
         <video controls ref="video" v-show="!videoPlay"></video>
         <div class="placeholder" v-show="videoPlay">
           <!--背景图-->
@@ -31,7 +31,7 @@
     <!-- 已加入 -->
     <template>
         <!--本节任务-->
-        <div class="Lesson-task" v-if="communityCourse.punchCardTitle || communityCourse.punchCardImgInfo.length>0">
+        <div class="lesson-task" v-if="communityCourse.punchCardTitle || communityCourse.punchCardImgInfo.length>0">
           <!--头部标题-->
           <div class="headerBox">
             <div class="title-pic1">
@@ -46,18 +46,18 @@
             <div class="content-images">
               <!-- 图片为 1 张时 -->
               <div class="item-image one" v-if="communityCourse.punchCardCImgInfo && communityCourse.punchCardCImgInfo.length === 1">
-                <img :src="communityCourse.punchCardCImgInfo[0].url || '@/assets/icon/img_head_default.png'" @click.stop="previewImage(communityCourse.punchCardCImgInfo[0].pictureUrl)" />
+                <img :src="communityCourse.punchCardCImgInfo[0].url || '@a/icon/img_head_default.png'" @click.stop="previewImage(communityCourse.punchCardCImgInfo[0].pictureUrl)" />
               </div>
               <!--  图片为 多 张时  -->
               <div class="item-image" v-for="(file, index) in communityCourse.punchCardCImgInfo" :key="index" v-else>
-                <img :src="file.pictureUrl || '@/assets/icon/img_head_default.png'" v-if="!file.holder" @click.stop="previewImage(file.pictureUrl)" />
+                <img :src="file.pictureUrl || '@a/icon/img_head_default.png'" v-if="!file.holder" @click.stop="previewImage(file.pictureUrl)" />
               </div>
             </div>
           </div>
         </div>
         <!--本节任务结束-->
         <!--优秀打卡区-->
-        <div class="Lesson-punch">
+        <div class="lesson-punch">
           <!--头部标题-->
           <div class="headerBox" v-if="(excellentPunchList && excellentPunchList.length>0) || (peopleCourseCardList && peopleCourseCardList.length>0)">
             <div class="title-pic1">
@@ -67,8 +67,8 @@
           </div>
           <!--优秀头部标题图片-->
           <div class="excellentPunchList"  v-if="excellentPunchList && excellentPunchList.length>0">
-            <div class="Excellent-punch">
-              <div class="Excellent-punch-title">优秀打卡</div>
+            <div class="excellent-punch">
+              <div class="excellent-punch-title">优秀打卡</div>
             </div>
             <div class="hr"></div>
             <!--优秀打卡内容区-->
@@ -81,13 +81,13 @@
                :isFold="true"
                :isNeedHot="true"
                :hideBorder="false"
-               :isLesson="true"
+               :islesson="true"
                :disableContentClick="false"
                @disableOperationEvents="operation"
                @reFresh="reFresh"
                @showEvaluate='showEvaluate'
             ></lessondynamicItem>
-            <div class="Expand-btn" @click.stop="toPunchList('excellent')" v-if="countCardInfo.totalExcellentCardCount>5">
+            <div class="expand-btn" @click.stop="toPunchList('excellent')" v-if="countCardInfo.totalExcellentCardCount>5">
               <div>
                 查看所有优秀打卡 <span>({{countCardInfo.totalExcellentCardCount}})</span>
               </div>
@@ -96,8 +96,8 @@
         </div>
         <!--所有打卡区-->
         <div class="all-punch" v-if="peopleCourseCardList && peopleCourseCardList.length>0">
-          <div class="Excellent-punch">
-            <div class="Excellent-punch-title">所有打卡</div>
+          <div class="excellent-punch">
+            <div class="excellent-punch-title">所有打卡</div>
           </div>
           <div class="hr"></div>
           <lessondynamicItem
@@ -105,7 +105,7 @@
              :key = "index"
              :item="item"
           ></lessondynamicItem>
-          <div class="Expand-btn all-show" @click.stop="toPunchList('all')" v-if="countCardInfo.totalCardCount>5">
+          <div class="expand-btn all-show" @click.stop="toPunchList('all')" v-if="countCardInfo.totalCardCount>5">
             <div>
               查看所有打卡 <span>({{countCardInfo.totalCardCount}})</span>
             </div>
@@ -114,12 +114,12 @@
         <!--底部打卡按钮区-->
         <!--<div v-if="trialReading === '0' || (curPeopleInfo.roleId!==1 && curPeopleInfo.roleId!==2) || curPeopleInfo.roleId">-->
         <div v-if="communityCourse.isTutor !== 1">
-          <div class="Lesson-footer" v-if="communityCourse.statusInfo.isPunchCard === 0">
+          <div class="lesson-footer" v-if="communityCourse.statusInfo.isPunchCard === 0">
             <div class="toPunch" @click.stop="toPunch">
               打卡做任务，解锁下一节课
             </div>
           </div>
-          <div class="Lesson-footer" v-else>
+          <div class="lesson-footer" v-else>
             <div class="mine" @click.stop="toMindDetail(communityCourse.peopleId,communityCourse.id)">我的打卡</div>
           </div>
         </div>
@@ -201,14 +201,14 @@ export default {
     /* 初始化方法 */
     async init () {
       const { id } = this.$route.query
-      let res = await this.getLessonData(id)
+      let res = await this.getlessonData(id)
       let cardList = await this.getCourseCardListApi(id)
       this.communityCourse = res.data
       this.peopleCourseCardList = cardList.data.peopleCourseCardList
       this.excellentPunchList = cardList.data.excellentPeopleCourseCardList
     },
     /* 获取课节详情 */
-    getLessonData (id) {
+    getlessonData (id) {
       return lessonDetailApi(id)
     },
     /* 获取课节打卡列表 */
@@ -233,7 +233,6 @@ export default {
      * @param {*} item
      */
     async handleAddActoinItem (key, item) {},
-    /* 去我的打卡 */
     toMindDetail () {
       this.$router.push({path: '/course/punchDetail', query: {myPunch: this.communityCourse.peopleCardInfo.id, courseId: this.communityCourse.courseSectionId}})
     },
@@ -246,12 +245,10 @@ export default {
   }
 }
 </script>
-
 <style lang="less" scoped>
-  .Lesson{
+  .lesson{
     padding-bottom: 49px;
-    /*课节头部*/
-    .Lesson-header{
+    .lesson-header{
       .header-photo{
         width: 100%;
         height: 175px;
@@ -283,11 +280,10 @@ export default {
        }
       }
     }
-    /*课节富文本*/
-    .Lesson-module{
+    .lesson-module{
       margin-top: 15px;
       /*课节视频*/
-      .Lesson-video{
+      .lesson-video{
         margin-top: 28px;
         padding: 0 20px;
         height: 187px;
@@ -328,8 +324,7 @@ export default {
         }
       }
     }
-    /*本节打卡任务*/
-    .Lesson-task{
+    .lesson-task{
       padding: 0 20px;
       .content-txt{
         width: 100%;
@@ -364,20 +359,18 @@ export default {
         }
       }
     }
-    /*优秀打卡和全部打卡的样式区*/
-    .Lesson-punch{
+    .lesson-punch{
       .headerBox{
         margin-left: 20px;
       }
     }
-    .Lesson-punch,
+    .lesson-punch,
     .all-punch{
-      /*优秀打卡标签*/
-      .Excellent-punch{
+      .excellent-punch{
         padding: 0 20px;
         box-sizing: border-box;
         width: 100%;
-        .Excellent-punch-title{
+        .excellent-punch-title{
           color:#929292;
           font-size: 36px;/*px*/
           font-weight: 700;
@@ -409,7 +402,7 @@ export default {
         }
       }
       /*底部展开按钮*/
-      .Expand-btn{
+      .expand-btn{
         position: relative;
         padding: 0 20px;
         box-sizing: border-box;
@@ -444,12 +437,10 @@ export default {
       }
     }
     .hr{
-      /*margin-left: -20px;*/
       width: 375px;
       height: 0.5px;
       background: #EDEDED;
     }
-    /*所有打卡*/
     .all-punch{
       .all-show{
         margin-bottom: 50px;
@@ -460,8 +451,7 @@ export default {
         }
       }
     }
-    /*课节底部按钮区*/
-    .Lesson-footer{
+    .lesson-footer{
       background-color: #FFFFFF;
       width: 100%;
       height: 49px;
@@ -495,16 +485,13 @@ export default {
         background-color: #EDEDED;
       }
     }
-    /*公共部分*/
-    .Lesson-punch,.Lesson-task{
+    .lesson-punch,.lesson-task{
       margin-top: 60px;
       box-sizing: border-box;
     }
-    /*头部标题样式*/
     .headerBox{
       width: 100%;
       height: 54px;
-      /*background-color: #C9C9C9;*/
       margin-bottom: 30px;
       position: relative;
       .title-pic1{
