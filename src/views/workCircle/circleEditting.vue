@@ -5,7 +5,7 @@
       <textarea name="content" class="control" maxlength="1000" placeholder="说说你的想法..." v-model="form.content" />
       <p class="addon" :class="{ 'z-active': form.content.length > 0 }"><span class="current">{{form.content.length}}</span>/{{lengths.textMax}}</p>
     </div>
-    <div class="select-box" v-show="isChoose">
+    <div class="select-box" v-show="isChoose" v-if="false">
       <!--选择图片-->
       <div class="takePhoto" @click.stop="photo">
         <input id="photo" type="file" accept="image/*" capture="camera" multiple>
@@ -25,15 +25,16 @@
         <img class="icon" src="@/assets/icon/btn_link@3x.png"/>
       </div>
     </div>
-    <!--图片-->
+    <!--选择图片-->
     <div class="images" v-if="fileType === 0">
       <div class="item" v-for="(item, index) in images" :key="index">
         <img class="image" :src="item" />
         <div class="close" @click="handleDeleteImage(index, item)"><i class="icon iconfont icon-live_btn_close"></i></div>
-        <!--<button type="button" class="close u-btn" @click="handleDeleteImage(index, item)"><i class="u-icon-delete-image"></i></button>-->
       </div>
-      <input id="image"  @click.stop="showimg" type="file" accept="image/*">
-      <!--<a href="#" class="add item" v-if="images.length < lengths.imageMax" @click.prevent.stop="handleAdd"><i class="u-icon-plus"></i></a>-->
+      <div class="takePhoto" @click.stop="photo">
+        <input id="photo" type="file" accept="image/*" capture="camera" multiple>
+        <img class="icon" src="@/assets/icon/icon_plus.png" />
+      </div>
     </div>
     <!--视频-->
     <div class="video" v-if="fileType === 1">
@@ -44,15 +45,24 @@
       </video>
     </div>
     <div class="btn-container">
-      <button type="button" class="u-btn-publish" :disabled="false" @click="handleSubmit">发布</button>
+      <button type="button" class="u-btn-publish" :disabled="!canPublish" @click="handleSubmit">发布</button>
     </div>
     <div class="Mask" v-if="false" @click.stop="closeTask"></div>
   </div>
 </template>
 
 <script>
+import { attachesApi } from '@/api/pages/course'
+import { jobcirclePostApi } from '@/api/pages/workCircle'
 export default {
   name: 'circleEdit',
+  computed: {
+    canPublish: {
+      get: function () {
+        return this.form.content.length > 0
+      }
+    }
+  },
   data () {
     return {
       form: {
@@ -84,21 +94,48 @@ export default {
         }
       })
     },
+    /* 发布 */
+    async readyPublish () {
+      let param = {
+        community_id: this.$route.query.id,
+        content: this.form.content
+      }
+      await jobcirclePostApi(param)
+      this.$toast({text: '评论成功', type: 'success'})
+      this.$router.go(-1)
+    },
     /* 选择图片 */
     photo () {
-      console.log(' 拍照 ')
       let that = this
       document.getElementById('photo').addEventListener('change', function (e) {
         let reader = new FileReader()
+        let imgFile = this.files[0]
         reader.readAsDataURL(this.files[0])
+        let inp2 = this.cloneNode(true)
+        this.parentNode.replaceChild(inp2, this)
         reader.onload = function () {
-          let b = that.dataURLtoFile(this.result)
-          that.images.push(this.result)
-          console.log(b)
-          that.isChoose = false
-          that.fileType = 0
+          that.uploadImg(imgFile).then(res => {
+            that.images.push(res.data[0].url)
+            that.uploadImgList.push(res.data[0].id)
+          })
         }
       })
+    },
+    /* 上传图片 */
+    async uploadImg (nowImg) {
+      let param = {
+        attach_type: 'img',
+        img: nowImg
+      }
+      let config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+      let formData = new FormData()
+      formData.append('attach_type', 'img')
+      formData.append('img1', nowImg)
+      return attachesApi(formData, config)
     },
     /**
      * 删除图片
@@ -272,6 +309,30 @@ export default {
           background-size: 50%;
           background-position: 50% 50%;
           /* no */
+        }
+      }
+      .takePhoto{
+        position: relative;
+        width: 108px;
+        height: 108px;
+        background: #FFFFFF;
+        border: 1px dashed #EDEDED;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        >input{
+          color: #FFFFFF;
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+          opacity: 0;
+          z-index: 5;
+        }
+        .icon{
+          width: 25px;
+          height: 25px;
         }
       }
     }

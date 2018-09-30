@@ -72,3 +72,12 @@ export const getPostlistApi = (data) => {
     type: 'get'
   })
 }
+/* 圈主编辑工作圈封面和名字 */
+export const jobcirclePostApi = (data) => {
+  return request({
+    url: `/jobcircle/post`,
+    type: 'post',
+    data
+  })
+}
+

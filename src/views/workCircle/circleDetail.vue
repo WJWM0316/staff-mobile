@@ -1,6 +1,6 @@
 <template>
   <div class="circleDetail">
-    <circle-header :pageInfo="pageInfo"></circle-header>
+    <circle-header :pageInfo="pageInfo" :isCircle="true"></circle-header>
     <!--下载文件-->
     <div class="fileDownload">
       <div class="downloadImg">
@@ -19,7 +19,7 @@
     <!--帖子区域-->
     <div class="content">
       <div class="top">
-        <div class="postNum">共有 <span style="color: #D7AB70;">1983</span> 篇帖子</div>
+        <div class="postNum">共有 <span style="color: #D7AB70;">{{postListTotal}}</span> 篇帖子</div>
         <div class="reverse" @click.stop="reverse"><img src="../../assets/icon/bnt_order@3x.png"/>倒序</div>
       </div>
       <div class="bottom">
@@ -42,9 +42,7 @@
           </div>
         </div>
         <!--帖子-->
-        <!--<dynamic-item></dynamic-item>
-        <dynamic-item></dynamic-item>
-        <dynamic-item></dynamic-item>-->
+        <dynamic-item v-for="(item,index) in postList" :key="index" :item="item"></dynamic-item>
       </div>
     </div>
     <!-- 发帖   -->
@@ -71,7 +69,8 @@ export default {
     return {
       pageInfo: {},
       nowPage: 1,
-      postList: []
+      postList: [],
+      postListTotal: '' // 帖子数量
     }
   },
   methods: {
@@ -80,7 +79,7 @@ export default {
       console.log(' 我是倒序事件 ')
     },
     toEdit () {
-      this.$router.push(`/circleEdit`)
+      this.$router.push({path: `/circleEdit`, query: {id: this.pageInfo.id}})
     },
     /* 初始化方法 */
     async init (id) {
@@ -98,6 +97,7 @@ export default {
         page: this.nowPage
       }
       let res = await getPostlistApi(param)
+      this.postListTotal = res.meta.total
       this.postList.push(...res.data)
     }
   },

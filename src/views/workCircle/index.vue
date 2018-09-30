@@ -29,7 +29,12 @@ export default {
       isFocus: 'attention',
       tabList: [],
       showBorder: '全部',
-      circleList: []
+      circleList: [],
+      param: {
+        page: 1,
+        count: 20,
+        organization: 0
+      }
     }
   },
   methods: {
@@ -47,21 +52,35 @@ export default {
     async init () {
       let res = await this.getAttentions()
       let classfy = await getCircleClassfyApi()
+      classfy.data.unshift({
+        count: 10,
+        groupId: 0,
+        groupName: '全部',
+        sort: 2
+      })
       this.isFocus = 'attention'
       this.circleList = res.data
       this.tabList = classfy.data
     },
-    /* ------------------------ */
-    cutoverTab (item) {
+    /* 切换分类 */
+    async cutoverTab (item) {
       this.showBorder = item
+      this.param.organization = item.groupId
+      let res
+      if (this.isFocus === 'all') {
+        res = await this.getJobcircle()
+      } else {
+        res = await this.getAttentions()
+      }
+      this.circleList = res.data
     },
     /* 请求全部圈子列表 */
     getAttentions () {
-      return getAttentionsApi()
+      return getAttentionsApi(this.param)
     },
     /* 请求关注圈子列表 */
     getJobcircle () {
-      return getJobcircleApi()
+      return getJobcircleApi(this.param)
     }
   },
   created () {
@@ -84,6 +103,7 @@ export default {
       height: 49px;
       display: flex;
       justify-content: center;
+      z-index: 99;
       align-items: center;
       >span{
         line-height: 49px;

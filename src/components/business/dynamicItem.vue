@@ -9,7 +9,7 @@
         <p class="content-text ellipsis">{{item.cardContent}}</p>
         <p class="full-text-btn">{{isFullText('circle-content')}}</p>
       </div>
-      <div class="content-images" v-if="item.cardContentFile.length > 0">
+      <div class="content-images" v-if="item.cardContentFile && item.cardContentFile.length > 0">
         <div class="item-image one" v-if="item.cardContentFile.length === 1">
           <img :src="item.cardContentFile[0].url || '../../assets/icon/img_head_default.png'" />
         </div>
@@ -35,7 +35,7 @@
     </div>
       <div class="info-area">
         <div class="time-and-del">
-          <span class="time"></span>
+          <span class="time">{{item.createdAt}}</span>
           <span v-if="item.isSelf" class="del-btn" @click.stop="edit">编辑</span>
         </div>
         <div class="operation">
