@@ -52,80 +52,6 @@
   </div>
 </template>
 
-<style lang="less" scoped>
-  .postDetail{
-    .container{
-      padding: 0 20px;
-      .ceiling-box {
-        display: flex;
-        align-items: center;
-        color: #354048;
-        font-size: 30px;/*px*/
-        border-bottom: solid 0.5px #DCDCDC; /* no */
-        span {
-          font-weight: 500;
-          line-height: 21px;
-          margin-right: 31.5px;
-          padding: 17.5px 0 8px;
-        }
-        &.comment span:nth-of-type(1),
-        &.praise span:nth-of-type(2) {
-          color: #354048;
-          font-weight: 700;
-          position: relative;
-        }
-        &.comment span:nth-of-type(1):after,
-        &.praise span:nth-of-type(2):after {
-          content: '';
-          position: absolute;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          height: 2px;
-          border-radius: 2px;
-          background-color: #FFE266;
-        }
-      }
-      /* 评论标签样式 */
-     .hot-area {
-        display: flex;
-        align-items: center;
-        height: 40px;
-        font-size: 30px;/*px*/
-        font-weight: 300;
-        color: #354048;
-        background: #F8F8F8;
-        border-top: solid 0.5px #DCDCDC; /* no */
-        padding: 0 20px;
-        margin-left: -20px;
-        margin-right: -20px;
-        .hot-icon {
-          display: inline-block;
-          margin-right: 10px;
-          img {
-            margin-top: -2.5px;
-            width: 20px;
-            height: 20px;
-          }
-        }
-      }
-      /* 点赞栏样式    */
-      .content-praise{
-        margin: 0 -20px;
-        padding: 0 20px;
-        border-top: solid 0.5px #DCDCDC;
-      }
-      /* 评论及点赞无数据时提示内容样式    */
-      .community-empty-desc {
-        margin-top: 25px;
-        color: #bcbcbc;
-        text-align: center;
-        margin-bottom: 15px;
-      }
-    }
-  }
-</style>
-
 <script>
 import classmateItem from '@c/business/classmateItem'
 import contentheader from '@c/business/dynamicItem'
@@ -206,9 +132,7 @@ export default {
       this.suspensionInputPlaceholder = '来分享你的想法吧～'
       this.commentIndex = -1
     },
-    /* 组件触发的事件 */
     operation (e) {
-      console.log(e, ' 我是带回来的数据 ')
       const {eventType, param} = e
       switch (eventType) {
         case 'comment':
@@ -219,7 +143,6 @@ export default {
           this.praise(param)
           break
         case 'del':
-          console.log(' 我是删除 ')
           break
         case 'comment-area':
           this.jumpCommentDetail(param)
@@ -258,7 +181,6 @@ export default {
     /* 删除评论 */
     delComment (index) {
       this.commentList.splice(index, 1)
-      console.log(index, ' 11111111111 ')
     }
   },
   created () {
@@ -266,3 +188,77 @@ export default {
   }
 }
 </script>
+
+<style lang="less" scoped>
+.postDetail{
+  .container{
+    padding: 0 20px;
+    .ceiling-box {
+      display: flex;
+      align-items: center;
+      color: #354048;
+      font-size: 30px;/*px*/
+      border-bottom: solid 0.5px #DCDCDC; /* no */
+      span {
+        font-weight: 500;
+        line-height: 21px;
+        margin-right: 31.5px;
+        padding: 17.5px 0 8px;
+      }
+      &.comment span:nth-of-type(1),
+      &.praise span:nth-of-type(2) {
+        color: #354048;
+        font-weight: 700;
+        position: relative;
+      }
+      &.comment span:nth-of-type(1):after,
+      &.praise span:nth-of-type(2):after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 2px;
+        border-radius: 2px;
+        background-color: #FFE266;
+      }
+    }
+    /* 评论标签样式 */
+   .hot-area {
+      display: flex;
+      align-items: center;
+      height: 40px;
+      font-size: 30px;/*px*/
+      font-weight: 300;
+      color: #354048;
+      background: #F8F8F8;
+      border-top: solid 0.5px #DCDCDC; /* no */
+      padding: 0 20px;
+      margin-left: -20px;
+      margin-right: -20px;
+      .hot-icon {
+        display: inline-block;
+        margin-right: 10px;
+        img {
+          margin-top: -2.5px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+    /* 点赞栏样式    */
+    .content-praise{
+      margin: 0 -20px;
+      padding: 0 20px;
+      border-top: solid 0.5px #DCDCDC;
+    }
+    /* 评论及点赞无数据时提示内容样式    */
+    .community-empty-desc {
+      margin-top: 25px;
+      color: #bcbcbc;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+  }
+}
+</style>

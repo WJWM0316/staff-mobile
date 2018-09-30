@@ -61,7 +61,7 @@ export default {
           width: '14em'
         })
       } else {
-        this.$router.push(`/live/room?id=${this.id}`)
+        this.$router.push(`/liveRoom?id=${this.id}`)
       }
     }
   },

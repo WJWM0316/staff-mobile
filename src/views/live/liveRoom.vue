@@ -116,7 +116,7 @@ export default {
       'updata_sendData'
     ]),
     jumpMore () {
-      this.$router.push(`/live/detail?id=${this.id}`)
+      this.$router.push(`/liveDetail?id=${this.id}`)
     },
     scrollTo (type) {
       switch (type) {

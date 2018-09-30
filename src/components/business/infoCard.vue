@@ -41,11 +41,11 @@ export default {
   methods: {
     toDeatil (id) {
       if (this.type === '1') {
-        this.$router.push({path: '/course/detail', query: {id: id}})
+        this.$router.push({path: '/courseDetail', query: {id: id}})
       } else if (this.type === '2') {
-        this.$router.push({path: '/workCircle/circleDetail', query: {id: id}})
+        this.$router.push({path: '/circleDetail', query: {id: id}})
       } else {
-        this.$router.push({path: '/live/detail', query: {id: id}})
+        this.$router.push({path: '/liveDetail', query: {id: id}})
       }
     }
   },

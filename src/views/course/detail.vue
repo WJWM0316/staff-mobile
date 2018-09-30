@@ -72,15 +72,12 @@ export default {
   },
   methods: {
     joinCourse () {
-      console.log(' 加入课程 ')
       getCourseJoinApi({id: this.$route.query.id}).then(() => {
-        this.$router.push({path: '/course/community', query: {id: this.pageInfo.id}})
-      }).catch(res => {
-        console.log(res)
+        this.init()
       })
     },
     toLesson (id) {
-      this.$router.push(`/course/lesson?id=${id}`)
+      this.$router.push(`/courseLesson?id=${id}`)
     },
     async init (id) {
       let res = await this.getcourseDetail(id)

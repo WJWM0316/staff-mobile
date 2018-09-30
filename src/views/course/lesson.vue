@@ -232,10 +232,10 @@ export default {
      */
     async handleAddActoinItem (key, item) {},
     toMindDetail () {
-      this.$router.push({path: '/course/punchDetail', query: {myPunch: this.communityCourse.peopleCardInfo.id, courseId: this.communityCourse.courseSectionId}})
+      this.$router.push({path: '/cardDetail', query: {myPunch: this.communityCourse.peopleCardInfo.id, courseId: this.communityCourse.courseSectionId}})
     },
     toPunch () {
-      this.$router.push({path: '/course/punchEditting', query: {courseSectionId: this.communityCourse.courseSectionId}})
+      this.$router.push({path: '/cardEdit', query: {courseSectionId: this.communityCourse.courseSectionId}})
     }
   },
   created () {

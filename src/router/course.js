@@ -6,29 +6,29 @@ const routers = [
     component: resolve => require(['@/views/course/index'], resolve)
   },
   {
-    path: '/course/detail',
+    path: '/courseDetail',
     name: 'courseDetail',
     meta: { title: '课程详情' },
     component: resolve => require(['@/views/course/detail'], resolve)
   },
   {
-    path: '/course/lesson',
+    path: '/courseLesson',
     name: 'lesson',
     meta: { title: '课节详情' },
     component: resolve => require(['@/views/course/lesson'], resolve)
   },
   {
-    path: '/course/punchDetail',
-    name: 'punchDetail',
+    path: '/cardDetail',
+    name: 'cardDetail',
     component: resolve => require(['@/views/course/punchDetail'], resolve)
   },
   {
-    path: '/course/punchEditting',
-    name: 'punchEditting',
+    path: '/cardEdit',
+    name: 'cardEdit',
     component: resolve => require(['@/views/course/punchEditting'], resolve)
   },
   {
-    path: '/course/commentDetail',
+    path: '/commentDetail',
     name: 'commentDetail',
     component: resolve => require(['@/views/course/commentDetail'], resolve)
   }

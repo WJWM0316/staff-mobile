@@ -70,16 +70,16 @@ export default {
     jump (type) {
       switch (type) {
         case 'edit':
-          this.$router.push('/center/edit')
+          this.$router.push('/infoEdit')
           break
         case 'main':
-          this.$router.push('/center/personalPage')
+          this.$router.push('/personalPage')
           break
         case 'message':
-          this.$router.push('/center/message')
+          this.$router.push('/message')
           break
         case 'help':
-          this.$router.push('/center/help')
+          this.$router.push('/help')
           break
       }
     },
