@@ -28,7 +28,7 @@
       <!-- 发表内容 类型: 指定回复人 无指定回复人 -->
       <div class="publish-content">
         <!-- 指定回复人 -->
-        <p class="content-text" v-if="false">回复<span style="color: #4080AD; display: inline-block; z-index: 9;" @click.stop="toUserInfo(item.receiver.userId)">我是指定回复人的名称</span>：我是回复的内容</p>
+        <p class="content-text" v-if="item.ancestorCommentId !== item.parentCommentId">回复<span style="color: #4080AD; display: inline-block; z-index: 9;" @click.stop="toUserInfo(item.receiver.userId)">{{item.toUserName}}</span>：{{item.content}}</p>
         <!-- 无指定回复人 -->
         <p class="content-text" v-else>{{item.content}}</p>
       </div>
@@ -56,12 +56,12 @@
       <!-- 评论区 -->
       <div class="comment-area" v-if="item.replyCount > 0" @click="commentAreaClick">
         <!-- 点赞信息 -->
-        <div class="praise-block" v-if="true">
+        <div class="praise-block" v-if="item.favorCount > 0">
           <img class="icon-zan" src="@/assets/icon/bnt_zan@3x.png" />
           <div class="praise-name">
-            <span class="favor-name" v-for="(favor, favorIndex) in favorList" :key="favorIndex" @click.stop="toUserInfo(favor.userId)">{{favorIndex > 0 ?  ','+favor.realName : favor.realName}}</span>
+            <span class="favor-name" v-for="(favor, favorIndex) in item.favorUsers" :key="favorIndex" @click.stop="toUserInfo(favor.userId)">{{favorIndex > 0 ?  ','+favor.realname : favor.realname}}</span>
           </div>
-          <span class="praise-total" v-if="true">等{{favorList.length}}人觉得很赞</span>
+          <span class="praise-total" v-if="item.favorCount > 3">等{{item.favorCount}}人觉得很赞</span>
         </div>
         <!-- 评论信息 -->
         <div class="reply-block" v-if="item.replyCommentList.length > 0">
@@ -89,7 +89,7 @@
 
 <script>
 import moment from 'moment'
-import { getFavorApi, delCommentApi } from '@/api/pages/course'
+import { getFavorApi, delFavorApi, delCommentApi } from '@/api/pages/course'
 export default {
   name: 'discussItem',
   props: {
@@ -196,8 +196,18 @@ export default {
           id: this.item.id,
           sourceType: 'course_section_card_comment'
         }
-        await getFavorApi(param)
-        this.$toast({text: '点赞成功', type: 'success'})
+        if (this.item.isFavor === 0) {
+          await getFavorApi(param)
+          this.item.isFavor = 1
+          this.item.favorCount += 1
+          this.$toast({text: '点赞成功', type: 'success'})
+        } else {
+          console.log(param)
+          await delFavorApi(param)
+          this.item.isFavor = 0
+          this.item.favorCount -= 1
+          this.$toast({text: '取消点赞成功'})
+        }
       } catch (err) {
         this.$toast({text: err})
       }
@@ -238,6 +248,9 @@ export default {
     flex-grow: 1;
     font-size: 30px;/*px*/
     width: 280px;
+    .content-text{
+      font-size: 30px;/*px*/
+    }
     .content-head{
       color: #4080AD;
       font-size: 28px;/*px*/
@@ -286,16 +299,16 @@ export default {
     }
     /* 评论区 */
     .comment-area {
-      margin-top: 6.5px;
-      padding: 2.5px 5px;
+      display: inline-block;
+      margin-top: 6px;
+      padding: 2px 5px;
       width: 100%;
-      border-radius: 1.5px;
+      border-radius: 2px;
       background-color: #f8f8f8;
       box-sizing: border-box;
       font-size: 13px;/*px*/
-
       .praise-block {
-        padding: 9px 0 7.5px;
+        padding: 9px 0 7px;
         display: flex;
         box-sizing: border-box;
         width: 100%;
@@ -303,7 +316,7 @@ export default {
         align-items: center;
         .icon-zan{
           width: 15px;
-          height: 15.5px;
+          height: 16px;
           margin-right: 6px;
         }
         .praise-total {
@@ -311,7 +324,6 @@ export default {
           font-weight: 300;
           flex: 0 0 auto;
         }
-
         .praise-name {
           font-size: 28px;/*px*/
           font-weight: 500;
@@ -321,7 +333,6 @@ export default {
           white-space: nowrap;
         }
       }
-
       .reply-block {
         font-size: 28px;/*px*/
         padding: 2.5px 0;

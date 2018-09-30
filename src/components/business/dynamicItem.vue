@@ -40,13 +40,13 @@
         </div>
         <div class="operation">
           <div class="praise" @click.stop="praise">
-            <img v-if="isfavor" class="icon-zan" src="./../../assets/icon/bnt_zan_pre@3x.png" />
-            <img v-else class="icon-zan" src="./../../assets/icon/bnt_zan@3x.png" />
+            <img v-if="isfavor" class="icon-zan" src="@/assets/icon/bnt_zan_pre@3x.png" />
+            <img v-else class="icon-zan" src="@/assets/icon/bnt_zan@3x.png" />
             <span>{{item.favorTotal}}</span>
           </div>
           <div class="comment" @click.stop="comment">
             <span class="icon-pinglun">
-              <img src="./../../assets/icon/bnt_comment@3x.png" />
+              <img src="@/assets/icon/bnt_comment@3x.png" />
             </span>
             <span>{{item.commentTotal}}</span>
           </div>
@@ -163,7 +163,7 @@ export default {
     /*  去帖子详情  */
     toDetail () {
       if (this.showCommunicate) {
-        this.$router.push({path: `/course/detail`, query: {myPunch: this.item.peopleCardInfo.id, courseId: this.item.courseSectionId}})
+        this.$router.push({path: '/course/punchDetail', query: {myPunch: this.item.courseSectionCardId}})
       }
     },
     /* 跳转个人详情页 */
@@ -453,6 +453,13 @@ export default {
           }
           &:nth-of-type(1) {
             margin-top: 8px;
+          }
+          .ellipsis3{
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            -webkit-line-clamp: 2;
           }
         }
         /*热评标志样式*/

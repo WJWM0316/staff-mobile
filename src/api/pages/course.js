@@ -70,8 +70,8 @@ export const getFavorApi = (data) => {
 // 打卡或评论取消点赞
 export const delFavorApi = (data) => {
   return request({
-    url: `/coursesectioncard/commonCancelFavor/${data.id}?sourceType=${data.sourceType}`,
-    type: 'put'
+    url: `/coursesectioncard/commonFavor/${data.id}?sourceType=${data.sourceType}`,
+    type: 'delete'
   })
 }
 // 课节打卡提交
@@ -140,6 +140,14 @@ export const delCommentApi = (data) => {
     type: 'delete'
   })
 }
+// 评论打卡或回复评论
+export const getReplyListApi = (data) => {
+  return request({
+    url: `/coursesectioncard/comment/replyList/${data.id}?page=${data.page}&count=${data.count}&sort=${data.sort}`,
+    type: 'get'
+  })
+}
+
 
 
 
