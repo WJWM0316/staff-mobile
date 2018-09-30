@@ -168,9 +168,9 @@ export default {
     }
   },
   created () {
-    if (!this.userInfo.id) {
-      this.getUserInfo()
-    }
+    // if (!this.userInfo) {
+    //   this.getUserInfo()
+    // }
   },
   mounted () {
   }
