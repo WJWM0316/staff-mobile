@@ -29,7 +29,6 @@ Vue.filter('ellipsis', (value, byteNum) => {
     let regex = /^[\u4E00-\u9FA5]/
     for (var i = 0; i < string.length; i++) {
       // 检查双字节
-      console.log(regex.test(string[i]), string[i])
       if (regex.test(string[i])) {
         length += 2
       } else {
