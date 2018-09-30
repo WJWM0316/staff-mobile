@@ -42,9 +42,9 @@
           </div>
         </div>
         <!--帖子-->
+        <!--<dynamic-item></dynamic-item>
         <dynamic-item></dynamic-item>
-        <dynamic-item></dynamic-item>
-        <dynamic-item></dynamic-item>
+        <dynamic-item></dynamic-item>-->
       </div>
     </div>
     <!-- 发帖   -->
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { getCircleDetailApi } from '@/api/pages/workCircle'
+import { getCircleDetailApi, getPostlistApi } from '@/api/pages/workCircle'
 import circleHeader from '@c/business/commonHeader'
 import dynamicItem from '@c/business/dynamicItem'
 export default {
@@ -69,7 +69,9 @@ export default {
   },
   data () {
     return {
-      pageInfo: {}
+      pageInfo: {},
+      nowPage: 1,
+      postList: []
     }
   },
   methods: {
@@ -82,12 +84,21 @@ export default {
     },
     /* 初始化方法 */
     async init (id) {
-      let res = await this.getgetCircleDetail(id)
+      let res = await this.getCircleDetail(id)
       this.pageInfo = res.data
+      this.getPostlist()
     },
-    /* ------------------ */
-    getgetCircleDetail (id) {
+    /* 获取工作圈详情 */
+    getCircleDetail (id) {
       return getCircleDetailApi(id)
+    },
+    async getPostlist () {
+      let param = {
+        id: this.pageInfo.id,
+        page: this.nowPage
+      }
+      let res = await getPostlistApi(param)
+      this.postList.push(...res.data)
     }
   },
   created () {

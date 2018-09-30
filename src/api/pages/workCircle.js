@@ -65,3 +65,10 @@ export const putModifyApi = (data) => {
     type: 'put'
   })
 }
+/* 圈主编辑工作圈封面和名字 */
+export const getPostlistApi = (data) => {
+  return request({
+    url: `/jobcircle/postlist/${data.id}`,
+    type: 'get'
+  })
+}
