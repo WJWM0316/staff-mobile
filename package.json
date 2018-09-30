@@ -17,6 +17,7 @@
     "js": "^0.1.0",
     "layui-src": "^2.3.0",
     "lib-flexible": "^0.3.2",
+    "optimize-css-assets-webpack-plugin": "^3.2.0",
     "px2rem-loader": "^0.1.9",
     "vue": "^2.5.2",
     "vue-clipboard2": "^0.2.1",
