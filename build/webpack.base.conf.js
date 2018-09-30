@@ -21,7 +21,7 @@ const createLintingRule = () => ({
 })
 
 let webpackConfig = {
-  context: path.resolve(__dirname, '../'),
+  context: path.resolve(__dirname, './'),
   entry: {
     app: './src/main.js'
   },
