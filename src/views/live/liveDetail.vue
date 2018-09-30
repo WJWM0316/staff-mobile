@@ -34,19 +34,19 @@ export default {
   data () {
     return {
       pageInfo: {},
-      roomId: ''
+      id: ''
     }
   },
   methods: {
     async getInfo () {
       let data = {
-        id: this.roomId
+        id: this.id
       }
       let res = await getLiveDetailApi(data)
       this.pageInfo = res.data
     },
     joinLive () {
-      joinLiveApi({id: this.roomId}).then(res => {
+      joinLiveApi({id: this.id}).then(res => {
         this.pageInfo.isJoin = 1
         this.$toast({
           text: '参与成功',
@@ -61,12 +61,12 @@ export default {
           width: '14em'
         })
       } else {
-        this.$router.push(`/live/room?roomId=${this.roomId}`)
+        this.$router.push(`/live/room?id=${this.id}`)
       }
     }
   },
   created () {
-    this.roomId = this.$route.query.roomId
+    this.id = this.$route.query.id
     this.getInfo()
   }
 }

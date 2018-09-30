@@ -20,6 +20,16 @@ export const getUserInfoApi = (data, needLoading) => {
   })
 }
 
+// 编辑用户信息
+export const editUserInfoApi = (data, needLoading) => {
+  return request({
+    type: 'post',
+    url: `/user/editBasic`,
+    data,
+    needLoading: needLoading
+  })
+}
+
 // 获取当前用户的已加入列表
 export const getMyJoinedListApi = (data, needLoading) => {
   return request({

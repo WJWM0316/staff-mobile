@@ -82,7 +82,7 @@ export default {
   },
   data () {
     return {
-      roomId: '',
+      id: '',
       list: [],
       onlineNum: 0, // 在线人数
       problemTxt: '', // 提交的问题
@@ -116,7 +116,7 @@ export default {
       'updata_sendData'
     ]),
     jumpMore () {
-      this.$router.push(`/live/detail?roomId=${this.roomId}`)
+      this.$router.push(`/live/detail?id=${this.id}`)
     },
     scrollTo (type) {
       switch (type) {
@@ -133,7 +133,7 @@ export default {
     },
     getMessage ({msgId, action, needLoading = true}) {
       let data = {
-        id: this.roomId,
+        id: this.id,
         action: action || 1,
         msgId: msgId || 0,
         count: 20
@@ -181,7 +181,7 @@ export default {
       if (this.problemTxt !== '') {
         return new Promise((resolve, reject) => {
           let data = {
-            live_id: this.roomId,
+            live_id: this.id,
             master_uid: 19,
             content: this.problemTxt
           }
@@ -213,7 +213,7 @@ export default {
     }
   },
   created () {
-    this.roomId = this.$route.query.roomId
+    this.id = this.$route.query.id
     this.getMessage({page: 1, action: 1})
   },
   mounted () {

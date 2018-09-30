@@ -43,13 +43,11 @@
           <div class="content-txt" v-html="communityCourse.punchCardTitle">
           </div>
           <div class="content-img">
-            <!--<img v-for="item in community_course.punch_card_img_info" :src="item.picture_url" alt="" />-->
             <div class="content-images">
               <!-- 图片为 1 张时 -->
               <div class="item-image one" v-if="communityCourse.punchCardCImgInfo && communityCourse.punchCardCImgInfo.length === 1">
                 <img :src="communityCourse.punchCardCImgInfo[0].url || '@/assets/icon/img_head_default.png'" @click.stop="previewImage(communityCourse.punchCardCImgInfo[0].pictureUrl)" />
               </div>
-
               <!--  图片为 多 张时  -->
               <div class="item-image" v-for="(file, index) in communityCourse.punchCardCImgInfo" :key="index" v-else>
                 <img :src="file.pictureUrl || '@/assets/icon/img_head_default.png'" v-if="!file.holder" @click.stop="previewImage(file.pictureUrl)" />
@@ -147,18 +145,8 @@ export default {
       showIdentification: true,
       disableOperationArr: ['comment'],
       isPlayList: false,
-      // 假音频数据
-      /* item = {
-        files:[{
-          duration:250,
-          fileId:"6237",
-          fileUrl:"https://cdnstatic.ziwork.com/test/audio/2018-08-15/4bd491cb8292450b62b387a595f15ee8.mp3",
-          avatar:"2JVOTrwtULW3VpcKI3whmcDNYTlTMEVQzPpxN3ZDfXOcFYKtUiv7XZwjXolTara2.amr"
-        }],
-      } */
       // 所有打卡数据
       peopleCourseCardList: '',
-      // 优秀打卡
       excellentPunchList: '',
       // 是否试读
       trialReading: 0, // 0是非试读， 1是试读
@@ -255,7 +243,6 @@ export default {
   },
   created () {
     this.init()
-    console.log(this.communityCourse, ' 5555555555555555555 ')
   }
 }
 </script>

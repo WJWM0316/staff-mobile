@@ -7,16 +7,16 @@
       </span>
     </div>
     <div class="item border-bottom-1px">
-      <span class="txt must">姓名</span>
+      <span class="txt">姓名</span>
       <span class="editBox">
         <input type="text" placeholder="请输入姓名" v-model="pageInfo.realname">
       </span>
     </div>
     <div class="item border-bottom-1px">
-      <span class="txt must">性别</span>
+      <span class="txt">性别</span>
       <span class="editBox">
-        <span class="placeholder" v-if="!sexItem"  @click.stop="sexShow = true">请选择性别</span>
-        <span class="operResult" v-else  @click.stop="sexShow = true">{{sexItem}}</span>
+        <span class="placeholder" v-if="pageInfo.gender !== 0 && pageInfo.gender !== 1"  @click.stop="sexShow = true">请选择性别</span>
+        <span class="operResult" v-else  @click.stop="sexShow = true">{{pageInfo.gender === 0 ? '女' : '男'}}</span>
         <actionSheet
           :showSheet="sexShow"
           :menus="sexList"
@@ -25,13 +25,13 @@
       </span>
     </div>
     <div class="item border-bottom-1px">
-      <span class="txt must">岗位</span>
+      <span class="txt">岗位</span>
       <span class="editBox">
         <input type="text" placeholder="请输入岗位" v-model="pageInfo.occupation">
       </span>
     </div>
     <div class="item border-bottom-1px">
-      <span class="txt must">邮箱</span>
+      <span class="txt">邮箱</span>
       <span class="editBox">
         <input type="text" placeholder="请输入邮箱" v-model="pageInfo.email">
       </span>
@@ -48,12 +48,12 @@
         <input type="text" placeholder="请输入微信" v-model="pageInfo.wechat">
       </span>
     </div>
-    <xButton class="saveBtn">保存</xButton>
+    <xButton class="saveBtn" @click.stop.native="saveInfo">保存</xButton>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
-import { userInfoApi } from '@/api/pages/center'
+import { userInfoApi, editUserInfoApi } from '@/api/pages/center'
 import WechatMixin from '@/mixins/wechat'
 export default {
   mixins: [WechatMixin],
@@ -63,11 +63,10 @@ export default {
     return {
       pageInfo: null,
       sexShow: false,
-      sexKey: null,
       sexItem: null,
       sexList: {
-        0: '男',
-        1: '女'
+        1: '男',
+        0: '女'
       }
     }
   },
@@ -78,16 +77,11 @@ export default {
   },
   methods: {
     _choseResult (sexKey, sexItem) {
-      this.sexKey = sexKey
-      this.sexItem = sexItem
+      this.pageInfo.gender = parseInt(sexKey)
       this.sexShow = false
     },
     editPhoto () {
-      try {
-        this.wechatChooseImage()
-      } catch (e) {
-        console.log(e)
-      }
+      this.wechatChooseImage()
     },
     async getUserInfo () {
       if (!this.userInfo.base) {
@@ -96,6 +90,22 @@ export default {
       } else {
         this.pageInfo = this.userInfo.base
       }
+    },
+    saveInfo () {
+      let data = {
+        avatarId: this.pageInfo.avatar.id,
+        mobile: this.pageInfo.mobile,
+        wechat: this.pageInfo.wechat
+      }
+      editUserInfoApi(data).then(res => {
+        this.$toast({
+          text: '保存成功',
+          type: 'success',
+          callBack: () => {
+            history.back()
+          }
+        })
+      })
     }
   },
   created () {
@@ -115,7 +125,7 @@ export default {
       align-items: center;
       padding-left: 17px;
       position: relative;
-      &.must::after {
+      &::after {
         content: '*';
         font-size: 30px; /*px*/
         color: #D7AB70;
@@ -150,11 +160,17 @@ export default {
         font-size: 30px; /*px*/
       }
       .operResult {
+        width: 100%;
+        display: block;
         font-weight: 400;
         color: #354048;
+        text-align: right;
         font-size: 30px; /*px*/
       }
       .placeholder {
+        width: 100%;
+        display: block;
+        text-align: right;
         color: #BCBCBC;
         font-size: 30px; /*px*/
       }

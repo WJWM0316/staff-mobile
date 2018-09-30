@@ -41,15 +41,11 @@ export default {
   methods: {
     toDeatil (id) {
       if (this.type === '1') {
-        if (this.item.isMaster || this.item.userRole.isJoin === 1) {
-          this.$router.push({path: '/course/community', query: {id: id}})
-        } else {
-          this.$router.push({path: '/course/introduce', query: {id: id}})
-        }
+        this.$router.push({path: '/course/detail', query: {id: id}})
       } else if (this.type === '2') {
         this.$router.push({path: '/workCircle/circleDetail', query: {id: id}})
       } else {
-        this.$router.push({path: '/live/detail', query: {roomId: id}})
+        this.$router.push({path: '/live/detail', query: {id: id}})
       }
     }
   },
@@ -60,23 +56,23 @@ export default {
 <style lang="less" scoped>
 .infoCard{
   box-sizing: border-box;
-  display: flex;
-  align-items: center;
   width:100%;
-  padding: 15px 20px;
+  padding: 15px 20px 15px 100px;
+  position: relative;
   .infoPhoto{
     display: block;
-    flex-basis: 80px;
     width: 80px;
     height: 80px;
     border-radius: 3px;
     box-shadow:0px 2px 8px 0px rgba(0,0,0,0.14);
-    margin-right: 15px;
+    position: absolute;
+    top: 15px;
+    left: 20px;
   }
   .right{
     box-sizing: border-box;
     height: 80px;
-    flex: 1;
+    padding-left: 15px;
     .title{
       color: #354048;
       font-size: 30px;/*px*/

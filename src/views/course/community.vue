@@ -7,10 +7,10 @@
         <div class="postNum">已更新<span style="color: #D7AB70;">10</span> 篇</div>
         <div class="rightBox" @click.stop="reverse">
           <div class="study" v-if="false">
-            <img src="../../assets/icon/bnt_positioning@3x.png"/>上次学到
+            <img src="@a/icon/bnt_positioning@3x.png"/>上次学到
           </div>
           <div class="reverse" @click.stop="reverse">
-            <img src="../../assets/icon/bnt_order@3x.png"/>倒序
+            <img src="@a/icon/bnt_order@3x.png"/>倒序
           </div>
         </div>
       </div>
@@ -19,13 +19,13 @@
         <div v-for="(item, index) in lessonList" class="Lesson" :key="index" @click.stop="toLesson(item.courseSectionId)">
           <span class="txt">{{index+1}}、{{item.title}}</span>
           <!--正在学习-->
-          <img v-show="item.statusInfo.isCurrentStudy === 1" src="@/assets/icon/icon_position@3x.png"/>
+          <img v-show="item.statusInfo.isCurrentStudy === 1" src="@a/icon/icon_position@3x.png"/>
           <!--未解锁-->
-          <img v-show="item.statusInfo.isUnlock === 0" src="@/assets/icon/icon_lock@3x.png"/>
+          <img v-show="item.statusInfo.isUnlock === 0" src="@a/icon/icon_lock@3x.png"/>
           <!--已解锁-->
-          <img v-show="item.statusInfo.isUnlock === 1 && item.statusInfo.isCurrentStudy === 0 && item.statusInfo.isPunchCard === 0" src="@/assets/icon/icon_unlock@3x.png"/>
+          <img v-show="item.statusInfo.isUnlock === 1 && item.statusInfo.isCurrentStudy === 0 && item.statusInfo.isPunchCard === 0" src="@a/icon/icon_unlock@3x.png"/>
           <!--已完成-->
-          <img v-show="item.statusInfo.isPunchCard === 1 && item.statusInfo.isCurrentStudy !== 1" src="@/assets/icon/icon_complete@3x.png"/>
+          <img v-show="item.statusInfo.isPunchCard === 1 && item.statusInfo.isCurrentStudy !== 1" src="@a/icon/icon_complete@3x.png"/>
         </div>
         <div class="after" v-if="lessonTotal > lessonList.length" @click.stop="loadMoreLesson">点击加载后面内容</div>
         <div class="after" v-else>没有更多内容了~</div>
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import topHeader from '@/components/business/commonHeader'
+import topHeader from '@c/business/commonHeader'
 import { courseInfoApi, CourseSectionApi } from '@/api/pages/course'
 export default {
   name: 'community',
@@ -110,7 +110,6 @@ export default {
   }
 }
 </script>
-
 <style lang="less" scoped>
 .community{
   .content{

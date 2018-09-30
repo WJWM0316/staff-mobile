@@ -33,7 +33,7 @@ export default {
     getStudentList ({page, count}, needLoading) {
       return new Promise((resolve, reject) => {
         let data = {
-          id: this.$route.query.roomId,
+          id: this.$route.query.id,
           page: page || 1,
           count: count || 20
         }
@@ -46,7 +46,7 @@ export default {
     getTeacherListApi ({page, count}, needLoading) {
       return new Promise(() => {
         let data = {
-          id: this.$route.query.roomId,
+          id: this.$route.query.id,
           page: page || 1,
           count: count || 20
         }
