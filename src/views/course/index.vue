@@ -15,7 +15,6 @@
 import { courseListApi, categoryApi } from '@/api/pages/course'
 import infoCard from '@c/business/infoCard.vue'
 export default {
-  name: 'course',
   components: {
     infoCard
   },

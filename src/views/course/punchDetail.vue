@@ -59,7 +59,6 @@ import discussItem from '@c/business/discussItem'
 import suspensionInput from '@c/functional/suspensionInput'
 import { getPunchCardDetailsApi, courseCardCommentApi, getFavorListApi, getCommentListApi, getHotCommentListApi } from '@/api/pages/course'
 export default {
-  name: 'detail',
   components: {
     contentheader,
     classmateItem,
