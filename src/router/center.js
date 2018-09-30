@@ -6,13 +6,13 @@ const routers = [
     component: resolve => require(['@/views/center/index'], resolve)
   },
   {
-    path: '/center/edit',
+    path: '/infoEdit',
     name: 'edit',
     meta: { title: '资料编辑' },
     component: resolve => require(['@/views/center/edit'], resolve)
   },
   {
-    path: '/center/personalPage',
+    path: '/personalPage',
     name: 'personalPage',
     meta: { title: '个人主页' },
     component: resolve => require(['@/views/center/personalPage'], resolve)

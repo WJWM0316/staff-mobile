@@ -80,7 +80,7 @@ export default {
       console.log(' 我是倒序事件 ')
     },
     toEdit () {
-      this.$router.push(`/workCircle/circleEdit`)
+      this.$router.push(`/circleEdit`)
     },
     /* 初始化方法 */
     async init (id) {

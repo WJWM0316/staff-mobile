@@ -4,42 +4,28 @@
       <img class="headerPhoto" :src="item.releaseUser.avatar.smallUrl" />
       <div class="appellation">{{item.releaseUser.realname}}</div>
     </div>
-    <!--内容区-->
     <div class="content">
-      <!--1.纯文本-->
-      <!--限制六行-->
       <div ref="circle-content">
         <p class="content-text ellipsis">{{item.cardContent}}</p>
         <p class="full-text-btn">{{isFullText('circle-content')}}</p>
       </div>
-      <!--2.图片-->
       <div class="content-images" v-if="item.cardContentFile.length > 0">
-        <!--  图片为 1 张时  -->
         <div class="item-image one" v-if="item.cardContentFile.length === 1">
           <img :src="item.cardContentFile[0].url || '../../assets/icon/img_head_default.png'" />
         </div>
-        <!--  图片为 多 张时  -->
         <div class="item-image" v-for="(item,index) in item.cardContentFile" :key="index" v-else>
           <img :src="item.url || '../../assets/icon/img_head_default.png'" />
         </div>
       </div>
-      <!--  视频-->
       <div class="content-video" v-if="false">
         <video controls ref="video" v-show="false"></video>
         <div class="placeholder">
-          <!--背景图-->
-          <!--<img />-->
         </div>
       </div>
       <!-- 文件 -->
       <div v-if="false">
         <div class="content-file" @click.stop="fileOpen('https://cdnstatic.ziwork.com/test/file/2018-05-29/4475f3474790d39f9e051b46480fea02.xlsx')">
           <img class="file-logo" src="./../../assets/suffix/pdf.png" />
-          <!--<img class="file-logo" src="./../../assets/suffix/ppt.png" />
-          <img class="file-logo" src="./../../assets/suffix/word.png" />
-          <img class="file-logo" src="./../../assets/suffix/xls.png" />
-          <img class="file-logo" src="" />-->
-
           <div class="file-desc">
             <p class="text">薛兆丰30年职场经验分享，字超过打点字超过打点字超过打点字超过打点字超过打点字超过打点</p>
             <p class="text">35K</p>
@@ -47,22 +33,17 @@
         </div>
       </div>
     </div>
-    <!--  内容区结束  -->
-    <!--  底部区   -->
       <div class="info-area">
         <div class="time-and-del">
-          <span class="time">{{timeStr}}</span>
+          <span class="time"></span>
           <span v-if="item.isSelf" class="del-btn" @click.stop="edit">编辑</span>
-          <!--<span v-else class="del-btn" @click.stop="del">删除</span>-->
         </div>
         <div class="operation">
-          <!-- 点赞按钮 -->
           <div class="praise" @click.stop="praise">
             <img v-if="isfavor" class="icon-zan" src="@/assets/icon/bnt_zan_pre@3x.png" />
             <img v-else class="icon-zan" src="@/assets/icon/bnt_zan@3x.png" />
             <span>{{item.favorTotal}}</span>
           </div>
-          <!-- 评论按钮 -->
           <div class="comment" @click.stop="comment">
             <span class="icon-pinglun">
               <img src="@/assets/icon/bnt_comment@3x.png" />
@@ -72,39 +53,28 @@
         </div>
       </div>
     <template v-if="showCommunicate">
-      <div class="comment-area">
-        <!-- 点赞信息 -->
-        <div class="praise-block" v-if="true">
-          <img class="icon-zan" src="@/assets/icon/bnt_zan@3x.png" />
+      <div class="comment-area" v-if="item.favorList.length > 0 && item.hotComments.length > 0">
+        <div class="praise-block" v-if="item.favorList.length > 0">
+          <img class="icon-zan" src="./../../assets/icon/bnt_zan@3x.png" />
           <div class="praise-name">
             <span class="favor-name" v-for="(favor,favorIndex) in item.favorList" :key="favorIndex" @click.stop="toUserInfo(favor.userId)">{{favorIndex > 0 ?  ','+favor.realname : favor.realname}}</span>
           </div>
-          <span class="praise-total" v-if="item.favorTotal > 3">等{{item.favorTotal}}人觉得很赞</span>
+          <span class="praise-total" v-if="item.favorList.length > 3">等{{item.favors.length}}人觉得很赞</span>
         </div>
-        <!-- 评论信息 -->
         <div class="reply-block">
           <template  v-if="item.hotComments.length > 0">
             <div class="hot-reply">
               <div class="hot-reply-icon">热门评论</div>
               <div class="reply" v-for="(reply,index) in item.hotComments" :key="index">
-                <p class="favor-content ellipsis3"><span class="favor-name">{{reply.userName}}：</span>{{reply.content}}</p>
+                <p class="favor-content"><span class="favor-name">{{reply.userName}}：</span>{{reply.content}}</p>
               </div>
             </div>
           </template>
-          <!--<tempalte v-else>
-            <div class="reply ellipsis3" v-for="reply in item.comments">
-              <span class="favor-name" @click.stop="toUserInfo(reply.userId)">{{reply.reviewer.realName}}</span>: {{reply.content}}
-            </div>
-            <div class="reply" v-if="item.commentTotal > 3">
-              <span class="favor-name">查看全部{{item.commentTotal}}条回复</span>
-            </div>
-          </tempalte>-->
         </div>
       </div>
     </template>
   </div>
 </template>
-
 <script>
 import { getFavorApi, delFavorApi } from '@/api/pages/course'
 import moment from 'moment'
@@ -136,57 +106,6 @@ export default {
     }
   },
   computed: {
-    // 朋友圈发表时间展示规则
-    timeStr () {
-      let releaseTime = 1527576536 || 0
-      const now = this.serverTime ? new Date(this.serverTime * 1000) : new Date()
-      let timeStr = '刚刚'
-      if (releaseTime) {
-        releaseTime = new Date(releaseTime * 1000)
-        let differ = parseInt((now.getTime() - releaseTime.getTime()) / 1000)
-        const timeCompany = {
-          m: 60,
-          h: 60 * 60,
-          d: 60 * 60 * 24
-        }
-
-        // 是否跨年 and 超过两天
-        const nowDate = {
-          y: now.getFullYear(),
-          m: now.getMonth(),
-          d: now.getDate()
-        }
-        const releaseTimeDate = {
-          y: releaseTime.getFullYear(),
-          m: releaseTime.getMonth(),
-          d: releaseTime.getDate()
-        }
-        // 是否当天
-        if (nowDate.y === releaseTimeDate.y && nowDate.m === releaseTimeDate.m && nowDate.d === releaseTimeDate.d) {
-          if (differ < timeCompany.m) { // 一分钟以内
-            timeStr = '刚刚'
-          } else if (differ < timeCompany.h) { // 一小时以内
-            timeStr = parseInt(differ / timeCompany.m) + '分钟前'
-          } else {
-            timeStr = parseInt(differ / timeCompany.h) + '小时前'
-          }
-        } else {
-          differ = parseInt((new Date(nowDate.y, nowDate.m, nowDate.d).getTime() - releaseTime.getTime()) / 1000)
-          if (differ < timeCompany.d) { // 昨天
-            timeStr = '昨天'
-          } else if (differ < timeCompany.d * 2) {
-            timeStr = '前天'
-          } else {
-            if (now.getFullYear() > releaseTime.getFullYear()) { // 超过两天且跨年
-              timeStr = moment(releaseTime).format('YY-MM-DD HH:mm')
-            } else {
-              timeStr = moment(releaseTime).format('MM-DD HH:mm')
-            }
-          }
-        }
-      }
-      return timeStr
-    }
   },
   data () {
     return {
@@ -243,7 +162,7 @@ export default {
     /*  去帖子详情  */
     toDetail () {
       if (this.showCommunicate) {
-        this.$router.push({path: '/course/punchDetail', query: {myPunch: this.item.courseSectionCardId}})
+        this.$router.push({path: '/punchDetail', query: {myPunch: this.item.courseSectionCardId}})
       }
     },
     /* 跳转个人详情页 */
@@ -257,7 +176,7 @@ export default {
     async praise () {
       try {
         let param = {
-          sourceId: this.item.courseSectionCardId,
+          sourceId: this.item.courseSectionCardId || this.item.courseSectionCardId,
           sourceType: 'course_section_card'
         }
         /* 点赞或取消点赞 */
@@ -286,9 +205,8 @@ export default {
     },
     /*  评论  */
     comment () {
-      console.log(this.$route, ' 我是评论事件 ')
-      if (this.$route.path !== '/course/punchDetail') {
-        this.$router.push({path: '/course/punchDetail', query: {myPunch: this.item.courseSectionCardId}})
+      if (this.$route.path !== '/punchDetail') {
+        this.$router.push({path: '/punchDetail', query: {myPunch: this.item.courseSectionCardId}})
         return
       }
       let param = {
@@ -302,17 +220,14 @@ export default {
     },
     /* 删除 */
     del () {
-      console.log(' 我是删除事件 ')
     },
     /* 编辑 */
     edit () {
       let { courseId } = this.$route.query
-      this.$router.push({path: '/course/punchEditting', query: {courseSectionId: courseId}})
+      this.$router.push({path: '/punchEdit', query: {courseSectionId: courseId}})
     }
   },
-  mounted () {
-    console.log(this.item)
-  }
+  mounted () {}
 }
 </script>
 

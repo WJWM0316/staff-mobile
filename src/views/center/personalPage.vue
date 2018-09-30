@@ -1,7 +1,9 @@
 <template>
   <div class="personalPage" ref="personalPage">
     <div class="head" v-if="userInfo">
-      <div class="information" @click.stop="contactInformation.showSheet = true">联系方式<img class="icon" src="@a/icon/bnt_more_contact@3x.png"></div>
+      <div class="information"
+        v-if="!userInfo.base.mobile && !userInfo.base.wechat && !userInfo.base.email"
+        @click.stop="contactInformation.showSheet = true">联系方式<img class="icon" src="@a/icon/bnt_more_contact@3x.png"></div>
       <div class="msg">
         <div class="photo">
           <img v-if="userInfo.base" :src="userInfo.base.avatar.middleUrl">
@@ -78,6 +80,11 @@
       <noDataShow v-if="joinList.lessons.length === 0 && joinList.lives.length === 0 && joinList.jobcircles.length === 0"></noDataShow>
     </div>
     <div class="poster" v-show="tabIndex === 1" v-if="postList">
+      <dynamicItem
+        v-for="(item, index) in postList"
+        :key="index"
+        :item="item"
+      ></dynamicItem>
       <noDataShow v-if="postList.length === 0"></noDataShow>
     </div>
     <actionSheet
@@ -99,11 +106,13 @@
 <script>
 import { userInfoApi, getUserInfoApi, getUserJoinedListApi, getMyJoinedListApi, getMyPostListApi, getUserPostListApi } from '@/api/pages/center'
 import infoCard from '@c/business/infoCard.vue'
+import dynamicItem from '@c/business/dynamicItem'
 import noDataShow from '@c/layout/noDataShow'
 export default {
   components: {
     infoCard,
-    noDataShow
+    noDataShow,
+    dynamicItem
   },
   data () {
     return {
@@ -236,11 +245,10 @@ export default {
   mounted () {
     let offsetTop = 268 * window.dpr
     window.onscroll = (e) => {
-      console.log(window.scrollY, offsetTop)
       if (window.scrollY > offsetTop) {
-        this.needFloor = true
+        if (!this.needFloor) this.needFloor = true
       } else {
-        this.needFloor = false
+        if (this.needFloor) this.needFloor = false
       }
     }
   }

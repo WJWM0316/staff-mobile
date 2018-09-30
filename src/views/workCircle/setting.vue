@@ -88,7 +88,7 @@ export default {
       } catch (err) {
         alert(err)
       }
-      this.$router.push({path: '/workCircle/circleDetail', query: {id: this.$route.query.id}})
+      this.$router.push({path: '/circleDetail', query: {id: this.$route.query.id}})
     }
   },
   created () {

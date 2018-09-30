@@ -7,19 +7,19 @@ const routers = [
   },
   /* 工作圈详情页 */
   {
-    path: '/workCircle/circleDetail',
+    path: '/circleDetail',
     name: 'circleDetail',
     component: resolve => require(['@/views/workCircle/circleDetail'], resolve)
   },
   /* 工作圈发帖页  */
   {
-    path: '/workCircle/circleEdit',
+    path: '/circleEdit',
     name: 'circleEdit',
     component: resolve => require(['@/views/workCircle/circleEditting'], resolve)
   },
   /* 设置  */
   {
-    path: '/workCircle/setting',
+    path: '/setting',
     name: 'setting',
     component: resolve => require(['@/views/workCircle/setting'], resolve)
   }
