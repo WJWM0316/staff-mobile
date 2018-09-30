@@ -18,12 +18,12 @@ const routers = [
     component: resolve => require(['@/views/course/lesson'], resolve)
   },
   {
-    path: '/cardDetail',
-    name: 'cardDetail',
+    path: '/punchDetail',
+    name: 'punchDetail',
     component: resolve => require(['@/views/course/punchDetail'], resolve)
   },
   {
-    path: '/cardEdit',
+    path: '/punchEdit',
     name: 'cardEdit',
     component: resolve => require(['@/views/course/punchEditting'], resolve)
   },

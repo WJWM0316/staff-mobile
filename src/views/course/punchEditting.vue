@@ -57,14 +57,12 @@
 <script>
 import { postPunchCardApi, getPunchCardDetailsApi, attachesApi } from '@/api/pages/course'
 export default {
-  name: 'punchEditting',
   data () {
     return {
       form: {
         courseId: '', // 课节id
         content: '' // 文本内容
       },
-      // 文本长度
       lengths: {
         textMax: 1000, // 文本最大字数
         imageMax: 9 // 图片最大张数
@@ -85,28 +83,23 @@ export default {
   methods: {
     /* 选择图片 */
     photo () {
-      console.log(' 拍照 ')
       let that = this
       document.getElementById('photo').addEventListener('change', function (e) {
         let reader = new FileReader()
         let imgFile = this.files[0]
         reader.readAsDataURL(this.files[0])
-        /* 刷新节点 */
         let inp2 = this.cloneNode(true)
         this.parentNode.replaceChild(inp2, this)
-        /* 刷新节点 */
         reader.onload = function () {
           that.uploadImg(imgFile).then(res => {
             that.images.push(res.data[0].url)
             that.uploadImgList.push(res.data[0].id)
-            console.log(that.uploadImgList, ' 222222222222222222222 ')
           })
         }
       })
     },
     /* 上传图片 */
     async uploadImg (nowImg) {
-      console.log(nowImg, ' 33333333333333 ')
       let param = {
         attach_type: 'img',
         img: nowImg
@@ -169,7 +162,6 @@ export default {
           type: this.uploadImgList.length > 0 ? 3 : 0,
           array_file_id: this.uploadImgList
         }
-        console.log(param, ' 我是传递出去的打卡参数 ')
         await postPunchCardApi(param)
         this.$router.go(-1)
       } catch (e) {
