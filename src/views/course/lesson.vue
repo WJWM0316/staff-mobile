@@ -128,12 +128,10 @@
   </div>
 </template>
 <script>
-import Vue from 'vue'
 import lessondynamicItem from '@c/business/dynamicItem'
 import { Actionsheet } from 'vux'
 import { getCourseCardListApi, setExcellentCourseCardApi, lessonDetailApi } from '@/api/pages/course'
 export default {
-  name: 'lesson',
   components: {
     lessondynamicItem,
     Actionsheet
@@ -246,303 +244,303 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-  .lesson{
-    padding-bottom: 49px;
-    .lesson-header{
-      .header-photo{
-        width: 100%;
-        height: 175px;
+.lesson{
+  padding-bottom: 49px;
+  .lesson-header{
+    .header-photo{
+      width: 100%;
+      height: 175px;
+    }
+    .header-title{
+      width: 100%;
+      padding: 0 20px;
+      box-sizing: border-box;
+      margin-top: 25px;
+      font-size: 42px;/*px*/
+      font-weight: 700;
+      color: #354048;
+    }
+    .header-info{
+      margin-top: 20px;
+      box-sizing: border-box;
+      width: 100%;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 28px;/*px*/
+     .mast-name{
+       margin-left: 8px;
+     }
+     img{
+       width: 24px;
+       height: 24px;
+       border-radius: 50%;
+     }
+    }
+  }
+  .lesson-module{
+    margin-top: 15px;
+    /*课节视频*/
+    .lesson-video{
+      margin-top: 28px;
+      padding: 0 20px;
+      height: 187px;
+      position: relative;
+    & .placeholder {
+        position: absolute;
+        top: 0;
+        left: 20px;
+        width: 335px;
+        height: 187px;
+        background: rgba(0, 0, 0, .8) url('./../../assets/icon/video-play.png') no-repeat center;
+        & img {
+          width: 100%;
+          height: 100%;
+        }
       }
-      .header-title{
+      & video {
         width: 100%;
-        padding: 0 20px;
-        box-sizing: border-box;
-        margin-top: 25px;
-        font-size: 42px;/*px*/
-        font-weight: 700;
-        color: #354048;
-      }
-      .header-info{
-        margin-top: 20px;
-        box-sizing: border-box;
-        width: 100%;
-        padding: 0 20px;
-        display: flex;
-        justify-content: space-between;
-        font-size: 28px;/*px*/
-       .mast-name{
-         margin-left: 8px;
-       }
-       img{
-         width: 24px;
-         height: 24px;
-         border-radius: 50%;
-       }
+        height: 187px;
       }
     }
-    .lesson-module{
-      margin-top: 15px;
-      /*课节视频*/
-      .lesson-video{
-        margin-top: 28px;
-        padding: 0 20px;
-        height: 187px;
-        position: relative;
-      & .placeholder {
-          position: absolute;
-          top: 0;
-          left: 20px;
-          width: 335px;
-          height: 187px;
-          background: rgba(0, 0, 0, .8) url('./../../assets/icon/video-play.png') no-repeat center;
+    /*音频内容*/
+    .content-audio{
+      margin-top: 28px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    /*课节富文本*/
+    .module-content{
+      box-sizing: border-box;
+      padding: 0 20px;
+      margin-top: 30px;
+      width: 100%;
+      min-height: 400px;
+      >section{
+        font-size: 32px !important;/*px*/
+      }
+    }
+  }
+  .lesson-task{
+    padding: 0 20px;
+    .content-txt{
+      width: 100%;
+    }
+    .content-img{
+      & .content-images {
+        margin-top: 10px;
+        width: 335px;
+        display: flex;
+        flex-flow: row wrap;
+        & > .item-image {
+          margin-top: 5px;
+          margin-left: 5px;
+          width: 108px;
+          height: 108px;
+          text-align: center;
+          flex-grow:0;
+          &:first-of-type, &:nth-of-type(3n + 1) {
+            margin-left: 0;
+          }
           & img {
+            background: #f9f9f9;
             width: 100%;
             height: 100%;
+            vertical-align: middle;
           }
         }
-        & video {
-          width: 100%;
-          height: 187px;
-        }
-      }
-      /*音频内容*/
-      .content-audio{
-        margin-top: 28px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      /*课节富文本*/
-      .module-content{
-        box-sizing: border-box;
-        padding: 0 20px;
-        margin-top: 30px;
-        width: 100%;
-        min-height: 400px;
-        >section{
-          font-size: 32px !important;/*px*/
+        & > .item-image.one {
+          width: 136px;
+          height: 136px;
         }
       }
     }
-    .lesson-task{
+  }
+  .lesson-punch{
+    .headerBox{
+      margin-left: 20px;
+    }
+  }
+  .lesson-punch,
+  .all-punch{
+    .excellent-punch{
       padding: 0 20px;
-      .content-txt{
+      box-sizing: border-box;
+      width: 100%;
+      .excellent-punch-title{
+        color:#929292;
+        font-size: 36px;/*px*/
+        font-weight: 700;
+        padding-left: 15px;
+        height: 22px;
         width: 100%;
-      }
-      .content-img{
-        & .content-images {
-          margin-top: 10px;
-          width: 335px;
-          display: flex;
-          flex-flow: row wrap;
-          & > .item-image {
-            margin-top: 5px;
-            margin-left: 5px;
-            width: 108px;
-            height: 108px;
-            text-align: center;
-            flex-grow:0;
-            &:first-of-type, &:nth-of-type(3n + 1) {
-              margin-left: 0;
-            }
-            & img {
-              background: #f9f9f9;
-              width: 100%;
-              height: 100%;
-              vertical-align: middle;
-            }
-          }
-          & > .item-image.one {
-            width: 136px;
-            height: 136px;
-          }
-        }
-      }
-    }
-    .lesson-punch{
-      .headerBox{
-        margin-left: 20px;
-      }
-    }
-    .lesson-punch,
-    .all-punch{
-      .excellent-punch{
-        padding: 0 20px;
-        box-sizing: border-box;
-        width: 100%;
-        .excellent-punch-title{
-          color:#929292;
-          font-size: 36px;/*px*/
-          font-weight: 700;
-          padding-left: 15px;
-          height: 22px;
-          width: 100%;
-          position:relative;
-          margin-bottom: 10px;
-          &::before{
-            content: '';
-            position: absolute;
-            top: 2.5px;
-            left: 0;
-            width: 5px;
-            height: 17px;
-            background-color: #FFE266;
-          }
-        }
-      }
-      /*优秀打卡与所有打卡的间距*/
-      .excellentPunchList{
-        margin-bottom: 50px;
-        >.dynamic-item{
-          box-sizing: border-box;
-          padding: 0 20px;
-          &:last-child{
-            border-bottom: none;
-          }
-        }
-      }
-      /*底部展开按钮*/
-      .expand-btn{
-        position: relative;
-        padding: 0 20px;
-        box-sizing: border-box;
+        position:relative;
+        margin-bottom: 10px;
         &::before{
-          content: "";
+          content: '';
           position: absolute;
-          top: -1px;
+          top: 2.5px;
           left: 0;
-          background: #FFFFFF;
-          height: 2px;
-          width: 100%;
-          z-index: 8888;
-        }
-        >div{
-          width: 100%;
-          height: 40px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 28px;/*px*/
-          color: #354048;
-          background-color: rgba(255, 226, 102, 0.16);
-          border-radius: 20px;
-          &>span{
-            padding-left: 7px;
-          }
+          width: 5px;
+          height: 17px;
+          background-color: #FFE266;
         }
       }
+    }
+    /*优秀打卡与所有打卡的间距*/
+    .excellentPunchList{
+      margin-bottom: 50px;
       >.dynamic-item{
         box-sizing: border-box;
         padding: 0 20px;
-      }
-    }
-    .hr{
-      width: 375px;
-      height: 0.5px;
-      background: #EDEDED;
-    }
-    .all-punch{
-      .all-show{
-        margin-bottom: 50px;
-      }
-      >.dynamic-item{
         &:last-child{
           border-bottom: none;
         }
       }
     }
-    .lesson-footer{
-      background-color: #FFFFFF;
-      width: 100%;
-      height: 49px;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      z-index: 9998;
-      display: flex;
-      flex-wrap: nowrap;
-      align-items: center;
-      border-top: 0.5px solid #DCDCDC;
-      .toPunch{
-        width: 100%;
-        height: 100%;
-        background-color: #FFE266;
-        line-height: 49px;
-        text-align: center;
-        color: #354048;
-      }
-      .mine{
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #354048;
-      }
-      .line{
-        width: 2px;
-        height: 28px;
-        background-color: #EDEDED;
-      }
-    }
-    .lesson-punch,.lesson-task{
-      margin-top: 60px;
-      box-sizing: border-box;
-    }
-    .headerBox{
-      width: 100%;
-      height: 54px;
-      margin-bottom: 30px;
+    /*底部展开按钮*/
+    .expand-btn{
       position: relative;
-      .title-pic1{
-        width: 330px;
-        height: 46px;
-        border: 1.5px solid #354048;
+      padding: 0 20px;
+      box-sizing: border-box;
+      &::before{
+        content: "";
         position: absolute;
+        top: -1px;
         left: 0;
-        top: 0;
-        z-index: 1;
-        text-align: center;
-        background-color: #FFFFFF;
-        .txt{
-          display: inline-block;
-          text-align: center;
-          line-height: 46px;
-          font-size: 36px;/*px*/
-          font-weight: 700;
-          color: #354048;
-          padding: 0 19px;
-          position: relative;
-          &::before{
-            content: '';
-            position: absolute;
-            top: 24px;
-            left: -27.5px;
-            width: 27.5px;
-            height: 1.5px;
-            background-color: #929292;
-          }
-          &::after{
-            content: '';
-            position: absolute;
-            top: 24px;
-            right: -27.5px;
-            width: 27.5px;
-            height: 1.5px;
-            background-color: #929292;
-          }
+        background: #FFFFFF;
+        height: 2px;
+        width: 100%;
+        z-index: 8888;
+      }
+      >div{
+        width: 100%;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;/*px*/
+        color: #354048;
+        background-color: rgba(255, 226, 102, 0.16);
+        border-radius: 20px;
+        &>span{
+          padding-left: 7px;
         }
       }
-      .title-pic2{
-        width: 330px;
-        height: 46px;
-        border: 1.5px solid #354048;
-        background-color: #FFE266;
-        position: absolute;
-        left: 5px;
-        top: 5px;
-        z-index: 0;
+    }
+    >.dynamic-item{
+      box-sizing: border-box;
+      padding: 0 20px;
+    }
+  }
+  .hr{
+    width: 375px;
+    height: 0.5px;
+    background: #EDEDED;
+  }
+  .all-punch{
+    .all-show{
+      margin-bottom: 50px;
+    }
+    >.dynamic-item{
+      &:last-child{
+        border-bottom: none;
       }
     }
   }
+  .lesson-footer{
+    background-color: #FFFFFF;
+    width: 100%;
+    height: 49px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 9998;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    border-top: 0.5px solid #DCDCDC;
+    .toPunch{
+      width: 100%;
+      height: 100%;
+      background-color: #FFE266;
+      line-height: 49px;
+      text-align: center;
+      color: #354048;
+    }
+    .mine{
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #354048;
+    }
+    .line{
+      width: 2px;
+      height: 28px;
+      background-color: #EDEDED;
+    }
+  }
+  .lesson-punch,.lesson-task{
+    margin-top: 60px;
+    box-sizing: border-box;
+  }
+  .headerBox{
+    width: 100%;
+    height: 54px;
+    margin-bottom: 30px;
+    position: relative;
+    .title-pic1{
+      width: 330px;
+      height: 46px;
+      border: 1.5px solid #354048;
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 1;
+      text-align: center;
+      background-color: #FFFFFF;
+      .txt{
+        display: inline-block;
+        text-align: center;
+        line-height: 46px;
+        font-size: 36px;/*px*/
+        font-weight: 700;
+        color: #354048;
+        padding: 0 19px;
+        position: relative;
+        &::before{
+          content: '';
+          position: absolute;
+          top: 24px;
+          left: -27.5px;
+          width: 27.5px;
+          height: 1.5px;
+          background-color: #929292;
+        }
+        &::after{
+          content: '';
+          position: absolute;
+          top: 24px;
+          right: -27.5px;
+          width: 27.5px;
+          height: 1.5px;
+          background-color: #929292;
+        }
+      }
+    }
+    .title-pic2{
+      width: 330px;
+      height: 46px;
+      border: 1.5px solid #354048;
+      background-color: #FFE266;
+      position: absolute;
+      left: 5px;
+      top: 5px;
+      z-index: 0;
+    }
+  }
+}
 </style>

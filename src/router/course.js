@@ -12,18 +12,9 @@ const routers = [
     component: resolve => require(['@/views/course/detail'], resolve)
   },
   {
-    path: '/course/introduce',
-    name: 'introduce',
-    component: resolve => require(['@/views/course/introduce'], resolve)
-  },
-  {
-    path: '/course/community',
-    name: 'community',
-    component: resolve => require(['@/views/course/community'], resolve)
-  },
-  {
     path: '/course/lesson',
     name: 'lesson',
+    meta: { title: '课节详情' },
     component: resolve => require(['@/views/course/lesson'], resolve)
   },
   {
