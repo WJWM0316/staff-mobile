@@ -3,7 +3,8 @@
     <div class="head">
       <div class="msg">
         <p class="name">{{pageInfo.realname}}</p>
-        <p class="desrc">a阿萨德</p>
+        <p class="desrc" v-if="pageInfo.flag">{{pageInfo.flag}}</p>
+        <p class="desrc" v-if="pageInfo.groupName">{{pageInfo.groupName}} | {{pageInfo.occupation}}</p>
         <p class="editBtn" @click.stop="jump('edit')">点击编辑资料</p>
       </div>
       <div class="photo">

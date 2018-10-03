@@ -9,7 +9,8 @@
           <img v-if="userInfo.base" :src="userInfo.base.avatar.middleUrl">
         </div>
         <p class="name">{{userInfo.base.realname}}</p>
-        <p class="position">{{userInfo.base.groupName}} | {{userInfo.base.occupation}}</p>
+        <p class="position" v-if="userInfo.base.flag">{{userInfo.base.flag}}</p>
+        <p class="position" v-if="userInfo.base.groupName">{{userInfo.base.groupName}} | {{userInfo.base.occupation}}</p>
       </div>
       <div class="studyMsg">
         <div class="item">
@@ -70,7 +71,7 @@
             v-for="(item, index) in joinList.jobcircles"
             :item="item"
             :key="index"
-            type="1"
+            type="2"
           ></infoCard>
         </div>
         <div class="btn">

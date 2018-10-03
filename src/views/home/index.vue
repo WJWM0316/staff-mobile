@@ -27,7 +27,7 @@
     <template  v-if="homeInfo">
       <div class="live">
         <div class="time">直播预告·今晚 6:00</div>
-        <div class="content">
+        <div class="content" @click.stop="jump('liveDetail', homeInfo.lives[0].liveId)">
           <div class="left">
             <img class="icon1" src="@a/icon/list_icon_live@3x.png" alt="">
             <div class="msg">
@@ -46,7 +46,7 @@
           :item="n"
           type="1"
         ></infoCard>
-        <div class="btnBox"><div class="btn">查看所有课程</div></div>
+        <div class="btnBox"><div class="btn" @click.stop="jump('course')">查看所有课程</div></div>
         <div class="title"><i class="icon"></i>推荐课程</div>
         <div class="scrollX">
           <div class="courseItem" v-for="(n, index) in homeInfo.topCourse" :key="index">
@@ -56,9 +56,9 @@
             ></infoCard>
           </div>
         </div>
-        <div class="btnBox"><div class="btn">发现更多课程</div></div>
+        <div class="btnBox"><div class="btn" @click.stop="jump('course')">发现更多课程</div></div>
         <div class="title"><i class="icon"></i>更多学习</div>
-        <div class="enter" @click.stop="jump('live')">
+        <div class="enter" @click.stop="jump('liveList')">
           <img src="@a/icon/home_banner_right@3x.png" alt="">
         </div>
       </div>
@@ -102,10 +102,16 @@ export default {
         this.headInfo = this.userInfo
       }
     },
-    jump (type) {
+    jump (type, id) {
       switch (type) {
-        case 'live':
+        case 'liveDetail':
+          this.$router.push(`/liveDetail?id=${id}`)
+          break
+        case 'liveList':
           this.$router.push('/live')
+          break
+        case 'course':
+          this.$router.push('/course')
           break
       }
     },
@@ -282,6 +288,8 @@ export default {
       }
       .enter {
         width: 100%;
+        padding: 20px;
+        box-sizing: border-box;
         img {
           width: 100%;
           display: block;
