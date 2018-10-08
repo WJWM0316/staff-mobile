@@ -4,6 +4,7 @@
       <span class="txt">头像</span>
       <span class="editBox">
         <i class="photo" @click.stop="editPhoto" v-if="pageInfo.avatar"><img :src="pageInfo.avatar.middleUrl" alt=""></i>
+        <input type="file" style="opacity: 0">
       </span>
     </div>
     <div class="item border-bottom-1px">
@@ -86,7 +87,7 @@ export default {
     },
     editPhoto () {
       this.wechatChooseImage().then(res => {
-        console.log(res)
+        console.log(res, 22222222)
       })
     },
     async getUserInfo () {
