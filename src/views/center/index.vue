@@ -149,6 +149,11 @@ export default {
     .main {
       margin-top: 60px;
       .item {
+        &>div {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
         margin-bottom: 40px;
         font-size: 0;
         position: relative;

@@ -7,7 +7,7 @@
           <span class="name">{{headInfo.base.realname | ellipsis(6)}}</span>,欢迎回来～
           <p class="msg">你的学习时长已超越<span class="num">{{headInfo.study.surpass}}%</span>的同事啦</p>
         </div>
-        <div class="photo"><img :src="headInfo.base.avatar.middleUrl" alt=""></div>
+        <div class="photo" v-if="headInfo.base.avatar"><img :src="headInfo.base.avatar.middleUrl" alt=""></div>
       </div>
       <div class="studyInfo">
         <div class="item">
@@ -25,7 +25,7 @@
       </div>
     </div>
     <template  v-if="homeInfo">
-      <div class="live">
+      <div class="live" v-if="homeInfo.lives">
         <div class="time">直播预告·今晚 6:00</div>
         <div class="content" @click.stop="jump('liveDetail', homeInfo.lives[0].liveId)">
           <div class="left">
@@ -94,7 +94,7 @@ export default {
       })
     },
     getUserInfo () {
-      if (!this.headInfo) {
+      if (!this.userInfo) {
         userInfoApi().then(res => {
           this.headInfo = res.data
         })
