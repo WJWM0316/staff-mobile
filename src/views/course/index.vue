@@ -68,7 +68,6 @@ export default {
       }
       return courseListApi(param)
     },
-    // 请求分类列表
     getCategory () {
       return categoryApi()
     },
