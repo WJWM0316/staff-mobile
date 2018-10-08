@@ -87,8 +87,9 @@ export default {
       }
       this.$router.push(`/courseLesson?id=${item.courseSectionId}`)
     },
-    async init (id) {
-      let res = await this.getcourseDetail(id)
+    async init () {
+      const { id } = this.$route.query
+      let res = await this.getcourseDetail({id: id})
       let lessonList = await this.getCourseSectionApi()
       this.lessonList = lessonList.data
       this.lessonTotal = lessonList.meta.total
@@ -121,9 +122,9 @@ export default {
     }
   },
   async created () {
-    const { id, isCourseIntroduce } = this.$route.query
+    const { isCourseIntroduce } = this.$route.query
     this.isCourseIntroduce = isCourseIntroduce || false
-    await this.init({id: id})
+    await this.init()
   }
 }
 </script>

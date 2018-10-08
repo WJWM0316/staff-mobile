@@ -65,14 +65,14 @@ export const putModifyApi = (data) => {
     type: 'put'
   })
 }
-/* 圈主编辑工作圈封面和名字 */
+/* 获取帖子列表 */
 export const getPostlistApi = (data) => {
   return request({
     url: `/jobcircle/postlist/${data.id}`,
     type: 'get'
   })
 }
-/* 圈主编辑工作圈封面和名字 */
+/* 工作圈发帖 */
 export const jobcirclePostApi = (data) => {
   return request({
     url: `/jobcircle/post`,
@@ -80,4 +80,53 @@ export const jobcirclePostApi = (data) => {
     data
   })
 }
-
+/* 帖子详情 */
+export const postDetailApi = (data) => {
+  return request({
+    url: `/jobcircle/post/${data}`,
+    type: 'get',
+    data
+  })
+}
+/* 一级评论列表 */
+export const firstCommentListlApi = (data) => {
+  return request({
+    url: `/jobcircle/comment/commentList/${data.id}?page=${data.page}&count=${data.count}`,
+    type: 'get'
+  })
+}
+/* 评论工作圈帖子 */
+export const circleCommentApi = (data) => {
+  return request({
+    url: `/jobcircle/commoneComment/${data.sourceId}?sourceType=${data.sourceType}&content=${data.content}`,
+    type: 'put'
+  })
+}
+/* 帖子详情点赞列表 */
+export const commonFavorListApi = (data) => {
+  return request({
+    url: `/jobcircle/commonFavorUsers/${data.sourceId}?sourceType=${data.sourceType}&page=${data.page}`,
+    type: 'get'
+  })
+}
+/* 点赞评论或帖子 */
+export const circleCommonFavorApi = (data) => {
+  return request({
+    url: `/jobcircle/commonFavor/${data.sourceId}?sourceType=${data.circleSourceType}`,
+    type: 'put'
+  })
+}
+/* 评论或帖子取消点赞 */
+export const delCircleCommonFavorApi = (data) => {
+  return request({
+    url: `/jobcircle/commonFavor/${data.sourceId}?sourceType=${data.circleSourceType}`,
+    type: 'delete'
+  })
+}
+/* 删除评论 */
+export const delCircleCommentApi = (data) => {
+  return request({
+    url: `/jobcircle/comment/${data}`,
+    type: 'delete'
+  })
+}

@@ -143,8 +143,6 @@ export default {
           break
         case 'del':
           break
-        case 'comment-area':
-          this.jumpCommentDetail(param)
       }
     },
     /* 获取热门评论列表 */

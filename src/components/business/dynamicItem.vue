@@ -1,8 +1,10 @@
 <template>
   <div class="dynamicItem" :class="{bottomBorder : showBorder}" @click="toDetail">
     <div class="header" @click.stop="toUserInfo">
-      <img class="headerPhoto" :src="item.releaseUser.avatar.smallUrl" />
-      <div class="appellation">{{item.releaseUser.realname}}</div>
+      <img class="headerPhoto" v-if="item.releaseUser" :src="item.releaseUser.avatar.smallUrl" />
+      <div class="appellation" v-if="item.releaseUser">{{item.releaseUser.realname}}</div>
+      <!--置顶按钮-->
+      <div class="evaluate" @click.stop="toTop">...</div>
     </div>
     <div class="content">
       <div ref="circle-content">
@@ -77,6 +79,7 @@
 </template>
 <script>
 import { getFavorApi, delFavorApi } from '@/api/pages/course'
+import { circleCommonFavorApi, delCircleCommonFavorApi } from '@/api/pages/workCircle'
 export default {
   name: 'dynamicItem',
   props: {
@@ -97,7 +100,7 @@ export default {
     }
   },
   watch: {
-    pageNo: {
+    item: {
       immediate: true,
       handler: function () {
         this.isfavor = this.item.isFavor
@@ -156,8 +159,11 @@ export default {
       window.location.href = url
     },
     toDetail () {
-      if (this.showCommunicate) {
+      if (this.isCourse) {
         this.$router.push({path: '/punchDetail', query: {myPunch: this.item.courseSectionCardId}})
+      } else {
+        console.log(this.item)
+        this.$router.push({path: '/postDetail', query: {id: this.item.id}})
       }
     },
     toUserInfo (userId) {
@@ -167,33 +173,38 @@ export default {
     /*  点赞  */
     async praise () {
       let param = {
-        sourceId: this.item.courseSectionCardId,
-        sourceType: 'course_section_card'
+        sourceId: this.item.courseSectionCardId || this.item.id,
+        sourceType: 'course_section_card',
+        circleSourceType: 'job_circle_post'
       }
       /* 点赞或取消点赞 */
       if (this.isfavor !== true) {
         if (this.isCourse) { // 课节打卡点赞
           await getFavorApi(param)
         } else { // 工作圈打卡点赞
-          await getFavorApi(this.item.courseSectionCardId)
+          await circleCommonFavorApi(param)
+          this.item.favorTotal += 1
         }
         this.isfavor = true
       } else {
         if (this.isCourse) { // 课节打卡取消点赞
           await delFavorApi(param)
         } else { // 工作圈打卡取消点赞
-          await delFavorApi(this.item.courseSectionCardId)
+          await delCircleCommonFavorApi(param)
+          this.item.favorTotal -= 1
         }
         this.isfavor = false
       }
     },
     /*  评论  */
     comment () {
-      if (this.$route.path !== '/punchDetail') {
+      if (this.isCourse && this.$route.path !== '/punchDetail') {
         this.$router.push({path: '/punchDetail', query: {myPunch: this.item.courseSectionCardId}})
+      } else if (!this.isCourse && this.$route.path !== '/postDetail') {
+        this.$router.push({path: '/postDetail', query: {id: this.item.id}})
       }
       let param = {
-        id: this.item.courseSectionCardId, // 打卡id
+        id: this.item.courseSectionCardId || this.item.id, // 打卡id
         releaseUser: this.item.releaseUser // 对应打卡信息的个人信息
       }
       this.$emit('disableOperationEvents', {
@@ -208,9 +219,13 @@ export default {
     edit () {
       let { courseId } = this.$route.query
       this.$router.push({path: '/punchEdit', query: {courseSectionId: courseId}})
-    }
+    },
+    /* 置顶帖子 */
+    toTop () {}
   },
-  mounted () {}
+  mounted () {
+    console.log(this.isfavor)
+  }
 }
 </script>
 
@@ -223,6 +238,7 @@ export default {
     width: 100%;
     padding: 25px 20px;
     .header {
+      position: relative;
       display: flex;
       .headerPhoto {
         width: 32px;
@@ -237,6 +253,40 @@ export default {
         color: #4080AD;
         font-size: 28px;/*px*/
         font-weight: 500;
+      }
+      .evaluate{
+        width: 30px;
+        height: 30px;
+        font-size: 30px;
+        color: #DBDBDB;
+        writing-mode: tb-rl;
+        white-space: nowrap;
+        position:absolute;
+        right: -14px;
+        top: 5px;
+        .evaluateWindow{
+          background-color: #FFFFFF;
+          writing-mode: lr-tb;
+          position: absolute;
+          top: 100%;
+          right: 0;
+          font-size: 16px;
+          color: #354048;
+          z-index: 777;
+          box-shadow:0px 4px 10px 0px rgba(0,0,0,0.14);
+          border-radius:3px;
+          span{
+              display: inline-block;
+              width: 134px;
+              height: 55px;
+              text-align: center;
+              line-height: 55px;
+              border-bottom: 0.5px solid #EDEDED;
+              &::first-child{
+                  border-bottom: 0.5px solid #EDEDED;
+              }
+          }
+        }
       }
     }
     /*内容部分*/

@@ -22,6 +22,12 @@ const routers = [
     path: '/setting',
     name: 'setting',
     component: resolve => require(['@/views/workCircle/setting'], resolve)
+  },
+  /* 帖子详情  */
+  {
+    path: '/postDetail',
+    name: 'postDetail',
+    component: resolve => require(['@/views/workCircle/detail'], resolve)
   }
 ]
 

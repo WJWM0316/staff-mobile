@@ -5,7 +5,7 @@
       <textarea name="content" class="control" maxlength="1000" placeholder="说说你的想法..." v-model="form.content" />
       <p class="addon" :class="{ 'z-active': form.content.length > 0 }"><span class="current">{{form.content.length}}</span>/{{lengths.textMax}}</p>
     </div>
-    <div class="select-box" v-show="isChoose" v-if="false">
+    <div class="select-box" v-show="isChoose" v-if="true">
       <!--选择图片-->
       <div class="takePhoto" @click.stop="photo">
         <input id="photo" type="file" accept="image/*" capture="camera" multiple>
