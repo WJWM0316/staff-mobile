@@ -88,6 +88,7 @@ export default {
       if (!this.userInfo) {
         let res = await userInfoApi()
         this.pageInfo = res.data.base
+        this.$store.dispatch('updata_userInfo', res.data)
       } else {
         this.pageInfo = this.userInfo.base
       }
