@@ -34,12 +34,14 @@ export default {
      * 获取微信签名
      */
     async getWechatSign () {
+      if (this.$store.getters.wxConfig) return
       try {
         const params = {
           url: location.href.split('#')[0]
         }
         const res = await getWechatSignApi(params)
         this.wechatConfig = Object.assign({}, this.wechatConfig, res.data)
+        this.$store.dispatch('updata_wxConfig', this.wechatConfig)
         this.setWechatConfig()
       } catch (error) {
         this.$vux.toast.text(error.message, 'bottom')
@@ -65,10 +67,10 @@ export default {
           sizeType: options.sizeType || ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
           sourceType: options.sourceType || ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
           success: async function (res) {
-            resolve(res, 1111)
+            resolve(res.localIds)
           },
           fail: function (e) {
-            reject(e, 2222)
+            reject(e)
           }
         })
       })

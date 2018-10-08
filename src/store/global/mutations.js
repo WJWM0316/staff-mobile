@@ -18,5 +18,8 @@ export default {
   },
   [types.AUDIOCURINDEX] (state, data) {
     state.audioCurIndex = data
+  },
+  [types.WXCONFIG] (state, data) {
+    state.wxConfig = data
   }
 }

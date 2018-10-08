@@ -60,10 +60,13 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
     if (num <= 0) {
       store.dispatch('updata_loadingStatus', false)
     }
-    console.log(err.response)
     switch (err.response.status) {
+      case 500: // 服务器异常
+        Vue.$vux.toast.text('服务器异常', 'bottom')
+        break
       case 401: // 未登录或登录过期
         router.push('/login')
+        break
     }
     Vue.$vux.toast.text(err.response.data.msg, 'bottom')
     return Promise.reject(err.response.data.msg)

@@ -7,7 +7,7 @@
           <span class="name">{{headInfo.base.realname | ellipsis(6)}}</span>,欢迎回来～
           <p class="msg">你的学习时长已超越<span class="num">{{headInfo.study.surpass}}%</span>的同事啦</p>
         </div>
-        <div class="photo"><img :src="headInfo.base.avatar.middleUrl" alt=""></div>
+        <div class="photo" v-if="headInfo.base.avatar"><img :src="headInfo.base.avatar.middleUrl" alt=""></div>
       </div>
       <div class="studyInfo">
         <div class="item">
@@ -25,15 +25,13 @@
       </div>
     </div>
     <template  v-if="homeInfo">
-      <div class="live">
-        <div class="time">直播预告·今晚 6:00</div>
+      <div class="live" v-if="homeInfo.lives">
+        <div class="time">直播预告·{{homeInfo.lives[0].expectedStartTime * 1000 | date('MMMDo h:mm')}}</div>
         <div class="content" @click.stop="jump('liveDetail', homeInfo.lives[0].liveId)">
-          <div class="left">
-            <img class="icon1" src="@a/icon/list_icon_live@3x.png" alt="">
-            <div class="msg">
-              <p class="liveTitle">{{homeInfo.lives[0].title}}</p>
-              <p class="name">{{homeInfo.lives[0].groupName}} | {{homeInfo.lives[0].realname}}</p>
-            </div>
+          <img class="icon1" src="@a/icon/list_icon_live@3x.png" alt="">
+          <div class="msg">
+            <p class="liveTitle">{{homeInfo.lives[0].title}}</p>
+            <p class="name">{{homeInfo.lives[0].groupName}} | {{homeInfo.lives[0].realname}}</p>
           </div>
           <img class="icon2" src="@a/icon/list_live_icon_more@3x.png" alt="">
         </div>
@@ -94,9 +92,10 @@ export default {
       })
     },
     getUserInfo () {
-      if (!this.headInfo) {
+      if (!this.userInfo) {
         userInfoApi().then(res => {
           this.headInfo = res.data
+          this.$store.dispatch('updata_userInfo', res.data)
         })
       } else {
         this.headInfo = this.userInfo
@@ -207,19 +206,15 @@ export default {
         line-height: 16px;
       }
       .content {
+        margin-top: 5px;
+        padding: 0 27px 0 70px;
+        position: relative;
+        height: 56px;
         display: flex;
         align-items: center;
-        justify-content: center;
-        margin-top: 5px;
-        .left, .right {
-          flex: 1;
-        }
-        .left {
-          padding-left: 70px;
-          position: relative;
-          height: 56px;
-          display: flex;
-          align-items: center;
+        .setEllipsis();
+        .msg {
+          width: 100%;
           .liveTitle {
             color: #354048;
             font-size: 30px; /*px*/
@@ -232,13 +227,21 @@ export default {
             line-height: 16px;
             font-weight: 300;
           }
-          .icon1 {
-            width: 56px;
-            height: 56px;
-            position: absolute;
-            top: 0;
-            left: 0;
-          }
+        }
+        .icon1 {
+          width: 56px;
+          height: 56px;
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+        .icon2 {
+          width: 30px;
+          height: 30px;
+          position: absolute;
+          top: 50%;
+          margin-top: -15px;
+          right: 0;
         }
       }
     }

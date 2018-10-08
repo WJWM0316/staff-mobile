@@ -7,7 +7,7 @@
         <p class="desrc" v-if="pageInfo.groupName">{{pageInfo.groupName}} | {{pageInfo.occupation}}</p>
         <p class="editBtn" @click.stop="jump('edit')">点击编辑资料</p>
       </div>
-      <div class="photo">
+      <div class="photo" v-if="pageInfo.avatar">
         <img :src="pageInfo.avatar.middleUrl" alt="">
       </div>
     </div>
@@ -88,6 +88,7 @@ export default {
       if (!this.userInfo) {
         let res = await userInfoApi()
         this.pageInfo = res.data.base
+        this.$store.dispatch('updata_userInfo', res.data)
       } else {
         this.pageInfo = this.userInfo.base
       }
@@ -149,6 +150,11 @@ export default {
     .main {
       margin-top: 60px;
       .item {
+        &>div {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
         margin-bottom: 40px;
         font-size: 0;
         position: relative;

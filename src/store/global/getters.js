@@ -16,5 +16,8 @@ export default {
   },
   audioCurIndex: function (state) {
     return state.audioCurIndex
+  },
+  wxConfig: function (state) {
+    return state.wxConfig
   }
 }

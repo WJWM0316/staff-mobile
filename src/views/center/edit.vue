@@ -56,6 +56,8 @@
 <script>
 import { mapState } from 'vuex'
 import { userInfoApi, editUserInfoApi } from '@/api/pages/center'
+import { uploadApi } from '@/api/common'
+
 import WechatMixin from '@/mixins/wechat'
 export default {
   mixins: [WechatMixin],
@@ -83,10 +85,12 @@ export default {
       this.sexShow = false
     },
     editPhoto () {
-      this.wechatChooseImage()
+      this.wechatChooseImage().then(res => {
+        console.log(res)
+      })
     },
     async getUserInfo () {
-      if (!this.userInfo.base) {
+      if (!this.userInfo) {
         let res = await userInfoApi()
         this.pageInfo = res.data.base
       } else {

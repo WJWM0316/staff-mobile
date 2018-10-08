@@ -42,5 +42,12 @@ export default {
       commit(types.AUDIOCURINDEX, data)
       resolve()
     })
+  },
+  // 更新微信配置
+  updata_wxConfig: ({commit}, data) => {
+    return new Promise((resolve, reject) => {
+      commit(types.WXCONFIG, data)
+      resolve()
+    })
   }
 }

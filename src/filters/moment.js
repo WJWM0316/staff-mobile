@@ -46,6 +46,7 @@ Vue.filter('duration', timestamp => {
   return result
 })
 
+
 /**
  * 活跃时间
  */
