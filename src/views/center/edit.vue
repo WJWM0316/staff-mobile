@@ -86,7 +86,7 @@ export default {
     },
     editPhoto () {
       this.wechatChooseImage().then(res => {
-        alert(res)
+        console.log(res)
       })
     },
     async getUserInfo () {
