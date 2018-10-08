@@ -42,7 +42,7 @@
           </div>
         </div>
         <!--帖子-->
-        <dynamic-item v-for="(item,index) in postList" :key="index" :item="item"></dynamic-item>
+        <dynamic-item v-for="(item,index) in postList" :key="index" :item="item" :isCourse="false"></dynamic-item>
       </div>
     </div>
     <!-- 发帖   -->
@@ -99,6 +99,10 @@ export default {
       let res = await getPostlistApi(param)
       this.postListTotal = res.meta.total
       this.postList.push(...res.data)
+    },
+    /* 置顶 */
+    toTop () {
+      console.log(this)
     }
   },
   created () {

@@ -90,6 +90,7 @@
 <script>
 import moment from 'moment'
 import { getFavorApi, delFavorApi, delCommentApi } from '@/api/pages/course'
+import { circleCommonFavorApi, delCircleCommonFavorApi } from '@/api/pages/workCircle'
 export default {
   name: 'discussItem',
   props: {
@@ -102,6 +103,10 @@ export default {
     },
     index: {
       type: Number
+    },
+    isCourse: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
@@ -191,27 +196,31 @@ export default {
       })
     },
     async praise () {
-      try {
-        let param = {
-          id: this.item.id,
-          sourceType: 'course_section_card_comment'
-        }
-        if (this.item.isFavor === 0) {
-          await getFavorApi(param)
-          this.item.isFavor = 1
-          this.item.favorCount += 1
-          this.$toast({text: '点赞成功', type: 'success'})
-        } else {
-          console.log(param)
-          await delFavorApi(param)
-          this.item.isFavor = 0
-          this.item.favorCount -= 1
-          this.$toast({text: '取消点赞成功'})
-        }
-      } catch (err) {
-        this.$toast({text: err})
+      let param = {
+        id: this.item.id,
+        sourceId: this.item.id,
+        sourceType: 'course_section_card_comment',
+        circleSourceType: 'job_circle_comment'
       }
-      console.log(' 我是点击点赞按钮点赞事件 ')
+      if (this.item.isFavor === 0) {
+        if (this.isCourse) { // 课程点赞
+          await getFavorApi(param)
+        } else { // 工作圈点赞
+          await circleCommonFavorApi(param)
+        }
+        this.item.isFavor = 1
+        this.item.favorCount += 1
+        this.$toast({text: '点赞成功', type: 'success'})
+      } else {
+        if (this.isCourse) {
+          await delFavorApi(param)
+        } else {
+          await delCircleCommonFavorApi(param)
+        }
+        this.item.isFavor = 0
+        this.item.favorCount -= 1
+        this.$toast({text: '取消点赞成功'})
+      }
     },
     del () {
       delCommentApi(this.item.id).then(res => {
@@ -260,7 +269,7 @@ export default {
       }
     }
     &.border {
-      border-bottom: solid 0.5px #ededed; /* no */
+      border-bottom: solid 1px #ededed; /*px*/
     }
     .info-area {
       display: flex;
