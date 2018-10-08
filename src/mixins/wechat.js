@@ -34,12 +34,14 @@ export default {
      * 获取微信签名
      */
     async getWechatSign () {
+      if (this.$store.getters.wxConfig) return
       try {
         const params = {
           url: location.href.split('#')[0]
         }
         const res = await getWechatSignApi(params)
         this.wechatConfig = Object.assign({}, this.wechatConfig, res.data)
+        this.$store.dispatch('updata_wxConfig', this.wechatConfig)
         this.setWechatConfig()
       } catch (error) {
         this.$vux.toast.text(error.message, 'bottom')

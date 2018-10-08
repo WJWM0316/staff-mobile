@@ -114,7 +114,6 @@ export default {
     send () {
       const value = this.suspensionInputContent
       const commentIndex = this.commentIndex
-      console.log(1111)
       if (!value) {
         this.$vux.toast.text('内容不能为空', 'bottom')
         return
@@ -123,7 +122,6 @@ export default {
         value,
         commentIndex
       })
-      // 清除数据
       this.suspensionInputContent = ''
     },
     hide () {

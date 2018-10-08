@@ -83,7 +83,9 @@ export default {
       this.sexShow = false
     },
     editPhoto () {
-      this.wechatChooseImage()
+      this.wechatChooseImage().then(res => {
+        console.log(res, 1111111111111)
+      })
     },
     async getUserInfo () {
       if (!this.userInfo) {
