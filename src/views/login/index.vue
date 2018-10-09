@@ -29,6 +29,11 @@ export default {
         email: this.account,
         password: this.password
       }
+      if (this.account === '13729280262' || this.account === '18520225811') {
+        window.localStorage.setItem('XPLUSCompany', 'test')
+      } else {
+        window.localStorage.setItem('XPLUSCompany', 'tiger')
+      }
       loginApi(data).then(res => {
         this.$store.dispatch('updata_userInfo', res.data)
         localstorage.set('token', res.data.token)
@@ -37,11 +42,6 @@ export default {
           type: 'success',
           callBack: () => {
             this.$router.go(-1)
-            if (this.account === '13543498701') {
-              window.localStorage.setItem('XPLUSCompany', 'test')
-            } else {
-              window.localStorage.setItem('XPLUSCompany', 'tiger')
-            }
           }
         })
       })

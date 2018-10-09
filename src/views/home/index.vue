@@ -96,6 +96,11 @@ export default {
         userInfoApi().then(res => {
           this.headInfo = res.data
           this.$store.dispatch('updata_userInfo', res.data)
+          if (res.data.base.mobile === '13729280262' || res.data.base.mobile === '18520225811') {
+            window.localStorage.setItem('XPLUSCompany', 'test')
+          } else {
+            window.localStorage.setItem('XPLUSCompany', 'tiger')
+          }
         })
       } else {
         this.headInfo = this.userInfo
