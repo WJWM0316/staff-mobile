@@ -1,7 +1,7 @@
 <template>
   <div class="upLoadFile">
     <div class="upLoadImg" @click.stop="choseImg">
-      <img :src="fileUrl" alt="">
+      <img :src="fileUrl" alt="" crossOrigin='Anonymous'>
     </div>
     <!-- vueCropper 剪裁图片实现-->
     <div class="vue-cropper-box"
@@ -55,7 +55,7 @@ export default {
         autoCropWidth: 150, // 默认生成截图框宽度
         autoCropHeight: 150, // 默认生成截图框高度
         fixed: false, // 是否开启截图框宽高固定比例
-        fixedNumber: [4, 4] // 截图框的宽高比例
+        fixedNumber: [400, 400] // 截图框的宽高比例
       },
       isShowCropper: false, // 是否显示截图框
       fileUpload: null,
@@ -65,8 +65,14 @@ export default {
   },
   methods: {
     choseImg () {
+      let base64List = []
       this.wechatChooseImage().then(res => {
-        res.forEach(e => {
+        res.forEach((e,index) => {
+          this.wechatGetLocalImgData(e).then(res0 => {
+            base64List.push(res0)
+            this.option.img = base64List[index]
+            this.isShowCropper = true
+          })
         })
       })
     },
@@ -106,6 +112,17 @@ export default {
   .upLoadImg {
     width: 100%;
     height: 100%;
+  }
+  .vue-cropper-box {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    .vue-cropper-content {
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 </style>
