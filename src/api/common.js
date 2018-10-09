@@ -13,12 +13,13 @@ export const getWechatSignApi = data => request({
 })
 
 /**
- * 文件上传
+ * 获取文件上传配置
  * @param {*} data
  */
-export const uploadApi = (data, needLoading) => request({
+export const uploadApi = (data, config, needLoading) => request({
   type: 'post',
-  url: '/attaches/config',
+  url: '/attaches',
   data,
+  config,
   needLoading: needLoading
 })

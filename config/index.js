@@ -1,9 +1,7 @@
 'use strict'
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
-
 const path = require('path')
-console.log(path, 111111111)
 module.exports = {
   dev: {
     // Paths
@@ -11,7 +9,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/xplus_wap': {
-        target: 'http://wap.xplus.ziwork.com/tiger',
+        target: `http://wap.xplus.ziwork.com/tiger`,
         changeOrigin: true,
         pathRewrite: {
           '^/xplus_wap': '/'

@@ -3,7 +3,7 @@
     <div class="item border-bottom-1px">
       <span class="txt">头像</span>
       <span class="editBox">
-        <i class="photo" @click.stop="editPhoto" v-if="pageInfo.avatar"><img :src="pageInfo.avatar.middleUrl" alt=""></i>
+        <upLoadFile class="photo" :fileUrl="pageInfo.avatar.middleUrl" attach_type="avatar"></upLoadFile>
       </span>
     </div>
     <div class="item border-bottom-1px">
@@ -55,13 +55,11 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import upLoadFile from '@c/functional/upLoadFile'
 import { userInfoApi, editUserInfoApi } from '@/api/pages/center'
-import { uploadApi } from '@/api/common'
-
-import WechatMixin from '@/mixins/wechat'
 export default {
-  mixins: [WechatMixin],
   components: {
+    upLoadFile
   },
   data () {
     return {
@@ -83,11 +81,6 @@ export default {
     _choseResult (sexKey, sexItem) {
       this.pageInfo.gender = parseInt(sexKey)
       this.sexShow = false
-    },
-    editPhoto () {
-      this.wechatChooseImage().then(res => {
-        console.log(res)
-      })
     },
     async getUserInfo () {
       if (!this.userInfo) {
@@ -133,12 +126,18 @@ export default {
   },
   created () {
     this.getUserInfo()
+  },
+  mounted () {
   }
 }
 </script>
 <style lang="less">
 .edit {
   padding: 0 20px;
+  .file {
+    width: 100px;
+    height: 20px;
+  }
   .item {
     padding: 20px 0;
     display: flex;

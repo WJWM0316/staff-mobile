@@ -5,7 +5,7 @@
       <input class="account" type="text" v-model="account" placeholder="请输入邮箱账号" @input="changeTxt()">
     </div>
     <div class="inputBox border-bottom-1px">
-      <input class="password" type="text" v-model="password" placeholder="请输入登录密码" @input="changeTxt()">
+      <input class="password" type="password" v-model="password" placeholder="请输入登录密码" @input="changeTxt()">
     </div>
     <button class="btn" :class="{'can' : this.account !== '' && this.password !== ''}" @click.stop="login">登录</button>
   </div>
@@ -37,6 +37,11 @@ export default {
           type: 'success',
           callBack: () => {
             this.$router.go(-1)
+            if (this.account === '13543498701') {
+              window.localStorage.setItem('XPLUSCompany', 'test')
+            } else {
+              window.localStorage.setItem('XPLUSCompany', 'tiger')
+            }
           }
         })
       })
