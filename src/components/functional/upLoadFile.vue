@@ -45,12 +45,14 @@ export default {
     choseImg () {
       let base64List = []
       this.wechatChooseImage().then(res => {
+        console.log(res, '1111')
         res.forEach((e, index) => {
           this.wechatGetLocalImgData(e).then(res0 => {
+            console.log(res0, '2222')
             base64List.push(res0)
-            this.base64Url = base64List[index]
+            this.base64Url = base64List[0]
             if (this.cropper) {
-              this.cropper.replace(this.url)
+              this.cropper.replace(this.base64Url)
             }
             this.panel = true
           })
