@@ -5,7 +5,8 @@
       <textarea name="content" class="control" maxlength="1000" placeholder="说说你的想法..." v-model="form.content" />
       <p class="addon" :class="{ 'z-active': form.content.length > 0 }"><span class="current">{{form.content.length}}</span>/{{lengths.textMax}}</p>
     </div>
-    <div class="select-box" v-show="isChoose" v-if="true">
+    <!--四项选择框-->
+    <div class="select-box" v-show="isChoose" v-if="isChoose">
       <!--选择图片-->
       <div class="takePhoto" @click.stop="photo">
         <input id="photo" type="file" accept="image/*" capture="camera" multiple>
@@ -18,20 +19,22 @@
       </div>
       <!--选择文件-->
       <div class="file" @click.stop="file">
+        <input id="file" type="file" accept=".xls,.doc,.txt,.pdf" multiple>
         <img class="icon" src="@/assets/icon/btn_doc@3x.png"/>
       </div>
       <!--选择链接-->
-      <div class="link" @click.stop="link">
+      <div class="link" @click.stop="postLink">
         <img class="icon" src="@/assets/icon/btn_link@3x.png"/>
       </div>
     </div>
+    <!--四项选择框-->
     <!--选择图片-->
     <div class="images" v-if="fileType === 0">
       <div class="item" v-for="(item, index) in images" :key="index">
         <img class="image" :src="item" />
         <div class="close" @click="handleDeleteImage(index, item)"><i class="icon iconfont icon-live_btn_close"></i></div>
       </div>
-      <div class="takePhoto" @click.stop="photo">
+      <div class="takePhoto" @click.stop="photo" v-if="images.length < 20">
         <input id="photo" type="file" accept="image/*" capture="camera" multiple>
         <img class="icon" src="@/assets/icon/icon_plus.png" />
       </div>
@@ -44,10 +47,39 @@
         您的浏览器不支持 HTML5 video 标签。
       </video>
     </div>
+    <!--文件-->
+    <div class="file" v-if="fileType === 2">
+      <div class="delBtn" @click="del"><i class="icon iconfont icon-live_btn_close"></i></div>
+      <div class="content-file" @click.stop="fileOpen('https://cdnstatic.ziwork.com/test/file/2018-05-29/4475f3474790d39f9e051b46480fea02.xlsx')">
+        <img v-show="fileData.extension === 'pdf'" class="file-logo" src="./../../assets/suffix/pdf.png" />
+        <img v-show="fileData.extension === 'xls' || fileData.extension === 'xlsx'" class="file-logo" src="../../assets/suffix/xls.png" />
+        <img v-show="fileData.extension === 'word'" class="file-logo" src="../../assets/suffix/word.png" />
+        <img v-show="fileData.extension === 'ppt'" class="file-logo" src="../../assets/suffix/ppt.png" />
+        <div class="file-desc">
+          <p class="text">{{fileData.key}}</p>
+          <p class="text">{{fileData.size}}</p>
+        </div>
+      </div>
+    </div>
+    <!--链接-->
+    <div class="postLink" v-if="fileType === 3">
+      <div class="delBtn" @click="del"><i class="icon iconfont icon-live_btn_close"></i></div>
+      <div class="content-file" @click.stop="fileOpen('https://cdnstatic.ziwork.com/test/file/2018-05-29/4475f3474790d39f9e051b46480fea02.xlsx')">
+        <img v-show="true" class="file-logo" src="@/assets/icon/postLink.png" />
+        <div class="file-desc">
+          <p class="text">{{inpLink}}</p>
+        </div>
+      </div>
+    </div>
     <div class="btn-container">
       <button type="button" class="u-btn-publish" :disabled="!canPublish" @click="handleSubmit">发布</button>
     </div>
-    <div class="Mask" v-if="false" @click.stop="closeTask"></div>
+    <!--链接输入弹窗-->
+    <div class="Mask" v-if="showMask" @click.stop="closeTask">
+      <div class="inpLeft"><img src="@/assets/icon/btn_link@3x.png" /></div>
+      <input @click.stop="inp" type="text" v-model="inpLink" placeholder="请在此处复制或者输入链接"/>
+      <div class="linkBtn" @click.stop="done">确认</div>
+    </div>
   </div>
 </template>
 
@@ -77,7 +109,13 @@ export default {
         textMax: 1000, // 文本最大字数
         imageMax: 20 // 图片最大张数
       },
-      movie: '' // 上传的视频
+      movie: '', // 上传的视频
+      attachType: 'img', // 上传的文件类型默认图片
+      fileName: 'img1', // 上传文件名，默认img1
+      fileData: '', // 存在上传的文件数据
+      uploadImgList: [], // 存放上传图片id的数组
+      inpLink: '', // 输入的链接
+      showMask: false // 展示链接输入框
     }
   },
   methods: {
@@ -100,8 +138,17 @@ export default {
         community_id: this.$route.query.id,
         content: this.form.content
       }
+      if (this.fileType === 0) {
+        param.pictures = this.uploadImgList
+      } else if (this.fileType === 1) {
+        param.videos = this.fileData.id
+      } else if (this.fileType === 2) {
+        param.files = this.fileData.id
+      } else if (this.fileType === 3) {
+        param.urls = this.inpLink
+      }
       await jobcirclePostApi(param)
-      this.$toast({text: '评论成功', type: 'success'})
+      this.$toast({text: '发帖成功', type: 'success'})
       this.$router.go(-1)
     },
     /* 选择图片 */
@@ -114,27 +161,26 @@ export default {
         let inp2 = this.cloneNode(true)
         this.parentNode.replaceChild(inp2, this)
         reader.onload = function () {
-          that.uploadImg(imgFile).then(res => {
+          that.attachType = 'img'
+          that.uploadFile(imgFile).then(res => {
+            that.isChoose = false
+            that.fileType = 0
             that.images.push(res.data[0].url)
             that.uploadImgList.push(res.data[0].id)
           })
         }
       })
     },
-    /* 上传图片 */
-    async uploadImg (nowImg) {
-      let param = {
-        attach_type: 'img',
-        img: nowImg
-      }
+    /* 上传图片或其他文件 */
+    async uploadFile (nowImg) {
       let config = {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       }
       let formData = new FormData()
-      formData.append('attach_type', 'img')
-      formData.append('img1', nowImg)
+      formData.append('attach_type', this.attachType)
+      formData.append(this.fileName, nowImg)
       return attachesApi(formData, config)
     },
     /**
@@ -142,29 +188,57 @@ export default {
      */
     handleDeleteImage (index, image) {
       this.images.splice(index, 1)
-      console.log(this.images)
+      if (this.images.length === 0) {
+        this.isChoose = true
+        this.fileType = ''
+      }
     },
     /* 上传视频 */
     video () {
       let that = this
       document.getElementById('video').addEventListener('change', function (e) {
         let reader = new FileReader()
+        let videoFile = this.files[0]
         reader.readAsDataURL(this.files[0])
         reader.onload = function () {
-          console.log(' 666666666666666 ')
-          let b = that.dataURLtoFile(this.result)
-          that.movie = this.result
-          console.log(b)
-          that.isChoose = false
-          that.fileType = 1
+          that.attachType = 'video'
+          // 上传视频文件
+          that.uploadFile(videoFile).then(res => {
+            that.isChoose = false
+            that.fileType = 1
+            that.fileData = res.data[0]
+            that.movie = res.data[0].url
+          })
+        }
+      })
+    },
+    /* 上传文件 */
+    file () {
+      let that = this
+      document.getElementById('file').addEventListener('change', function (e) {
+        let reader = new FileReader()
+        let docFile = this.files[0]
+        console.log(docFile.name)
+        reader.readAsDataURL(this.files[0])
+        reader.onload = function () {
+          that.attachType = 'doc'
+          that.fileName = docFile.name
+          // 上传视频文件
+          that.uploadFile(docFile).then(res => {
+            that.isChoose = false
+            that.fileType = 2
+            that.fileData = res.data[0]
+          })
         }
       })
     },
     del () {
       console.log(' 删除 ')
+      this.fileData = ''
       this.movie = ''
       this.isChoose = true
       this.fileType = ''
+      this.inpLink = ''
     },
     showimg () {
       let that = this
@@ -191,6 +265,19 @@ export default {
         u8arr[n] = bstr.charCodeAt(n)
       }
       return new File([u8arr], filename, {type: mime})
+    },
+    inp () {},
+    /* 确认输入链接 */
+    done () {
+      if (this.inpLink) {
+        console.log(this.inpLink)
+        this.fileType = 3
+        this.isChoose = false
+        this.showMask = false
+      }
+    },
+    postLink () {
+      this.showMask = true
     }
   }
 }
@@ -271,8 +358,8 @@ export default {
       margin: 0 -3px -6px;
       flex-flow: row wrap;
       >input{
-        width: 108px;
-        height: 108px;
+        width: 102px;
+        height: 102px;
       }
       .item {
         position: relative;
@@ -313,8 +400,8 @@ export default {
       }
       .takePhoto{
         position: relative;
-        width: 108px;
-        height: 108px;
+        width: 102px;
+        height: 102px;
         background: #FFFFFF;
         border: 1px dashed #EDEDED;
         display: flex;
@@ -355,6 +442,66 @@ export default {
         object-fit:fill;
         width: 208px;
         /*height: 117px;*/
+      }
+    }
+    .file, .postLink{
+      position: relative;
+      >.delBtn{
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #CCCCCC;
+        position: absolute;
+        right: -7px;
+        top: -10px;
+        z-index: 7;
+        line-height: 15px;
+        text-align: center;
+        >i{
+          font-size: 20px;/*px*/
+          color: #FFFFFF;
+          height: 20px;
+          width: 20px;
+        }
+      }
+      /*  文件  */
+      .content-file {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        background-color: #F8F8F8;
+        padding: 7.5px 10px 8.5px;
+        border-radius: 3px;
+        .file-logo {
+          width: 44px;
+          height: 44px;
+          border-radius: 3px;
+        }
+        .file-desc {
+          font-size: 14px;/*px*/
+          color: #111111;
+          margin-left: 10px;
+          .text {
+            font-size: 26px;/*px*/
+            font-weight: 400;
+            display: block;
+            max-width: 261px;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+          }
+          .text:last-of-type {
+            font-weight: 400;
+            margin-top: 1px;
+            color: #bcbcbc;
+          }
+        }
+      }
+    }
+    .postLink{
+      .text{
+        color: #111111 !important;
+        font-size: 28px !important;/*px*/
       }
     }
     .btn-container {
@@ -459,6 +606,40 @@ export default {
       background-color: #000;
       opacity: 0.5;
       z-index: 8888;
+      .inpLeft{
+        position: absolute;
+        border-right: 2px solid #4E78A1;
+        padding-right: 8px;
+        bottom: 32px;
+        left: 32px;
+        width: 20px;
+        height: 20px;
+        z-index: 100;
+        >img{
+          left: 32px;
+          width: 20px;
+          display: block;
+        }
+      }
+      >input{
+        width: 290px;
+        height: 44px;
+        background: #FFFFFF;
+        border-radius: 35px;
+        position: absolute;
+        left: 20px;
+        bottom: 20px;
+        color: #BCBCBC;
+        box-sizing: border-box;
+        padding-left: 45px;
+      }
+      .linkBtn{
+        position: absolute;
+        bottom: 32px;
+        right: 20px;
+        font-size: 32px;/*px*/
+        color: #FFE266;
+      }
     }
   }
 </style>

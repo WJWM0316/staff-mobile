@@ -19,26 +19,52 @@
           <img :src="item.url || '../../assets/icon/img_head_default.png'" />
         </div>
       </div>
-      <div class="content-video" v-if="false">
-        <video controls ref="video" v-show="false"></video>
-        <div class="placeholder">
+      <!--工作圈图片-->
+      <div class="content-images" v-if="item.type === '图片'">
+        <div class="item-image one" v-if="item.accessory.length === 1">
+          <img :src="item.accessory[0].smallUrl || '../../assets/icon/img_head_default.png'" />
+        </div>
+        <div class="item-image" v-for="(item,index) in item.accessory" :key="index" v-else>
+          <img :src="item.smallUrl || '../../assets/icon/img_head_default.png'" />
+        </div>
+      </div>
+      <!--视频-->
+      <div class="content-video" v-if="item.type === '视频'" @click.stop="playMovie">
+        <video class="playVideo" width="416" height="234" controls v-if="movie">
+          <source :src="item.accessory[0].url" type="video/mp4">
+          您的浏览器不支持 HTML5 video 标签。
+        </video>
+        <div class="placeholder" v-else>
         </div>
       </div>
       <!-- 文件 -->
-      <div v-if="false">
-        <div class="content-file" @click.stop="fileOpen('https://cdnstatic.ziwork.com/test/file/2018-05-29/4475f3474790d39f9e051b46480fea02.xlsx')">
-          <img class="file-logo" src="./../../assets/suffix/pdf.png" />
+      <div v-if="item.type === '文件'">
+        <div class="content-file" @click.stop="fileOpen(item.accessory[0].url)">
+          <img v-show="fileType === '.pdf'" class="file-logo" src="@/assets/suffix/pdf.png" />
+          <img v-show="fileType === '.xls' || fileType === '.xlsx'" class="file-logo" src="@/assets/suffix/xls.png" />
+          <img v-show="fileType === '.word'" class="file-logo" src="@/assets/suffix/word.png" />
+          <img v-show="fileType === '.ppt'" class="file-logo" src="@/assets/suffix/ppt.png" />
           <div class="file-desc">
-            <p class="text">薛兆丰30年职场经验分享，字超过打点字超过打点字超过打点字超过打点字超过打点字超过打点</p>
-            <p class="text">35K</p>
+            <p class="text">{{item.accessory[0].fileName}}</p>
+            <p class="text">{{item.accessory[0].sizeM}}</p>
           </div>
         </div>
+      </div>
+      <!--链接-->
+      <div class="postLink" v-if="item.type === '链接'">
+        <a @click.stop="" class="content-file" :href="item.url">
+          <img v-show="true" class="file-logo" src="@/assets/icon/postLink.png" />
+          <div class="file-desc">
+            <p class="text">{{item.title}}</p>
+          </div>
+        </a>
       </div>
     </div>
       <div class="info-area">
         <div class="time-and-del">
           <span class="time">{{item.createdAt}}</span>
-          <span v-if="item.isSelf" class="del-btn" @click.stop="edit">编辑</span>
+          <span v-if="item.isSelf && isCourse" class="del-btn" @click.stop="edit">编辑</span>
+          <span v-if="item.isSelf && !isCourse" class="del-btn" @click.stop="edit">删除</span>
         </div>
         <div class="operation">
           <div class="praise" @click.stop="praise">
@@ -79,7 +105,7 @@
 </template>
 <script>
 import { getFavorApi, delFavorApi } from '@/api/pages/course'
-import { circleCommonFavorApi, delCircleCommonFavorApi } from '@/api/pages/workCircle'
+import { circleCommonFavorApi, delCircleCommonFavorApi, delCirclePostApi } from '@/api/pages/workCircle'
 export default {
   name: 'dynamicItem',
   props: {
@@ -104,6 +130,10 @@ export default {
       immediate: true,
       handler: function () {
         this.isfavor = this.item.isFavor
+        if (this.item.accessory && this.item.accessory.length > 0 && this.item.accessory[0].attachType === 'doc') {
+          let result = this.item.accessory[0].fileName.match(/\.[^\.]+/)
+          this.fileType = result[0]
+        }
       }
     }
   },
@@ -111,7 +141,9 @@ export default {
   },
   data () {
     return {
-      isfavor: false
+      isfavor: false,
+      movie: true, // 视频播放开关
+      fileType: '' // 文件类型
     }
   },
   methods: {
@@ -217,15 +249,19 @@ export default {
     },
     /* 编辑 */
     edit () {
-      let { courseId } = this.$route.query
-      this.$router.push({path: '/punchEdit', query: {courseSectionId: courseId}})
+      let { courseId, id } = this.$route.query
+      if (this.isCourse) {
+        this.$router.push({path: '/punchEdit', query: {courseSectionId: courseId}})
+      } else {
+        delCirclePostApi(this.item.id).then(res => {
+          this.$toast({text: '删除帖子成功', type: 'success'})
+        })
+      }
     },
     /* 置顶帖子 */
     toTop () {}
   },
-  mounted () {
-    console.log(this.isfavor)
-  }
+  mounted () {}
 }
 </script>
 
@@ -396,6 +432,11 @@ export default {
             margin-top: 1px;
             color: #bcbcbc;
           }
+        }
+      }
+      .postLink{
+        .text{
+          color: #111111 !important;
         }
       }
     }

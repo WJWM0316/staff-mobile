@@ -90,7 +90,7 @@
 <script>
 import moment from 'moment'
 import { getFavorApi, delFavorApi, delCommentApi } from '@/api/pages/course'
-import { circleCommonFavorApi, delCircleCommonFavorApi } from '@/api/pages/workCircle'
+import { circleCommonFavorApi, delCircleCommonFavorApi, delCircleCommentApi } from '@/api/pages/workCircle'
 export default {
   name: 'discussItem',
   props: {
@@ -222,13 +222,14 @@ export default {
         this.$toast({text: '取消点赞成功'})
       }
     },
-    del () {
-      delCommentApi(this.item.id).then(res => {
-        this.$toast({text: '评论已删除', type: 'success'})
-        this.$emit('delComment', {index: this.index})
-      }).catch(err => {
-        this.$toast({text: err})
-      })
+    async del () {
+      if (!this.isCourse) {
+        await delCircleCommentApi(this.item.id)
+      } else {
+        await delCommentApi(this.item.id)
+      }
+      this.$toast({text: '评论已删除', type: 'success'})
+      this.$emit('delComment', {index: this.index})
     }
   },
   created () {}
