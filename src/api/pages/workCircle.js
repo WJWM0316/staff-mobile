@@ -130,3 +130,10 @@ export const delCircleCommentApi = (data) => {
     type: 'delete'
   })
 }
+/* 删除工作圈帖子 */
+export const delCirclePostApi = (data) => {
+  return request({
+    url: `/jobcircle/post/${data}`,
+    type: 'delete'
+  })
+}

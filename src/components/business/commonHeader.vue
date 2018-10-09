@@ -72,7 +72,7 @@ export default {
   methods: {
     toSetting () {
       this.$router.push({
-        path: '/workCircle/setting',
+        path: '/setting',
         query: {
           isOwner: this.pageInfo.isOwner, // 是否圈主
           id: this.pageInfo.id,

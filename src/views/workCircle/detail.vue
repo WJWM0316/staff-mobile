@@ -25,7 +25,13 @@
             </div>
           </div>
           <div v-if="true">
-            <discuss-item :item="commentItem" :isShowBorder="index === commentList.length-1 || index === item.hotCommentCount-1? false : true" :isCourse="false"></discuss-item>
+            <discuss-item
+               :item="commentItem"
+               :index="index"
+               :isShowBorder="index === commentList.length-1 || index === item.hotCommentCount-1? false : true"
+               :isCourse="false"
+               @delComment="delComment">
+            </discuss-item>
           </div>
         </div>
         <p class="community-empty-desc" v-if="item.commentTotal === 0">成为第一个评论的人吧~</p>
@@ -81,6 +87,10 @@ export default {
     }
   },
   methods: {
+    /* 删除评论 */
+    delComment (e) {
+      this.commentList.splice(e.index, 1)
+    },
     /* 切换nav */
     toggle (targetName) {
       if (this.navTabName !== targetName) {
