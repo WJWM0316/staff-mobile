@@ -3,7 +3,7 @@
     <div class="item border-bottom-1px">
       <span class="txt">头像</span>
       <span class="editBox">
-        <upLoadFile class="photo" :fileUrl="pageInfo.avatar.middleUrl"></upLoadFile>
+        <upLoadFile class="photo" :fileUrl="pageInfo.avatar.middleUrl" attach_type="avatar"></upLoadFile>
       </span>
     </div>
     <div class="item border-bottom-1px">

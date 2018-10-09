@@ -1,42 +1,31 @@
 <template>
   <div class="upLoadFile">
-    <div class="upLoadImg" @click.stop="choseImg">
-      <img :src="fileUrl" alt="" crossOrigin='Anonymous'>
+    <!-- 遮罩层 -->
+    <div class="cropper-container" v-show="panel">
+      <img id="image" :src="url" alt="Picture">
+      <div class="btnBox">
+        <div id="cancel" @click="cancel">取消</div>
+        <div id="button" @click="commit">确定</div>
+      </div>
     </div>
-    <!-- vueCropper 剪裁图片实现-->
-    <div class="vue-cropper-box"
-        v-if="isShowCropper">
-      <div class="vue-cropper-content">
-        <vueCropper ref="cropper"
-                    :img="option.img"
-                    :outputSize="option.outputSize"
-                    :outputType="option.outputType"
-                    :info="option.info"
-                    :canScale="option.canScale"
-                    :autoCrop="option.autoCrop"
-                    :autoCropWidth="option.autoCropWidth"
-                    :autoCropHeight="option.autoCropHeight"
-                    :fixed="option.fixed"
-                    :fixedNumber="option.fixedNumber">
-        </vueCropper>
-      </div>
-      <div v-if="isShowCropper"
-           type="danger"
-           @click="onCubeImg">确定裁剪图片
-      </div>
+    <div class="upLoadImg" @click.stop="choseImg">
+      <img :src="base64Url" alt="" id="image">
     </div>
   </div>
 </template>
 <script>
-import VueCropper from 'vue-cropper'
 import { uploadApi } from '@/api/common'
 import WechatMixin from '@/mixins/wechat'
+import Cropper from 'cropperjs'
 export default {
   mixins: [WechatMixin],
   components: {
-    VueCropper
   },
   props: {
+    attach_type: {
+      type: String,
+      default: ''
+    },
     fileUrl: {
       type: String,
       default: ''
@@ -44,54 +33,34 @@ export default {
   },
   data () {
     return {
-      // 裁剪组件的基础配置option
-      option: {
-        img: '', // 裁剪图片的地址
-        info: true, // 裁剪框的大小信息
-        outputSize: 1, // 裁剪生成图片的质量
-        outputType: 'jpeg', // 裁剪生成图片的格式
-        canScale: false, // 图片是否允许滚轮缩放
-        autoCrop: true, // 是否默认生成截图框
-        autoCropWidth: 150, // 默认生成截图框宽度
-        autoCropHeight: 150, // 默认生成截图框高度
-        fixed: false, // 是否开启截图框宽高固定比例
-        fixedNumber: [400, 400] // 截图框的宽高比例
-      },
-      isShowCropper: false, // 是否显示截图框
-      fileUpload: null,
-      fileinfo: {},
-      form: {}
+      headerImage: '',
+      picValue: '',
+      cropper: '',
+      croppable: false,
+      panel: false,
+      url: '',
+      base64Url: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEEAAAAbCAYAAAAj4uLUAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFySURBVFhH7ZYxrsMgDEB7/+PkAOwcgJ2dndW1SQiGOCREtFL/9/Ak2hCwnw3tK8YI/x2VgKgERCUgKgFRCch8Cd6CcUF+lvBglwWWSyx48f353JeAyVVBWi/PQ4IztYgLMd4acEF+lvF2uZBboLk8VuvleZlHEs4Wpc3zs5IYVt44CPu8AM7UQcrUnTAiIXEj3sy4hE4HcAm97wqrkKsgiUN33SB3xHQJ0oI50UPC9A5K4wnkwG7BOuiJhF7MnEEJ0tmlaq6tW0kIDsyeBF2G7UWH7zm5qyjhNvBHEiiGr0jYqk3jXULavE66TYw+HyrP+CkJvPpp7GhjQRbvDBxbgxJO7hepEx7xGQn9G3o9760AOi7suyxjW++MNvC0dudSlsjdNl0Cv6wK5Q/QccP6PvB2G7Nj1CJ1wriE8lM8XwLCu4FX/+yci90z2Amj8Fg+IiEx2JrfpC3GPAl/GJWAqAREJSAqAVEJiEpAVAKiEmKENwOKGSM7DyjHAAAAAElFTkSuQmCC'
     }
   },
   methods: {
     choseImg () {
       let base64List = []
-      this.wechatChooseImage().then(res => {
-        res.forEach((e,index) => {
-          this.wechatGetLocalImgData(e).then(res0 => {
-            base64List.push(res0)
-            this.option.img = base64List[index]
-            this.isShowCropper = true
-          })
-        })
-      })
-    },
-    // 确定裁剪图片
-    onCubeImg () {
-      // 获取cropper的截图的base64 数据
-      this.$refs.cropper.getCropData(data => {
-        this.fileinfo.url = data
-        this.isShowCropper = false
-        // 先将显示图片地址清空，防止重复显示
-        this.option.img = ''
-        // 将剪裁后base64的图片转化为file格式
-        let file = this.convertBase64UrlToBlob(data)
-        file.name = this.fileUpload.name
-        // 将剪裁后的图片执行上传
-        this.uploadFile(file).then(res => {
-          this.form.content = res.file_id // 将上传的文件id赋值给表单from的content
-        })
-      })
+      // this.wechatChooseImage().then(res => {
+      //   res.forEach((e, index) => {
+      //     this.wechatGetLocalImgData(e).then(res0 => {
+      //       base64List.push(res0)
+      //       this.option.img = base64List[index]
+      //       this.isShowCropper = true
+      //     })
+      //   })
+      // })
+      this.url = this.getObjectURL(this.convertBase64UrlToBlob(this.base64Url))
+      console.log(this.url)
+      if (this.cropper) {
+        this.cropper.replace(this.url)
+        console.log(111)
+      }
+      this.panel = true
     },
     // 将base64的图片转换为file文件
     convertBase64UrlToBlob (urlData) {
@@ -103,25 +72,105 @@ export default {
         ia[i] = bytes.charCodeAt(i)
       }
       return new Blob([ab], { type: 'image/jpeg' })
+    },
+    // dataUrl 转 file
+    dataURLtoFile (dataurl, filename = 'file') {
+      let arr = dataurl.split(',')
+      let mime = arr[0].match(/:(.*?);/)[1]
+      let suffix = mime.split('/')[1]
+      let bstr = atob(arr[1])
+      let n = bstr.length
+      let u8arr = new Uint8Array(n)
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n)
+      }
+      return new File([u8arr], `${filename}.${suffix}`, {type: mime})
+    },
+    getObjectURL (file) {
+      var url = null
+      if (window.createObjectURL !== undefined) {
+        url = window.createObjectURL(file)
+      } else if (window.URL !== undefined) { // mozilla(firefox)
+        url = window.URL.createObjectURL(file)
+      } else if (window.webkitURL !== undefined) { // webkit or chrome
+        url = window.webkitURL.createObjectURL(file)
+      }
+      return url
+    },
+    cancel () {
+      this.panel = false
+    },
+    commit () {
+      let newImG = this.cropper.getCroppedCanvas({
+        width: 240,
+        height: 240,
+        fillColor: '#fff',
+        imageSmoothingEnabled: false,
+        imageSmoothingQuality: 'high'
+      })
+      let base64url = newImG.toDataURL('image/jpeg')
+      let blob = this.dataURLtoFile(base64url)
+      let formData = new FormData()
+      formData.append('attach_type', this.attach_type)
+      formData.append('img1', blob)
+      setTimeout(res => {
+        return uploadApi(formData)
+      }, 500)
+      // this.base64Url = base64url
+      // this.panel = false
     }
+  },
+  mounted () {
+    // 初始化这个裁剪框
+    var self = this
+    var image = document.getElementById('image')
+    this.cropper = new Cropper(image, {
+      cropBoxResizable: false,
+      checkCrossOrigin: false,
+      aspectRatio: 1,
+      viewMode: 0,
+      initialAspectRatio: 200,
+      background: false,
+      minCropBoxWidth: 650,
+      minCropBoxHeight: 650,
+      crop (event) {
+      },
+      ready () {
+      }
+    })
   }
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
+@import url('../../styles/cropper.less');
+#image {
+  max-width: 100%;
+}
 .upLoadFile {
   .upLoadImg {
     width: 100%;
     height: 100%;
+    background: #000;
   }
-  .vue-cropper-box {
+  .cropper-container {
     width: 100%;
     height: 100%;
     position: fixed;
     top: 0;
     left: 0;
-    .vue-cropper-content {
+    z-index: 10;
+    .btnBox {
       width: 100%;
-      height: 100%;
+      padding: 0 30px;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      position: absolute;
+      left: 0;
+      bottom: 40px;
+      font-size: 16px;
+      color: #fff;
+      z-index: 100;
     }
   }
 }
