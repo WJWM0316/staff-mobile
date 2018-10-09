@@ -46,17 +46,20 @@ export default {
       let base64List = []
       this.wechatChooseImage().then(res => {
         console.log(res, '1111')
-        res.forEach((e, index) => {
-          this.wechatGetLocalImgData(e).then(res0 => {
-            console.log(res0, '2222')
-            base64List.push(res0)
-            this.base64Url = base64List[0]
-            if (this.cropper) {
-              this.cropper.replace(this.base64Url)
-            }
-            this.panel = true
-          })
+        this.wechatUploadImage(res).then(res0 => {
+          console.log(res0)
         })
+        // res.forEach((e, index) => {
+        //   this.wechatGetLocalImgData(e).then(res0 => {
+        //     console.log(res0, '2222')
+        //     base64List.push(res0)
+        //     this.base64Url = base64List[0]
+        //     if (this.cropper) {
+        //       this.cropper.replace(this.base64Url)
+        //     }
+        //     this.panel = true
+        //   })
+        // })
       })
     },
     // dataUrl 转 file
@@ -94,7 +97,6 @@ export default {
         this.base64Url = base64url
         this.panel = false
       })
-      
     }
   },
   mounted () {
