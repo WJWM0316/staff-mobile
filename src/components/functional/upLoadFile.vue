@@ -2,14 +2,14 @@
   <div class="upLoadFile">
     <!-- 遮罩层 -->
     <div class="cropper-container" v-show="panel">
-      <img id="image" :src="url" alt="Picture">
+      <img id="image" :src="base64Url" alt="Picture">
       <div class="btnBox">
         <div id="cancel" @click="cancel">取消</div>
         <div id="button" @click="commit">确定</div>
       </div>
     </div>
     <div class="upLoadImg" @click.stop="choseImg">
-      <img :src="base64Url" alt="" id="image">
+      <img :src="base64Url || fileUrl" alt="" id="image">
     </div>
   </div>
 </template>
@@ -38,40 +38,24 @@ export default {
       cropper: '',
       croppable: false,
       panel: false,
-      url: '',
-      base64Url: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEEAAAAbCAYAAAAj4uLUAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFySURBVFhH7ZYxrsMgDEB7/+PkAOwcgJ2dndW1SQiGOCREtFL/9/Ak2hCwnw3tK8YI/x2VgKgERCUgKgFRCch8Cd6CcUF+lvBglwWWSyx48f353JeAyVVBWi/PQ4IztYgLMd4acEF+lvF2uZBboLk8VuvleZlHEs4Wpc3zs5IYVt44CPu8AM7UQcrUnTAiIXEj3sy4hE4HcAm97wqrkKsgiUN33SB3xHQJ0oI50UPC9A5K4wnkwG7BOuiJhF7MnEEJ0tmlaq6tW0kIDsyeBF2G7UWH7zm5qyjhNvBHEiiGr0jYqk3jXULavE66TYw+HyrP+CkJvPpp7GhjQRbvDBxbgxJO7hepEx7xGQn9G3o9760AOi7suyxjW++MNvC0dudSlsjdNl0Cv6wK5Q/QccP6PvB2G7Nj1CJ1wriE8lM8XwLCu4FX/+yci90z2Amj8Fg+IiEx2JrfpC3GPAl/GJWAqAREJSAqAVEJiEpAVAKiEmKENwOKGSM7DyjHAAAAAElFTkSuQmCC'
+      base64Url: '' // 截图url
     }
   },
   methods: {
     choseImg () {
       let base64List = []
-      // this.wechatChooseImage().then(res => {
-      //   res.forEach((e, index) => {
-      //     this.wechatGetLocalImgData(e).then(res0 => {
-      //       base64List.push(res0)
-      //       this.option.img = base64List[index]
-      //       this.isShowCropper = true
-      //     })
-      //   })
-      // })
-      this.url = this.getObjectURL(this.convertBase64UrlToBlob(this.base64Url))
-      console.log(this.url)
-      if (this.cropper) {
-        this.cropper.replace(this.url)
-        console.log(111)
-      }
-      this.panel = true
-    },
-    // 将base64的图片转换为file文件
-    convertBase64UrlToBlob (urlData) {
-      let bytes = window.atob(urlData.split(',')[1]) // 去掉url的头，并转换为byte
-      // 处理异常,将ascii码小于0的转换为大于0
-      let ab = new ArrayBuffer(bytes.length)
-      let ia = new Uint8Array(ab)
-      for (var i = 0; i < bytes.length; i++) {
-        ia[i] = bytes.charCodeAt(i)
-      }
-      return new Blob([ab], { type: 'image/jpeg' })
+      this.wechatChooseImage().then(res => {
+        res.forEach((e, index) => {
+          this.wechatGetLocalImgData(e).then(res0 => {
+            base64List.push(res0)
+            this.base64Url = base64List[index]
+            if (this.cropper) {
+              this.cropper.replace(this.url)
+            }
+            this.panel = true
+          })
+        })
+      })
     },
     // dataUrl 转 file
     dataURLtoFile (dataurl, filename = 'file') {
@@ -86,20 +70,11 @@ export default {
       }
       return new File([u8arr], `${filename}.${suffix}`, {type: mime})
     },
-    getObjectURL (file) {
-      var url = null
-      if (window.createObjectURL !== undefined) {
-        url = window.createObjectURL(file)
-      } else if (window.URL !== undefined) { // mozilla(firefox)
-        url = window.URL.createObjectURL(file)
-      } else if (window.webkitURL !== undefined) { // webkit or chrome
-        url = window.webkitURL.createObjectURL(file)
-      }
-      return url
-    },
+    // 取消
     cancel () {
       this.panel = false
     },
+    // 截图
     commit () {
       let newImG = this.cropper.getCroppedCanvas({
         width: 240,
@@ -113,11 +88,11 @@ export default {
       let formData = new FormData()
       formData.append('attach_type', this.attach_type)
       formData.append('img1', blob)
-      setTimeout(res => {
-        return uploadApi(formData)
-      }, 500)
-      // this.base64Url = base64url
-      // this.panel = false
+      uploadApi(formData).then(res => {
+        this.base64Url = base64url
+        this.panel = false
+      })
+      
     }
   },
   mounted () {
