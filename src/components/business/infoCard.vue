@@ -101,7 +101,7 @@ export default {
       line-height: 16px;
       margin: 11px 0 16px;
       .department{
-        max-width: 142.5px;
+        max-width: 135px;
         overflow: hidden;
         text-overflow:ellipsis;
         white-space: nowrap;
@@ -119,7 +119,7 @@ export default {
         padding: 0 4px;
         text-align: center;
         display: inline-block;
-        max-width: 93.5px;
+        max-width: 90px;
         height: 17px;
         background-color: rgba(255,226,102,0.25);
         color: #D7AB70;

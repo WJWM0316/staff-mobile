@@ -31,6 +31,11 @@ const routers = [
     path: '/commentDetail',
     name: 'commentDetail',
     component: resolve => require(['@/views/course/commentDetail'], resolve)
+  },
+  {
+    path: '/memberList',
+    name: 'memberList',
+    component: resolve => require(['@/views/course/memberList'], resolve)
   }
 ]
 

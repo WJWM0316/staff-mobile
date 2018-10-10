@@ -3,7 +3,7 @@
     <top-header :pageInfo="pageInfo" :isCircle="false" :isJoin="false"></top-header>
     <div class="introduce" v-if="!pageInfo.isJoin && !pageInfo.isMaster || isCourseIntroduce">
       <div class="richText">
-        <div class="title">关于文本</div>
+        <div class="title">关于课程</div>
         <div class="content" v-html="pageInfo.intro"></div>
       </div>
       <div class="bottomBtn" v-if="!isCourseIntroduce && !pageInfo.isMaster && pageInfo.isJoin === 0">
@@ -15,14 +15,14 @@
       <div class="content">
         <div class="top">
           <div class="postNum">已更新<span style="color: #D7AB70;">{{lessonTotal}}</span> 篇</div>
-          <div class="rightBox" @click.stop="reverse">
+          <div class="rightBox">
             <div class="study" v-if="false">
               <img src="../../assets/icon/bnt_positioning@3x.png"/>上次学到
             </div>
-            <div class="reverse" @click.stop="reverse" v-if="isReverse">
+            <div class="reverse" @click.stop="reverse('asc')" v-if="!isReverse">
               <img src="../../assets/icon/bnt_order@3x.png"/>正序
             </div>
-            <div class="reverse" @click.stop="reverse" v-else>
+            <div class="reverse" @click.stop="reverse('DESC')" v-else>
               <img src="../../assets/icon/bnt_order@3x.png"/>倒序
             </div>
           </div>
@@ -106,8 +106,8 @@ export default {
       }
       return CourseSectionApi(param)
     },
-    async reverse () {
-      this.jsonData.order.sort = 'desc'
+    async reverse (e) {
+      this.jsonData.order.sort = e
       let lessonList = await this.getCourseSectionApi()
       this.lessonList = lessonList.data
       this.isReverse = !this.isReverse
@@ -131,6 +131,7 @@ export default {
 
 <style lang="less" scoped>
 .introduce{
+  padding-bottom: 49px;
   height: 100vh;
   .richText{
     margin-top: 50px;

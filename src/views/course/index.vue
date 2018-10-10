@@ -78,6 +78,9 @@ export default {
         this.all.pullUpStatus = false
         this.all.noData = true
       } else {
+        if (this.circleList.length <= 0) {
+          return
+        }
         this.all.pullUpStatus = true
         this.all.page += 1
         let res = await this.getCourseList()

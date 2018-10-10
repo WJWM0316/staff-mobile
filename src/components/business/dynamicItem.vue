@@ -29,7 +29,7 @@
         </div>
       </div>
       <!--视频-->
-      <div class="content-video" v-if="item.type === '视频'" @click.stop="playMovie">
+      <div class="content-video" v-if="item.type === '视频'" @click.stop="">
         <video class="playVideo" width="416" height="234" controls v-if="movie">
           <source :src="item.accessory[0].url" type="video/mp4">
           您的浏览器不支持 HTML5 video 标签。
@@ -55,14 +55,14 @@
         <a @click.stop="" class="content-file" :href="item.url">
           <img v-show="true" class="file-logo" src="@/assets/icon/postLink.png" />
           <div class="file-desc">
-            <p class="text">{{item.title}}</p>
+            <p class="text">{{item.title || '链接'}}</p>
           </div>
         </a>
       </div>
     </div>
       <div class="info-area">
         <div class="time-and-del">
-          <span class="time">{{item.createdAt}}</span>
+          <span class="time">{{item.createdAt || item.currencyUser.createdAt}}</span>
           <span v-if="item.isSelf && isCourse" class="del-btn" @click.stop="edit">编辑</span>
           <span v-if="item.isSelf && !isCourse" class="del-btn" @click.stop="edit">删除</span>
         </div>
@@ -81,16 +81,16 @@
         </div>
       </div>
     <template v-if="showCommunicate">
-      <div class="comment-area" v-if="item.favorList.length > 0 && item.hotComments.length > 0">
+      <div class="comment-area" v-if="item.favorList.length > 0 || item.hotComments.length > 0">
         <div class="praise-block" v-if="item.favorList.length > 0">
           <img class="icon-zan" src="./../../assets/icon/bnt_zan@3x.png" />
           <div class="praise-name">
             <span class="favor-name" v-for="(favor,favorIndex) in item.favorList" :key="favorIndex" @click.stop="toUserInfo(favor.userId)">{{favorIndex > 0 ?  ','+favor.realname : favor.realname}}</span>
           </div>
-          <span class="praise-total" v-if="item.favorList.length > 3">等{{item.favors.length}}人觉得很赞</span>
+          <span class="praise-total" v-if="item.favorList.length > 3">等{{item.favorTotal}}人觉得很赞</span>
         </div>
-        <div class="reply-block">
-          <template  v-if="item.hotComments.length > 0">
+        <div class="reply-block" v-if="item.hotComments.length > 0">
+          <template>
             <div class="hot-reply">
               <div class="hot-reply-icon">热门评论</div>
               <div class="reply" v-for="(reply,index) in item.hotComments" :key="index">
@@ -209,21 +209,21 @@ export default {
         circleSourceType: 'job_circle_post'
       }
       /* 点赞或取消点赞 */
-      if (this.isfavor !== true) {
+      if (!this.isfavor) {
         if (this.isCourse) { // 课节打卡点赞
           await getFavorApi(param)
         } else { // 工作圈打卡点赞
           await circleCommonFavorApi(param)
-          this.item.favorTotal += 1
         }
+        this.item.favorTotal += 1
         this.isfavor = true
       } else {
         if (this.isCourse) { // 课节打卡取消点赞
           await delFavorApi(param)
         } else { // 工作圈打卡取消点赞
           await delCircleCommonFavorApi(param)
-          this.item.favorTotal -= 1
         }
+        this.item.favorTotal -= 1
         this.isfavor = false
       }
     },

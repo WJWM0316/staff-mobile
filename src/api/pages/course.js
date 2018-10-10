@@ -63,14 +63,14 @@ export const getCourseJoinApi = (data) => {
 // 打卡或评论点赞
 export const getFavorApi = (data) => {
   return request({
-    url: `/coursesectioncard/commonFavor/${data.id}?sourceType=${data.sourceType}`,
+    url: `/coursesectioncard/commonFavor/${data.sourceId}?sourceType=${data.sourceType}`,
     type: 'put'
   })
 }
 // 打卡或评论取消点赞
 export const delFavorApi = (data) => {
   return request({
-    url: `/coursesectioncard/commonFavor/${data.id}?sourceType=${data.sourceType}`,
+    url: `/coursesectioncard/commonFavor/${data.sourceId}?sourceType=${data.sourceType}`,
     type: 'delete'
   })
 }

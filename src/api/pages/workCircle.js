@@ -68,7 +68,7 @@ export const putModifyApi = (data) => {
 /* 获取帖子列表 */
 export const getPostlistApi = (data) => {
   return request({
-    url: `/jobcircle/postlist/${data.id}`,
+    url: `/jobcircle/postlist/${data.id}?page=${data.page}&sort=${data.sort}`,
     type: 'get'
   })
 }
