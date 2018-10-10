@@ -137,3 +137,31 @@ export const delCirclePostApi = (data) => {
     type: 'delete'
   })
 }
+/* 工作圈成员列表 */
+export const circleMemberListApi = (data) => {
+  return request({
+    url: `/jobcircle/members/${data.id}?page=${data.page}&count=${data.count}`,
+    type: 'get'
+  })
+}
+/* 圈主信息 */
+export const circleTutorInfoApi = (data) => {
+  return request({
+    url: `/jobcircle/owner/${data.id}`,
+    type: 'get'
+  })
+}
+/* 工作圈帖子置顶 */
+export const circlePostToTopApi = (data) => {
+  return request({
+    url: `/jobcircle/post/stick?id=${data}`,
+    type: 'put'
+  })
+}
+/* 工作圈帖子取消置顶 */
+export const delCirclePostToTopApi = (data) => {
+  return request({
+    url: `/jobcircle/post/nostick?id=${data}`,
+    type: 'put'
+  })
+}

@@ -1,7 +1,7 @@
 <template>
 	<div class="coursePage">
 	  <div class="classify">
-      <span v-for="(item,index) in tabList" :key="index" :class="{ isFocusClassify:showBorder === item }" @click="cutoverTab(item)">{{item.categoryName}}</span>
+      <span v-for="(item,index) in tabList" :key="index" :class="{ isFocusClassify:showBorder === item.categoryName }" @click="cutoverTab(item)">{{item.categoryName}}</span>
     </div>
     <div class="content">
       <template v-for="(item, index) in circleList">
@@ -38,7 +38,7 @@ export default {
     this.pageInt()
   },
   methods: {
-    //  初始化方法
+    // 初始化方法
     async pageInt () {
       let classfy = await this.getCategory()
       let res = await this.getCourseList()
@@ -57,7 +57,7 @@ export default {
       let res = await this.getCourseList()
       res.meta.currentPage === res.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
       this.circleList = res.data
-      this.showBorder = item
+      this.showBorder = item.categoryName
     },
     // 请求列表接口
     getCourseList () {

@@ -16,7 +16,7 @@
       {{pageInfo.title}}
     </div>
     <!--左边加入人数-->
-    <div class="member">
+    <div class="member" @click.stop="toMemberList">
       <div class="left">
         <p><span class="num">{{pageInfo.memberCount}}</span> 人</p>
         <p v-if="isLive">参与了直播</p>
@@ -85,11 +85,21 @@ export default {
     },
     focus () {
       console.log(' guanzhu ')
-      putFocusApi(this.pageInfo.id)
+      putFocusApi(this.pageInfo.id).then(res => {
+        this.pageInfo.isAttention = true
+      })
     },
     // 去课程介绍页
     toIntroduction () {
       this.$router.push({path: '/course/introduce', query: {id: this.pageInfo.id, isCourseIntroduce: true}})
+    },
+    /* 去成员列表 */
+    toMemberList () {
+      if (!this.isCircle) { // 课程成员列表
+        this.$router.push({path: '/memberList', query: {id: this.pageInfo.id}})
+      } else {
+        this.$router.push({path: '/circleMemberList', query: {id: this.pageInfo.id}})
+      }
     }
   },
   mounted () {}

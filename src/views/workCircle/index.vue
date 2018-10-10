@@ -5,7 +5,7 @@
       <span class="all" :class="{bottom : isFocus==='all'}" @click="tab('all')">全部</span>
     </div>
     <div class="classify">
-      <span v-for="(item,index) in tabList" :key="index" :class="{ isFocusClassify:showBorder === item }" @click="cutoverTab(item)">{{item.groupName}}</span>
+      <span v-for="(item,index) in tabList" :key="index" :class="{ isFocusClassify:showBorder === item.groupName }" @click="cutoverTab(item)">{{item.groupName}}</span>
     </div>
     <div class="content">
       <template v-for="(item, index) in circleList">
@@ -64,7 +64,7 @@ export default {
     },
     /* 切换分类 */
     async cutoverTab (item) {
-      this.showBorder = item
+      this.showBorder = item.groupName
       this.param.organization = item.groupId
       let res
       if (this.isFocus === 'all') {

@@ -7,7 +7,11 @@
       <div class="name">{{item.realname}}<span class="managerTitle" v-show="false">管理员</span></div>
       <!-- roleId 4是内部导师 5是外部导师 6是普通学员 -->
       <div class="persion-info" v-if="item.roleId === 5"><span v-for="(n, index) in item.userTitle" :key="index">{{n.title}} </span></div>
-      <div class="persion-info" v-else>{{item.occupation}} | {{item.groupName}}</div>
+      <div class="persion-info" v-else>{{item.occupation || '该成员未设置职称'}} | {{item.groupName || '未设置部门'}}</div>
+    </div>
+    <div class="excellent" v-if="item.punchCardCount">
+      <p><span class="punchCount">{{item.punchCardCount}}</span> 次</p>
+      <p>优秀打卡</p>
     </div>
   </div>
 </template>
@@ -78,6 +82,18 @@ export default {
       font-size: 26px;/*px*/
       line-height: 17px;
       color: #929292;
+    }
+  }
+  .excellent{
+    text-align: center;
+    position: absolute;
+    right: 0;
+    top: 10px;
+    font-size: 24px;/*px*/
+    color: #929292;
+    .punchCount{
+      font-size: 48px;/*px*/
+      color: #D7AB70;
     }
   }
 }

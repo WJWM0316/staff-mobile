@@ -147,6 +147,13 @@ export const getReplyListApi = (data) => {
     type: 'get'
   })
 }
+// 评论打卡或回复评论
+export const getCirclePeopleListApi = (data) => {
+  return request({
+    url: `/CourseSection/getPeopleList/${data.id}?page=${data.page}&count=${data.count}`,
+    type: 'get'
+  })
+}
 
 
 

@@ -7,7 +7,7 @@
         {{communityCourse.title}}
       </div>
       <div class="header-info">
-        <div><img :src="communityCourse.tutorUser.avatar.smallUrl"/><span class="mast-name">{{communityCourse.tutorUser.realname}}</span></div>
+        <div><img :src="communityCourse.tutorUser.avatarInfo.smallUrl"/><span class="mast-name">{{communityCourse.tutorUser.realname}}</span></div>
         <div>{{communityCourse.createTime}}</div>
       </div>
     </div>

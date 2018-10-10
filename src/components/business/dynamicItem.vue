@@ -1,7 +1,7 @@
 <template>
   <div class="dynamicItem" :class="{bottomBorder : showBorder}" @click="toDetail">
     <div class="header" @click.stop="toUserInfo">
-      <img class="headerPhoto" v-if="item.releaseUser" :src="item.releaseUser.avatar.smallUrl" />
+      <img class="headerPhoto" v-if="item.releaseUser" :src="item.releaseUser.avatarInfo.smallUrl" />
       <div class="appellation" v-if="item.releaseUser">{{item.releaseUser.realname}}</div>
       <!--置顶按钮-->
       <div class="evaluate" @click.stop="toTop">...</div>
@@ -62,7 +62,7 @@
     </div>
       <div class="info-area">
         <div class="time-and-del">
-          <span class="time">{{item.createdAt || item.currencyUser.createdAt}}</span>
+          <span class="time">{{item.createdAt}}</span>
           <span v-if="item.isSelf && isCourse" class="del-btn" @click.stop="edit">编辑</span>
           <span v-if="item.isSelf && !isCourse" class="del-btn" @click.stop="edit">删除</span>
         </div>
@@ -105,7 +105,7 @@
 </template>
 <script>
 import { getFavorApi, delFavorApi } from '@/api/pages/course'
-import { circleCommonFavorApi, delCircleCommonFavorApi, delCirclePostApi } from '@/api/pages/workCircle'
+import { circleCommonFavorApi, delCircleCommonFavorApi, delCirclePostApi, circlePostToTopApi } from '@/api/pages/workCircle'
 export default {
   name: 'dynamicItem',
   props: {
@@ -123,6 +123,9 @@ export default {
     isCourse: {
       type: Boolean,
       default: true
+    },
+    index: {
+      type: Number
     }
   },
   watch: {
@@ -259,7 +262,13 @@ export default {
       }
     },
     /* 置顶帖子 */
-    toTop () {}
+    toTop () {
+      if (this.isCourse) {
+        console.log(' 我是课程模块的置顶 ')
+      } else {
+        this.$emit('setPostTop', this.item)
+      }
+    }
   },
   mounted () {}
 }
@@ -291,6 +300,7 @@ export default {
         font-weight: 500;
       }
       .evaluate{
+        line-height: 30px;
         width: 30px;
         height: 30px;
         font-size: 30px;
