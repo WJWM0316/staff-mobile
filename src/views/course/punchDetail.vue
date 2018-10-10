@@ -25,7 +25,7 @@
           <discuss-item :index="index" :item="commentItem" :isShowBorder="index === commentList.length-1 || index === hotCommentNum-1? false : true" @delComment="delComment"></discuss-item>
         </div>
         <!--没有任何评论时-->
-        <div v-else>
+        <div v-if="item.commentTotal === 0">
           <p class="community-empty-desc">成为第一个评论的人吧~</p>
         </div>
       </template>
@@ -33,9 +33,9 @@
       <template v-else>
         <div class="content-praise">
           <classmate-item v-for="(item,index) in favorList" :key="index" :item="item"></classmate-item>
-          <!--<div v-if="true">
+          <div v-if="item.favorTotal === 0">
             <p class="community-empty-desc">成为第一个点赞的人吧~</p>
-          </div>-->
+          </div>
         </div>
       </template>
     </div>
@@ -251,7 +251,8 @@ export default {
     }
     /* 评论及点赞无数据时提示内容样式    */
     .community-empty-desc {
-      margin-top: 25px;
+      margin-top: 60px;
+      font-size: 28px;/*px*/
       color: #bcbcbc;
       text-align: center;
       margin-bottom: 15px;

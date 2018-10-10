@@ -7,14 +7,14 @@
         {{communityCourse.title}}
       </div>
       <div class="header-info">
-        <div><img :src="communityCourse.tutorUser.avatar.smallUrl"/><span class="mast-name">{{communityCourse.tutorUser.username}}</span></div>
+        <div><img :src="communityCourse.tutorUser.avatar.smallUrl"/><span class="mast-name">{{communityCourse.tutorUser.realname}}</span></div>
         <div>{{communityCourse.createTime}}</div>
       </div>
     </div>
     <!--富文本区-->
     <div class="lesson-module">
       <!--视频-->
-      <div class="lesson-video" @click.stop="playVideo($event)" v-if="communityCourse.av && communityCourse.av.type==='video'">
+      <div class="lesson-video" @click.stop="playVideo($event)" v-if="communityCourse.av && communityCourse.av.attachType==='video'">
         <video controls ref="video" v-show="!videoPlay"></video>
         <div class="placeholder" v-show="videoPlay">
           <!--背景图-->
@@ -22,7 +22,9 @@
         </div>
       </div>
       <!-- 音频 -->
-      <div :class="{'content-audio': true, 'not-played': !communityCourse.av.files[0].isPlayed}" v-if="communityCourse.av && communityCourse.av.type==='audio'">
+      <div v-if="communityCourse.av && communityCourse.av.attachType==='audio'">
+        <audio
+        :audioList="audioList"></audio>
       </div>
       <div class="module-content h5-code" @click.stop="readPic($event)" v-html="communityCourse.details" ref="H5">
       </div>
@@ -130,10 +132,12 @@
 import lessondynamicItem from '@c/business/dynamicItem'
 import { Actionsheet } from 'vux'
 import { getCourseCardListApi, setExcellentCourseCardApi, lessonDetailApi } from '@/api/pages/course'
+import Audio from '@/components/functional/audio'
 export default {
   components: {
     lessondynamicItem,
-    Actionsheet
+    Actionsheet,
+    Audio
   },
   data () {
     return {
@@ -171,7 +175,8 @@ export default {
       jsonData: { // 获取课节详情的筛选条件参数
         course_section_id: 1
       },
-      listPage: 1 // 当前打卡列表的页数
+      listPage: 1, // 当前打卡列表的页数
+      audioList: [] // 音频列表数组
     }
   },
   computed: {
@@ -187,6 +192,9 @@ export default {
       let res = await this.getlessonData(id)
       let cardList = await this.getCourseCardListApi(id)
       this.communityCourse = res.data
+      if (res.data.av && res.data.av.attachType === 'audio') {
+        this.audioList.push(res.data.av.url)
+      }
       this.peopleCourseCardList = cardList.data.peopleCourseCardList
       this.excellentPunchList = cardList.data.excellentPeopleCourseCardList
     },

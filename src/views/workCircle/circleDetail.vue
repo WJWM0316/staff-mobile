@@ -20,7 +20,8 @@
     <div class="content">
       <div class="top">
         <div class="postNum">共有 <span style="color: #D7AB70;">{{postListTotal}}</span> 篇帖子</div>
-        <div class="reverse" @click.stop="reverse"><img src="../../assets/icon/bnt_order@3x.png"/>倒序</div>
+        <div v-if="sort === 'asc'" class="reverse" @click.stop="reverse('desc')"><img src="../../assets/icon/bnt_order@3x.png"/>倒序</div>
+        <div v-else class="reverse" @click.stop="reverse('asc')"><img src="../../assets/icon/bnt_order@3x.png"/>正序</div>
       </div>
       <div class="bottom">
         <!--置顶帖子-->
@@ -70,13 +71,23 @@ export default {
       pageInfo: {},
       nowPage: 1,
       postList: [],
-      postListTotal: '' // 帖子数量
+      postListTotal: '', // 帖子数量
+      sort: 'asc' // 正序或倒序，默认正序
     }
   },
   methods: {
-    /* 倒序  */
-    reverse () {
-      console.log(' 我是倒序事件 ')
+    /* 正倒序  */
+    async reverse (e) {
+      console.log(e, ' 我是倒序事件 ')
+      this.sort = e
+      let param = {
+        id: this.pageInfo.id,
+        page: this.nowPage,
+        sort: this.sort
+      }
+      let res = await getPostlistApi(param)
+      this.postListTotal = res.meta.total
+      this.postList = res.data
     },
     toEdit () {
       this.$router.push({path: `/circleEdit`, query: {id: this.pageInfo.id}})
@@ -94,7 +105,8 @@ export default {
     async getPostlist () {
       let param = {
         id: this.pageInfo.id,
-        page: this.nowPage
+        page: this.nowPage,
+        sort: this.sort
       }
       let res = await getPostlistApi(param)
       this.postListTotal = res.meta.total
@@ -218,6 +230,7 @@ export default {
     height: 75px;
     border-radius: 50%;
     box-shadow: 0px 6px 12px 4px rgba(0,0,0,0.08);
+    z-index: 9999;
     .postInfo{
       display: flex;
       align-content: center;

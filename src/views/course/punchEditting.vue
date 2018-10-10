@@ -38,11 +38,11 @@
           <div class="content-images">
             <!-- 图片为 1 张时 -->
             <div class="item-image one" v-if="taskContent.punchCardCImgInfo && taskContent.punchCardCImgInfo.length === 1">
-              <img :src="taskContent.courseCardFile[0].fileUrl || '@/assets/icon/img_head_default.png'" @click.stop="previewImage(taskContent.courseCardFile[0].fileUrl)" />
+              <img :src="taskContent.punchCardCImgInfo[0].smallUrl || '@/assets/icon/img_head_default.png'" @click.stop="previewImage(taskContent.courseCardFile[0].fileUrl)" />
             </div>
             <!--  图片为 多 张时  -->
             <div class="item-image" v-for="(file,index) in taskContent.punchCardCImgInfo" :key="index" v-else>
-              <img :src="file.fileUrl || '@/assets/icon/img_head_default.png'" v-if="!file.holder" @click.stop="previewImage(file.fileUrl)" />
+              <img :src="file.smallUrl || '@/assets/icon/img_head_default.png'" v-if="!file.holder" @click.stop="previewImage(file.fileUrl)" />
             </div>
           </div>
         </div>
@@ -163,6 +163,7 @@ export default {
           array_file_id: this.uploadImgList
         }
         await postPunchCardApi(param)
+        this.$toast({text: '打卡成功', type: 'success'})
         this.$router.go(-1)
       } catch (e) {
         this.$toast(e)
