@@ -62,6 +62,8 @@
       <div class="area icon iconfont icon-live_btn_answers" @click.stop="openArea = true"></div>
     </div>
     <div class='testBtn' @click='closeWs'>断线测试</div>
+    <div class='testBtn1' @click='leaveLive'>离开测试</div>
+    <div class='testBtn2' @click='addLive'>加入测试</div>
     <questionArea v-if="openArea" @closeArea="_closeArea"></questionArea>
   </div>
 </template>
@@ -208,8 +210,15 @@ export default {
     closeWs () {
       ws.close()
     },
+    addLive () {
+      ws.addLive(this.id)
+    },
+    leaveLive () {
+      ws.leaveLive(this.id)
+    },
     creatWs () {
-      ws.create('ws://work-api.xplus.ziwork.com/tiger')
+      let company = window.localStorage.getItem('XPLUSCompany')
+      ws.create(`ws://work-api.xplus.ziwork.com/${company}`, this.$route.query.id)
     }
   },
   created () {
@@ -224,9 +233,9 @@ export default {
       let data = obj.detail
       // 登录和退出登录逻辑
       if (data.hasOwnProperty('cmd')) {
-        if (data.cmd === 'online_login' || data.cmd === 'login.token') {
+        if (data.cmd === 'live.add') {
           that.onlineNum++
-        } else if (data.cmd === 'online_logout') {
+        } else if (data.cmd === 'live.leave') {
           that.onlineNum--
           if (that.onlineNum < 0) that.onlineNum = 0
         }
@@ -243,36 +252,19 @@ export default {
             let sendList = this.sendData
             that.updata_sendData(sendList.push(data.data.content))
             break
+          // 其他人加入该直播间
+          case 'live_login':
+            that.onlineNum++
+            break
+          // 其他人离开该直播间
+          case 'live_logout':
+            that.onlineNum--
+            if (that.onlineNum < 0) that.onlineNum = 0
+            break
         }
       }
     }
     window.addEventListener('wsOnMessage', onMessage)
-
-    let sendTimer = null
-    let num = 0
-    // let messageList = [
-    //   {
-    //     cmd: 'msg.push',
-    //     data: {
-    //       to: {
-    //         id: 11,
-    //         type: 'friend',
-    //         username: 'consequatur_exercitationem'
-    //       },
-    //       mine: {
-    //         type: 'text',
-    //         content: '测试',
-    //         id: 15,
-    //         mine: true,
-    //         username: 'adipisci82'
-    //       }
-    //     }
-    //   }
-    // ]
-    // sendTimer = setInterval(() => {
-    //   this.send(messageList[0])
-    //   num++
-    // }, 3000)
   },
   beforeDestroy () {
     window.removeEventListener('wsOnMessage', onMessage)
@@ -280,7 +272,7 @@ export default {
 }
 </script>
 <style lang='less' scoped>
-  .testBtn {
+  .testBtn, .testBtn1, .testBtn2 {
     color: #fff;
     font-size: 14px;
     border: 1px solid #000;
@@ -289,6 +281,12 @@ export default {
     bottom: 10%;
     right: 0%;
     background: red;
+  }
+  .testBtn1 {
+    bottom: 15%;
+  }
+  .testBtn2 {
+    bottom: 20%;
   }
   .wrap {
     width: 100%;

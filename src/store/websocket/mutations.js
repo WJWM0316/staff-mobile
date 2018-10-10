@@ -12,5 +12,8 @@ export default {
   },
   [types.WSSTATUS] (state, data) {
     state.wsStatus = data
+  },
+  [types.WSLOGIN] (state, data) {
+    state.wsLogin = data
   }
 }

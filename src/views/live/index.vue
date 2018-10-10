@@ -18,11 +18,13 @@
       </div>
       <div class="all">
         <div class="list" v-show="tabIndex === 1">
-          <div class="head">
-            <i class="icon"></i>
-            <span class="txt">近期直播</span>
-          </div>
-          <infoCard type="3" v-for="(item, index) in all.list" :key="index" :item="item" v-if="all.recentLength - 1 > index"></infoCard>
+          <template v-if="all.recentLength > 0">
+            <div class="head">
+              <i class="icon"></i>
+              <span class="txt">近期直播</span>
+            </div>
+            <infoCard type="3" v-for="(item, index) in all.list" :key="index" :item="item" v-if="all.recentLength - 1 > index"></infoCard>
+          </template>
           <div class="head" v-if="all.list.length > all.recentLength">
             <i class="icon"></i>
             <span class="txt">回顾直播</span>
@@ -80,7 +82,7 @@ export default {
         if (!this.all.recentComplete) {
           this.all.recentPage++
           this.all.pullUpStatus = true
-          this.getRecentListApi({page: this.all.recentPage}, false).then(res => {
+          this.getRecentList({page: this.all.recentPage}, false).then(res => {
             this.all.pullUpStatus = false
           })
         } else {
@@ -157,6 +159,7 @@ export default {
       left: 0;
       background: #fff;
       box-shadow:0px 3px 5px 0px rgba(248,248,248,1);
+      z-index: 1;
       .tabItem {
         line-height: 44px;
         font-size: 32px; /*px*/

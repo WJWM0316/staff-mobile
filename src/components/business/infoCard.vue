@@ -1,9 +1,8 @@
 <template>
   <div class="infoCard"  @click="toDeatil(item.id || item.liveId)">
-    <img class="infoPhoto" :src="item.coverImg.smallUrl || item.courseCoverImg.smallUrl"/>
+    <img class="infoPhoto" v-lazyload :src="item.coverImg.smallUrl || item.courseCoverImg.smallUrl"/>
     <div class="right">
       <div class="title">{{item.name || item.title}}</div>
-      <div class="introduction" v-if="showIntroduction">课程介绍可以加这个字段吗？</div>
       <div class="label"><span class="department" v-if="item.groupName">{{item.groupName}}</span><span class="name" v-if="item.realname">{{item.realname}}</span></div>
       <div class="other" v-if="type === '3'">
         <span class="time">{{item.expectedStartTime * 1000 | date('MM-DD HH:mm')}}</span>
@@ -23,14 +22,6 @@ export default {
     item: {
       type: Object
     },
-    showIntroduction: {
-      type: Boolean,
-      default: false
-    },
-    showOther: {
-      type: Boolean,
-      default: false
-    },
     type: { // 1是课程 2是工作圈 3是直播
       type: String,
       default: '1'
@@ -40,6 +31,13 @@ export default {
     item () {}
   },
   computed: {
+    newCouse () {
+      if (this.type === 1 && new Date().getTime() - new Date(this.item.createdAt).getTime() > 7 * 24 * 3600 * 1000) {
+        return true
+      } else {
+        return false
+      }
+    }
   },
   methods: {
     toDeatil (id) {
@@ -52,7 +50,8 @@ export default {
       }
     }
   },
-  created () {}
+  mounted () {
+  }
 }
 </script>
 

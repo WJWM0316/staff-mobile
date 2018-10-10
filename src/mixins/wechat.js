@@ -1,6 +1,7 @@
 // 微信jssdk mixin
 import { getWechatSignApi } from '@/api/common'
 import browser from '@/util/browser'
+import Vue from 'vue'
 export default {
   data () {
     return {
@@ -50,8 +51,7 @@ export default {
      * 配置微信sdk
      */
     setWechatConfig () {
-      console.log(this.wechatConfig)
-      this.$wechat.config(this.wechatConfig)
+      Vue.wx.config(this.wechatConfig)
     },
 
     /**
@@ -59,9 +59,8 @@ export default {
      * @param {*} options
      */
     wechatChooseImage (options = {}) {
-      const self = this
       return new Promise((resolve, reject) => {
-        this.$wechat.chooseImage({
+        Vue.wx.chooseImage({
           count: options.count || 9, // 默认9
           sizeType: options.sizeType || ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
           sourceType: options.sourceType || ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
@@ -81,8 +80,8 @@ export default {
      */
     wechatGetLocalImgData (localId) {
       return new Promise((resolve, reject) => {
-        if (browser.isIos() && this.$wechat.getLocalImgData) {
-          this.$wechat.getLocalImgData({
+        if (browser.isIos() && Vue.wx.getLocalImgData) {
+          Vue.wx.getLocalImgData({
             localId: localId, // 图片的localID
             success: function (res) {
               resolve(res)
@@ -103,7 +102,7 @@ export default {
      */
     wechatPreviewImage (options = {}) {
       return new Promise((resolve, reject) => {
-        this.$wechat.previewImage({
+        Vue.wx.previewImage({
           current: options.img,
           urls: options.urls
         })
@@ -117,7 +116,7 @@ export default {
      */
     wechatUploadImage (localId, options = {}) {
       return new Promise((resolve, reject) => {
-        this.$wechat.uploadImage({
+        Vue.wx.uploadImage({
           localId: localId,
           isShowProgressTips: options.isShowProgressTips || 0, // sdk默认为1，显示进度提示
           success: function (res) {
@@ -137,7 +136,7 @@ export default {
      */
     wechatUploadVoice (localId, options = {}) {
       return new Promise((resolve, reject) => {
-        this.$wechat.uploadVoice({
+        Vue.wx.uploadVoice({
           localId: localId, // 需要上传的音频的本地ID，由stopRecord接口获得
           isShowProgressTips: options.isShowProgressTips || 1, // 默认为1，显示进度提示
           success: function (res) {
@@ -272,7 +271,7 @@ export default {
      * 微信分享
      */
     async wechatShare (enter) {
-      const wx = this.$wechat
+      const wx = Vue.wx
       // 声明你想调用的接口
       // 发起 http 请求，获取公众号配置
       wx.ready(() => {
@@ -315,9 +314,9 @@ export default {
   },
   created () {
     this.getWechatSign()
-    this.$wechat.ready(() => {
+    Vue.wx.ready(() => {
     })
-    this.$wechat.checkJsApi({
+    Vue.wx.checkJsApi({
       jsApiList: this.wechatConfig.jsApiList, // 需要检测的JS接口列表，所有JS接口列表见附录2,
       success: function (res) {
         console.log('客户端允许', res)
