@@ -2,18 +2,6 @@
 
 @color: red;
 
-// 清除浮动
-.clearfix () {
-  &::before,
-  &::after {
-    content: " ";
-    display: table;
-  }
-  &::after {
-    clear: both;
-  }
-}
-
 // 小箭头（vux）
 ._setArrow (@arrowsize, @borderColor, @borderWidth) {
   display: inline-block;
