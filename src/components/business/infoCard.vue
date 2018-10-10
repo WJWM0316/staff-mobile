@@ -1,6 +1,6 @@
 <template>
   <div class="infoCard"  @click="toDeatil(item.id || item.liveId)">
-    <img class="infoPhoto" :src="item.coverImg.smallUrl || item.courseCoverImg.smallUrl"/>
+    <img class="infoPhoto" v-lazyload :src="item.coverImg.smallUrl || item.courseCoverImg.smallUrl"/>
     <div class="right">
       <div class="title">{{item.name || item.title}}</div>
       <div class="introduction" v-if="showIntroduction">课程介绍可以加这个字段吗？</div>

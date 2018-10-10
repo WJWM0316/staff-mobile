@@ -57,9 +57,10 @@ export default (Vue, options = {}) => {
     })
   }
   // Vue 指令最终的方法
-  const addListener = (ele, binding) => {
+  const addListener = (ele, binding, vnode) => {
     // 绑定的图片地址
-    var imageSrc = binding.value
+    var imageSrc = vnode.data.attrs.src
+    console.log(imageSrc)
     // 如果已经加载过，则无需重新加载，直接将src赋值
     if (isAlredyLoad(imageSrc)) {
       ele.src = imageSrc
