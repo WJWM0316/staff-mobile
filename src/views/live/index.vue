@@ -80,7 +80,7 @@ export default {
         if (!this.all.recentComplete) {
           this.all.recentPage++
           this.all.pullUpStatus = true
-          this.getRecentListApi({page: this.all.recentPage}, false).then(res => {
+          this.getRecentList({page: this.all.recentPage}, false).then(res => {
             this.all.pullUpStatus = false
           })
         } else {
