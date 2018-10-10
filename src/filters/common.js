@@ -10,7 +10,6 @@ Vue.filter('transformBr', (value, reverse = false) => {
   if (!value) {
     return ''
   }
-
   value = value.toString()
   return reverse
     ? value.replace(/<br\s*\/?>/g, '\n').replace(/&nbsp;/g, ' ')

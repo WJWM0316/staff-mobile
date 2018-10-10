@@ -18,11 +18,13 @@
       </div>
       <div class="all">
         <div class="list" v-show="tabIndex === 1">
-          <div class="head">
-            <i class="icon"></i>
-            <span class="txt">近期直播</span>
-          </div>
-          <infoCard type="3" v-for="(item, index) in all.list" :key="index" :item="item" v-if="all.recentLength - 1 > index"></infoCard>
+          <template v-if="all.recentLength > 0">
+            <div class="head">
+              <i class="icon"></i>
+              <span class="txt">近期直播</span>
+            </div>
+            <infoCard type="3" v-for="(item, index) in all.list" :key="index" :item="item" v-if="all.recentLength - 1 > index"></infoCard>
+          </template>
           <div class="head" v-if="all.list.length > all.recentLength">
             <i class="icon"></i>
             <span class="txt">回顾直播</span>

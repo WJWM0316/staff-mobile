@@ -7,8 +7,8 @@
         <p class="desrc" v-if="pageInfo.groupName">{{pageInfo.groupName}} | {{pageInfo.occupation}}</p>
         <p class="editBtn" @click.stop="jump('edit')">点击编辑资料</p>
       </div>
-      <div class="photo" v-if="pageInfo.avatar">
-        <img :src="pageInfo.avatar.middleUrl" alt="">
+      <div class="photo defaultImg" v-if="pageInfo.avatar">
+        <img :src="pageInfo.avatar.middleUrl" alt="" v-preview>
       </div>
     </div>
     <div class="main">
@@ -140,8 +140,6 @@ export default {
         top: 0;
         right: 0;
         overflow: hidden;
-        background: url('../../assets/icon/default.png');
-        background-size: 100% 100%;
         img {
           width: 100%;
           height: 100%;

@@ -35,14 +35,16 @@ export default {
         window.localStorage.setItem('XPLUSCompany', 'tiger')
       }
       loginApi(data).then(res => {
-        this.$store.dispatch('updata_userInfo', res.data)
         localstorage.set('token', res.data.token)
-        this.$toast({
-          text: '登录成功',
-          type: 'success',
-          callBack: () => {
-            this.$router.go(-1)
-          }
+        userInfoApi().then(res0 => {
+          this.$store.dispatch('updata_userInfo', res0.data)
+          this.$toast({
+            text: '登录成功',
+            type: 'success',
+            callBack: () => {
+              history.back()
+            }
+          })
         })
       })
     },

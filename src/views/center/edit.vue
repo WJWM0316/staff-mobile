@@ -117,7 +117,7 @@ export default {
       if (!PHONE.test(data.mobile)) {
         text = '手机号格式不正确'
       }
-      if (WECHAT.test(data.wechat)) {
+      if (!WECHAT.test(data.wechat)) {
         text = '微信号格式不正确'
       }
       if (text !== '') {
@@ -129,12 +129,15 @@ export default {
         return
       }
       editUserInfoApi(data).then(res => {
-        this.$toast({
-          text: '保存成功',
-          type: 'success',
-          callBack: () => {
-            history.back()
-          }
+        userInfoApi().then(res0 => {
+          this.$store.dispatch('updata_userInfo', res0.data)
+          this.$toast({
+            text: '保存成功',
+            type: 'success',
+            callBack: () => {
+              history.back()
+            }
+          })
         })
       })
     }

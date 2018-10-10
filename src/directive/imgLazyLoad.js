@@ -11,7 +11,7 @@ if (!Array.prototype.remove) {
 }
 var init = {
   lazyLoad: false,
-  default: '@a/icon/default.png'
+  default: 'http://xplus-uploads-test.oss-cn-shenzhen.aliyuncs.com/tiger/avatar/2018/1010/17/5bbdc5cd3aa98.jpeg!330xauto'
 }
 
 var listenList = []
