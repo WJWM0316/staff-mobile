@@ -168,7 +168,6 @@ export default {
     }
   },
   created () {
-    window.localStorage.setItem('XPLUSCompany', 'tiger')
     // if (!this.userInfo) {
     //   this.getUserInfo()
     // }

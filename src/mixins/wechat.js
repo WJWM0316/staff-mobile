@@ -28,7 +28,6 @@ export default {
       }
     }
   },
-
   methods: {
     /**
      * 获取微信签名
@@ -47,11 +46,11 @@ export default {
         this.$vux.toast.text(error.message, 'bottom')
       }
     },
-
     /**
      * 配置微信sdk
      */
     setWechatConfig () {
+      console.log(this.wechatConfig)
       this.$wechat.config(this.wechatConfig)
     },
 
@@ -314,7 +313,6 @@ export default {
       })
     }
   },
-
   created () {
     this.getWechatSign()
     this.$wechat.ready(() => {
