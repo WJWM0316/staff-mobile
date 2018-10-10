@@ -12,7 +12,7 @@ class WS {
   lastTealthTime = 0 // 上一次心跳发送的时间
   event = null // 自定义事件
   // 创建一个websocket
-  create = (url) => {
+  create = (url, liveId) => {
     // 判断浏览器是否支持webSocket, 不支持直接alert提示
     if ('WebSocket' in window) {
       // 重新初始化
@@ -25,8 +25,13 @@ class WS {
       // 握手
       ws.onopen = () => {
         this.lastTealthTime = 0
-        // 先登录
-        this.login()
+        // 未登录先登录再加入直播间
+        if (!store.getters.wsLogin) {
+          this.login()
+          this.addLive(liveId)
+        } else {
+          this.addLive(liveId)
+        }
         if (this.ws.readyState === 1) { // 为1表示连接处于open状态
           clearInterval(this.keepAliveTimer)
           this.keepAliveTimer = setInterval(() => { // 开启心跳检查
@@ -40,24 +45,34 @@ class WS {
       ws.onmessage = (evt) => {
         // evt.data如果等于a为心跳检测值，不需要转化成json格式
         let data = evt.data !== 'a' ? JSON.parse(evt.data) : evt.data
-        // 自定义一个接收监听事件，暴露出去接收信息
-        this.event = new CustomEvent('wsOnMessage', {detail: data})
-        window.dispatchEvent(this.event)
-        // 判断登录状态
-        if (data.cmd === 'login.token') {
-          console.log('======WebSocket======' + data.msg)
-          if (data.code === 200) {
-            this.isLogin = true
-            store.dispatch('updata_wsStatus', 1)
-          } else if (data.code === 401) { // 登录失败重新登录
-            this.isLogin = false
-            router.push('/login')
+        if (data.code === 200) {
+          // 自定义一个接收监听事件，暴露出去接收信息
+          this.event = new CustomEvent('wsOnMessage', {detail: data})
+          window.dispatchEvent(this.event)
+          switch (data.cmd) {
+            case 'login.token': // 登录处理
+              console.log('======WebSocket======' + data.msg)
+              if (data.code === 200) {
+                this.isLogin = true
+                store.dispatch('updata_wsStatus', 1)
+                store.dispatch('updata_wsLogin', true)
+              } else if (data.code === 401) { // 登录失败重新登录
+                this.isLogin = false
+                store.dispatch('updata_wsLogin', false)
+                router.push('/login')
+              }
+              break
+            case 'live.add':
+              console.log('======直播间加入成功======')
+              break
+            case 'live.leave':
+              console.log('======直播间退出成功======')
+              break
+            case 'msg.push': // 不是心跳返回的数据和登录的返回的数据, 存储起来
+              let time = new Date().getTime()
+              store.dispatch('updata_resolveTime', time)
+              break
           }
-        }
-        // 不是心跳返回的数据和登录的返回的数据, 存储起来
-        if (data.cmd === 'msg.push') {
-          let time = new Date().getTime()
-          store.dispatch('updata_resolveTime', time)
         }
         // 收到消息，重置定时器, 因为已开启心跳检查，每秒都有发送
         this.checkResolve()
@@ -67,6 +82,7 @@ class WS {
       // 关闭监听
       ws.onclose = (e) => {
         console.log('======WebSocket连接已关闭======')
+        store.dispatch('updata_wsLogin', false)
         this.reConnect()
       }
       // 错误监听
@@ -103,6 +119,26 @@ class WS {
   // 关闭websocket
   close = () => {
     this.ws.close()
+  }
+  // 加入直播间
+  addLive = (id) => {
+    let data = {
+      cmd: 'live.add',
+      data: {
+        live_id: id
+      }
+    }
+    this.send(data)
+  }
+  // 离开直播间
+  leaveLive = (id) => {
+    let data = {
+      cmd: 'live.leave',
+      data: {
+        live_id: id
+      }
+    }
+    this.send(data)
   }
   // 用于心跳包检测websocket
   checkConnect = () => {

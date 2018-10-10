@@ -3,13 +3,18 @@
     <div class="item border-bottom-1px">
       <span class="txt">头像</span>
       <span class="editBox">
-        <upLoadFile class="photo" :fileUrl="pageInfo.avatar.middleUrl" attach_type="avatar"></upLoadFile>
+        <upLoadFile class="photo"
+          :imgUrl="pageInfo.avatar.smallUrl"
+          attach_type="avatar"
+          @upLoadResult="upLoadResult"
+        ></upLoadFile>
       </span>
     </div>
     <div class="item border-bottom-1px">
       <span class="txt">姓名</span>
       <span class="editBox">
-        <input type="text" placeholder="请输入姓名" v-model="pageInfo.realname" disabled>
+        {{pageInfo.realname}}
+        <!-- <input type="text" placeholder="请输入姓名" v-model="pageInfo.realname" disabled> -->
       </span>
     </div>
     <div class="item border-bottom-1px">
@@ -29,13 +34,15 @@
     <div class="item border-bottom-1px">
       <span class="txt">岗位</span>
       <span class="editBox">
-        <input type="text" placeholder="请输入岗位" v-model="pageInfo.occupation" disabled>
+        {{pageInfo.occupation}}
+        <!-- <input type="text" placeholder="请输入岗位" v-model="pageInfo.occupation" disabled> -->
       </span>
     </div>
     <div class="item border-bottom-1px">
       <span class="txt">邮箱</span>
       <span class="editBox">
-        <input type="text" placeholder="请输入邮箱" v-model="pageInfo.email" disabled>
+        {{pageInfo.email}}
+        <!-- <input type="text" placeholder="请输入邮箱" v-model="pageInfo.email" disabled> -->
       </span>
     </div>
     <div class="item border-bottom-1px">
@@ -56,6 +63,7 @@
 <script>
 import { mapState } from 'vuex'
 import upLoadFile from '@c/functional/upLoadFile'
+import { PHONE, WECHAT } from '@u/regular/regular'
 import { userInfoApi, editUserInfoApi } from '@/api/pages/center'
 export default {
   components: {
@@ -63,9 +71,14 @@ export default {
   },
   data () {
     return {
-      pageInfo: null,
+      pageInfo: {
+        avatar: {
+          middleUrl: ''
+        }
+      },
       sexShow: false,
       sexItem: null,
+      avatarId: null, // 头像id
       sexList: {
         1: '男',
         0: '女'
@@ -90,19 +103,21 @@ export default {
         this.pageInfo = this.userInfo.base
       }
     },
+    upLoadResult (result) {
+      this.avatarId = result[0].id
+      console.log(result, this.avatarId)
+    },
     saveInfo () {
       let data = {
-        avatarId: this.pageInfo.avatar.id,
+        avatarId: this.avatarId || this.pageInfo.avatar.id,
         mobile: this.pageInfo.mobile,
         wechat: this.pageInfo.wechat
       }
       let text = ''
-      let moblieRegex = /0?(13|14|15|17|18|19)[0-9]{9}/
-      let wxRegex = /^[\u4E00-\u9FA5]/
-      if (!moblieRegex.test(data.mobile)) {
+      if (!PHONE.test(data.mobile)) {
         text = '手机号格式不正确'
       }
-      if (wxRegex.test(data.wechat)) {
+      if (WECHAT.test(data.wechat)) {
         text = '微信号格式不正确'
       }
       if (text !== '') {

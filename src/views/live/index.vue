@@ -157,6 +157,7 @@ export default {
       left: 0;
       background: #fff;
       box-shadow:0px 3px 5px 0px rgba(248,248,248,1);
+      z-index: 1;
       .tabItem {
         line-height: 44px;
         font-size: 32px; /*px*/

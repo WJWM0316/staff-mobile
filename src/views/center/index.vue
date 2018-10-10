@@ -140,6 +140,8 @@ export default {
         top: 0;
         right: 0;
         overflow: hidden;
+        background: url('../../assets/icon/default.png');
+        background-size: 100% 100%;
         img {
           width: 100%;
           height: 100%;

@@ -20,12 +20,12 @@
         </div>
       </div>
       <!--工作圈图片-->
-      <div class="content-images" v-if="item.type === '图片'">
+      <div class="content-images" v-if="item.type === '图片'"  v-preview>
         <div class="item-image one" v-if="item.accessory.length === 1">
-          <img :src="item.accessory[0].smallUrl || '../../assets/icon/img_head_default.png'" />
+          <img :src="item.accessory[0].smallUrl || '../../assets/icon/img_head_default.png'"/>
         </div>
         <div class="item-image" v-for="(item,index) in item.accessory" :key="index" v-else>
-          <img :src="item.smallUrl || '../../assets/icon/img_head_default.png'" />
+          <img :src="item.smallUrl || '../../assets/icon/img_head_default.png'"/>
         </div>
       </div>
       <!--视频-->
@@ -194,7 +194,6 @@ export default {
       if (this.isCourse) {
         this.$router.push({path: '/punchDetail', query: {myPunch: this.item.courseSectionCardId}})
       } else {
-        console.log(this.item)
         this.$router.push({path: '/postDetail', query: {id: this.item.id}})
       }
     },

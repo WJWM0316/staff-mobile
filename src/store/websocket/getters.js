@@ -10,5 +10,8 @@ export default {
   },
   wsStatus: function (state) {
     return state.wsStatus
+  },
+  wsLogin: function (state) {
+    return state.wsLogin
   }
 }

@@ -23,3 +23,10 @@ export const uploadApi = (data, config, needLoading) => request({
   config,
   needLoading: needLoading
 })
+export const uploadFileApi = (data, config, needLoading) => request({
+  type: 'post',
+  url: '/attaches/config',
+  data,
+  config,
+  needLoading: needLoading
+})

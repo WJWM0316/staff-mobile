@@ -28,5 +28,12 @@ export default {
       commit(types.WSSTATUS, data)
       resolve()
     })
+  },
+  // 更新ws登录
+  updata_wsLogin: ({commit}, data) => {
+    return new Promise((resolve, reject) => {
+      commit(types.WSLOGIN, data)
+      resolve()
+    })
   }
 }
