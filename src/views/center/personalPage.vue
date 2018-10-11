@@ -123,6 +123,7 @@ export default {
       joinList: null,
       postList: null,
       needFloor: false,
+      uid: this.$route.query.uid,
       contactInformation: {
         showSheet: false,
         copyMessage: '',
@@ -182,7 +183,7 @@ export default {
       }
     },
     getUserInfo () {
-      if (!this.$route.query.uid) {
+      if (!this.uid) {
         this.userInfo = this.$store.getters.userInfo
         if (!this.userInfo) {
           userInfoApi().then(res => {
@@ -194,7 +195,7 @@ export default {
         }
       } else {
         let data = {
-          uid: this.$route.query.uid
+          uid: this.uid
         }
         getUserInfoApi(data).then(res => {
           this.userInfo = res.data
@@ -205,7 +206,7 @@ export default {
       }
     },
     getPostList ({page, count}, needLoading) {
-      if (!this.$route.query.uid) {
+      if (!this.uid) {
         let data = {
           page: page || 1,
           count: count || 20
@@ -215,7 +216,7 @@ export default {
         })
       } else {
         let data = {
-          uid: this.$route.query.uid,
+          uid: this.uid,
           page: page || 1,
           count: count || 20
         }
@@ -224,20 +225,20 @@ export default {
         })
       }
     },
-    getJoinList () {
-      if (!this.$route.query.uid) {
-        getMyJoinedListApi().then(res => {
+    getJoinList (needLoading) {
+      if (!this.uid) {
+        getMyJoinedListApi(null, needLoading).then(res => {
           this.joinList = res.data
         })
       } else {
-        getUserJoinedListApi({uid: this.$route.query.uid}).then(res => {
+        getUserJoinedListApi({uid: this.uid}, needLoading).then(res => {
           this.joinList = res.data
         })
       }
     },
     init () {
-      this.getUserInfo()
-      this.getJoinList()
+      this.getUserInfo(true)
+      this.getJoinList(true)
     }
   },
   created () {

@@ -289,9 +289,10 @@ export default {
           width: 284px;
           display: inline-block;
           background: #fff;
-          box-shadow: 0px 6px 20px 0px rgba(0,0,0,0.07);
+          box-shadow: 0px 6px 20px 0px rgba(0,0,0,0.07) inset;
           border-radius: 3px;
-          padding-right: 10px;
+          margin-right: 10px;
+          vertical-align: top;
         }
       }
       .enter {
