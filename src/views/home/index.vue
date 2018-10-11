@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    <template  v-if="homeInfo">
+    <template v-if="homeInfo">
       <div class="live" v-if="homeInfo.lives">
         <div class="time">直播预告·{{homeInfo.lives[0].expectedStartTime * 1000 | date('MMMDo h:mm')}}</div>
         <div class="content" @click.stop="jump('liveDetail', homeInfo.lives[0].liveId)">

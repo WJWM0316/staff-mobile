@@ -30,7 +30,7 @@
           <img src="@a/icon/btn_enter@2x.png" alt="">
         </i>
       </div>
-      <div class="item"  @click.stop="jump('main')">
+      <div class="item"  @click.stop="jump('help')">
         <div>
           <i class="icon1 iconfont icon-icon_list_help"></i>
           <span class="txt">使用帮助</span>
@@ -39,7 +39,7 @@
           <img src="@a/icon/btn_enter@2x.png" alt="">
         </i>
       </div>
-      <div class="item"  @click.stop="jump('main')">
+      <div class="item"  @click.stop="jump('settings')">
         <div>
           <i class="icon">
             <img src="@a/icon/112430611557630831.png" alt="">
@@ -81,6 +81,9 @@ export default {
           break
         case 'help':
           this.$router.push('/help')
+          break
+        case 'settings':
+          this.$router.push('/settings')
           break
       }
     },

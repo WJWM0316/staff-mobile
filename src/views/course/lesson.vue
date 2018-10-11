@@ -7,7 +7,7 @@
         {{communityCourse.title}}
       </div>
       <div class="header-info">
-        <div><img :src="communityCourse.tutorUser.avatar.smallUrl"/><span class="mast-name">{{communityCourse.tutorUser.realname}}</span></div>
+        <div><img v-if="communityCourse.tutorUser.avatar" :src="communityCourse.tutorUser.avatar.smallUrl"/><span class="mast-name">{{communityCourse.tutorUser.realname}}</span></div>
         <div>{{communityCourse.createTime}}</div>
       </div>
     </div>
@@ -24,9 +24,9 @@
       <!-- 音频 -->
       <div v-if="communityCourse.av && communityCourse.av.attachType==='audio'">
         <audio
-        :audioList="audioList"></audio>
+        :messageData="messageData"></audio>
       </div>
-      <div class="module-content h5-code" @click.stop="readPic($event)" v-html="communityCourse.details" ref="H5">
+      <div class="module-content h5-code" v-html="communityCourse.details" ref="H5">
       </div>
     </div>
 
@@ -176,7 +176,7 @@ export default {
         course_section_id: 1
       },
       listPage: 1, // 当前打卡列表的页数
-      audioList: [] // 音频列表数组
+      messageData: {} // 音频数据
     }
   },
   computed: {
@@ -193,7 +193,7 @@ export default {
       let cardList = await this.getCourseCardListApi(id)
       this.communityCourse = res.data
       if (res.data.av && res.data.av.attachType === 'audio') {
-        this.audioList.push(res.data.av.url)
+        this.messageData.path = res.data.av.url
       }
       this.peopleCourseCardList = cardList.data.peopleCourseCardList
       this.excellentPunchList = cardList.data.excellentPeopleCourseCardList
@@ -236,7 +236,7 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
 .lesson{
   padding-bottom: 49px;
   .lesson-header{
@@ -310,9 +310,7 @@ export default {
       margin-top: 30px;
       width: 100%;
       min-height: 400px;
-      >section{
-        font-size: 32px !important;/*px*/
-      }
+      font-size: 0.234rem;
     }
   }
   .lesson-task{

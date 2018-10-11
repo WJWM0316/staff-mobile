@@ -16,6 +16,18 @@ const routers = [
     name: 'personalPage',
     meta: { title: '个人主页' },
     component: resolve => require(['@/views/center/personalPage'], resolve)
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    meta: { title: '账号管理' },
+    component: resolve => require(['@/views/center/settings'], resolve)
+  },
+  {
+    path: '/resetPassword',
+    name: 'resetPassword',
+    meta: { title: '修改密码' },
+    component: resolve => require(['@/views/center/resetPassword'], resolve)
   }
 ]
 
