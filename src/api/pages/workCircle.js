@@ -166,3 +166,10 @@ export const delCirclePostToTopApi = (data) => {
     type: 'put'
   })
 }
+/* 获取图片月份列表 */
+export const getPicturemonthApi = (data) => {
+  return request({
+    url: `/jobcircle/picturemonth/${data}`,
+    type: 'get'
+  })
+}
