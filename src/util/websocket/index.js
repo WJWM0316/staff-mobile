@@ -5,6 +5,7 @@ class WS {
   ws = null
   url = ''
   isLogin = false
+  liveId = '' // 直播间id
   keepAliveTimer = null // 心跳定时器
   reconnectMark = false // 是否重连过
   receiveMessageTimer = null // 接收定时器
@@ -21,6 +22,7 @@ class WS {
       this.lastTealthTime = 0
       this.ws = new WebSocket(url)
       this.url = url
+      this.liveId = liveId
       let ws = this.ws
       // 握手
       ws.onopen = () => {
@@ -45,34 +47,32 @@ class WS {
       ws.onmessage = (evt) => {
         // evt.data如果等于a为心跳检测值，不需要转化成json格式
         let data = evt.data !== 'a' ? JSON.parse(evt.data) : evt.data
-        if (data.code === 200) {
-          // 自定义一个接收监听事件，暴露出去接收信息
-          this.event = new CustomEvent('wsOnMessage', {detail: data})
-          window.dispatchEvent(this.event)
-          switch (data.cmd) {
-            case 'login.token': // 登录处理
-              console.log('======WebSocket======' + data.msg)
-              if (data.code === 200) {
-                this.isLogin = true
-                store.dispatch('updata_wsStatus', 1)
-                store.dispatch('updata_wsLogin', true)
-              } else if (data.code === 401) { // 登录失败重新登录
-                this.isLogin = false
-                store.dispatch('updata_wsLogin', false)
-                router.push('/login')
-              }
-              break
-            case 'live.add':
-              console.log('======直播间加入成功======')
-              break
-            case 'live.leave':
-              console.log('======直播间退出成功======')
-              break
-            case 'msg.push': // 不是心跳返回的数据和登录的返回的数据, 存储起来
-              let time = new Date().getTime()
-              store.dispatch('updata_resolveTime', time)
-              break
-          }
+        // 自定义一个接收监听事件，暴露出去接收信息
+        this.event = new CustomEvent('wsOnMessage', {detail: data})
+        window.dispatchEvent(this.event)
+        switch (data.cmd) {
+          case 'login.token': // 登录处理
+            console.log('======WebSocket======' + data.msg)
+            if (data.code === 200) {
+              this.isLogin = true
+              store.dispatch('updata_wsStatus', 1)
+              store.dispatch('updata_wsLogin', true)
+            } else if (data.code === 401) { // 登录失败重新登录
+              this.isLogin = false
+              store.dispatch('updata_wsLogin', false)
+              router.push('/login')
+            }
+            break
+          case 'live.add':
+            console.log('======直播间加入成功======')
+            break
+          case 'live.leave':
+            console.log('======直播间退出成功======')
+            break
+          case 'msg.push': // 不是心跳返回的数据和登录的返回的数据, 存储起来
+            let time = new Date().getTime()
+            store.dispatch('updata_resolveTime', time)
+            break
         }
         // 收到消息，重置定时器, 因为已开启心跳检查，每秒都有发送
         this.checkResolve()
@@ -179,13 +179,13 @@ class WS {
       this.closeTime = new Date().getTime()
       this.reconnectMark = true
     }
-    if (new Date().getTime() - this.closeTime >= 60000) { // 一分钟中重连，连不上就不连了
+    if (new Date().getTime() - this.closeTime >= 10000) { // 10秒中重连，连不上就不连了
       console.log('======websocket重连不上，自动关闭')
       store.dispatch('updata_wsStatus', 2)
       this.close()
     } else {
       store.dispatch('updata_wsStatus', 0)
-      this.create(this.url) // 断线重连
+      this.create(this.url, this.liveId) // 断线重连
     }
   }
 }

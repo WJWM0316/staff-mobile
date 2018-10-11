@@ -111,7 +111,7 @@ export default {
     play () {
       if (this.audio.paused) {
         if (!this.audio.src) {
-          this.audio.src = this.messageData.path
+          this.audio.src = this.messageData.path || (this.messageData.file && this.messageData.file.url) || (this.messageData.attachInfo && this.messageData.attachInfo.url)
         }
         // 消除红点
         if (this.isReaded) {
@@ -156,6 +156,7 @@ export default {
     // 结束监听
     this.audio.addEventListener('ended', () => {
       this.status = 0
+      console.log(this.audioList.length - 1, this.curIndex)
       if (this.audioList.length - 1 > this.curIndex) {
         this.$emit('nextMusic', this.audioList[this.curIndex + 1].index)
       }

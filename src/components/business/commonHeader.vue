@@ -105,7 +105,8 @@ export default {
   mounted () {}
 }
 </script>
-<style lang="less">
+
+<style lang="less" type="text/less">
 @import url("~STYLE/mixins.less");
 .m-community {
   display: block;

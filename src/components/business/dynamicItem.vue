@@ -20,7 +20,7 @@
         </div>
       </div>
       <!--工作圈图片-->
-      <div class="content-images" v-if="item.type === '图片'" :data-preview='openPreview' v-preview>
+      <div class="content-images" v-if="item.type === '图片'" v-preview="openPreview">
         <div class="item-image one" v-if="item.accessory.length === 1">
           <img :src="item.accessory[0].smallUrl || '../../assets/icon/img_head_default.png'" v-preview='true'/>
         </div>
@@ -112,7 +112,7 @@ export default {
     },
     openPreview: { // 是否开启图片预览
       type: Boolean,
-      default: false
+      default: true
     }
   },
   watch: {
@@ -187,7 +187,8 @@ export default {
       }
     },
     toUserInfo (userId) {
-      this.$router.push({path: '/personalPage', query: {uid: this.item.uid}})
+      if (this.disableUserClick) {
+      }
     },
     /*  点赞  */
     async praise () {
@@ -244,9 +245,8 @@ export default {
     },
     /* 编辑 */
     edit () {
-      let { courseId, id } = this.$route.query
       if (this.isCourse) {
-        this.$router.push({path: '/punchEdit', query: {courseSectionId: courseId}})
+        this.$router.push({path: '/punchEdit', query: {id: this.item.courseSectionCardId}})
       } else {
         delCirclePostApi(this.item.id).then(res => {
           this.$toast({text: '删除帖子成功', type: 'success'})
@@ -254,13 +254,7 @@ export default {
       }
     },
     /* 置顶帖子 */
-    toTop () {
-      if (this.isCourse) {
-        console.log(' 我是课程模块的置顶 ')
-      } else {
-        this.$emit('setPostTop', this.item)
-      }
-    }
+    toTop () {}
   },
   mounted () {}
 }
@@ -292,7 +286,6 @@ export default {
         font-weight: 500;
       }
       .evaluate{
-        line-height: 30px;
         width: 30px;
         height: 30px;
         font-size: 30px;
