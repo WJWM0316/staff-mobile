@@ -3,6 +3,7 @@
 	  <div class="classify">
       <span v-for="(item,index) in tabList" :key="index" :class="{ isFocusClassify:showBorder === item.categoryName }" @click="cutoverTab(item)">{{item.categoryName}}</span>
     </div>
+    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
     <div class="content">
       <template v-for="(item, index) in circleList">
         <info-card :item="item" :showIntroduction="false" :origin="true" :key="index"></info-card>
@@ -54,19 +55,19 @@ export default {
     // 切换分类
     async cutoverTab (item) {
       this.classfy = item.categoryId
-      let res = await this.getCourseList()
+      let res = await this.getCourseList(true)
       res.meta.currentPage === res.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
       this.circleList = res.data
       this.showBorder = item.categoryName
     },
     // 请求列表接口
-    getCourseList () {
+    getCourseList (needLoading) {
       let param = {
         page: this.all.page,
         count: 20,
         category: this.classfy
       }
-      return courseListApi(param)
+      return courseListApi(param, needLoading)
     },
     getCategory () {
       return categoryApi()
@@ -83,7 +84,7 @@ export default {
         }
         this.all.pullUpStatus = true
         this.all.page += 1
-        let res = await this.getCourseList()
+        let res = await this.getCourseList(false)
         res.meta.currentPage === res.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
         this.circleList.push(...res.data)
         this.all.pullUpStatus = false

@@ -1,6 +1,7 @@
 <template>
-  <div class="infoCard" :class="{'newCouse' : newCouse}"  @click="toDeatil(item.id || item.liveId)">
-    <img class="infoPhoto" v-lazyload :src="item.coverImg.smallUrl || item.courseCoverImg.smallUrl"/>
+  <div class="infoCard"  @click="toDeatil(item.id || item.liveId)">
+    <img class="infoPhoto" v-if="item.coverImg" v-lazyload :src="item.coverImg.smallUrl"/>
+    <img class="infoPhoto" v-if="item.courseCoverImg" v-lazyload :src="item.courseCoverImg.smallUrl"/>
     <div class="right">
       <div class="title"
         :class="{'ellipsis1' : type === '3' || (type === '1' && item.isJoin), 'ellipsis2' : type === '2' || type === '1' && (!item.isJoin || item.isMaster)}">

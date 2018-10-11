@@ -22,7 +22,7 @@
       <!--工作圈图片-->
       <div class="content-images" v-if="item.type === '图片'" v-preview="openPreview">
         <div class="item-image one" v-if="item.accessory.length === 1">
-          <img :src="item.accessory[0].smallUrl || '../../assets/icon/img_head_default.png'"/>
+          <img :src="item.accessory[0].smallUrl || '../../assets/icon/img_head_default.png'" v-preview='true'/>
         </div>
         <div class="item-image" v-for="(item,index) in item.accessory" :key="index" v-else>
           <img :src="item.smallUrl || '../../assets/icon/img_head_default.png'" />
@@ -37,32 +37,14 @@
         <div class="placeholder" v-else>
         </div>
       </div>
-      <!-- 文件 -->
-      <div v-if="item.type === '文件'">
-        <div class="content-file" @click.stop="fileOpen(item.accessory[0].url)">
-          <img v-show="fileType === '.pdf'" class="file-logo" src="@/assets/suffix/pdf.png" />
-          <img v-show="fileType === '.xls' || fileType === '.xlsx'" class="file-logo" src="@/assets/suffix/xls.png" />
-          <img v-show="fileType === '.word'" class="file-logo" src="@/assets/suffix/word.png" />
-          <img v-show="fileType === '.ppt'" class="file-logo" src="@/assets/suffix/ppt.png" />
-          <div class="file-desc">
-            <p class="text">{{item.accessory[0].fileName}}</p>
-            <p class="text">{{item.accessory[0].sizeM}}</p>
-          </div>
-        </div>
-      </div>
-      <!--链接-->
-      <div class="postLink" v-if="item.type === '链接'">
-        <a @click.stop="" class="content-file" :href="item.url">
-          <img v-show="true" class="file-logo" src="@/assets/icon/postLink.png" />
-          <div class="file-desc">
-            <p class="text">{{item.title}}</p>
-          </div>
-        </a>
+      <!--文件，链接-->
+      <div v-if="item.type === '链接' || item.type === '文件'">
+        <file-box :item="item" :isFile="isFile" :fileType='fileType'></file-box>
       </div>
     </div>
       <div class="info-area">
         <div class="time-and-del">
-          <span class="time">{{item.createdAt}}</span>
+          <span class="time">{{item.createdAt || item.punchCardTime}}</span>
           <span v-if="item.isSelf && isCourse" class="del-btn" @click.stop="edit">编辑</span>
           <span v-if="item.isSelf && !isCourse" class="del-btn" @click.stop="edit">删除</span>
         </div>
@@ -81,16 +63,16 @@
         </div>
       </div>
     <template v-if="showCommunicate">
-      <div class="comment-area" v-if="item.favorList.length > 0 && item.hotComments.length > 0">
-        <div class="praise-block" v-if="item.favorList.length > 0">
+      <div class="comment-area" v-if="item.favorList.length > 0 || item.hotComments.length > 0">
+        <div class="praise-block" :class="{'praise-block-marBot': item.hotComments.length > 0}" v-if="item.favorList.length > 0">
           <img class="icon-zan" src="./../../assets/icon/bnt_zan@3x.png" />
           <div class="praise-name">
             <span class="favor-name" v-for="(favor,favorIndex) in item.favorList" :key="favorIndex" @click.stop="toUserInfo(favor.userId)">{{favorIndex > 0 ?  ','+favor.realname : favor.realname}}</span>
           </div>
           <span class="praise-total" v-if="item.favorList.length > 3">等{{item.favors.length}}人觉得很赞</span>
         </div>
-        <div class="reply-block">
-          <template  v-if="item.hotComments.length > 0">
+        <div class="reply-block"  v-if="item.hotComments.length > 0">
+          <template>
             <div class="hot-reply">
               <div class="hot-reply-icon">热门评论</div>
               <div class="reply" v-for="(reply,index) in item.hotComments" :key="index">
@@ -105,9 +87,13 @@
 </template>
 <script>
 import { getFavorApi, delFavorApi } from '@/api/pages/course'
-import { circleCommonFavorApi, delCircleCommonFavorApi, delCirclePostApi } from '@/api/pages/workCircle'
+import { circleCommonFavorApi, delCircleCommonFavorApi, delCirclePostApi, circlePostToTopApi } from '@/api/pages/workCircle'
+import fileBox from '@c/functional/fileBox'
 export default {
   name: 'dynamicItem',
+  components: {
+    fileBox
+  },
   props: {
     item: {
       type: Object
@@ -134,6 +120,7 @@ export default {
       immediate: true,
       handler: function () {
         this.isfavor = this.item.isFavor
+        this.item.type === '文件' ? this.isFile = true : this.isFile = false
         if (this.item.accessory && this.item.accessory.length > 0 && this.item.accessory[0].attachType === 'doc') {
           let result = this.item.accessory[0].fileName.match(/\.[^\.]+/)
           this.fileType = result[0]
@@ -147,7 +134,8 @@ export default {
     return {
       isfavor: false,
       movie: true, // 视频播放开关
-      fileType: '' // 文件类型
+      fileType: '', // 文件类型
+      isFile: true // 是否文件类型
     }
   },
   methods: {
@@ -191,9 +179,6 @@ export default {
         itemIndex
       })
     },
-    fileOpen (url) {
-      window.location.href = url
-    },
     toDetail () {
       if (this.isCourse) {
         this.$router.push({path: '/punchDetail', query: {id: this.item.courseSectionCardId}})
@@ -207,6 +192,13 @@ export default {
     },
     /*  点赞  */
     async praise () {
+      if (this.isCourse && this.$route.path !== '/punchDetail') {
+        this.$router.push({path: '/punchDetail', query: {id: this.item.courseSectionCardId}})
+        return
+      } else if (!this.isCourse && this.$route.path !== '/postDetail') {
+        this.$router.push({path: '/postDetail', query: {id: this.item.id}})
+        return
+      }
       let param = {
         sourceId: this.item.courseSectionCardId || this.item.id,
         sourceType: 'course_section_card',
@@ -237,6 +229,7 @@ export default {
         this.$router.push({path: '/punchDetail', query: {id: this.item.courseSectionCardId}})
       } else if (!this.isCourse && this.$route.path !== '/postDetail') {
         this.$router.push({path: '/postDetail', query: {id: this.item.id}})
+        return
       }
       let param = {
         id: this.item.courseSectionCardId || this.item.id, // 打卡id
@@ -403,44 +396,6 @@ export default {
           width: 100%;
         }
       }
-      /*  文件  */
-      .content-file {
-        margin-top: 10px;
-        display: flex;
-        align-items: center;
-        background-color: #F8F8F8;
-        padding: 7.5px 10px 8.5px;
-        border-radius: 3px;
-        .file-logo {
-          width: 44px;
-          height: 44px;
-          border-radius: 3px;
-        }
-        .file-desc {
-          font-size: 14px;/*px*/
-          color: #111111;
-          margin-left: 10px;
-          .text {
-            font-size: 26px;/*px*/
-            font-weight: 400;
-            display: block;
-            max-width: 261px;
-            overflow: hidden;
-            text-overflow:ellipsis;
-            white-space: nowrap;
-          }
-          .text:last-of-type {
-            font-weight: 400;
-            margin-top: 1px;
-            color: #bcbcbc;
-          }
-        }
-      }
-      .postLink{
-        .text{
-          color: #111111 !important;
-        }
-      }
     }
     /*底部区域*/
     .info-area{
@@ -492,7 +447,6 @@ export default {
       /*点赞信息*/
      .praise-block {
         padding: 2.5px 0;
-        margin-bottom: 10px;
         font-size: 28px;/*px*/
         display: flex;
         align-items: center;
@@ -513,10 +467,14 @@ export default {
           white-space: nowrap;
         }
       }
+      .praise-block-marBot{
+        margin-bottom: 10px;
+      }
       /*评论区域*/
       .reply-block {
         padding: 5px 0;
         .reply {
+          display: -webkit-box;
           font-size: 28px;/*px*/
           font-weight: 300;
           margin-top: 5px;
