@@ -80,7 +80,6 @@ export default {
       })
     },
     toLesson (item) {
-      console.log(item)
       if (item.statusInfo.isUnlock === 0) {
         this.$toast({text: '请先解锁前面课节'})
         return

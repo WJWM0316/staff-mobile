@@ -2,3 +2,14 @@
   background: url('.././assets/icon/default.png');
   background-size: 100% 100%;
 }
+
+.clearfix () {
+  &::before,
+  &::after {
+    content: " ";
+    display: table;
+  }
+  &::after {
+    clear: both;
+  }
+}

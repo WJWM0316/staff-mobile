@@ -8,3 +8,21 @@ export const loginApi = (data) => {
     data
   })
 }
+// 退出登录
+export const outLoginApi = (data, needLoading) => {
+  return request({
+    type: 'get',
+    url: `/auth/logout`,
+    data,
+    needLoading: needLoading
+  })
+}
+// 修改密码
+export const resetPwdApi = (data, needLoading) => {
+  return request({
+    type: 'post',
+    url: `/user/editPwd`,
+    data,
+    needLoading: needLoading
+  })
+}

@@ -33,16 +33,18 @@ export default {
       type: Boolean,
       default: false
     },
-    audioList: {
+    audioList: { // 需要续播的音频列表
       type: Array,
       default: () => {
         return []
       }
     },
-    messageData: {
+    messageData: { // 需要播放音频数据
       type: Object,
       default: () => {
-        return {}
+        return {
+          path: ''
+        }
       }
     },
     isLesson: {

@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    <template  v-if="homeInfo">
+    <template v-if="homeInfo">
       <div class="live" v-if="homeInfo.lives">
         <div class="time">直播预告·{{homeInfo.lives[0].expectedStartTime * 1000 | date('MMMDo h:mm')}}</div>
         <div class="content" @click.stop="jump('liveDetail', homeInfo.lives[0].liveId)">
@@ -289,9 +289,10 @@ export default {
           width: 284px;
           display: inline-block;
           background: #fff;
-          box-shadow: 0px 6px 20px 0px rgba(0,0,0,0.07);
+          box-shadow: 0px 6px 20px 0px rgba(0,0,0,0.07) inset;
           border-radius: 3px;
-          padding-right: 10px;
+          margin-right: 10px;
+          vertical-align: top;
         }
       }
       .enter {

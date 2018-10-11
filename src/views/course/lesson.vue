@@ -7,8 +7,8 @@
         {{communityCourse.title}}
       </div>
       <div class="header-info">
-        <div><img :src="communityCourse.tutorUser.avatarInfo.smallUrl"/><span class="mast-name">{{communityCourse.tutorUser.realname}}</span></div>
-        <div>{{communityCourse.createTime | ellipsis(10)}}</div>
+        <div><img v-if="communityCourse.tutorUser.avatar" :src="communityCourse.tutorUser.avatar.smallUrl"/><span class="mast-name">{{communityCourse.tutorUser.realname}}</span></div>
+        <div>{{communityCourse.createTime}}</div>
       </div>
     </div>
     <!--富文本区-->
@@ -25,7 +25,7 @@
       <div class="audioBox" v-if="communityCourse.av && communityCourse.av.attachType==='audio'">
         <audio-item :messageData="audioList" :isLesson="true"></audio-item>
       </div>
-      <div class="module-content h5-code" @click.stop="readPic($event)" v-html="communityCourse.details" ref="H5">
+      <div class="module-content h5-code" v-html="communityCourse.details" ref="H5">
       </div>
     </div>
 
@@ -175,7 +175,7 @@ export default {
         course_section_id: 1
       },
       listPage: 1, // 当前打卡列表的页数
-      audioList: {} // 音频数据
+      messageData: {} // 音频数据
     }
   },
   computed: {
@@ -236,7 +236,7 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
 .lesson{
   padding-bottom: 49px;
   .lesson-header{
@@ -311,9 +311,7 @@ export default {
       margin-top: 30px;
       width: 100%;
       min-height: 400px;
-      >section{
-        font-size: 32px !important;/*px*/
-      }
+      font-size: 0.234rem;
     }
     /* 音频样式 */
     .audioBox{

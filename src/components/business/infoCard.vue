@@ -3,8 +3,18 @@
     <img class="infoPhoto" v-if="item.coverImg" v-lazyload :src="item.coverImg.smallUrl"/>
     <img class="infoPhoto" v-if="item.courseCoverImg" v-lazyload :src="item.courseCoverImg.smallUrl"/>
     <div class="right">
-      <div class="title">{{item.name || item.title}}</div>
+      <div class="title"
+        :class="{'ellipsis1' : type === '3' || (type === '1' && item.isJoin), 'ellipsis2' : type === '2' || type === '1' && (!item.isJoin || item.isMaster)}">
+        {{item.name || item.title}}
+      </div>
       <div class="label"><span class="department" v-if="item.groupName">{{item.groupName}}</span><span class="name" v-if="item.realname">{{item.realname}}</span></div>
+      <!-- <div class="label" v-if="item.isRole === 5"></div> -->
+      <div class="progress" v-if="type === '1' && item.isJoin">
+        <p class="txt" v-if="item.progress === 0">本课程还未学习</p>
+        <p class="txt" v-if="item.progress > 0 && item.progress !== 100">已学习 <span class="num">{{item.progress}}%</span></p>
+        <p class="txt" v-if="item.progress === 100">本课程已学完</p>
+        <div class="progressBar"><div class="inner" :style="{width: item.progress+'%'}"></div></div>
+      </div>
       <div class="other" v-if="type === '3'">
         <span class="time">{{item.expectedStartTime * 1000 | date('MM-DD HH:mm')}}</span>
         <span class="status notPlay" v-if="item.status === 1">即将开始</span>
@@ -33,7 +43,7 @@ export default {
   },
   computed: {
     newCouse () {
-      if (this.type === 1 && new Date().getTime() - new Date(this.item.createdAt).getTime() > 7 * 24 * 3600 * 1000) {
+      if (this.type === '1' && new Date().getTime() - new Date(this.item.createdAt).getTime() > 7 * 24 * 3600 * 1000) {
         return true
       } else {
         return false
@@ -62,6 +72,21 @@ export default {
   width:100%;
   padding: 15px 20px 15px 100px;
   position: relative;
+  &.newCouse::after {
+    width: 18px;
+    height: 30px;
+    content: '新课';
+    display: block;
+    background: url('../../assets/icon/newLabel.png') center center;
+    background-size: 100% 100%;
+    text-align: center;
+    position: absolute;
+    top: 15px;
+    left: 25px;
+    font-size: 20px; /*px*/
+    font-weight: 300;
+    color: #fff;
+  }
   .infoPhoto{
     display: block;
     width: 80px;
@@ -81,11 +106,12 @@ export default {
       font-size: 30px;/*px*/
       line-height: 20px;
       font-weight: 400;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      display:-webkit-box;
-      -webkit-box-orient:vertical;
-      -webkit-line-clamp:2;
+      &.ellipsis1 {
+        .setEllipsis();
+      }
+      &.ellipsis2 {
+        .setEllipsisLn(2);
+      }
     }
     .introduction{
       color: #929292;
@@ -99,12 +125,10 @@ export default {
       font-size: 24px;/*px*/
       font-weight: 400;
       line-height: 16px;
-      margin: 11px 0 16px;
+      margin: 5px 0 0px;
+      .setEllipsis();
       .department{
         max-width: 135px;
-        overflow: hidden;
-        text-overflow:ellipsis;
-        white-space: nowrap;
         padding: 0 4px;
         text-align: center;
         display: inline-block;
@@ -113,9 +137,6 @@ export default {
         color: #FFFFFF;
       }
       .name{
-        overflow: hidden;
-        text-overflow:ellipsis;
-        white-space: nowrap;
         padding: 0 4px;
         text-align: center;
         display: inline-block;
@@ -123,6 +144,29 @@ export default {
         height: 17px;
         background-color: rgba(255,226,102,0.25);
         color: #D7AB70;
+      }
+    }
+    .progress {
+      .txt {
+        font-size: 24px; /*px*/
+        font-weight: 300px;
+        color: #929292;
+        line-height: 32px;
+        .num {
+          color: #D7AB70;
+        }
+      }
+      .progressBar {
+        width: 100%;
+        height: 4px;
+        background: #EDEDED;
+        border-radius: 3px;
+        overflow: hidden;
+        .inner {
+          height: 4px;
+          background: #FFEB98;
+          border-radius: 3px;
+        }
       }
     }
     /*时间和直播状态*/
@@ -133,6 +177,7 @@ export default {
       font-size: 24px;/*px*/
       font-weight: 300;
       line-height: 16px;
+      margin-top: 15px;
       .time{
         color: #929292;
       }
