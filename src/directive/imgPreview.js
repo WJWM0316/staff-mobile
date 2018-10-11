@@ -4,8 +4,8 @@ import router from '@/router/index'
 // 注册图片预览
 Vue.directive('preview', {
   bind: function (el, binding, vnode) {
-    console.log(vnode, 1)
-    if (el.getAttribute('data-preview')) return
+    if (!binding.value) return
+    console.log(binding, 1)
     let list = []
     // 绑定图片点击事件
     const bindClick = (element, img, urls) => {
@@ -19,7 +19,6 @@ Vue.directive('preview', {
     }
     // 遍历图片获取列表+绑定
     const findImg = (element) => {
-      console.log(element)
       element.children.forEach(e => {
         if (e.tag === 'img') {
           list.push(e.data.attrs.src)

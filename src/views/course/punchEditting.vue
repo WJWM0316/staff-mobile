@@ -177,8 +177,8 @@ export default {
     }
   },
   created () {
-    let { courseSectionId } = this.$route.query
-    getPunchCardDetailsApi({name: 'courseSectionId', id: courseSectionId}).then(res => {
+    let { id } = this.$route.query
+    getPunchCardDetailsApi({name: 'courseSectionId', id: id}).then(res => {
       this.taskContent = res.data
     })
   }
