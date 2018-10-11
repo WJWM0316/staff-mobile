@@ -106,10 +106,10 @@ export default {
       line-height: 20px;
       font-weight: 400;
       &.ellipsis1 {
-        .setEllipsis();
+        .setEllipsisLn(1)
       }
       &.ellipsis2 {
-        .setEllipsisLn(2);
+        .setEllipsisLn(2)
       }
     }
     .introduction{
@@ -125,9 +125,11 @@ export default {
       font-weight: 400;
       line-height: 16px;
       margin: 5px 0 0px;
-      .setEllipsis();
       .department{
         max-width: 135px;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
         padding: 0 4px;
         text-align: center;
         display: inline-block;
@@ -136,6 +138,9 @@ export default {
         color: #FFFFFF;
       }
       .name{
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
         padding: 0 4px;
         text-align: center;
         display: inline-block;

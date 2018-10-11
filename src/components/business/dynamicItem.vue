@@ -202,7 +202,8 @@ export default {
       }
     },
     toUserInfo (userId) {
-      this.$router.push({path: '/personalPage', query: {uid: this.item.uid}})
+      if (this.disableUserClick) {
+      }
     },
     /*  点赞  */
     async praise () {
@@ -233,7 +234,7 @@ export default {
     /*  评论  */
     comment () {
       if (this.isCourse && this.$route.path !== '/punchDetail') {
-        this.$router.push({path: '/punchDetail', query: {id: this.item.courseSectionCardId}})
+        this.$router.push({path: '/punchDetail', query: {myPunch: this.item.courseSectionCardId}})
       } else if (!this.isCourse && this.$route.path !== '/postDetail') {
         this.$router.push({path: '/postDetail', query: {id: this.item.id}})
       }
