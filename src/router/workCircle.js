@@ -28,6 +28,13 @@ const routers = [
     path: '/postDetail',
     name: 'postDetail',
     component: resolve => require(['@/views/workCircle/detail'], resolve)
+  },
+  /* 成员列表 */
+  {
+    path: '/circleMemberList',
+    name: 'circleMemberList',
+    meta: { title: '成员列表' },
+    component: resolve => require(['@/views/workCircle/memberList'], resolve)
   }
 ]
 

@@ -55,7 +55,7 @@
         <a @click.stop="" class="content-file" :href="item.url">
           <img v-show="true" class="file-logo" src="@/assets/icon/postLink.png" />
           <div class="file-desc">
-            <p class="text">{{item.title}}</p>
+            <p class="text">{{item.title || '链接'}}</p>
           </div>
         </a>
       </div>
@@ -105,7 +105,7 @@
 </template>
 <script>
 import { getFavorApi, delFavorApi } from '@/api/pages/course'
-import { circleCommonFavorApi, delCircleCommonFavorApi, delCirclePostApi } from '@/api/pages/workCircle'
+import { circleCommonFavorApi, delCircleCommonFavorApi, delCirclePostApi, circlePostToTopApi } from '@/api/pages/workCircle'
 export default {
   name: 'dynamicItem',
   props: {
@@ -262,7 +262,13 @@ export default {
       }
     },
     /* 置顶帖子 */
-    toTop () {}
+    toTop () {
+      if (this.isCourse) {
+        console.log(' 我是课程模块的置顶 ')
+      } else {
+        this.$emit('setPostTop', this.item)
+      }
+    }
   },
   mounted () {}
 }
@@ -294,6 +300,7 @@ export default {
         font-weight: 500;
       }
       .evaluate{
+        line-height: 30px;
         width: 30px;
         height: 30px;
         font-size: 30px;

@@ -26,45 +26,38 @@
       <div class="bottom">
         <!--置顶帖子-->
         <div class="priorityPost">
-          <div class="priorityPostBox">
+          <div class="priorityPostBox" v-for="(item,index) in postList" :key="index" v-if="item.isTop" @click.stop="toDetail(item)">
             <img class="leftImg" src="../../assets/icon/icon_topping@3x.png"/>
-            <span class="txt">前段时间有位朋友来找我，刚好三人的的发是的发送到发送到发</span>
-            <img class="rightImg" src="../../assets/icon/bnt_arrow_int@3x.png"/>
-          </div>
-          <div class="priorityPostBox">
-            <img class="leftImg" src="../../assets/icon/icon_topping@3x.png"/>
-            <span class="txt">前段时间有位朋友来找我，刚好三人的的发是的发送到发送到发</span>
-            <img class="rightImg" src="../../assets/icon/bnt_arrow_int@3x.png"/>
-          </div>
-          <div class="priorityPostBox">
-            <img class="leftImg" src="../../assets/icon/icon_topping@3x.png"/>
-            <span class="txt">前段时间有位朋友来找我，刚好三人的的发是的发送到发送到发</span>
+            <span class="txt">{{item.cardContent}}</span>
             <img class="rightImg" src="../../assets/icon/bnt_arrow_int@3x.png"/>
           </div>
         </div>
         <!--帖子-->
-        <dynamic-item v-for="(item,index) in postList" :key="index" :item="item" :isCourse="false"></dynamic-item>
+        <dynamic-item v-for="(item,index) in postList" :key="index" :item="item" :index="index" :isCourse="false" @setPostTop="toTop" v-if="!item.isTop"></dynamic-item>
       </div>
     </div>
     <!-- 发帖   -->
-    <div class="postBox" @click.stop="toEdit">
+    <div class="postBox" @click.stop="toEdit" v-if="pageInfo.isMember || pageInfo.isOwner">
       <div class="postInfo">
         <img class="postImg" src="../../assets/icon/icon_writing.png"/>
         <p class="post">发帖</p>
       </div>
     </div>
+    <actionsheet v-model="addActionsConfig.show" :menus="addActionsConfig.menus" show-cancel @on-click-menu="handleAddActoinItem" />
   </div>
 </template>
 
 <script>
-import { getCircleDetailApi, getPostlistApi } from '@/api/pages/workCircle'
+import { getCircleDetailApi, getPostlistApi, circlePostToTopApi } from '@/api/pages/workCircle'
 import circleHeader from '@c/business/commonHeader'
 import dynamicItem from '@c/business/dynamicItem'
+import { Actionsheet } from 'vux'
 export default {
   name: 'circleDetail',
   components: {
     circleHeader,
-    dynamicItem
+    dynamicItem,
+    Actionsheet
   },
   data () {
     return {
@@ -72,13 +65,24 @@ export default {
       nowPage: 1,
       postList: [],
       postListTotal: '', // 帖子数量
-      sort: 'asc' // 正序或倒序，默认正序
+      sort: 'desc', // 正序或倒序，默认正序
+      addActionsConfig: { // 置顶评选
+        show: false,
+        menus: [{
+          label: '帖子置顶',
+          value: 'selected'
+        }],
+        menus2: [{
+          label: '取消帖子置顶',
+          value: 'disSelect'
+        }]
+      },
+      nowChoosePost: '' // 当前选中的要置顶或取消的帖子
     }
   },
   methods: {
     /* 正倒序  */
     async reverse (e) {
-      console.log(e, ' 我是倒序事件 ')
       this.sort = e
       let param = {
         id: this.pageInfo.id,
@@ -113,8 +117,21 @@ export default {
       this.postList.push(...res.data)
     },
     /* 置顶 */
-    toTop () {
-      console.log(this)
+    toTop (e) {
+      this.nowChoosePost = e
+      this.addActionsConfig.show = true
+      console.log(e)
+    },
+    async handleAddActoinItem (key, item) {
+      circlePostToTopApi(this.nowChoosePost.id).then(res => {
+        this.reverse(this.sort)
+        this.$toast({text: '帖子置顶成功', type: 'success'})
+      })
+    },
+    /* 去帖子详情 */
+    toDetail (postItem) {
+      console.log(postItem)
+      this.$router.push({path: '/postDetail', query: {id: postItem.id}})
     }
   },
   created () {

@@ -2,7 +2,7 @@
 <template>
   <div class="postDetail">
     <div class="header">
-      <contentheader :item="item" :showCommunicate="false" :showBorder="false" :isCourse="false" @disableOperationEvents="operation"></contentheader>
+      <contentheader :item="item" :showCommunicate="false" :showBorder="false" :isCourse="false" @disableOperationEvents="operation" @setPostTop="toTop"></contentheader>
     </div>
     <div class="container">
       <div class="fixed-box" ref="ceiling-box">
@@ -56,6 +56,7 @@
                       @send="sendComment"
                       ref="input"
       ></suspension-input>
+    <actionsheet v-model="addActionsConfig.show" :menus="nowChoosePost.isTop?addActionsConfig.menus2:addActionsConfig.menus" show-cancel @on-click-menu="handleAddActoinItem" />
   </div>
 </template>
 <script>
@@ -63,14 +64,16 @@ import classmateItem from '@c/business/classmateItem'
 import contentheader from '@c/business/dynamicItem'
 import discussItem from '@c/business/discussItem'
 import suspensionInput from '@c/functional/suspensionInput'
-import { postDetailApi, firstCommentListlApi, circleCommentApi, commonFavorListApi, commonFavorApi } from '@/api/pages/workCircle'
+import { postDetailApi, firstCommentListlApi, circleCommentApi, commonFavorListApi, commonFavorApi, circlePostToTopApi, delCirclePostToTopApi } from '@/api/pages/workCircle'
+import { Actionsheet } from 'vux'
 export default {
   name: 'detail',
   components: {
     contentheader,
     classmateItem,
     discussItem,
-    suspensionInput
+    suspensionInput,
+    Actionsheet
   },
   data () {
     return {
@@ -83,7 +86,19 @@ export default {
       suspensionInputPlaceholder: '来分享你的想法吧～',
       isShow: false,
       commentIndex: -1,
-      favorPges: 1 // 当前点赞列表翻页页数
+      favorPges: 1, // 当前点赞列表翻页页数
+      addActionsConfig: { // 置顶评选
+        show: false,
+        menus: [{
+          label: '帖子置顶',
+          value: 'selected'
+        }],
+        menus2: [{
+          label: '取消帖子置顶',
+          value: 'disSelect'
+        }]
+      },
+      nowChoosePost: '' // 当前选中的要置顶或取消的帖子
     }
   },
   methods: {
@@ -168,6 +183,26 @@ export default {
       }).catch(e => {
         this.$toast({text: '评论失败'})
       })
+    },
+    /* 调起置顶选项框 */
+    toTop (e) {
+      this.nowChoosePost = e
+      this.addActionsConfig.show = true
+      console.log(e)
+    },
+    /* 选择置顶或取消 */
+    async handleAddActoinItem (key, item) {
+      if (key === 'selected') {
+        circlePostToTopApi(this.nowChoosePost.id).then(res => {
+          this.item.isTop = true
+          this.$toast({text: '帖子置顶成功', type: 'success'})
+        })
+      } else {
+        delCirclePostToTopApi(this.nowChoosePost.id).then(res => {
+          this.item.isTop = false
+          this.$toast({text: '取消置顶成功'})
+        })
+      }
     }
   },
   created () {
