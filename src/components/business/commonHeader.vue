@@ -24,7 +24,7 @@
       </div>
       <!--加入人员头像-->
       <div class="center">
-        <img class="user_icon" v-for="(item, index) in pageInfo.memberInfo" :src="item.avatarInfo.middleUrl" :key="index" />
+        <img class="user_icon" v-for="(item, index) in pageInfo.memberInfo" :src="item.avatarInfo.middleUrl || '@a/icon/default.png'" :key="index" />
         <img class="user_icon four" src="../../assets/icon/firends-call-more.png" v-if="pageInfo.memberCount > 3"/>
       </div>
       <!--右边入口按钮-->

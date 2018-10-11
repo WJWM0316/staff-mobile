@@ -1,11 +1,11 @@
 <template>
-  <div class="aduio" :class="{'isRead': isReaded, 'isReadEnd': isReadEnded}">
-    <div class="playBtn" @click.stop="play">
+  <div class="aduio" :class="{'isRead': isReaded && !isLesson, 'isReadEnd': isReadEnded}">
+    <div class="playBtn" :class="{'lessonPlayBtn': isLesson}" @click.stop="play">
       <img src="@a/icon/playing.png" v-show="status === 0">
       <img src="@a/icon/music_loading.png" class="load" v-show="status === 1">
       <img src="@a/icon/playing.gif" v-show="status === 2">
     </div>
-    <div class="progress" ref="progress">
+    <div class="progress" :class="{'lessonProgress': isLesson}" ref="progress">
       <div class="realBar" :style="{'width': `${progress}%`}">
         <div class="slider"
           @touchmove.stop.prevent="touchmove"
@@ -16,7 +16,8 @@
         ></div>
       </div>
     </div>
-    <div class="duration">111s</div>
+    <div class="duration lessonDuration" v-if="isLesson">{{messageData.duration}}s</div>
+    <div class="duration" v-else>111s</div>
   </div>
 </template>
 <script>
@@ -43,6 +44,10 @@ export default {
       default: () => {
         return {}
       }
+    },
+    isLesson: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -207,6 +212,9 @@ export default {
         }
       }
     }
+    .lessonPlayBtn{
+      margin-right: 29px;
+    }
     .progress {
       width: 125px;
       height: 3px;
@@ -260,6 +268,9 @@ export default {
         }
       }
     }
+    .lessonProgress{
+      width: 188px;
+    }
     .duration {
       float: right;
       font-size: 24px; /*px*/
@@ -268,6 +279,9 @@ export default {
       display: inline-block;
       position: absolute;
       right: 15px;
+    }
+    .lessonDuration{
+      right: 25px;
     }
   }
 </style>

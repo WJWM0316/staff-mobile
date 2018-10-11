@@ -23,6 +23,7 @@
         <div v-if="sort === 'asc'" class="reverse" @click.stop="reverse('desc')"><img src="../../assets/icon/bnt_order@3x.png"/>倒序</div>
         <div v-else class="reverse" @click.stop="reverse('asc')"><img src="../../assets/icon/bnt_order@3x.png"/>正序</div>
       </div>
+      <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
       <div class="bottom">
         <!--置顶帖子-->
         <div class="priorityPost">
@@ -35,6 +36,7 @@
         <!--帖子-->
         <dynamic-item v-for="(item,index) in postList" :key="index" :item="item" :index="index" :isCourse="false" @setPostTop="toTop" v-if="!item.isTop"></dynamic-item>
       </div>
+      <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
     </div>
     <!-- 发帖   -->
     <div class="postBox" @click.stop="toEdit" v-if="pageInfo.isMember || pageInfo.isOwner">
@@ -77,7 +79,14 @@ export default {
           value: 'disSelect'
         }]
       },
-      nowChoosePost: '' // 当前选中的要置顶或取消的帖子
+      nowChoosePost: '', // 当前选中的要置顶或取消的帖子
+      all: {
+        list: [],
+        page: 1,
+        noData: false,
+        pullUpStatus: false
+      },
+      isLastPage: false // 是否最后一页
     }
   },
   methods: {
@@ -100,19 +109,20 @@ export default {
     async init (id) {
       let res = await this.getCircleDetail(id)
       this.pageInfo = res.data
-      this.getPostlist()
+      this.getPostlist(true)
     },
     /* 获取工作圈详情 */
     getCircleDetail (id) {
       return getCircleDetailApi(id)
     },
-    async getPostlist () {
+    async getPostlist (needLoading) {
       let param = {
         id: this.pageInfo.id,
         page: this.nowPage,
         sort: this.sort
       }
-      let res = await getPostlistApi(param)
+      let res = await getPostlistApi(param, needLoading)
+      res.meta.currentPage === res.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
       this.postListTotal = res.meta.total
       this.postList.push(...res.data)
     },
@@ -132,6 +142,24 @@ export default {
     toDetail (postItem) {
       console.log(postItem)
       this.$router.push({path: '/postDetail', query: {id: postItem.id}})
+    },
+    /* 滚动触发事件 */
+    async pullUp () {
+      if (this.isLastPage) {
+        console.log(' 111111 ')
+        this.all.pullUpStatus = false
+        this.all.noData = true
+      } else {
+        if (this.postList.length <= 0) {
+          return
+        }
+        this.all.pullUpStatus = true
+        this.nowPage += 1
+        let res = await this.getPostlist(false)
+        res.meta.currentPage === res.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
+        this.postList.push(...res.data)
+        this.all.pullUpStatus = false
+      }
     }
   },
   created () {

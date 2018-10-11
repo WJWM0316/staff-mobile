@@ -1,18 +1,18 @@
 import {request} from '../require.js'
 /* 获取工作圈全部列表   */
-export const getJobcircleApi = (data) => {
+export const getJobcircleApi = (data, needLoading) => {
   return request({
-    url: '/jobcircle/all',
+    url: `/jobcircle/all?page=${data.page}&count=${data.count}&organization=${data.organization}`,
     type: 'get',
-    data
+    needLoading: needLoading
   })
 }
-/* 获取工作圈全部列表   */
-export const getAttentionsApi = (data) => {
+/* 获取工作圈关注列表   */
+export const getAttentionsApi = (data, needLoading) => {
   return request({
-    url: '/jobcircle/attentions',
+    url: `/jobcircle/attentions?page=${data.page}&count=${data.count}&organization=${data.organization}`,
     type: 'get',
-    data
+    needLoading: needLoading
   })
 }
 /* 获取工作圈全部列表   */
@@ -66,10 +66,11 @@ export const putModifyApi = (data) => {
   })
 }
 /* 获取帖子列表 */
-export const getPostlistApi = (data) => {
+export const getPostlistApi = (data, needLoading) => {
   return request({
     url: `/jobcircle/postlist/${data.id}?page=${data.page}&sort=${data.sort}`,
-    type: 'get'
+    type: 'get',
+    needLoading: needLoading
   })
 }
 /* 工作圈发帖 */

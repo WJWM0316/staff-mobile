@@ -1,6 +1,7 @@
 <template>
   <div class="infoCard"  @click="toDeatil(item.id || item.liveId)">
-    <img class="infoPhoto" v-lazyload :src="item.coverImg.smallUrl || item.courseCoverImg.smallUrl"/>
+    <img class="infoPhoto" v-if="item.coverImg" v-lazyload :src="item.coverImg.smallUrl"/>
+    <img class="infoPhoto" v-if="item.courseCoverImg" v-lazyload :src="item.courseCoverImg.smallUrl"/>
     <div class="right">
       <div class="title">{{item.name || item.title}}</div>
       <div class="label"><span class="department" v-if="item.groupName">{{item.groupName}}</span><span class="name" v-if="item.realname">{{item.realname}}</span></div>

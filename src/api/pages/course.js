@@ -8,11 +8,12 @@ export const getCommunityApi = (data) => {
   })
 }
 // 课程列表接口
-export const courseListApi = (data) => {
+export const courseListApi = (data, needLoading) => {
   return request({
     url: '/course/courseList',
     type: 'post',
-    data
+    data,
+    needLoading: needLoading
   })
 }
 // 课程类别分类接口

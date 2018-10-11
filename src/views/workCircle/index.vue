@@ -7,11 +7,13 @@
     <div class="classify">
       <span v-for="(item,index) in tabList" :key="index" :class="{ isFocusClassify:showBorder === item.groupName }" @click="cutoverTab(item)">{{item.groupName}}</span>
     </div>
+    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
     <div class="content">
       <template v-for="(item, index) in circleList">
         <info-card type="2" :item="item" :showIntroduction="false" :origin="false" :key="index"></info-card>
       </template>
     </div>
+    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
   </div>
 </template>
 
@@ -34,11 +36,19 @@ export default {
         page: 1,
         count: 20,
         organization: 0
-      }
+      },
+      all: {
+        list: [],
+        page: 1,
+        noData: false,
+        pullUpStatus: false
+      },
+      isLastPage: false // 是否最后一页
     }
   },
   methods: {
     async tab (name) {
+      this.param.page = 1
       this.isFocus = name
       let res = {}
       if (name === 'all') {
@@ -46,6 +56,7 @@ export default {
       } else {
         res = await this.getAttentions()
       }
+      res.meta.currentPage === res.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
       this.circleList = res.data
     },
     /* 初始化方法 */
@@ -60,27 +71,53 @@ export default {
       })
       this.isFocus = 'attention'
       this.circleList = res.data
+      res.meta.currentPage === res.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
       this.tabList = classfy.data
     },
     /* 切换分类 */
     async cutoverTab (item) {
+      this.param.page = 1
       this.showBorder = item.groupName
       this.param.organization = item.groupId
-      let res
+      let res = {}
       if (this.isFocus === 'all') {
-        res = await this.getJobcircle()
+        res = await this.getJobcircle(true)
       } else {
-        res = await this.getAttentions()
+        res = await this.getAttentions(true)
       }
+      res.meta.currentPage === res.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
       this.circleList = res.data
     },
     /* 请求全部圈子列表 */
-    getAttentions () {
-      return getAttentionsApi(this.param)
+    getAttentions (needLoading) {
+      return getAttentionsApi(this.param, needLoading)
     },
     /* 请求关注圈子列表 */
-    getJobcircle () {
-      return getJobcircleApi(this.param)
+    getJobcircle (needLoading) {
+      return getJobcircleApi(this.param, needLoading)
+    },
+    /* 滚动触发事件 */
+    async pullUp () {
+      if (this.isLastPage) {
+        console.log(' 111111 ')
+        this.all.pullUpStatus = false
+        this.all.noData = true
+      } else {
+        if (this.circleList.length <= 0) {
+          return
+        }
+        this.all.pullUpStatus = true
+        this.param.page += 1
+        let res = {}
+        if (this.isFocus === 'all') {
+          res = await this.getJobcircle(false)
+        } else {
+          res = await this.getAttentions(false)
+        }
+        res.meta.currentPage === res.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
+        this.circleList.push(...res.data)
+        this.all.pullUpStatus = false
+      }
     }
   },
   created () {
@@ -91,7 +128,7 @@ export default {
 
 <style lang="less" scoped>
   .workCircle{
-    padding-bottom: 49px;
+    /*padding-bottom: 49px;*/
     padding-top: 89px;
     .header{
       position: fixed;

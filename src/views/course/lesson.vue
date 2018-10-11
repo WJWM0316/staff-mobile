@@ -8,7 +8,7 @@
       </div>
       <div class="header-info">
         <div><img :src="communityCourse.tutorUser.avatarInfo.smallUrl"/><span class="mast-name">{{communityCourse.tutorUser.realname}}</span></div>
-        <div>{{communityCourse.createTime}}</div>
+        <div>{{communityCourse.createTime | ellipsis(10)}}</div>
       </div>
     </div>
     <!--富文本区-->
@@ -22,9 +22,8 @@
         </div>
       </div>
       <!-- 音频 -->
-      <div v-if="communityCourse.av && communityCourse.av.attachType==='audio'">
-        <audio
-        :audioList="audioList"></audio>
+      <div class="audioBox" v-if="communityCourse.av && communityCourse.av.attachType==='audio'">
+        <audio-item :messageData="audioList" :isLesson="true"></audio-item>
       </div>
       <div class="module-content h5-code" @click.stop="readPic($event)" v-html="communityCourse.details" ref="H5">
       </div>
@@ -132,12 +131,12 @@
 import lessondynamicItem from '@c/business/dynamicItem'
 import { Actionsheet } from 'vux'
 import { getCourseCardListApi, setExcellentCourseCardApi, lessonDetailApi } from '@/api/pages/course'
-import Audio from '@/components/functional/audio'
+import audioItem from '@c/functional/audio'
 export default {
   components: {
     lessondynamicItem,
     Actionsheet,
-    Audio
+    audioItem
   },
   data () {
     return {
@@ -176,7 +175,7 @@ export default {
         course_section_id: 1
       },
       listPage: 1, // 当前打卡列表的页数
-      audioList: [] // 音频列表数组
+      audioList: {} // 音频数据
     }
   },
   computed: {
@@ -193,7 +192,8 @@ export default {
       let cardList = await this.getCourseCardListApi(id)
       this.communityCourse = res.data
       if (res.data.av && res.data.av.attachType === 'audio') {
-        this.audioList.push(res.data.av.url)
+        res.data.av.path = res.data.av.url
+        this.audioList = res.data.av
       }
       this.peopleCourseCardList = cardList.data.peopleCourseCardList
       this.excellentPunchList = cardList.data.excellentPeopleCourseCardList
@@ -305,6 +305,7 @@ export default {
     }
     /*课节富文本*/
     .module-content{
+      display: -webkit-box;
       box-sizing: border-box;
       padding: 0 20px;
       margin-top: 30px;
@@ -314,10 +315,24 @@ export default {
         font-size: 32px !important;/*px*/
       }
     }
+    /* 音频样式 */
+    .audioBox{
+      padding: 0 20px;
+      >.aduio{
+        border-radius: 30px;
+        width: 335px;
+        height: 60px;
+        padding: 19px 25px;
+        .playBtn{
+          margin-right: 29px;
+        }
+      }
+    }
   }
   .lesson-task{
     padding: 0 20px;
     .content-txt{
+      display: -webkit-box;
       width: 100%;
     }
     .content-img{
