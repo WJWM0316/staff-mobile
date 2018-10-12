@@ -104,6 +104,7 @@ export default {
     touchend (e) {
       this.operation = false
       this.moveX = e.changedTouches[0].clientX - this.offsetX
+      if (this.moveX > this.length) this.moveX = this.length
       this.progress = this.moveX / this.length * 100
       this.audio.currentTime = this.progress * 0.01 * this.audio.duration
       this.audio.play()
