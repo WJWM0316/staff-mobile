@@ -3,7 +3,7 @@
     <circle-header :pageInfo="pageInfo" :isCircle="true"></circle-header>
     <!--下载文件-->
     <div class="fileDownload">
-      <div class="downloadImg">
+      <div class="downloadImg" @click.stop="toAlbum">
         <img class="icon" src="../../assets/icon/downloadImg.png" alt="" />
         <span>相册</span>
       </div>
@@ -160,6 +160,10 @@ export default {
         this.postList.push(...res.data)
         this.all.pullUpStatus = false
       }
+    },
+    /* 去相册 */
+    toAlbum () {
+      this.$router.push({path: '/album', query: {id: this.pageInfo.id}})
     }
   },
   created () {

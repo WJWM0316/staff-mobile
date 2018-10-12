@@ -16,18 +16,21 @@ const routers = [
   {
     path: '/circleEdit',
     name: 'circleEdit',
+    meta: { title: '编辑' },
     component: resolve => require(['@/views/workCircle/circleEditting'], resolve)
   },
   /* 设置  */
   {
     path: '/setting',
     name: 'setting',
+    meta: { title: '设置' },
     component: resolve => require(['@/views/workCircle/setting'], resolve)
   },
   /* 帖子详情  */
   {
     path: '/postDetail',
     name: 'postDetail',
+    meta: { title: '帖子详情' },
     component: resolve => require(['@/views/workCircle/detail'], resolve)
   },
   /* 成员列表 */
@@ -36,6 +39,13 @@ const routers = [
     name: 'circleMemberList',
     meta: { title: '成员列表' },
     component: resolve => require(['@/views/workCircle/memberList'], resolve)
+  },
+  /* 成员列表 */
+  {
+    path: '/album',
+    name: 'album',
+    meta: { title: '相册' },
+    component: resolve => require(['@/views/workCircle/album'], resolve)
   }
 ]
 

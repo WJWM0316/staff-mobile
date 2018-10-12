@@ -1,6 +1,6 @@
 <template>
   <div class="downLoad">
-  	<div class="title"></div>
+  	<div class="mtitle"></div>
   </div>
 </template>
 
