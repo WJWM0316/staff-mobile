@@ -1,7 +1,7 @@
 <template>
   <div class="live-message" v-if="messageData">
     <div class="avatar">
-      <img :src="messageData.avatar && messageData.avatar.smallUrl">
+      <img :src="messageData.avatar.smallUrl" alt="">
     </div>
     <div class="message-con">
       <div class="name">{{messageData.realname}}</div>

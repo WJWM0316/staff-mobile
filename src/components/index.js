@@ -30,7 +30,7 @@ Vue.prototype.$toast = function ({text, position = 'middle', type = 'text', widt
 }
 
 // confirm
-Vue.prototype.$confirm = function ({title, content, confirmBack, cancelBack = function () {}, cancelText = '取消', confirmText = '确定'}) {
+Vue.prototype.$confirm = function ({title, content, confirmBack, cancelBack, cancelText = '取消', confirmText = '确定'}) {
   this.$vux.confirm.show({
     title: title,
     content: content,

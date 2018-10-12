@@ -10,28 +10,26 @@
       >{{item}}</span>
     </div>
     <div class="main">
-      <div class="joined" v-if="tabIndex === 0">
+      <div class="joined" v-show="tabIndex === 0">
         <div class="list">
-          <infoCard type="3" v-for="item in joined.list" :key="item.liveId" :item="item"></infoCard>
+          <infoCard type="3" v-for="(item, index) in joined.list" :key="index" :item="item"></infoCard>
         </div>
         <pullUpUi :noData="joined.noData" :pullUpStatus="joined.pullUpStatus" @pullUp="pullUp"></pullUpUi>
       </div>
-      <div class="all" v-if="tabIndex === 1">
-        <div class="list">
-          <template v-if="all.list1.length > 0">
+      <div class="all">
+        <div class="list" v-show="tabIndex === 1">
+          <template v-if="all.recentLength > 0">
             <div class="head">
               <i class="icon"></i>
               <span class="txt">近期直播</span>
             </div>
-            <infoCard type="3" v-for="item in all.list1" :key="item.liveId" :item="item"></infoCard>
+            <infoCard type="3" v-for="(item, index) in all.list" :key="index" :item="item" v-if="all.recentLength - 1 > index"></infoCard>
           </template>
-          <template v-if="all.list2.length > 0">
-            <div class="head">
-              <i class="icon"></i>
-              <span class="txt">回顾直播</span>
-            </div>
-            <infoCard type="3" v-for="item in all.list2" :key="item.liveId" :item="item"></infoCard>
-          </template>
+          <div class="head" v-if="all.list.length > all.recentLength">
+            <i class="icon"></i>
+            <span class="txt">回顾直播</span>
+          </div>
+          <infoCard type="3" v-for="(item, index) in all.list" :key="index" :item="item" v-if="all.recentLength - 1 < index"></infoCard>
         </div>
         <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
       </div>
@@ -56,20 +54,20 @@ export default {
         pullUpStatus: false
       },
       all: {
-        isLoad: false, // 列表还未加载
-        list1: [],
-        list2: [],
+        list: [],
         recentPage: 1, // 近期直播页数
         endPage: 1, // 结束直播页数
+        recentLength: 0, // 近期直播条数
         noData: false,
-        pullUpStatus: false
+        pullUpStatus: false,
+        recentComplete: false // 近期直播是否都加载完毕
       }
     }
   },
   methods: {
     choseTab (index) {
       this.tabIndex = index
-      if (!this.all.isLoad) {
+      if (this.all.list.length === 0) {
         this.getRecentList({page: 1}, true)
       }
     },
@@ -104,7 +102,7 @@ export default {
         }
         getJoinListApi(data, needLoading).then(res => {
           this.joined.list = this.joined.list.concat(res.data || [])
-          if (res.meta.currentPage === res.meta.lastPage) {
+          if (res.data.length === 0) {
             this.joined.noData = true
           }
           resolve(res)
@@ -112,15 +110,16 @@ export default {
       })
     },
     getRecentList ({page, count}, needLoading) {
-      if (!this.all.isLoad) this.all.isLoad = true // 防止切换tab是重复加载
       return new Promise((resolve, reject) => {
         let data = {
           page: page || 1,
           count: count || 20
         }
         getRecentListApi(data, needLoading).then(res => {
-          this.all.list1 = this.all.list1.concat(res.data || [])
+          this.all.list = this.all.list.concat(res.data || [])
           if (res.data.length < 20) {
+            this.all.recentComplete = true
+            this.all.recentLength = this.all.list.length
             this.getEndList({page: 1}, false)
           }
           resolve(res)
@@ -134,8 +133,8 @@ export default {
           count: count || 20
         }
         getEndListApi(data, needLoading).then(res => {
-          this.all.list2 = this.all.list2.concat(res.data || [])
-          if (res.meta.currentPage === res.meta.lastPage) {
+          this.all.list = this.all.list.concat(res.data || [])
+          if (res.data.length === 0) {
             this.all.noData = true
           }
           resolve(res)

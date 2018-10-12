@@ -99,15 +99,7 @@ export const putQuestionsApi = (data, needLoading) => {
   })
 }
 
-// 发布直播消息
-export const sendLiveMsgApi = (data, needLoading) => {
-  return request({
-    type: 'post',
-    url: `/liveMessage/sendLiveMsg`,
-    data,
-    needLoading: needLoading
-  })
-}
+
 
 
 

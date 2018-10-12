@@ -41,7 +41,13 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
     }
   }
   // 请求
-  return Vue.axios[type](url, datas, config, needLoading).then(res => {
+  return Vue.axios[type](url, datas, config, needLoading).catch(response => {
+    num--
+    if (num <= 0) {
+      store.dispatch('updata_loadingStatus', false)
+    }
+    return Promise.reject(response, {code: 500, message: '网络异常'})
+  }).then(res => {
     num--
     if (num <= 0) {
       store.dispatch('updata_loadingStatus', false)

@@ -20,7 +20,7 @@
         </div>
       </div>
       <!--工作圈图片-->
-      <div class="content-images" v-if="item.type === '图片'" v-preview="openPreview">
+      <div class="content-images" v-if="item.type === '图片'" :data-preview='openPreview' v-preview>
         <div class="item-image one" v-if="item.accessory.length === 1">
           <img :src="item.accessory[0].smallUrl || '../../assets/icon/img_head_default.png'" v-preview='true'/>
         </div>
@@ -112,7 +112,7 @@ export default {
     },
     openPreview: { // 是否开启图片预览
       type: Boolean,
-      default: true
+      default: false
     }
   },
   watch: {
@@ -181,7 +181,7 @@ export default {
     },
     toDetail () {
       if (this.isCourse) {
-        this.$router.push({path: '/punchDetail', query: {id: this.item.courseSectionCardId}})
+        this.$router.push({path: '/punchDetail', query: {myPunch: this.item.courseSectionCardId}})
       } else {
         this.$router.push({path: '/postDetail', query: {id: this.item.id}})
       }
@@ -226,7 +226,7 @@ export default {
     /*  评论  */
     comment () {
       if (this.isCourse && this.$route.path !== '/punchDetail') {
-        this.$router.push({path: '/punchDetail', query: {id: this.item.courseSectionCardId}})
+        this.$router.push({path: '/punchDetail', query: {myPunch: this.item.courseSectionCardId}})
       } else if (!this.isCourse && this.$route.path !== '/postDetail') {
         this.$router.push({path: '/postDetail', query: {id: this.item.id}})
         return
@@ -245,8 +245,9 @@ export default {
     },
     /* 编辑 */
     edit () {
+      let { courseId, id } = this.$route.query
       if (this.isCourse) {
-        this.$router.push({path: '/punchEdit', query: {id: this.item.courseSectionCardId}})
+        this.$router.push({path: '/punchEdit', query: {courseSectionId: courseId}})
       } else {
         delCirclePostApi(this.item.id).then(res => {
           this.$toast({text: '删除帖子成功', type: 'success'})
@@ -254,7 +255,13 @@ export default {
       }
     },
     /* 置顶帖子 */
-    toTop () {}
+    toTop () {
+      if (this.isCourse) {
+        console.log(' 我是课程模块的置顶 ')
+      } else {
+        this.$emit('setPostTop', this.item)
+      }
+    }
   },
   mounted () {}
 }
@@ -286,6 +293,7 @@ export default {
         font-weight: 500;
       }
       .evaluate{
+        line-height: 30px;
         width: 30px;
         height: 30px;
         font-size: 30px;

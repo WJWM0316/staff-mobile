@@ -292,7 +292,6 @@ export default {
           box-shadow: 0px 6px 20px 0px rgba(0,0,0,0.07);
           border-radius: 3px;
           padding-right: 10px;
-          vertical-align: top;
         }
       }
       .enter {

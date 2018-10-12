@@ -111,9 +111,7 @@ export default {
     },
     play () {
       if (this.audio.paused) {
-        if (!this.audio.src) {
-          this.audio.src = this.messageData.file.url
-        }
+        this.audio.src = this.messageData.file.url
         // 消除红点
         if (this.isReaded) {
           this.isReaded = false

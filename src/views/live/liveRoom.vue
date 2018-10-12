@@ -64,16 +64,6 @@
     <div class='testBtn' @click='closeWs'>断线测试</div>
     <div class='testBtn1' @click='leaveLive'>离开测试</div>
     <div class='testBtn2' @click='addLive'>加入测试</div>
-    <div class="sendMsg" v-if="$route.query.teacher">
-      <select v-model="option.type">
-        <option value="text">文本</option>
-        <option value="audio">音频</option>
-        <option value="img">图片</option>
-      </select>
-      <input type="text" v-model="content" placeholder="发布内容">
-      <input type="text" v-model="fileId" placeholder="附件id">
-      <button @click.stop="sendMsg">发布</button>
-    </div>
     <questionArea v-if="openArea" @closeArea="_closeArea"></questionArea>
   </div>
 </template>
@@ -84,7 +74,7 @@ import ws from '@u/websocket'
 import liveMessage from '@c/business/liveMessage'
 import questionArea from '@c/business/questionArea'
 import { mapState, mapActions } from 'vuex'
-import { getLiveRoomMsgApi, putQuestionsApi, sendLiveMsgApi } from '@/api/pages/live'
+import { getLiveRoomMsgApi, putQuestionsApi } from '@/api/pages/live'
 let onMessage = null
 export default {
   components: {
@@ -94,12 +84,6 @@ export default {
   },
   data () {
     return {
-      option: {
-        liveId: this.$route.query.id,
-        type: null
-      },
-      content: '',
-      fileId: '',
       id: '',
       list: [],
       onlineNum: 0, // 在线人数
@@ -119,6 +103,12 @@ export default {
   },
   watch: {
     list () {
+      this.list.filter((item, index) => {
+        if (item.type === 'audio') {
+          item.index = index
+          this.audioList.push(item)
+        }
+      })
     },
     wsStatus () {},
     sendData () {}
@@ -129,15 +119,6 @@ export default {
     ]),
     jumpMore () {
       this.$router.push(`/liveDetail?id=${this.id}`)
-    },
-    sendMsg () {
-      if (this.option.type === 'text') {
-        this.option.content = this.content
-      } else {
-        this.option.fileId = this.fileId
-      }
-      sendLiveMsgApi(this.option).then(res => {
-      })
     },
     scrollTo (type) {
       switch (type) {
@@ -160,22 +141,10 @@ export default {
         count: 20
       }
       return getLiveRoomMsgApi(data, needLoading).then(res => {
-        if (action === 1) {
+        if (action) {
           this.list = this.list.concat(res.data)
-          res.data.filter((item, index) => {
-            if (item.type === 'audio') {
-              item.index = index
-              this.audioList.push(item)
-            }
-          })
         } else {
           this.list = res.data.concat(this.list)
-          res.data.filter((item, index) => {
-            if (item.type === 'audio') {
-              item.index = index
-              this.audioList.unshift(item)
-            }
-          })
         }
         return res
       })
@@ -269,15 +238,12 @@ export default {
           if (that.onlineNum < 0) that.onlineNum = 0
         }
       // 接收信息处理
-      } else if (data.hasOwnProperty('msgType')) {
-        switch (data.msgType) {
-          // 接收他人的信息
-          case 'live_msg':
+      } else if (data.hasOwnProperty('msg_type')) {
+        switch (data.msg_type) {
+          // 好友发过来的信息
+          case 'friend_msg':
             that.list.push(data.data)
-            that.$refs.scroll.scrollBottom('liveMsg')
-            if (data.data.type === 'audio') {
-              this.audioList.push(data.data)
-            }
+            that.$refs.scroll.scrollBottom()
             break
           // 自己发出去的信息后端接收成功后保存起来，若失败重新发送
           case 'msg_push':
@@ -319,14 +285,6 @@ export default {
   }
   .testBtn2 {
     bottom: 20%;
-  }
-  .sendMsg {
-    width: 40%;
-    position: fixed;
-    bottom: 40%;
-    right: 0;
-    background: #fff;
-    font-size: 24px; /*px*/
   }
   .wrap {
     width: 100%;

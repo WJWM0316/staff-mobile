@@ -6,10 +6,10 @@
           <img class="pull-icon" src="../../assets/icon/loading.png" v-if="downType === 'refresh'">
           <img class="loadmore" src="../../assets/icon/loadMore.gif" v-else>
         </div>
-        <div class="content" :class="{'pulldownUi': pulldownUi && pulldown}">
+        <div class="content" :class="{'pulldownUi': pulldownUi}">
           <slot></slot>
         </div>
-        <div class="loading-pos" ref="loadingPos" v-if="pullup && pullupUi">
+        <div class="loading-pos" ref="loadingPos" v-if="pullup && pullupUi" :class="{'pullupUi' : pullupUi}">
           <div class="loading-container" v-if="!noData">
             <img class="loadmore" src="../../assets/icon/loadMore.gif">
           </div>
@@ -194,6 +194,9 @@ export default {
         let me = this
         this.scroll.on('scroll', (pos) => {
           if (this.listenScroll) {
+            if (!this.pullupUi && pos.y < 0 && this.pullup) {
+              this.pullupUi = true
+            }
             me.$emit('scroll', pos)
           }
           if (this.pulldown) {
@@ -203,21 +206,25 @@ export default {
           }
         })
       }
-      this.scroll.on('touchEnd', (pos) => {
-        // 是否派发顶部下拉事件，用于下拉刷新
-        if (pos.y > 100 && this.pulldown) {
-          this.pulldownUi = true
-          this.$emit('pullingDown', this.scroll)
-        }
-        // 是否派发滚动到底部事件，用于上拉加载
-        if ((-pos.y) - (this.scroll.scrollerHeight - this.scroll.wrapperHeight) > 100 && this.pullup) {
-          this.pullupUi = true
+      // 是否派发滚动到底部事件，用于上拉加载
+      if (this.pullup) {
+        this.scroll.on('pullingUp', () => {
           console.log('加载更多数据')
           if (!this.noData) {
             this.$emit('pullingUp', this.scroll)
           }
-        }
-      })
+        })
+      }
+
+      // 是否派发顶部下拉事件，用于下拉刷新
+      if (this.pulldown) {
+        this.scroll.on('touchEnd', (pos) => {
+          if (pos.y > 100) {
+            this.pulldownUi = true
+            this.$emit('pullingDown', this.scroll)
+          }
+        })
+      }
 
       // 是否派发列表滚动开始的事件
       if (this.beforeScroll) {
@@ -246,12 +253,9 @@ export default {
       // 代理better-scroll的scrollToElement方法
       this.scroll && this.scroll.scrollToElement(el, time)
     },
-    scrollBottom (type) {
-      if (type === 'liveMsg') {
-        this.scroll && this.scroll.scrollTo(0, this.scroll.maxScrollY - 500)
-      } else {
-        this.scroll && this.scroll.scrollTo(0, this.scroll.maxScrollY)
-      }
+    scrollBottom () {
+      // 滚动最底部 + 1000
+      this.scroll && this.scroll.scrollTo(0, this.scroll.maxScrollY)
     }
   }
 }
@@ -272,12 +276,15 @@ export default {
     }
     .loading-pos {
       width: 100%;
+      opacity: 0;
       background: none;
-      position: absolute;
-      left: 0;
-      bottom: 0;
+      &.pullupUi {
+        opacity: 1;
+      }
+      .loading-container {
+      }
       .loadmore {
-        padding: 30px 0 15px;
+        padding: 15px 0 30px;
         width: 34px;
         height: 12px;
         display: block;
