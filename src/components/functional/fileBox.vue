@@ -1,14 +1,14 @@
 <template>
   <div class="fileBox">
     <template v-if="isFile">
-      <div class="content-file" @click.stop="fileOpen(item.accessory[0].url)">
+      <div class="content-file" @click.stop="fileOpen(item.url || item.accessory[0].url)">
         <img v-show="fileType === '.pdf'" class="file-logo" src="@/assets/suffix/pdf.png" />
         <img v-show="fileType === '.xls' || fileType === '.xlsx'" class="file-logo" src="@/assets/suffix/xls.png" />
         <img v-show="fileType === '.word'" class="file-logo" src="@/assets/suffix/word.png" />
         <img v-show="fileType === '.ppt'" class="file-logo" src="@/assets/suffix/ppt.png" />
         <div class="file-desc">
-          <p class="text">{{item.accessory[0].fileName}}</p>
-          <p class="text">{{item.accessory[0].sizeM}}</p>
+          <p class="text">{{item.fileName || item.accessory[0].fileName}}</p>
+          <p class="text">{{item.sizeM || item.accessory[0].sizeM}}</p>
         </div>
       </div>
     </template>

@@ -1,7 +1,7 @@
 <template>
   <div class="classmateItem" v-if="item">
     <div class="userInfo-img">
-      <img class="headImg" :src="item.avatarInfo.smallUrl || '@a/icon/default.png'">
+      <img class="headImg" v-lazyload :src="item.avatarInfo.smallUrl || '@a/icon/default.png'">
     </div>
     <div class="userInfo-desc">
       <div class="name">{{item.realname}}<span class="managerTitle" v-show="false">管理员</span></div>

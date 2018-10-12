@@ -173,3 +173,19 @@ export const getPicturemonthApi = (data) => {
     type: 'get'
   })
 }
+/* 获取月份图片 */
+export const getPictureApi = (data, needLoading) => {
+  return request({
+    url: `/jobcircle/picture/${data.id}?page=${data.page}&count=${data.count}&month=${data.month}`,
+    type: 'get',
+    needLoading: needLoading
+  })
+}
+/* 获取圈子最近的上传文件 */
+export const getFilesApi = (data, needLoading) => {
+  return request({
+    url: `/jobcircle/files/${data.id}?page=${data.page}&count=${data.count}`,
+    type: 'get',
+    needLoading: needLoading
+  })
+}

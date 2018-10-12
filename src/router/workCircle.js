@@ -46,6 +46,13 @@ const routers = [
     name: 'album',
     meta: { title: '相册' },
     component: resolve => require(['@/views/workCircle/album'], resolve)
+  },
+  /* 下载文件 */
+  {
+    path: '/fileDownLoad',
+    name: 'fileDownLoad',
+    meta: { title: '相册' },
+    component: resolve => require(['@/views/workCircle/downLoad'], resolve)
   }
 ]
 

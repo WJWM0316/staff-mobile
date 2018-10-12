@@ -134,7 +134,7 @@ export default {
     return {
       isfavor: false,
       movie: true, // 视频播放开关
-      fileType: '', // 文件类型
+      fileType: '', // 文件的类型xml，或者其他
       isFile: true // 是否文件类型
     }
   },

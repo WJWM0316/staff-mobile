@@ -7,11 +7,11 @@
         <img class="icon" src="../../assets/icon/downloadImg.png" alt="" />
         <span>相册</span>
       </div>
-      <div class="downloadFile">
+      <div class="downloadFile" @click.stop="toDownLoad(2)">
         <img class="icon" src="../../assets/icon/file.png" alt="" />
         <span>文件</span>
       </div>
-      <div class="link">
+      <div class="link" @click.stop="toDownLoad(3)">
         <img class="icon" src="../../assets/icon/link.png"/>
         <span>链接</span>
       </div>
@@ -163,7 +163,11 @@ export default {
     },
     /* 去相册 */
     toAlbum () {
-      this.$router.push({path: '/album', query: {id: this.pageInfo.id}})
+      this.$router.push({path: '/album', query: {id: this.pageInfo.id, type: 1}})
+    },
+    /* 去下载页 classfy:1为图片，2为文件，3为链接 */
+    toDownLoad (classfy) {
+      this.$router.push({path: '/fileDownLoad', query: {id: this.pageInfo.id, type: classfy}})
     }
   },
   created () {
