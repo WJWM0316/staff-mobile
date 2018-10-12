@@ -29,6 +29,7 @@ export default {
         email: this.account,
         password: this.password
       }
+      if (!window.localStorage.getItem('XPLUSCompany')) window.localStorage.setItem('XPLUSCompany', 'tiger')
       if (this.account === '13729280262' || this.account === '18520225811' || this.account === '15574964192') {
         window.localStorage.setItem('XPLUSCompany', 'test')
       } else {
