@@ -133,6 +133,7 @@ export default {
   },
   mounted () {
     if (!window.audio) window.audio = new Audio()
+    console.log(this.isCurAudio, 11111111111)
     this.audio = window.audio
     this.audioList.filter((item, index) => {
       if (this.messageData.messageId === item.messageId) {
