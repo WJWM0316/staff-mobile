@@ -5,5 +5,6 @@ export default {
   pullUpStatus: false, // 上拉加载
   pullDownStatus: false, // 下拉刷新
   wxConfig: null, // 微信配置
-  curAudioUrl: 0 // 当前播放音频的url
+  audioCurId: null, // 当前播放的id
+  curAudioUrl: null // 当前播放音频的url
 }

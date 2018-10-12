@@ -73,7 +73,9 @@ export default {
   },
   watch: {
     audioList () {},
-    messageData () {}
+    messageData () {},
+    audioCurId (val) {
+    }
   },
   computed: {
     ...mapState({
@@ -109,21 +111,18 @@ export default {
     play () {
       if (this.audio.paused) {
         if (!this.audio.src) {
-          this.audio.src = this.messageData.path || this.messageData.file.url
+          this.audio.src = this.messageData.file.url
         }
         // 消除红点
         if (this.isReaded) {
           this.isReaded = false
         }
-        this.updata_audioCurId(this.messageData.file.id)
-        if (browser.isWechat()) {
-          // this.audio.play()
-          this.audio.play()
-          // document.addEventListener("WeixinJSBridgeReady", function () {
-          //   alert(111111)
-          //   this.audio.play()
-          // }, false)
-        } else {
+        try {
+          setTimeout(() => {
+            this.updata_audioCurId(this.messageData.file.id)
+            this.audio.play()
+          }, 100)
+        } catch (e) {
           this.audio.play()
         }
       } else {
@@ -133,7 +132,6 @@ export default {
   },
   mounted () {
     if (!window.audio) window.audio = new Audio()
-    console.log(this.isCurAudio, 11111111111)
     this.audio = window.audio
     this.audioList.filter((item, index) => {
       if (this.messageData.messageId === item.messageId) {
