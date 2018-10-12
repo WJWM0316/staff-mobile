@@ -56,7 +56,7 @@
     </div>
     <div class='footer'>
       <div class='txtBar'>
-        <input class='bar' @focus.stop='focus' type='text' v-model='problemTxt' placeholder='请输入你的问题'>
+        <input class='bar' v-focus type='text' v-model='problemTxt' placeholder='请输入你的问题'>
       </div>
       <div class='submit' @click.stop='putQuestions'>提问</div>
       <div class="area icon iconfont icon-live_btn_answers" @click.stop="openArea = true"></div>
@@ -188,6 +188,10 @@ export default {
       if (this.isPulldown) {
         this.getMessage({msgId: this.list[0].messageId, action: 2, needLoading: false}).then(res => {
           this.$refs.scroll.pulldownUi = false
+          // 等scroll重新渲染完毕后定位到上次的位置
+          setTimeout(() => {
+            this.$refs.scroll.scrollToElement(this.$refs.message.getElementsByClassName('live-message')[res.data.length - 1], 0)
+          }, 300)
           if (res.data.length === 0) {
             this.isPulldown = false
           }
@@ -203,12 +207,6 @@ export default {
           }
         })
       }
-    },
-    focus () {
-      // 强制输入框顶起
-      setTimeout(() => {
-        document.body.scrollTop = document.body.scrollHeight
-      }, 100)
     },
     putQuestions () {
       if (this.problemTxt !== '') {

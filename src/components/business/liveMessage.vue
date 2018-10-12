@@ -1,10 +1,10 @@
 <template>
   <div class="live-message">
     <div class="avatar">
-      <img :src="(messageData.avatar && messageData.avatar.smallUrl) || (messageData.userInfo && messageData.userInfo.avatarInfo.smallUrl)">
+      <img :src="messageData.avatar && messageData.avatar.smallUrl">
     </div>
     <div class="message-con">
-      <div class="name">{{messageData.realname || messageData.fromUserName || messageData.userInfo.realname}}</div>
+      <div class="name">{{messageData.realname}}</div>
       <div class="textType" v-if="messageData.type === 'text'" :style="{background: bgColor}">{{messageData.content}}</div>
       <audio-message
         v-if="messageData.type === 'audio'"

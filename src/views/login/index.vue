@@ -29,7 +29,7 @@ export default {
         email: this.account,
         password: this.password
       }
-      if (this.account === '13729280262' || this.account === '18520225811') {
+      if (this.account === '13729280262' || this.account === '18520225811' || this.account === '15574964192' || this.account === '18520786912') {
         window.localStorage.setItem('XPLUSCompany', 'test')
       } else {
         window.localStorage.setItem('XPLUSCompany', 'tiger')
@@ -58,11 +58,7 @@ export default {
     }
   },
   created () {
-    this.$root.$children[0]._refresh = () => {
-      return this.init().then(res => {
-        return res
-      })
-    }
+    window.localStorage.setItem('XPLUSCompany', 'tiger')
   }
 }
 </script>

@@ -242,9 +242,9 @@ export default {
       // 代理better-scroll的scrollTo方法
       this.scroll && this.scroll.scrollTo(x, y, time, easing)
     },
-    scrollToElement (el) {
+    scrollToElement (el, time = 300) {
       // 代理better-scroll的scrollToElement方法
-      this.scroll && this.scroll.scrollToElement(el, 300)
+      this.scroll && this.scroll.scrollToElement(el, time)
     },
     scrollBottom (type) {
       if (type === 'liveMsg') {

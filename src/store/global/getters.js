@@ -14,10 +14,13 @@ export default {
   pullDownStatus: function (state) {
     return state.pullDownStatus
   },
-  audioCurIndex: function (state) {
-    return state.audioCurIndex
+  audioCurId: function (state) {
+    return state.audioCurId
   },
   wxConfig: function (state) {
     return state.wxConfig
+  },
+  curAudioUrl: function (state) {
+    return state.curAudioUrl
   }
 }

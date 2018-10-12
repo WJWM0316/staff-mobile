@@ -16,10 +16,13 @@ export default {
   [types.PULLDOWNSTATUS] (state, data) {
     state.pullDownStatus = data
   },
-  [types.AUDIOCURINDEX] (state, data) {
-    state.audioCurIndex = data
+  [types.AUDIOCURID] (state, data) {
+    state.audioCurId = data
   },
   [types.WXCONFIG] (state, data) {
     state.wxConfig = data
+  },
+  [types.CURAUDIOURL] (state, data) {
+    state.curAudioURL = data
   }
 }

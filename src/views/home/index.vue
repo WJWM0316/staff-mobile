@@ -96,7 +96,7 @@ export default {
         userInfoApi().then(res => {
           this.headInfo = res.data
           this.$store.dispatch('updata_userInfo', res.data)
-          if (res.data.base.mobile === '13729280262' || res.data.base.mobile === '18520225811') {
+          if (res.data.base.mobile === '13729280262' || res.data.base.mobile === '18520225811' || res.data.base.mobile === '18520786912' || res.data.base.mobile === '15574964192') {
             window.localStorage.setItem('XPLUSCompany', 'test')
           } else {
             window.localStorage.setItem('XPLUSCompany', 'tiger')
