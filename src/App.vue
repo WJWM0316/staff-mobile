@@ -171,7 +171,6 @@ export default {
     // }
   },
   mounted () {
-    window.localStorage.setItem('XPLUSCompany', 'tiger')
   }
 }
 </script>

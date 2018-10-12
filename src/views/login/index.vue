@@ -58,6 +58,7 @@ export default {
     }
   },
   created () {
+    window.localStorage.setItem('XPLUSCompany', 'tiger')
   }
 }
 </script>
