@@ -58,12 +58,6 @@ export default {
     }
   },
   created () {
-    if (!window.localStorage.getItem('XPLUSCompany')) window.localStorage.setItem('XPLUSCompany', 'tiger')
-    this.$root.$children[0]._refresh = () => {
-      return this.init().then(res => {
-        return res
-      })
-    }
   }
 }
 </script>

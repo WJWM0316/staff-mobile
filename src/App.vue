@@ -126,8 +126,6 @@ export default {
       'updata_loadingStatus',
       'updata_pullDownStatus'
     ]),
-    comfirmFun () {}, // comfirm 确定回调
-    cancelFun () {}, // comfirm 取消回调
     selectTab (n) {
       this.tabIndex = n
     },
@@ -173,6 +171,7 @@ export default {
     // }
   },
   mounted () {
+    window.localStorage.setItem('XPLUSCompany', 'tiger')
   }
 }
 </script>
