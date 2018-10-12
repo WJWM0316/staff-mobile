@@ -36,10 +36,10 @@ export default {
       resolve()
     })
   },
-  // 更新音频索引
-  updata_audioCurIndex: ({commit}, data) => {
+  // 当前播放音频id
+  updata_audioCurId: ({commit}, data) => {
     return new Promise((resolve, reject) => {
-      commit(types.AUDIOCURINDEX, data)
+      commit(types.AUDIOCURID, data)
       resolve()
     })
   },
@@ -47,6 +47,13 @@ export default {
   updata_wxConfig: ({commit}, data) => {
     return new Promise((resolve, reject) => {
       commit(types.WXCONFIG, data)
+      resolve()
+    })
+  },
+  // 当前播放音频URL
+  updata_curAudioUrl: ({commit}, data) => {
+    return new Promise((resolve, reject) => {
+      commit(types.CURAUDIOURL, data)
       resolve()
     })
   }

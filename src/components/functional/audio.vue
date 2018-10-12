@@ -1,6 +1,6 @@
 <template>
-  <div class="aduio" :class="{'isRead': isReaded && !isLesson, 'isReadEnd': isReadEnded}">
-    <div class="playBtn" :class="{'lessonPlayBtn': isLesson}" @click.stop="play">
+  <div class="aduio" :class="{'isRead': isReaded && !isLesson, 'isReadEnd': isReadEnded}"  @click.stop="play">
+    <div class="playBtn" :class="{'lessonPlayBtn': isLesson}">
       <img src="@a/icon/playing.png" v-show="status === 0">
       <img src="@a/icon/music_loading.png" class="load" v-show="status === 1">
       <img src="@a/icon/playing.gif" v-show="status === 2">
@@ -22,6 +22,7 @@
 </template>
 <script>
 import { mapActions, mapState } from 'vuex'
+import browser from '@u/browser'
 import Vue from 'vue'
 export default {
   props: {
@@ -72,22 +73,19 @@ export default {
   },
   watch: {
     audioList () {},
-    messageData () {},
-    audioCurIndex (val) {
-      // 如果不是当前音频则暂停其他播放音频
-      if (val !== this.curIndex) {
-        this.audio.pause()
-      }
-    }
+    messageData () {}
   },
   computed: {
     ...mapState({
-      audioCurIndex: state => state.global.audioCurIndex
-    })
+      audioCurId: state => state.global.audioCurId
+    }),
+    isCurAudio () {
+      return this.audioCurId === this.messageData.file.id
+    }
   },
   methods: {
     ...mapActions([
-      'updata_audioCurIndex'
+      'updata_audioCurId'
     ]),
     touchstart (e) {
       this.startX = e.changedTouches[0].clientX
@@ -111,21 +109,31 @@ export default {
     play () {
       if (this.audio.paused) {
         if (!this.audio.src) {
-          this.audio.src = this.messageData.path || (this.messageData.file && this.messageData.file.url) || (this.messageData.attachInfo && this.messageData.attachInfo.url)
+          this.audio.src = this.messageData.path || this.messageData.file.url
         }
         // 消除红点
         if (this.isReaded) {
           this.isReaded = false
         }
-        this.updata_audioCurIndex(this.curIndex)
-        this.audio.play()
+        this.updata_audioCurId(this.messageData.file.id)
+        if (browser.isWechat()) {
+          // this.audio.play()
+          this.audio.play()
+          // document.addEventListener("WeixinJSBridgeReady", function () {
+          //   alert(111111)
+          //   this.audio.play()
+          // }, false)
+        } else {
+          this.audio.play()
+        }
       } else {
         this.audio.pause()
       }
     }
   },
   mounted () {
-    this.audio = new Audio()
+    if (!window.audio) window.audio = new Audio()
+    this.audio = window.audio
     this.audioList.filter((item, index) => {
       if (this.messageData.messageId === item.messageId) {
         this.curIndex = index
@@ -138,10 +146,12 @@ export default {
     })
     // 缓存阶段
     this.audio.addEventListener('waiting', () => {
+      if (!this.isCurAudio) return
       this.status = 1
     }, false)
     // 播放阶段
     this.audio.addEventListener('timeupdate', () => {
+      if (!this.isCurAudio) return
       if (this.status !== 2) {
         this.status = 2
       }
@@ -150,13 +160,14 @@ export default {
     }, false)
     // 暂停监听
     this.audio.addEventListener('pause', () => {
+      if (!this.isCurAudio) return
       this.status = 0
       this.isReadEnded = true
     }, false)
     // 结束监听
     this.audio.addEventListener('ended', () => {
+      if (!this.isCurAudio) return
       this.status = 0
-      console.log(this.audioList.length - 1, this.curIndex)
       if (this.audioList.length - 1 > this.curIndex) {
         this.$emit('nextMusic', this.audioList[this.curIndex + 1].index)
       }
