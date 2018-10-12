@@ -32,14 +32,12 @@
               <div class="time">{{item.answerInfo.createdAt | activeTime || item.problemInfo.createdAt | activeTime}}</div>
               <liveMessage
                 class="msg"
-                v-if="item.problemInfo.content"
                 :messageData='item.problemInfo'
                 bgColor="#F8F8F8"
                 ref='messageItem'
               ></liveMessage>
               <liveMessage
                 class="msg"
-                v-if="item.answerInfo.content"
                 :messageData='item.answerInfo'
                 bgColor="#FFF5CA"
                 ref='messageItem'
@@ -52,14 +50,12 @@
               <div class="time">{{item.answerInfo.createdAt | activeTime || item.problemInfo.createdAt | activeTime}}</div>
               <liveMessage
                 class="msg"
-                v-if="item.problemInfo.content"
                 :messageData='item.problemInfo'
                 bgColor="#F8F8F8"
                 ref='messageItem'
               ></liveMessage>
               <liveMessage
                 class="msg"
-                v-if="item.answerInfo.content"
                 :messageData='item.answerInfo'
                 bgColor="#FFF5CA"
                 ref='messageItem'
