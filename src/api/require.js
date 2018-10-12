@@ -28,7 +28,7 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
       Vue.axios.defaults.headers.common['Authorization'] = token
     }
   }
-  let datas = type === 'get' ? {params: {...data}} : {...data}
+  let datas = type === 'get' ? {params: {...data}} : (config.headers ? data : {...data})
   if (needLoading) {
     num++
     if (!store.getters.loadingStatus) {

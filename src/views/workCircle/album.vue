@@ -6,22 +6,27 @@
       <img class="arrow" v-if="nowShowMonth === item.str" src="../../assets/icon/btn_packup_task@3x.png" />
       <img class="arrow" v-else src="../../assets/icon/bnt_arrow_int@3x.png" />
     </div>
-    <div v-if="nowShowMonth === item.str">我是这个月的盒子</div>
+    <div class="picBox" v-if="nowShowMonth === item.str">
+      <img class="picItem" v-lazyload v-for="(picItem, index) in nowPicList" :key="index" :src="picItem.fileInfo.smallUrl" />
+    </div>
   </div>
   </div>
 </template>
 
 <script>
-import { getPicturemonthApi } from '@/api/pages/workCircle'
+import { getPicturemonthApi, getPictureApi } from '@/api/pages/workCircle'
 export default {
   name: 'Album',
   data () {
     return {
       monthList: [],
-      nowShowMonth: ''
+      nowShowMonth: '',
+      nowPage: 1, // 当前翻页的页码
+      nowPicList: [] // 当前点击查看的相册列表
     }
   },
   methods: {
+    /* 获取有数据的月份列表 */
     async getPicturemonth () {
       let res = await getPicturemonthApi(this.$route.query.id)
       this.monthList = res.data
@@ -30,8 +35,8 @@ export default {
       this.getPicturemonth()
     },
     /* 展开点击月份相册 */
-    showAlbum (item) {
-      this.nowShowMonth = item.str
+    async showAlbum (item) {
+      this.$router.push({path: '/fileDownLoad', query: {item: item.str, month: item.month, id: this.$route.query.id}})
     }
   },
   created () {
