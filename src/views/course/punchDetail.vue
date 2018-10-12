@@ -119,8 +119,6 @@ export default {
         this.getCommentList()
         this.item.commentTotal += 1
         this.$toast({text: '评论成功', type: 'success'})
-      }).catch(e => {
-        this.$toast({text: '评论失败'})
       })
     },
     /* 点击评论调起底部输入框 */
@@ -166,8 +164,8 @@ export default {
     },
     /* 获取打卡详情 */
     async getPunchCardDetails () {
-      let { myPunch } = this.$route.query
-      let res = await getPunchCardDetailsApi({name: 'courseSectionCardId', id: myPunch})
+      let { id } = this.$route.query
+      let res = await getPunchCardDetailsApi({name: 'courseSectionCardId', id: id})
       this.item = res.data.peopleCourseCardInfo
     },
     async init () {

@@ -30,14 +30,19 @@ export default {
       }
     },
     outLogin () {
-      outLoginApi().then(res => {
-        this.$toast({
-          text: '退出成功',
-          type: 'success',
-          callBack: () => {
-            this.$router.push('/login')
-          }
-        })
+      this.$confirm({
+        content: '确定退出账号？',
+        confirmBack: () => {
+          outLoginApi().then(res => {
+            this.$toast({
+              text: '退出成功',
+              type: 'success',
+              callBack: () => {
+                this.$router.replace('/login')
+              }
+            })
+          })
+        }
       })
     }
   }

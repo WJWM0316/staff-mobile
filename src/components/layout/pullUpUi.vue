@@ -24,7 +24,8 @@ export default {
     pullUpStatus (val) {
       this.status = val
     },
-    noData () {}
+    noData (val) {
+    }
   },
   data () {
     return {
@@ -33,6 +34,7 @@ export default {
     }
   },
   mounted () {
+    let that = this
     let tabHeight = this.$refs.pullUpTip.clientHeight
     let winHeight = window.screen.height * window.dpr
     window.onscroll = (e) => {

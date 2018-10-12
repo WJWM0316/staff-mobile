@@ -104,14 +104,15 @@ export default {
     touchend (e) {
       this.operation = false
       this.moveX = e.changedTouches[0].clientX - this.offsetX
-      if (this.moveX > this.length) this.moveX = this.length
       this.progress = this.moveX / this.length * 100
       this.audio.currentTime = this.progress * 0.01 * this.audio.duration
       this.audio.play()
     },
     play () {
       if (this.audio.paused) {
-        this.audio.src = this.messageData.file.url
+        if (!this.audio.src) {
+          this.audio.src = this.messageData.file.url
+        }
         // 消除红点
         if (this.isReaded) {
           this.isReaded = false

@@ -76,7 +76,6 @@ export default {
   methods: {
     choseFile (e) {
       let files = e.target.files // 返回来的是一个对象
-      console.log(files)
       let URL = window.URL || window.webkitURL
       this.fileUrl = [] // 清空列表
       for (let i in files) {
