@@ -189,3 +189,12 @@ export const getFilesApi = (data, needLoading) => {
     needLoading: needLoading
   })
 }
+/* 搜索 */
+export const searchApi = (data, needLoading) => {
+  return request({
+    url: `/jobcircle/postlist/${data.id}`,
+    type: 'get',
+    needLoading: needLoading
+  })
+}
+

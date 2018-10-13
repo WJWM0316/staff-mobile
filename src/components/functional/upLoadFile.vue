@@ -9,7 +9,8 @@
       </div>
     </div>
     <div class="upLoadImg">
-      <img :src="fileUrl[fileUrl.length - 1] || imgUrl" alt="" id="image">
+      <img v-if="fileUrl[fileUrl.length - 1]" :src="fileUrl[fileUrl.length - 1]" alt="" id="image">
+      <img v-else :src="imgUrl" alt="" id="image">
       <input class="upLoadBtn"
         @change="choseFile"
         ref="upLoadBtn"
@@ -145,6 +146,8 @@ export default {
       formData.append('avatar', blob)
       uploadApi(formData).then(res => {
         this.$emit('upLoadResult', res.data)
+        this.fileUrl = []
+        this.fileUrl.push(res.data[0].url)
         this.panel = false
         this.$refs.upLoadBtn.value = '' // 清除变化
         this.cropper.reset()
@@ -158,8 +161,10 @@ export default {
     this.cropper = new Cropper(image, {
       cropBoxResizable: false,
       checkCrossOrigin: false,
+      cropBoxMovable: false,
       aspectRatio: 1,
-      viewMode: 0,
+      viewMode: 1,
+      dragMode: 'move',
       initialAspectRatio: 200,
       background: false,
       minCropBoxWidth: 650,

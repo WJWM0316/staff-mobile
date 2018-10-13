@@ -28,6 +28,12 @@ const routers = [
     name: 'resetPassword',
     meta: { title: '修改密码' },
     component: resolve => require(['@/views/center/resetPassword'], resolve)
+  },
+  {
+    path: '/message',
+    name: 'message',
+    meta: { title: '消息通知' },
+    component: resolve => require(['@/views/center/message'], resolve)
   }
 ]
 
