@@ -11,7 +11,7 @@
           @touchmove.stop.prevent="touchmove"
           @touchstart.stop.prevent="touchstart"
           @touchend.stop.prevent="touchend"
-          currentTime="3"
+          :currentTime="parseInt(currentTime)"
           :class="{'start': progress === 0, 'end': progress === 100, 'cursor': operation}"
         ></div>
       </div>
@@ -81,7 +81,7 @@ export default {
     ...mapState({
       audioCurId: state => state.global.audioCurId
     }),
-    isCurAudio () {
+    isCurAudio () { // 判断播放的是否当前audio
       return this.audioCurId === this.messageData.file.id
     }
   },
@@ -93,7 +93,9 @@ export default {
       this.startX = e.changedTouches[0].clientX
     },
     touchmove (e) {
+      if (!this.audio.src) return
       this.moveX = e.changedTouches[0].clientX - this.offsetX
+      if (this.moveX > this.length) this.moveX = this.length
       this.progress = this.moveX / this.length * 100
       this.currentTime = this.progress * 0.01 * this.audio.duration
       this.operation = true
@@ -102,15 +104,17 @@ export default {
       if (this.progress > 100) this.progress = 100
     },
     touchend (e) {
+      if (!this.audio.src) return
       this.operation = false
       this.moveX = e.changedTouches[0].clientX - this.offsetX
+      if (this.moveX > this.length) this.moveX = this.length
       this.progress = this.moveX / this.length * 100
       this.audio.currentTime = this.progress * 0.01 * this.audio.duration
       this.audio.play()
     },
     play () {
-      if (this.audio.paused) {
-        if (!this.audio.src) {
+      let playFun = () => {
+        if (!this.audio.src || !this.isCurAudio) {
           this.audio.src = this.messageData.file.url
         }
         // 消除红点
@@ -121,12 +125,19 @@ export default {
           setTimeout(() => {
             this.updata_audioCurId(this.messageData.file.id)
             this.audio.play()
-          }, 100)
+          }, 200)
         } catch (e) {
           this.audio.play()
         }
+      }
+      if (!this.isCurAudio) {
+        playFun()
       } else {
-        this.audio.pause()
+        if (this.audio.paused) {
+          playFun()
+        } else {
+          this.audio.pause()
+        }
       }
     }
   },
@@ -150,7 +161,10 @@ export default {
     }, false)
     // 播放阶段
     this.audio.addEventListener('timeupdate', () => {
-      if (!this.isCurAudio) return
+      if (!this.isCurAudio) {
+        this.status = 0
+        return
+      }
       if (this.status !== 2) {
         this.status = 2
       }
@@ -159,9 +173,9 @@ export default {
     }, false)
     // 暂停监听
     this.audio.addEventListener('pause', () => {
-      if (!this.isCurAudio) return
-      this.status = 0
-      this.isReadEnded = true
+      if (this.isCurAudio) {
+        this.status = 0
+      }
     }, false)
     // 结束监听
     this.audio.addEventListener('ended', () => {
@@ -170,6 +184,7 @@ export default {
       if (this.audioList.length - 1 > this.curIndex) {
         this.$emit('nextMusic', this.audioList[this.curIndex + 1].index)
       }
+      this.isReadEnded = true
     }, false)
   }
 }

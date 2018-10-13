@@ -126,7 +126,8 @@ export default {
     cancel () {
       this.panel = false
       this.$refs.upLoadBtn.value = '' // 清除变化
-      this.$refs.reset()
+      this.fileUrl = []
+      this.cropper.reset()
     },
     // 截图
     commit () {
@@ -146,7 +147,7 @@ export default {
         this.$emit('upLoadResult', res.data)
         this.panel = false
         this.$refs.upLoadBtn.value = '' // 清除变化
-        this.$refs.reset()
+        this.cropper.reset()
       })
     }
   },
@@ -180,7 +181,6 @@ export default {
   .upLoadImg {
     width: 100%;
     height: 100%;
-    background: #000;
     position: relative;
     .upLoadBtn {
       width: 100%;
