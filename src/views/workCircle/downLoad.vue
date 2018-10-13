@@ -2,33 +2,43 @@
   <div class="downLoad">
     <div class="monthTitle" v-if="type === 1">
       <span>{{month}}</span>
-      <span class="selectPic" v-if="type === 1">多选</span>
+      <span class="selectPic" v-if="type === 1" @click.stop="selectPic">多选<span v-if="showSelect">({{selectPicList.length}})</span></span>
     </div>
     <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
     <!--图片-->
-    <div class="picBox" v-for="(picItem, index) in nowFileList" :key="index" v-if="type === '1'">
+    <div class="picBox" v-for="(picItem, index) in nowFileList" :key="index" v-if="type === 1" @click.stop="isSelect(picItem)">
+      <div class="chooseImg" v-if="showSelect" :class="{'isChoose': picItem.chooseIndex}"><img v-if="picItem.chooseIndex" src="@/assets/icon/photo_selected@3x.png" /></div>
       <img class="picItem" v-lazyload :src="picItem.fileInfo.smallUrl" />
     </div>
-    <!--文件-->
-    <div class="fileItemBox" v-for="(fileItem, index) in nowFileList" :key="index" v-if="type === '2'">
-      <div class="fileTitle" v-if="fileItem.needShowTitle">{{fileItem.month}}</div>
-      <div class="fileItemHeader">
-        <div><img class="headerPhoto" :src="fileItem.avatarInfo.smallUrl"/><span>{{fileItem.realname}}</span></div>
-        <div>{{fileItem.createdDay}}</div>
+    <!--文件和链接-->
+    <template v-if="type === 2 || type === 3">
+      <div class="fileItemBox" v-for="(fileItem, index) in nowFileList" :key="index">
+        <div class="fileTitle" v-if="fileItem.needShowTitle">{{fileItem.month}}</div>
+        <div class="fileItemHeader">
+          <div><img class="headerPhoto" :src="fileItem.avatarInfo.smallUrl"/><span>{{fileItem.realname}}</span></div>
+          <div>{{fileItem.createdDay}}</div>
+        </div>
+        <!--文件-->
+        <file-box v-if="type === 2" :item="fileItem.fileInfo" :isFile="isFile" :fileType='fileItem.fileType'></file-box>
+        <!--链接-->
+        <file-box v-if="type === 3" :item="fileItem" :isFile="isFile" :fileType='fileItem.fileType'></file-box>
       </div>
-      <file-box :item="fileItem.fileInfo" :isFile="isFile" :fileType='fileItem.fileType'></file-box>
-    </div>
+    </template>
     <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+    <nodata-box v-if="nowFileList.length === 0"></nodata-box>
+    <div class="saveBtn" v-if="showSelect" @click.stop="savePic">保存到本地相册</div>
   </div>
 </template>
 
 <script>
-import { getPictureApi, getFilesApi } from '@/api/pages/workCircle'
+import { getPictureApi, getFilesApi, getUrlsApi } from '@/api/pages/workCircle'
 import fileBox from '@c/functional/fileBox'
+import nodataBox from '@c/business/nodataBox'
 export default {
   name: 'fileDownLoad',
   components: {
-    fileBox
+    fileBox,
+    nodataBox
   },
   props: {
     item: {
@@ -42,14 +52,14 @@ export default {
       nowPage: 1, // 当前页码
       isLastPage: false, // 是否最后一页
       all: {
-        list: [],
-        page: 1,
         noData: false,
         pullUpStatus: false
       },
       type: 1, // 1:相册，2：文件，3：链接，默认进入的是相册下载
       isFile: '', // 是否文件
-      fileType: '' // 文件的类型xml，或者其他
+      fileType: '', // 文件的类型xml，或者其他
+      showSelect: false, // 是否展示图片选择圈
+      selectPicList: [] // 选中的图片列表
     }
   },
   methods: {
@@ -69,18 +79,25 @@ export default {
         this.nowFileList.push(...res.data)
       }
     },
-    /* 请求文件列表 */
+    /* 请求文件列表 或链接列表 */
     async getFiles (needLoading) {
       let param = {
         id: this.$route.query.id,
         page: this.nowPage,
         count: 20
       }
-      let res = await getFilesApi(param, needLoading)
+      let res = {}
+      if (this.type === 2) {
+        res = await getFilesApi(param, needLoading)
+      } else {
+        res = await getUrlsApi(param, needLoading)
+      }
       res.data.map((item, index) => {
-        let result = item.fileInfo.fileName.match(/\.[^\.]+/)
-        item.fileType = result[0]
-        if (index === 0 || item.month === res.data[index + 1].month) {
+        if (this.type === 2) {
+          let result = item.fileInfo.fileName.match(/\.[^\.]+/)
+          item.fileType = result[0]
+        }
+        if (index === 0 || (index > 0 && item.month === res.data[index - 1].month)) {
           item.needShowTitle = true
         } else {
           item.needShowTitle = false
@@ -93,19 +110,18 @@ export default {
       } else {
         this.nowFileList.push(...res.data)
       }
-      console.log(this.nowFileList)
     },
     /* 分类请求 type：1为相册，2为文件，3为链接 */
-    async classifyPost (needLoading) {
-      this.type = await this.$route.query.type
-      if (this.type === '1') {
+    classifyPost (needLoading) {
+      if (this.type === 1) {
         this.month = this.$route.query.item
         this.getPicture(needLoading)
-      } else if (this.type === '2') {
+      } else if (this.type === 2) {
         this.isFile = true
         this.getFiles(needLoading)
       } else {
         this.isFile = false
+        this.getFiles(needLoading)
       }
     },
     init () {
@@ -126,9 +142,76 @@ export default {
         await this.getPicture(false)
         this.all.pullUpStatus = false
       }
+    },
+    /* 激活选择图片 */
+    selectPic () {
+      this.showSelect = !this.showSelect
+    },
+    /* 选择图片 */
+    isSelect (pic) {
+      if (!this.showSelect) return
+      let isListIndex = ''
+      this.selectPicList.forEach((item, index) => {
+        if (pic.id === item.id) {
+          isListIndex = index
+        }
+      })
+      isListIndex !== '' ? this.selectPicList.splice(isListIndex, 1) : this.selectPicList.push(pic)
+      this.nowFileList.forEach((item, index) => {
+        if (item.id === pic.id) {
+          item.chooseIndex = true
+        }
+      })
+    },
+    /* 保存图片 */
+    savePic () {
+      this.selectPicList.forEach((item, index) => {
+        let img = new Image();
+        img.src = item.fileInfo.url
+        img.setAttribute('crossOrigin', 'anonymous');
+        img.addEventListener('load', (e) => {
+          let base64 = this.getBase64Image(img);
+          console.log(base64, ' 1111111 ');
+        })
+        let a = document.createElement('a')
+        // 创建一个单击事件
+        let event = new MouseEvent('click')
+        // 将a的download属性设置为我们想要下载的图片名称，若name不存在则使用‘下载图片名称’作为默认名称
+        a.download = item.fileInfo.fileName || '下载图片'
+        // 将生成的URL设置为a.href属性
+        a.href = item.fileInfo.url
+        // 触发a的单击事件
+//      a.dispatchEvent(event)
+       
+       
+        /*const xhr = new XMLHttpRequest();
+        xhr.open('GET', item.fileInfo.url, true);
+        xhr.responseType = 'blob';
+        xhr.setRequestHeader('Authorization', 'Basic a2VybWl0Omtlcm1pdA==');
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            // 获取图片blob数据并保存
+            saveAs(xhr.response, item.fileInfo.fileName);
+          }
+        };
+        xhr.send();*/
+      })
+    },
+    getBase64Image (img) {
+      var canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      console.log(img)
+      canvas.height = img.height;
+      var ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+      var ext = img.src.substring(img.src.lastIndexOf(".")+1).toLowerCase();
+      console.log(canvas)
+      var dataURL = canvas.toDataURL("image/jpeg");
+      return dataURL;
     }
   },
   created () {
+    this.type = parseInt(this.$route.query.type)
     this.init()
   }
 }
@@ -159,6 +242,23 @@ export default {
       margin-left: 3px;
       margin-bottom: 3px;
     }
+    .chooseImg{
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      width: 21px;
+      height: 21px;
+      z-index: 10;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+      border: 1px solid #FFFFFF;
+    }
+    .isChoose{
+      text-align: center;
+      background: #FFE266;
+      font-size: 28px;/*px*/
+      color: #354048;
+    }
   }
   .fileItemBox{
     padding: 0 20px;
@@ -183,5 +283,17 @@ export default {
       line-height: 50px;
       border-bottom: 1px solid #EEEEEE;/*px*/
     }
+  }
+  .saveBtn{
+    width: 100%;
+    height: 49px;
+    line-height: 49px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    background: #FFE266;
+    font-size: 30px;/*px*/
+    color: #354048;
   }
 </style>
