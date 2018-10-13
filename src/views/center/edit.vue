@@ -3,7 +3,7 @@
     <div class="item border-bottom-1px">
       <span class="txt">头像</span>
       <span class="editBox">
-        <upLoadFile class="photo"
+        <upLoadFile class="photo defaultImg"
           :imgUrl="pageInfo.avatar.smallUrl"
           attach_type="avatar"
           @upLoadResult="upLoadResult"
@@ -135,7 +135,8 @@ export default {
             text: '保存成功',
             type: 'success',
             callBack: () => {
-              history.back()
+              this.$router.replace('/infoEdit')
+              // history.back()
             }
           })
         })

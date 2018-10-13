@@ -192,7 +192,6 @@ export default {
       let cardList = await this.getCourseCardListApi(id)
       this.communityCourse = res.data
       if (res.data.av && res.data.av.attachType === 'audio') {
-        res.data.av.path = res.data.av.url
         this.audioList = res.data.av
       }
       this.peopleCourseCardList = cardList.data.peopleCourseCardList

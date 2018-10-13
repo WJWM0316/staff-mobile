@@ -11,7 +11,7 @@
           @touchmove.stop.prevent="touchmove"
           @touchstart.stop.prevent="touchstart"
           @touchend.stop.prevent="touchend"
-          currentTime="3"
+          :currentTime="parseInt(currentTime)"
           :class="{'start': progress === 0, 'end': progress === 100, 'cursor': operation}"
         ></div>
       </div>
@@ -73,13 +73,15 @@ export default {
   },
   watch: {
     audioList () {},
-    messageData () {}
+    messageData () {},
+    audioCurId (val) {
+    }
   },
   computed: {
     ...mapState({
       audioCurId: state => state.global.audioCurId
     }),
-    isCurAudio () {
+    isCurAudio () { // 判断播放的是否当前audio
       return this.audioCurId === this.messageData.file.id
     }
   },
@@ -91,7 +93,9 @@ export default {
       this.startX = e.changedTouches[0].clientX
     },
     touchmove (e) {
+      if (!this.audio.src) return
       this.moveX = e.changedTouches[0].clientX - this.offsetX
+      if (this.moveX > this.length) this.moveX = this.length
       this.progress = this.moveX / this.length * 100
       this.currentTime = this.progress * 0.01 * this.audio.duration
       this.operation = true
@@ -100,40 +104,45 @@ export default {
       if (this.progress > 100) this.progress = 100
     },
     touchend (e) {
+      if (!this.audio.src) return
       this.operation = false
       this.moveX = e.changedTouches[0].clientX - this.offsetX
+      if (this.moveX > this.length) this.moveX = this.length
       this.progress = this.moveX / this.length * 100
       this.audio.currentTime = this.progress * 0.01 * this.audio.duration
       this.audio.play()
     },
     play () {
-      if (this.audio.paused) {
-        if (!this.audio.src) {
-          this.audio.src = this.messageData.path || this.messageData.file.url
+      let playFun = () => {
+        if (!this.audio.src || !this.isCurAudio) {
+          this.audio.src = this.messageData.file.url
         }
         // 消除红点
         if (this.isReaded) {
           this.isReaded = false
         }
-        this.updata_audioCurId(this.messageData.file.id)
-        if (browser.isWechat()) {
-          // this.audio.play()
-          this.audio.play()
-          // document.addEventListener("WeixinJSBridgeReady", function () {
-          //   alert(111111)
-          //   this.audio.play()
-          // }, false)
-        } else {
+        try {
+          setTimeout(() => {
+            this.updata_audioCurId(this.messageData.file.id)
+            this.audio.play()
+          }, 200)
+        } catch (e) {
           this.audio.play()
         }
+      }
+      if (!this.isCurAudio) {
+        playFun()
       } else {
-        this.audio.pause()
+        if (this.audio.paused) {
+          playFun()
+        } else {
+          this.audio.pause()
+        }
       }
     }
   },
   mounted () {
     if (!window.audio) window.audio = new Audio()
-    console.log(this.isCurAudio, 11111111111)
     this.audio = window.audio
     this.audioList.filter((item, index) => {
       if (this.messageData.messageId === item.messageId) {
@@ -152,7 +161,10 @@ export default {
     }, false)
     // 播放阶段
     this.audio.addEventListener('timeupdate', () => {
-      if (!this.isCurAudio) return
+      if (!this.isCurAudio) {
+        this.status = 0
+        return
+      }
       if (this.status !== 2) {
         this.status = 2
       }
@@ -161,9 +173,9 @@ export default {
     }, false)
     // 暂停监听
     this.audio.addEventListener('pause', () => {
-      if (!this.isCurAudio) return
-      this.status = 0
-      this.isReadEnded = true
+      if (this.isCurAudio) {
+        this.status = 0
+      }
     }, false)
     // 结束监听
     this.audio.addEventListener('ended', () => {
@@ -172,6 +184,7 @@ export default {
       if (this.audioList.length - 1 > this.curIndex) {
         this.$emit('nextMusic', this.audioList[this.curIndex + 1].index)
       }
+      this.isReadEnded = true
     }, false)
   }
 }

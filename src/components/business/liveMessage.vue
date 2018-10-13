@@ -1,5 +1,5 @@
 <template>
-  <div class="live-message">
+  <div class="live-message" v-if="messageData">
     <div class="avatar">
       <img :src="messageData.avatar && messageData.avatar.smallUrl">
     </div>
@@ -10,6 +10,7 @@
         v-if="messageData.type === 'audio'"
         :messageData="messageData"
         :audioList="audioList"
+        :key="messageData.messageId"
         @nextMusic='nextMusic'
       ></audio-message>
     </div>

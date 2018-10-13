@@ -53,6 +53,13 @@ const routers = [
     name: 'fileDownLoad',
     meta: { title: '下载文件' },
     component: resolve => require(['@/views/workCircle/downLoad'], resolve)
+  },
+  /* 搜索页面 */
+  {
+    path: '/search',
+    name: 'search',
+    meta: { title: '搜索' },
+    component: resolve => require(['@/views/workCircle/search'], resolve)
   }
 ]
 

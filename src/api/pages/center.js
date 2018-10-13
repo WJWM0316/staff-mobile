@@ -67,6 +67,15 @@ export const getUserPostListApi = (data, needLoading) => {
     needLoading: needLoading
   })
 }
+// 消息通知列表
+export const getMessageListApi = (data, needLoading) => {
+  return request({
+    type: 'get',
+    url: `/my/notes`,
+    data,
+    needLoading: needLoading
+  })
+}
 
 
 
