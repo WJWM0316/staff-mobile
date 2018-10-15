@@ -3,7 +3,7 @@
   <div class="all-reply">
     <!-- header -->
     <div class="header">
-      <discuss-item :item="discussInfo" :isShowBorder="false" @disableOperationEvents="operation"></discuss-item>
+      <discuss-item :item="discussInfo" :isShowBorder="false" :isCourse="isCourse" @disableOperationEvents="operation"></discuss-item>
     </div>
     <!-- container -->
     <div class="container">
@@ -13,7 +13,17 @@
           <span @click="toggle('praise')">点赞({{discussInfo.favorCount}})</span>
         </div>
       </div>
-      <discuss-item v-for="(reply,index) in replyList" :key="index" :item="reply" :isShowBorder="index === replyList.length-1? false : true" @disableOperationEvents="operation"></discuss-item>
+      <template v-if="navTabName === 'comment'">
+        <discuss-item v-for="(reply, index) in replyList" :key="index" :item="reply" :isShowBorder="index === replyList.length-1? false : true" @disableOperationEvents="operation"></discuss-item>
+      </template>
+      <template v-else>
+        <div class="content-praise" v-for="(favorItem, index) in favorList" :key="index">
+          <classmate-item :item="favorItem"></classmate-item>
+          <div v-if="discussInfo.favorCount === 0">
+            <p class="community-empty-desc">成为第一个点赞的人吧~</p>
+          </div>
+        </div>
+      </template>
     </div>
       <!--<div class="ask-box {{isShowPumpBtn ? 'show' : ''}}">-->
       <!--<div class="user-input">-->
@@ -43,13 +53,16 @@
 </template>
 <script>
 import discussItem from '@c/business/discussItem'
+import classmateItem from '@c/business/classmateItem'
 import suspensionInput from '@c/functional/suspensionInput'
-import { getFavorApi, delFavorApi, courseCardCommentApi, getCommentDetailApi, getReplyListApi } from '@/api/pages/course'
+import { getFavorApi, delFavorApi, courseCardCommentApi, getCommentDetailApi, getReplyListApi, getFavorListApi } from '@/api/pages/course'
+import { getCircleCommentDetailApi, getCircleCommentListlApi, circleCommentApi, commonFavorListApi } from '@/api/pages/workCircle'
 export default {
   name: 'all-reply',
   components: {
     discussItem,
-    suspensionInput
+    suspensionInput,
+    classmateItem
   },
   data () {
     return {
@@ -63,7 +76,10 @@ export default {
       displaySuspensionInput: true,
       navTabName: 'comment',
       replyId: '', // 当前回复id
-      nowReplyListPage: 1 // 二级评论当前页数
+      nowReplyListPage: 1, // 二级评论当前页数
+      isCourse: true, // 是否课程评论详情
+      favorList: [], // 点赞列表
+      favorPges: 1 // 点赞列表翻页
     }
   },
   computed: {},
@@ -74,16 +90,24 @@ export default {
   },
   methods: {
     async pageInit () {
+      this.$route.query.isCourse === 'false' ? this.isCourse = false : this.isCourse = true
+      console.log(this.$route)
       await this.getCommentDetail()
       await this.getReplyList()
     },
     /* 获取一级评论详情 */
     async getCommentDetail () {
       const { id } = this.$route.query
-      let res = await getCommentDetailApi(id)
+      console.log(this.isCourse)
+      let res = {}
+      if (this.isCourse) {
+        res = await getCommentDetailApi(id)
+      } else {
+        res = await getCircleCommentDetailApi(id)
+      }
       this.discussInfo = res.data
     },
-    /* 获取二级评论 */
+    /* 获取二级评论列表 */
     async getReplyList () {
       let param = {
         id: this.discussInfo.id,
@@ -91,8 +115,29 @@ export default {
         count: 20,
         sort: 'desc'
       }
-      let res = await getReplyListApi(param)
+      let res = {}
+      if (this.isCourse) {
+        res = await getReplyListApi(param)
+      } else {
+        res = await getCircleCommentListlApi(param)
+      }
       this.replyList = res.data
+    },
+    /* 获取点赞列表 */
+    async getFavorList () {
+      let param = {
+        sourceId: this.discussInfo.id,
+        sourceType: 'course_section_card_comment',
+        page: this.favorPges
+      }
+      let res = {}
+      if (this.isCourse) {
+        res = await getFavorListApi(param)
+      } else {
+        param.sourceType = 'job_circle_comment'
+        res = await commonFavorListApi(param)
+      }
+      this.favorList.push(...res.data)
     },
     /* 组件触发的事件 */
     operation (e) {
@@ -124,24 +169,35 @@ export default {
     async del () {},
     /* 发送评论 */
     async sendComment ({value, commentIndex}) {
-      const params = {
-        sourceId: this.replyId, // 对应打卡或评论的id
-        sourceType: 'course_section_card_comment', // 对应评论类型是打卡或是回复评论
-        content: value // 评论内容
-      }
-      courseCardCommentApi(params).then(res => {
+      this.putComment(value).then(res => {
         this.discussInfo.commentCount += 1
         this.getReplyList()
         this.$toast({text: '评论成功', type: 'success'})
       }).catch(e => {
         this.$toast({text: '评论失败'})
       })
-      console.log(' 已经发送 ')
+    },
+    /* 评论一级评论 */
+    putComment (value) {
+      let params = {
+        sourceId: this.replyId, // 对应打卡或评论的id
+        sourceType: 'course_section_card_comment', // 对应评论类型是打卡或是回复评论
+        content: value // 评论内容
+      }
+      if (this.isCourse) {
+        return courseCardCommentApi(params)
+      } else { // 工作圈
+        params.sourceType = 'job_circle_comment'
+        return circleCommentApi(params)
+      }
     },
     /* 切换nav */
     toggle (targetName) {
       if (this.navTabName !== targetName) {
         this.navTabName = targetName
+      }
+      if (this.navTabName === 'praise' && this.discussInfo.favorCount > 0 && this.favorList.length === 0) {
+        this.getFavorList()
       }
     }
   },

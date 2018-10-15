@@ -102,7 +102,8 @@ export const attachesApi = (data, config) => {
 // 打卡点赞列表
 export const getFavorListApi = (data) => {
   return request({
-    url: `/coursesectioncard/favor/postFavorUsers/1?page=${data.page}`,
+    url: `/coursesectioncard/commonFavorUsers/${data.sourceId}`,
+    data,
     type: 'get'
   })
 }

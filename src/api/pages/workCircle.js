@@ -197,3 +197,18 @@ export const getUrlsApi = (data, needLoading) => {
     needLoading: needLoading
   })
 }
+/* 获取一条一级评论 */
+export const getCircleCommentDetailApi = (data) => {
+  return request({
+    url: `/jobcircle/comment/${data}`,
+    type: 'get'
+  })
+}
+/* 获取二级评论列表 */
+export const getCircleCommentListlApi = (data) => {
+  return request({
+    url: `/jobcircle/comment/replyList/${data.id}`,
+    data,
+    type: 'get'
+  })
+}
