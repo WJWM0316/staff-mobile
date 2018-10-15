@@ -22,10 +22,10 @@
       <!--工作圈图片-->
       <div class="content-images" v-if="item.type === '图片'" v-preview="openPreview">
         <div class="item-image one" v-if="item.accessory.length === 1">
-          <img :src="item.accessory[0].smallUrl || '../../assets/icon/img_head_default.png'" v-preview='true'/>
+          <img :src="item.accessory[0].url || '../../assets/icon/img_head_default.png'" v-preview='true'/>
         </div>
         <div class="item-image" v-for="(item,index) in item.accessory" :key="index" v-else>
-          <img :src="item.smallUrl || '../../assets/icon/img_head_default.png'" />
+          <img :src="item.url || '../../assets/icon/img_head_default.png'" />
         </div>
       </div>
       <!--视频-->
@@ -251,7 +251,7 @@ export default {
     /* 编辑 */
     edit () {
       if (this.isCourse) {
-        this.$router.push({path: '/punchEdit', query: {id: this.item.courseSectionCardId}})
+        this.$router.push({path: '/punchEdit', query: {id: this.item.courseSectionId}})
       } else {
         delCirclePostApi(this.item.id).then(res => {
           this.$toast({text: '删除帖子成功', type: 'success'})

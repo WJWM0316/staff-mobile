@@ -166,13 +166,6 @@ export default {
     /* 保存图片 */
     savePic () {
       this.selectPicList.forEach((item, index) => {
-        let img = new Image()
-        img.src = item.fileInfo.url
-        img.setAttribute('crossOrigin', 'anonymous')
-        img.addEventListener('load', (e) => {
-          let base64 = this.getBase64Image(img)
-          console.log(base64, ' 1111111 ')
-        })
         let a = document.createElement('a')
         // 创建一个单击事件
         let event = new MouseEvent('click')
@@ -183,18 +176,6 @@ export default {
         // 触发a的单击事件
         a.dispatchEvent(event)
       })
-    },
-    getBase64Image (img) {
-      var canvas = document.createElement(' canvas ')
-      canvas.width = img.width
-      console.log(img)
-      canvas.height = img.height
-      var ctx = canvas.getContext(' 2d ')
-      ctx.drawImage(img, 0, 0, img.width, img.height)
-      var ext = img.src.substring(img.src.lastIndexOf(' . ') + 1).toLowerCase()
-      console.log(canvas)
-      var dataURL = canvas.toDataURL(' image/jpeg ')
-      return dataURL
     }
   },
   created () {

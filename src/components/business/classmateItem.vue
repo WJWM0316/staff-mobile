@@ -1,5 +1,5 @@
 <template>
-  <div class="classmateItem" v-if="item">
+  <div class="classmateItem" v-if="item" @click.stop="toPersonPage">
     <div class="userInfo-img">
       <img class="headImg" v-lazyload :src="item.avatarInfo.smallUrl || '@a/icon/default.png'">
     </div>
@@ -28,6 +28,11 @@ export default {
   },
   data () {
     return {
+    }
+  },
+  methods: {
+    toPersonPage () {
+      this.$router.push({path: '/personalPage', query: {uid: this.item.id}})
     }
   }
 }

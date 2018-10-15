@@ -36,17 +36,15 @@ export const getCircleClassfyApi = (data) => {
 /* 置顶工作圈 */
 export const putStickApi = (data) => {
   return request({
-    url: `/jobcircle/stick`,
-    type: 'put',
-    data: data
+    url: `/jobcircle/stick?id=${data}`,
+    type: 'put'
   })
 }
 /* 取消置顶工作圈 */
 export const putNostickApi = (data) => {
   return request({
-    url: `/jobcircle/nostick`,
-    type: 'put',
-    data: data
+    url: `/jobcircle/nostick?id=${data}`,
+    type: 'put'
   })
 }
 /* 关注工作圈 */
@@ -125,17 +123,15 @@ export const commonFavorListApi = (data) => {
 /* 点赞评论或帖子 */
 export const circleCommonFavorApi = (data) => {
   return request({
-    url: `/jobcircle/commonFavor/${data.sourceId}`,
-    type: 'put',
-    data: data
+    url: `/jobcircle/commonFavor/${data.sourceId}?sourceType=${data.circleSourceType}`,
+    type: 'put'
   })
 }
 /* 评论或帖子取消点赞 */
 export const delCircleCommonFavorApi = (data) => {
   return request({
-    url: `/jobcircle/commonFavor/${data.sourceId}`,
-    type: 'delete',
-    data: data
+    url: `/jobcircle/commonFavor/${data.sourceId}?sourceType=${data.circleSourceType}`,
+    type: 'delete'
   })
 }
 /* 删除评论 */

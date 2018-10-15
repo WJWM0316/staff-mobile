@@ -5,7 +5,7 @@
       <span class="txt">塔主</span>
     </div>
     <classmateItem v-for="(item, index) in teacherList" :key="'teacher'+index" :item="item"></classmateItem>
-    <div class="title" v-if="teacherList.length > 0">
+    <div class="title" v-if="excellentList.length > 0">
       <i class="icon iconfont icon-icon_list_gm"></i>
       <span class="txt">优秀成员</span>
       <i class="icon iconfont icon-btn_inf_outstanding" @click.stop="showMask"></i>
