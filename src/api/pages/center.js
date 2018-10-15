@@ -58,6 +58,15 @@ export const getMyPostListApi = (data, needLoading) => {
     needLoading: needLoading
   })
 }
+// 获取用户的帖子列表
+export const getUserPostListApi = (data, needLoading) => {
+  return request({
+    type: 'get',
+    url: `/user/${data.uid}/posts`,
+    data,
+    needLoading: needLoading
+  })
+}
 
 // Ta的课程
 export const getTaCourseApi = (data, needLoading) => {
@@ -69,7 +78,7 @@ export const getTaCourseApi = (data, needLoading) => {
   })
 }
 // Ta的直播
-export const getUserPostListApi = (data, needLoading) => {
+export const getTaLiveApi = (data, needLoading) => {
   return request({
     type: 'get',
     url: `/user/${data.uid}/lives`,

@@ -1,5 +1,5 @@
 <template>
-  <div class="aduio" :class="{'isRead': isReaded && !isLesson, 'isReadEnd': isReadEnded}"  @click.stop="play">
+  <div class="aduio" :class="{'isRead': !isReaded && !isLesson, 'isReadEnd': !isReadEnded}"  @click.stop="play">
     <div class="playBtn" :class="{'lessonPlayBtn': isLesson}">
       <img src="@a/icon/playing.png" v-show="status === 0">
       <img src="@a/icon/music_loading.png" class="load" v-show="status === 1">
@@ -63,8 +63,8 @@ export default {
       startX: 0,
       moveX: 0,
       endX: 0,
-      isReaded: this.isRead,
-      isReadEnded: this.isReadEnd,
+      isReaded: this.messageData.isView, // 0 未读 1已读
+      isReadEnded: this.messageData.listenStatus, // 0未播完 1播完
       operation: false,
       currentTime: 0, // 当前播放进度
       duration: 0, // 音频时长
@@ -95,6 +95,9 @@ export default {
     touchmove (e) {
       if (!this.audio.src) return
       this.moveX = e.changedTouches[0].clientX - this.offsetX
+      if (this.moveX < 0) {
+        this.moveX = 0
+      }
       if (this.moveX > this.length) this.moveX = this.length
       this.progress = this.moveX / this.length * 100
       this.currentTime = this.progress * 0.01 * this.audio.duration
@@ -106,10 +109,7 @@ export default {
     touchend (e) {
       if (!this.audio.src) return
       this.operation = false
-      this.moveX = e.changedTouches[0].clientX - this.offsetX
-      if (this.moveX > this.length) this.moveX = this.length
-      this.progress = this.moveX / this.length * 100
-      this.audio.currentTime = this.progress * 0.01 * this.audio.duration
+      this.audio.currentTime = parseInt(this.progress * 0.01 * this.audio.duration) // 取整防止超过音频本身的时长重新播放
       this.audio.play()
     },
     play () {
@@ -118,8 +118,8 @@ export default {
           this.audio.src = this.messageData.file.url
         }
         // 消除红点
-        if (this.isReaded) {
-          this.isReaded = false
+        if (!this.isReaded) {
+          this.isReaded = true
           this.$emit('removeRed')
         }
         try {
@@ -182,11 +182,14 @@ export default {
     this.audio.addEventListener('ended', () => {
       if (!this.isCurAudio) return
       this.status = 0
-      this.$emit('endAudio')
       if (this.audioList.length - 1 > this.curIndex) {
         this.$emit('nextMusic', this.audioList[this.curIndex + 1].index)
       }
-      this.isReadEnded = true
+      // 播放完毕
+      if (!this.isReadEnded) {
+        this.$emit('endAudio')
+        this.isReadEnded = true
+      }
     }, false)
   }
 }

@@ -1,7 +1,6 @@
 <template>
   <div class="search">
     <search
-      @on-change="getResult"
       v-model="value"
       position="absolute"
       auto-scroll-to-top
@@ -20,11 +19,18 @@
             </div>
           </div>
        </div>
-      </search>
+    </search>
+    <div class="history" v-if="!value && showHistory.list.length > 0">
+      <div class="title border-bottom-1px">历史搜索<i class="icon"><img @click.stop="remove" src="@a/icon/search_btn_delete@3x.png" alt=""></i></div>
+      <div class="historyList">
+        <span class="item" v-for="(n, index) in showHistory.list" :key="index" @click.stop="getHistory(n)">{{n}}</span>
+      </div>
+    </div>
   </div>
 </template>
 <script>
-import {searchApi} from '@/api/pages/workCircle'
+import {getPostlistApi} from '@/api/pages/workCircle'
+import localstorage from '@u/localstorage'
 import { Search } from 'vux'
 export default {
   components: {
@@ -34,24 +40,72 @@ export default {
     return {
       value: null,
       id: this.$route.query.id,
-      results: null
+      results: null,
+      historyList: [
+        {
+          list: []
+        }
+      ], // 所有历史记录
+      historyIndex: 0, // 当前的历史记录index
+      timer: null // 定时器
     }
   },
   computed: {
+    showHistory () {
+      return this.historyList[this.historyIndex]
+    }
+  },
+  watch: {
+    value () {
+      this.getResult(300)
+    }
   },
   methods: {
+    remove () {
+      localstorage.remove('historyList')
+      this.historyList = []
+    },
     resultClick (id) {
+      // && this.historyList[this.historyIndex].list.indexOf(this.value) === -1
+      if (this.value) {
+        console.log(this.historyList, this.historyList[this.historyIndex])
+        this.historyList[this.historyIndex].list.unshift(this.value)
+        if (this.historyList[this.historyIndex].list.length > 6) {
+          this.historyList[this.historyIndex].list.pop()
+        }
+        if (!this.historyList[this.historyIndex].hasOwnProperty('circleId')) {
+          this.historyList[this.historyIndex].circleId = this.id
+        }
+        localstorage.set('historyList', this.historyList)
+      }
       this.$router.push(`/postDetail?id=${id}`)
     },
-    async getResult () {
-      let data = {
-        id: this.id,
-        keyword: this.value
-      }
-      let res = await searchApi(data)
-      this.results = res.data
+    getHistory (n) {
+      this.value = n
+      this.$refs.search.setFocus()
+    },
+    getResult (time) {
+      if (!this.value) return
+      window.clearTimeout(this.timer)
+      this.timer = window.setTimeout(() => {
+        let data = {
+          id: this.id,
+          keyword: this.value
+        }
+        let res = getPostlistApi(data, false).then(res => {
+          this.results = res.data
+        })
+      }, time)
     },
     onCancel () {}
+  },
+  created () {
+    this.historyList = localstorage.get('historyList') || [{list: []}]
+    this.historyList.forEach((item, index) => {
+      if (item.circleId === this.id) {
+        this.historyIndex = index || 0
+      }
+    })
   }
 }
 </script>
@@ -90,6 +144,41 @@ export default {
             display: block;
           }
         }
+      }
+    }
+  }
+  .history {
+    padding: 0 20px;
+    .title {
+      font-size: 28px; /*px*/
+      font-weight: 400;
+      color: #354048;
+      line-height: 18px;
+      padding-top: 23px;
+      padding-bottom: 8px;
+      .icon {
+        width: 16px;
+        height: 16px;
+        float: right;
+        img {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+      }
+    }
+    .historyList {
+      margin: 15px 0 0;
+      font-size: 0; /*px*/
+      .item {
+        padding: 0 15px;
+        font-size: 28px; /*px*/
+        color: #BCBCBC;
+        margin: 0 15px 12px 0;
+        background: #F8F8F8;
+        line-height: 32px;
+        border-radius: 3px;
+        display: inline-block;
       }
     }
   }

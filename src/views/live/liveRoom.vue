@@ -84,7 +84,7 @@ import ws from '@u/websocket'
 import liveMessage from '@c/business/liveMessage'
 import questionArea from '@c/business/questionArea'
 import { mapState, mapActions } from 'vuex'
-import { getLiveRoomMsgApi, putQuestionsApi, sendLiveMsgApi } from '@/api/pages/live'
+import { getLiveRoomMsgApi, putQuestionsApi, sendLiveMsgApi, msgPositionApi } from '@/api/pages/live'
 let onMessage = null
 export default {
   components: {
@@ -263,12 +263,6 @@ export default {
       let data = obj.detail
       // 登录和退出登录逻辑
       if (data.hasOwnProperty('cmd')) {
-        if (data.cmd === 'live.add') {
-          that.onlineNum++
-        } else if (data.cmd === 'live.leave') {
-          that.onlineNum--
-          if (that.onlineNum < 0) that.onlineNum = 0
-        }
       // 接收信息处理
       } else if (data.hasOwnProperty('msgType')) {
         switch (data.msgType) {
@@ -277,22 +271,21 @@ export default {
             that.list.push(data.data)
             that.$refs.scroll.scrollBottom('liveMsg')
             if (data.data.type === 'audio') {
-              this.audioList.push(data.data)
+              that.audioList.push(data.data)
             }
             break
           // 自己发出去的信息后端接收成功后保存起来，若失败重新发送
           case 'msg_push':
-            let sendList = this.sendData
+            let sendList = that.sendData
             that.updata_sendData(sendList.push(data.data.content))
             break
           // 其他人加入该直播间
           case 'live_login':
-            that.onlineNum++
+            that.onlineNum = data.data.onlineLiveCount
             break
           // 其他人离开该直播间
           case 'live_logout':
-            that.onlineNum--
-            if (that.onlineNum < 0) that.onlineNum = 0
+            that.onlineNum = data.data.onlineLiveCount
             break
         }
       }
