@@ -219,13 +219,12 @@ export const getFilesApi = (data, needLoading) => {
     needLoading: true
   })
 }
-/* 搜索 */
-export const searchApi = (data, needLoading) => {
+/* 获取圈子最近的帖子链接 */
+export const getUrlsApi = (data, needLoading) => {
   return request({
-    url: `/jobcircle/postlist/${data.id}`,
+    url: `/jobcircle/urls/${data.id}?page=${data.page}&count=${data.count}`,
     type: 'get',
     data: data,
     needLoading: needLoading
   })
 }
-

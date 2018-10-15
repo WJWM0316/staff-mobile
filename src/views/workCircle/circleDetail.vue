@@ -163,7 +163,7 @@ export default {
     },
     /* 去相册 */
     toAlbum () {
-      this.$router.push({path: '/album', query: {id: this.pageInfo.id, type: 1}})
+      this.$router.push({path: '/album', query: {id: this.pageInfo.id}})
     },
     /* 去下载页 classfy:1为图片，2为文件，3为链接 */
     toDownLoad (classfy) {

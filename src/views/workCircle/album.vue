@@ -36,7 +36,7 @@ export default {
     },
     /* 展开点击月份相册 */
     async showAlbum (item) {
-      this.$router.push({path: '/fileDownLoad', query: {item: item.str, month: item.month, id: this.$route.query.id}})
+      this.$router.push({path: '/fileDownLoad', query: {item: item.str, month: item.month, id: this.$route.query.id, type: 1}})
     }
   },
   created () {
