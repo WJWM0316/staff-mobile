@@ -58,11 +58,21 @@ export const getMyPostListApi = (data, needLoading) => {
     needLoading: needLoading
   })
 }
-// 获取用户的帖子列表
+
+// Ta的课程
+export const getTaCourseApi = (data, needLoading) => {
+  return request({
+    type: 'get',
+    url: `/user/${data.uid}/lessons`,
+    data,
+    needLoading: needLoading
+  })
+}
+// Ta的直播
 export const getUserPostListApi = (data, needLoading) => {
   return request({
     type: 'get',
-    url: `/user/${data.uid}/posts`,
+    url: `/user/${data.uid}/lives`,
     data,
     needLoading: needLoading
   })
@@ -76,10 +86,13 @@ export const getMessageListApi = (data, needLoading) => {
     needLoading: needLoading
   })
 }
-
-
-
-
-
-
+// 消息通知列表红点清除
+export const putRedListApi = (data, needLoading) => {
+  return request({
+    type: 'put',
+    url: `/my/note/read`,
+    data,
+    needLoading: needLoading
+  })
+}
 

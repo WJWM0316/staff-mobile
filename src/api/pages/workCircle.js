@@ -2,24 +2,27 @@ import {request} from '../require.js'
 /* 获取工作圈全部列表   */
 export const getJobcircleApi = (data, needLoading) => {
   return request({
-    url: `/jobcircle/all?page=${data.page}&count=${data.count}&organization=${data.organization}`,
+    url: `/jobcircle/all`,
     type: 'get',
+    data: data,
     needLoading: needLoading
   })
 }
 /* 获取工作圈关注列表   */
 export const getAttentionsApi = (data, needLoading) => {
   return request({
-    url: `/jobcircle/attentions?page=${data.page}&count=${data.count}&organization=${data.organization}`,
+    url: `/jobcircle/attentions`,
     type: 'get',
+    data: data,
     needLoading: needLoading
   })
 }
 /* 获取工作圈全部列表   */
-export const getCircleDetailApi = (id) => {
+export const getCircleDetailApi = (data) => {
   return request({
-    url: `/jobcircle/detail/${id}`,
-    type: 'get'
+    url: `/jobcircle/detail/${data}`,
+    type: 'get',
+    data: data
   })
 }
 /* 获取成员分组 */
@@ -27,49 +30,55 @@ export const getCircleClassfyApi = (data) => {
   return request({
     url: `/group`,
     type: 'get',
-    data
+    data: data
   })
 }
 /* 置顶工作圈 */
 export const putStickApi = (data) => {
   return request({
-    url: `/jobcircle/stick?id=${data}`,
-    type: 'put'
+    url: `/jobcircle/stick`,
+    type: 'put',
+    data: data
   })
 }
 /* 取消置顶工作圈 */
 export const putNostickApi = (data) => {
   return request({
-    url: `/jobcircle/nostick?id=${data}`,
-    type: 'put'
+    url: `/jobcircle/nostick`,
+    type: 'put',
+    data: data
   })
 }
 /* 关注工作圈 */
 export const putFocusApi = (data) => {
   return request({
-    url: `/jobcircle/focus?id=${data}`,
-    type: 'put'
+    url: `/jobcircle/focus`,
+    type: 'put',
+    data: data
   })
 }
 /* 取消关注 */
 export const putNoFocusApi = (data) => {
   return request({
-    url: `/jobcircle/nofocus?id=${data}`,
-    type: 'put'
+    url: `/jobcircle/nofocus`,
+    type: 'put',
+    data: data
   })
 }
 /* 圈主编辑工作圈封面和名字 */
 export const putModifyApi = (data) => {
   return request({
-    url: `/jobcircle/modify/${data.id}?name=${data.name}&cover_img_id=${data.cover_img_id}`,
-    type: 'put'
+    url: `/jobcircle/modify/${data.id}`,
+    type: 'put',
+    data: data
   })
 }
 /* 获取帖子列表 */
 export const getPostlistApi = (data, needLoading) => {
   return request({
-    url: `/jobcircle/postlist/${data.id}?page=${data.page}&sort=${data.sort}`,
+    url: `/jobcircle/postlist/${data.id}`,
     type: 'get',
+    data: data,
     needLoading: needLoading
   })
 }
@@ -78,7 +87,7 @@ export const jobcirclePostApi = (data) => {
   return request({
     url: `/jobcircle/post`,
     type: 'post',
-    data
+    data: data
   })
 }
 /* 帖子详情 */
@@ -86,107 +95,128 @@ export const postDetailApi = (data) => {
   return request({
     url: `/jobcircle/post/${data}`,
     type: 'get',
-    data
+    data: data
   })
 }
 /* 一级评论列表 */
 export const firstCommentListlApi = (data) => {
   return request({
-    url: `/jobcircle/comment/commentList/${data.id}?page=${data.page}&count=${data.count}`,
-    type: 'get'
+    url: `/jobcircle/comment/commentList/${data.id}}`,
+    type: 'get',
+    data: data
   })
 }
 /* 评论工作圈帖子 */
 export const circleCommentApi = (data) => {
   return request({
-    url: `/jobcircle/commoneComment/${data.sourceId}?sourceType=${data.sourceType}&content=${data.content}`,
-    type: 'put'
+    url: `/jobcircle/commoneComment/${data.sourceId}`,
+    type: 'put',
+    data: data
   })
 }
 /* 帖子详情点赞列表 */
 export const commonFavorListApi = (data) => {
   return request({
-    url: `/jobcircle/commonFavorUsers/${data.sourceId}?sourceType=${data.sourceType}&page=${data.page}`,
-    type: 'get'
+    url: `/jobcircle/commonFavorUsers/${data.sourceId}`,
+    type: 'get',
+    data: data
   })
 }
 /* 点赞评论或帖子 */
 export const circleCommonFavorApi = (data) => {
   return request({
-    url: `/jobcircle/commonFavor/${data.sourceId}?sourceType=${data.circleSourceType}`,
-    type: 'put'
+    url: `/jobcircle/commonFavor/${data.sourceId}`,
+    type: 'put',
+    data: data
   })
 }
 /* 评论或帖子取消点赞 */
 export const delCircleCommonFavorApi = (data) => {
   return request({
-    url: `/jobcircle/commonFavor/${data.sourceId}?sourceType=${data.circleSourceType}`,
-    type: 'delete'
+    url: `/jobcircle/commonFavor/${data.sourceId}`,
+    type: 'delete',
+    data: data
   })
 }
 /* 删除评论 */
 export const delCircleCommentApi = (data) => {
   return request({
     url: `/jobcircle/comment/${data}`,
-    type: 'delete'
+    type: 'delete',
+    data: data,
+    needLoading: true
   })
 }
 /* 删除工作圈帖子 */
 export const delCirclePostApi = (data) => {
   return request({
     url: `/jobcircle/post/${data}`,
-    type: 'delete'
+    type: 'delete',
+    data: data,
+    needLoading: true
   })
 }
 /* 工作圈成员列表 */
 export const circleMemberListApi = (data) => {
   return request({
-    url: `/jobcircle/members/${data.id}?page=${data.page}&count=${data.count}`,
-    type: 'get'
+    url: `/jobcircle/members/${data.id}`,
+    type: 'get',
+    data: data,
+    needLoading: true
   })
 }
 /* 圈主信息 */
 export const circleTutorInfoApi = (data) => {
   return request({
     url: `/jobcircle/owner/${data.id}`,
-    type: 'get'
+    type: 'get',
+    data: data,
+    needLoading: true
   })
 }
 /* 工作圈帖子置顶 */
 export const circlePostToTopApi = (data) => {
   return request({
-    url: `/jobcircle/post/stick?id=${data}`,
-    type: 'put'
+    url: `/jobcircle/post/stick`,
+    type: 'put',
+    data: data,
+    needLoading: true
   })
 }
 /* 工作圈帖子取消置顶 */
 export const delCirclePostToTopApi = (data) => {
   return request({
-    url: `/jobcircle/post/nostick?id=${data}`,
-    type: 'put'
+    url: `/jobcircle/post/nostick`,
+    type: 'put',
+    data: data,
+    needLoading: true
   })
 }
 /* 获取图片月份列表 */
 export const getPicturemonthApi = (data) => {
   return request({
     url: `/jobcircle/picturemonth/${data}`,
-    type: 'get'
+    type: 'get',
+    data: data,
+    needLoading: true
   })
 }
 /* 获取月份图片 */
 export const getPictureApi = (data, needLoading) => {
   return request({
-    url: `/jobcircle/picture/${data.id}?page=${data.page}&count=${data.count}&month=${data.month}`,
+    url: `/jobcircle/picture/${data.id}`,
     type: 'get',
-    needLoading: needLoading
+    data: data,
+    needLoading: true
   })
 }
 /* 获取圈子最近的上传文件 */
 export const getFilesApi = (data, needLoading) => {
   return request({
-    url: `/jobcircle/files/${data.id}?page=${data.page}&count=${data.count}`,
+    url: `/jobcircle/files/${data.id}`,
     type: 'get',
-    needLoading: needLoading
+    data: data,
+    needLoading: true
   })
 }
 /* 获取圈子最近的帖子链接 */
@@ -194,6 +224,7 @@ export const getUrlsApi = (data, needLoading) => {
   return request({
     url: `/jobcircle/urls/${data.id}?page=${data.page}&count=${data.count}`,
     type: 'get',
+    data: data,
     needLoading: needLoading
   })
 }

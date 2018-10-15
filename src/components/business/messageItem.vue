@@ -1,6 +1,6 @@
 <template>
-  <div class="message-item">
-    <div class="userInfo-img">
+  <div class="message-item" @click.stop="jump('detail')">
+    <div class="userInfo-img" @click.stop="jump('personal')">
       <img class="headImg" :src="item.avatar.smallUrl">
     </div>
     <div class="userInfo-desc">
@@ -22,12 +22,13 @@
       </div>
       <div class="desc-bottom">
         <div class="send-time">{{item.createdAt | date('MM-DD HH:mm')}}</div>
-        <div class="linght-house"></div>
+        <div class="linght-house">
+          <span>{{msgType[item.sourceFrom]}} {{item.title}}</span>
+        </div>
       </div>
     </div>
   </div>
 </template>
-
 <script>
 import audioBox from '@c/functional/audio'
 export default {
@@ -56,11 +57,32 @@ export default {
       video: '',
       currVideoIndex: '',
       isAudio: true,
-      typeStr: ['文本', '文件', '图片', '音频', '视频', '链接']
-      // msgType: ['']
+      typeStr: ['文本', '文件', '图片', '音频', '视频', '链接'],
+      msgType: ['[圈]', '[圈]', '[课]', '[课]', '[直]']
     }
   },
   methods: {
+    jump (type) {
+      if (type === 'detail') {
+        switch (this.item.sourceFrom) {
+          case 0:
+            this.$router.push(`/postDetail?id=${this.item.sourceId}`)
+            break
+          case 1:
+            this.$router.push(`/postDetail?id=${this.item.sourceId}`)
+            break
+          case 2:
+            this.$router.push(`/punchDetail?id=${this.item.sourceId}`)
+            break
+          case 3:
+            this.$router.push(`/punchDetail?id=${this.item.sourceId}`)
+            break
+          case 4:
+            this.$router.push(`/liveRoom?id=${this.item.sourceId}`)
+            break
+        }
+      }
+    }
   },
   created () {
   },

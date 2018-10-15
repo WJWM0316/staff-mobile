@@ -10,7 +10,7 @@ import bookHouse from './bookHouse'
 import login from './login'
 
 Vue.use(Router)
-let company = window.localStorage.getItem('XPLUSCompany')
+let company = window.localStorage.getItem('XPLUSCompany') || 'tiger'
 
 const routes = [
   ...home,
