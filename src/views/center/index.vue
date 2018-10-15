@@ -21,7 +21,7 @@
           <img src="@a/icon/btn_enter@2x.png" alt="">
         </i>
       </div>
-      <div class="item red"  @click.stop="jump('message')">
+      <div class="item"  @click.stop="jump('message')" :class="{'red' : pageInfo.noteCount > 0}">
         <div>
           <i class="icon1 iconfont icon-btn_comment"></i>
           <span class="txt">我的消息</span>

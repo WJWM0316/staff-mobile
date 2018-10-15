@@ -11,12 +11,15 @@
         :messageData="messageData"
         :audioList="audioList"
         :key="messageData.messageId"
+        @removeRed="removeRed"
         @nextMusic='nextMusic'
+        @endAudio='endAudio'
       ></audio-message>
     </div>
   </div>
 </template>
 <script>
+import { removeRedApi, endAudioApi } from '@/api/pages/live'
 import audioMessage from '@c/functional/audio'
 export default {
   components: {
@@ -45,6 +48,22 @@ export default {
     messageData () {}
   },
   methods: {
+    // 消除音频红点
+    removeRed () {
+      let data = {
+        liveId: this.$route.query.id,
+        messageId: this.messageData.messageId
+      }
+      removeRedApi(data)
+    },
+    // 音频播放完毕记录
+    endAudio () {
+      let data = {
+        liveId: this.$route.query.id,
+        messageId: this.messageData.messageId
+      }
+      endAudioApi(data)
+    },
     nextMusic (index) {
       this.$emit('nextMusic', index)
     }

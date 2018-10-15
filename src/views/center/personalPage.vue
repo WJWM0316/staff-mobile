@@ -1,8 +1,8 @@
 <template>
-  <div class="personalPage" ref="personalPage">
-    <div class="head" v-if="userInfo">
+  <div class="personalPage" ref="personalPage"  v-if="userInfo">
+    <div class="head">
       <div class="information"
-        v-if="!userInfo.base.mobile && !userInfo.base.wechat && !userInfo.base.email"
+        v-if="!userInfo.base.mobile || !userInfo.base.wechat || !userInfo.base.email"
         @click.stop="contactInformation.showSheet = true">联系方式<img class="icon" src="@a/icon/bnt_more_contact@3x.png"></div>
       <div class="msg">
         <div class="photo">
@@ -19,7 +19,7 @@
         </div>
         <div class="item">
           <p class="result">{{userInfo.study.lessonCount}}</p>
-          <p class="txt">正在学习课程/个</p>
+          <p class="txt">完成课程数/个</p>
         </div>
         <div class="item">
           <p class="result">{{userInfo.study.sessionCardCount}}</p>
@@ -27,67 +27,90 @@
         </div>
       </div>
     </div>
-    <div class="tab" :class="{'floor': needFloor}">
-      <span class="tabItem"
-        v-for="(item, index) in tabList"
-        :key="index"
-        :class="{'selected': tabIndex === index}"
-        @click.stop="choseTab(index)"
-      >{{item}}</span>
-    </div>
-    <div class="joined"  ref="joined" v-show="tabIndex === 0" v-if="joinList">
-      <div class="course" v-if="joinList.lessons.length > 0">
-        <p class="title border-bottom-1px">课程</p>
-        <div class="content">
-          <infoCard
-            v-for="(item, index) in joinList.lessons"
-            :item="item"
-            :key="index"
-            type="1"
-          ></infoCard>
-        </div>
-        <div class="btn">
-          <button class="jump" @click.stop="jumpList('course')">查看Ta加入的所有课程</button>
-        </div>
+    <!-- 企业个人 -->
+    <template v-if="!userInfo.base.isExternalTutor">
+      <div class="tab" :class="{'floor': needFloor}">
+        <span class="tabItem"
+          v-for="(item, index) in tabList"
+          :key="index"
+          :class="{'selected': tabIndex === index}"
+          @click.stop="choseTab(index)"
+        >{{item}}</span>
       </div>
-      <div class="live" v-if="joinList.lives.length > 0">
-        <p class="title border-bottom-1px">直播</p>
-        <div class="content">
-          <infoCard
-            v-for="(item, index) in joinList.lives"
-            :item="item"
-            :key="index"
-            type="3"
-          ></infoCard>
+      <div class="joined"  ref="joined" v-show="tabIndex === 0" v-if="joinList">
+        <div class="course" v-if="joinList.lessons.length > 0">
+          <p class="title border-bottom-1px">课程</p>
+          <div class="content">
+            <infoCard
+              v-for="(item, index) in joinList.lessons"
+              :item="item"
+              :key="index"
+              type="1"
+            ></infoCard>
+          </div>
+          <div class="btn">
+            <button class="jump" @click.stop="jumpList('course')">查看Ta加入的所有课程</button>
+          </div>
         </div>
-        <div class="btn">
-          <button class="jump" @click.stop="jumpList('live')">查看Ta加入的所有直播</button>
+        <div class="live" v-if="joinList.lives.length > 0">
+          <p class="title border-bottom-1px">直播</p>
+          <div class="content">
+            <infoCard
+              v-for="(item, index) in joinList.lives"
+              :item="item"
+              :key="index"
+              type="3"
+            ></infoCard>
+          </div>
+          <div class="btn">
+            <button class="jump" @click.stop="jumpList('live')">查看Ta加入的所有直播</button>
+          </div>
         </div>
+        <div class="circles" v-if="joinList.jobcircles.length > 0">
+          <p class="title border-bottom-1px">工作圈</p>
+          <div class="content">
+            <infoCard
+              v-for="(item, index) in joinList.jobcircles"
+              :item="item"
+              :key="index"
+              type="2"
+            ></infoCard>
+          </div>
+          <div class="btn">
+            <button class="jump" @click.stop="jumpList('jobcircles')">查看Ta加入的所有工作圈</button>
+          </div>
+        </div>
+        <noDataShow v-if="joinList.lessons.length === 0 && joinList.lives.length === 0 && joinList.jobcircles.length === 0"></noDataShow>
       </div>
-      <div class="circles" v-if="joinList.jobcircles.length > 0">
-        <p class="title border-bottom-1px">工作圈</p>
-        <div class="content">
-          <infoCard
-            v-for="(item, index) in joinList.jobcircles"
-            :item="item"
-            :key="index"
-            type="2"
-          ></infoCard>
-        </div>
-        <div class="btn">
-          <button class="jump" @click.stop="jumpList('jobcircles')">查看Ta加入的所有工作圈</button>
-        </div>
+      <div class="poster" v-show="tabIndex === 1" v-if="postList">
+        <dynamicItem
+          v-for="(item, index) in postList"
+          :key="index"
+          :item="item"
+        ></dynamicItem>
+        <noDataShow v-if="postList.length === 0"></noDataShow>
       </div>
-      <noDataShow v-if="joinList.lessons.length === 0 && joinList.lives.length === 0 && joinList.jobcircles.length === 0"></noDataShow>
-    </div>
-    <div class="poster" v-show="tabIndex === 1" v-if="postList">
-      <dynamicItem
-        v-for="(item, index) in postList"
-        :key="index"
-        :item="item"
-      ></dynamicItem>
-      <noDataShow v-if="postList.length === 0"></noDataShow>
-    </div>
+    </template>
+    <!-- 外部导师 -->
+    <template v-else>
+      <div class="tab" :class="{'floor': needFloor}">
+        <span class="tabItem"
+          v-for="(item, index) in extTabList"
+          :key="index"
+          :class="{'selected': tabExtIndex === index}"
+          @click.stop="choseTab(index)"
+        >{{item}}</span>
+      </div>
+      <div class="content">
+        <infoCard
+          v-for="(item, index) in courseData.list"
+          :item="item"
+          :key="index"
+          type="1"
+        ></infoCard>
+        <pullUpUi :noData="courseData.noData" :pullUpStatus="courseData.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+      </div>
+    </template>
     <actionSheet
       :showSheet="contactInformation.showSheet"
       :menus="contactInformation.menus"
@@ -102,10 +125,11 @@
       v-clipboard:success="onCopy"
       v-clipboard:error="onError">clipboard复制按钮
     </button>
+
   </div>
 </template>
 <script>
-import { userInfoApi, getUserInfoApi, getUserJoinedListApi, getMyJoinedListApi, getMyPostListApi, getUserPostListApi } from '@/api/pages/center'
+import { userInfoApi, getUserInfoApi, getUserJoinedListApi, getMyJoinedListApi, getMyPostListApi, getUserPostListApi, getTaCourseApi, getTaLiveApi } from '@/api/pages/center'
 import infoCard from '@c/business/infoCard.vue'
 import dynamicItem from '@c/business/dynamicItem'
 import noDataShow from '@c/layout/noDataShow'
@@ -119,9 +143,21 @@ export default {
     return {
       userInfo: null,
       tabIndex: 0,
+      tabExtIndex: 0,
       tabList: ['Ta加入的', 'Ta的帖子'],
+      extTabList: ['Ta的课程', 'Ta的直播'],
       joinList: null,
       postList: null,
+      courseData: {
+        list: [],
+        noData: false,
+        pullUpStatus: false
+      },
+      listData: {
+        list: [],
+        noData: false,
+        pullUpStatus: false
+      },
       needFloor: false,
       contactInformation: {
         showSheet: false,
@@ -182,14 +218,17 @@ export default {
       }
     },
     getUserInfo () {
+      function conType(argument) {
+        if (this.userInfo.base.mobile) this.contactInformation.menus.mobile = `手机号：${this.userInfo.base.mobile}`
+        if (this.userInfo.base.wechat) this.contactInformation.menus.wechat = `微信号：${this.userInfo.base.wechat}`
+        if (this.userInfo.base.email) this.contactInformation.menus.email = `邮箱：${this.userInfo.base.email}`
+      }
       if (!this.$route.query.uid) {
         this.userInfo = this.$store.getters.userInfo
         if (!this.userInfo) {
           userInfoApi().then(res => {
             this.userInfo = res.data
-            if (this.userInfo.base.mobile) this.contactInformation.menus.mobile = `手机号：${this.userInfo.base.mobile}`
-            if (this.userInfo.base.wechat) this.contactInformation.menus.wechat = `微信号：${this.userInfo.base.wechat}`
-            if (this.userInfo.base.email) this.contactInformation.menus.email = `邮箱：${this.userInfo.base.email}`
+            conType()
           })
         }
       } else {
@@ -198,9 +237,7 @@ export default {
         }
         getUserInfoApi(data).then(res => {
           this.userInfo = res.data
-          if (this.userInfo.base.mobile) this.contactInformation.menus.mobile = `手机号：${this.userInfo.base.mobile}`
-          if (this.userInfo.base.wechat) this.contactInformation.menus.wechat = `微信号：${this.userInfo.base.wechat}`
-          if (this.userInfo.base.email) this.contactInformation.menus.email = `邮箱：${this.userInfo.base.email}`
+          conType()
         })
       }
     },
@@ -234,6 +271,11 @@ export default {
           this.joinList = res.data
         })
       }
+    },
+    getTaCourse () {
+      getTaCourseApi().ten(res => {
+        this.courseData.list.concat(res.data)
+      })
     },
     init () {
       this.getUserInfo()

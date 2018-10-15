@@ -46,3 +46,19 @@ Vue.filter('ellipsis', (value, byteNum) => {
   }
   return value
 })
+
+// 返回文件的类型封面 value 是文件的后缀
+Vue.filter('fileCover', (value) => {
+  if (!value) {
+    return ''
+  }
+  if (value === 'doc' || value === 'docx') {
+    return '/static/suffix/word.png'
+  } else if (value === 'xls' || value === 'xlsx') {
+    return '/static/suffix/xls.png'
+  } else if (value === 'ppt') {
+    return '/static/suffix/ppt.png'
+  } else if (value === 'pdf') {
+    return '/static/suffix/pdf.png'
+  }
+})

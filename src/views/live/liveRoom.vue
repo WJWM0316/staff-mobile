@@ -96,6 +96,7 @@ export default {
     return {
       option: {
         liveId: this.$route.query.id,
+        teacherId: this.$route.query.teacherId,
         type: null
       },
       content: '',
@@ -213,7 +214,7 @@ export default {
         return new Promise((resolve, reject) => {
           let data = {
             live_id: this.id,
-            master_uid: 19,
+            master_uid: this.option.teacherId,
             content: this.problemTxt
           }
           putQuestionsApi(data).then(res => {

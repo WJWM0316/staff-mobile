@@ -5,7 +5,6 @@ import router from '@/router/index'
 Vue.directive('preview', {
   bind: function (el, binding, vnode) {
     if (!binding.value) return
-    console.log(binding, 1)
     let list = []
     // 绑定图片点击事件
     const bindClick = (element, img, urls) => {

@@ -80,17 +80,19 @@
           @pullingUp='loadNext'
         >
           <div class="block border-bottom-1px" v-for='(item, index) in scrollAll.list' :key="index">
-            <div class="time">{{item.answerInfo.createdAt | activeTime || item.problemInfo.createdAt | activeTime}}</div>
+            <div class="time">
+              <span v-if="item.answerInfo">{{item.answerInfo.createdAt | activeTime}}</span>
+              <span v-else>{{item.problemInfo.createdAt | activeTime}}</span></div>
             <liveMessage
               class="msg"
-              v-if="item.problemInfo.content"
+              v-if="item.problemInfo"
               :messageData='item.problemInfo'
               bgColor="#F8F8F8"
               ref='messageItem'
             ></liveMessage>
             <liveMessage
               class="msg"
-              v-if="item.answerInfo.content"
+              v-if="item.answerInfo"
               :messageData='item.answerInfo'
               bgColor="#FFF5CA"
               ref='messageItem'

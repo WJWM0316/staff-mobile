@@ -109,5 +109,33 @@ export const sendLiveMsgApi = (data, needLoading) => {
   })
 }
 
+// 直播红点消除
+export const removeRedApi = (data, needLoading) => {
+  return request({
+    type: 'post',
+    url: `/liveMessage/delMessageRed`,
+    data,
+    needLoading: false
+  })
+}
+// 直播消息记录
+export const msgPositionApi = (data, needLoading) => {
+  return request({
+    type: 'post',
+    url: `/liveMessage/positionMessage`,
+    data,
+    needLoading: false
+  })
+}
+// 直播音频听完
+export const endAudioApi = (data, needLoading) => {
+  return request({
+    type: 'post',
+    url: `/liveMessage/setMessageComplete`,
+    data,
+    needLoading: false
+  })
+}
+
 
 

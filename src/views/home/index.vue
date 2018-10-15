@@ -16,7 +16,7 @@
         </div>
         <div class="item">
           <p class="num">{{headInfo.study.lessonCount}}</p>
-          <p class="txt">正在学习课/个</p>
+          <p class="txt">完成课程数/个</p>
         </div>
         <div class="item">
           <p class="num">{{headInfo.study.sessionCardCount}}</p>
@@ -42,6 +42,7 @@
           v-for="(n, index) in homeInfo.courses"
           :key="index"
           :item="n"
+          v-if="index < 3"
           type="1"
         ></infoCard>
         <div class="btnBox"><div class="btn" @click.stop="jump('course')">查看所有课程</div></div>
@@ -289,9 +290,9 @@ export default {
           width: 284px;
           display: inline-block;
           background: #fff;
-          box-shadow: 0px 6px 20px 0px rgba(0,0,0,0.07);
+          box-shadow: 0px 6px 20px 0px rgba(0,0,0,0.07) inset;
           border-radius: 3px;
-          padding-right: 10px;
+          margin-right: 10px;
           vertical-align: top;
         }
       }

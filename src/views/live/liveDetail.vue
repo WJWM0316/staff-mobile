@@ -61,7 +61,7 @@ export default {
           width: '14em'
         })
       } else {
-        this.$router.push(`/liveRoom?id=${this.id}`)
+        this.$router.push(`/liveRoom?id=${this.id}&teacherId=${this.pageInfo.masterUid}`)
       }
     }
   },

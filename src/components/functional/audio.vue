@@ -120,6 +120,7 @@ export default {
         // 消除红点
         if (this.isReaded) {
           this.isReaded = false
+          this.$emit('removeRed')
         }
         try {
           setTimeout(() => {
@@ -181,6 +182,7 @@ export default {
     this.audio.addEventListener('ended', () => {
       if (!this.isCurAudio) return
       this.status = 0
+      this.$emit('endAudio')
       if (this.audioList.length - 1 > this.curIndex) {
         this.$emit('nextMusic', this.audioList[this.curIndex + 1].index)
       }

@@ -8,6 +8,7 @@ import localstorage from '@u/localstorage'
 Vue.use(VueAxios, axios)
 // 动态设置本地和线上接口域名
 Vue.axios.defaults.baseURL = settings.host
+Vue.axios.defaults.timeout = 20000
 // 请求拦截器
 Vue.axios.interceptors.request.use(
   config => {

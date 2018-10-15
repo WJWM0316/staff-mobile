@@ -8,10 +8,11 @@
         :item="item"
       ></messageItem>
     </div>
+    <pullUpUi :noData="noData" :pullUpStatus="pullUpStatus" @pullUp="pullUp"></pullUpUi>
   </div>
 </template>
 <script>
-import {getMessageListApi} from '@/api/pages/center'
+import {getMessageListApi, putRedListApi} from '@/api/pages/center'
 import messageItem from '@c/business/messageItem'
 export default {
   components: {
@@ -19,18 +20,43 @@ export default {
   },
   data () {
     return {
-      list: null
+      list: [],
+      noData: false,
+      pullUpStatus: false,
+      page: 0
     }
   },
   methods: {
-    getList () {
-      getMessageListApi().then(res => {
-        this.list = res.data
+    getList (needLoding) {
+      return new Promise((resolve, reject) => {
+        this.page++
+        let data = {
+          page: this.page
+        }
+        getMessageListApi(data, needLoding).then(res => {
+          this.list = this.list.concat(res.data)
+          if (res.meta.currentPage === res.meta.lastPage) {
+            this.noData = true
+          }
+          resolve(res)
+        })
+      })
+    },
+    // 消除红点
+    removeRed () {
+      putRedListApi().then(res => {
+      })
+    },
+    pullUp () {
+      this.pullUpStatus = true
+      this.getList().then(res => {
+        this.pullUpStatus = false
       })
     }
   },
   created () {
-    this.getList()
+    this.removeRed()
+    this.getList(true)
   }
 }
 </script>
