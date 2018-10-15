@@ -49,11 +49,13 @@
           <span v-if="item.isSelf && !isCourse" class="del-btn" @click.stop="edit">删除</span>
         </div>
         <div class="operation">
+          <!--点赞-->
           <div class="praise" @click.stop="praise">
             <img v-if="isfavor" class="icon-zan" src="@/assets/icon/bnt_zan_pre@3x.png" />
             <img v-else class="icon-zan" src="@/assets/icon/bnt_zan@3x.png" />
             <span>{{item.favorTotal}}</span>
           </div>
+          <!--评论-->
           <div class="comment" @click.stop="comment">
             <span class="icon-pinglun">
               <img src="@/assets/icon/bnt_comment@3x.png" />
@@ -204,22 +206,25 @@ export default {
         sourceType: 'course_section_card',
         circleSourceType: 'job_circle_post'
       }
+      console.log(this.isfavor)
       /* 点赞或取消点赞 */
-      if (this.isfavor !== true) {
+      if (!this.isfavor) {
+        // 点赞
         if (this.isCourse) { // 课节打卡点赞
           await getFavorApi(param)
         } else { // 工作圈打卡点赞
           await circleCommonFavorApi(param)
-          this.item.favorTotal += 1
         }
+        this.item.favorTotal += 1
         this.isfavor = true
       } else {
+        // 取消点赞
         if (this.isCourse) { // 课节打卡取消点赞
           await delFavorApi(param)
         } else { // 工作圈打卡取消点赞
           await delCircleCommonFavorApi(param)
-          this.item.favorTotal -= 1
         }
+        this.item.favorTotal -= 1
         this.isfavor = false
       }
     },
@@ -254,7 +259,13 @@ export default {
       }
     },
     /* 置顶帖子 */
-    toTop () {}
+    toTop () {
+      if (this.isCourse) {
+        console.log(' 我是课程的置顶帖子 ')
+      } else {
+        this.$emit('setPostTop', this.item)
+      }
+    }
   },
   mounted () {}
 }

@@ -96,8 +96,9 @@ export default {
     /* 获取打卡点赞列表 */
     async getFavorList () {
       let param = {
-        postId: this.item.courseSectionCardId,
-        page: this.nowPges
+        sourceId: this.item.courseSectionCardId,
+        page: this.nowPges,
+        sourceType: 'course_section_card'
       }
       let res = await getFavorListApi(param)
       this.favorList.push(...res.data)

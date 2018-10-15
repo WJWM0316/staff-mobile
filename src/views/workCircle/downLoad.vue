@@ -166,12 +166,12 @@ export default {
     /* 保存图片 */
     savePic () {
       this.selectPicList.forEach((item, index) => {
-        let img = new Image();
+        let img = new Image()
         img.src = item.fileInfo.url
-        img.setAttribute('crossOrigin', 'anonymous');
+        img.setAttribute('crossOrigin', 'anonymous')
         img.addEventListener('load', (e) => {
-          let base64 = this.getBase64Image(img);
-          console.log(base64, ' 1111111 ');
+          let base64 = this.getBase64Image(img)
+          console.log(base64, ' 1111111 ')
         })
         let a = document.createElement('a')
         // 创建一个单击事件
@@ -181,33 +181,20 @@ export default {
         // 将生成的URL设置为a.href属性
         a.href = item.fileInfo.url
         // 触发a的单击事件
-//      a.dispatchEvent(event)
-       
-       
-        /*const xhr = new XMLHttpRequest();
-        xhr.open('GET', item.fileInfo.url, true);
-        xhr.responseType = 'blob';
-        xhr.setRequestHeader('Authorization', 'Basic a2VybWl0Omtlcm1pdA==');
-        xhr.onload = () => {
-          if (xhr.status === 200) {
-            // 获取图片blob数据并保存
-            saveAs(xhr.response, item.fileInfo.fileName);
-          }
-        };
-        xhr.send();*/
+        a.dispatchEvent(event)
       })
     },
     getBase64Image (img) {
-      var canvas = document.createElement("canvas");
-      canvas.width = img.width;
+      var canvas = document.createElement(' canvas ')
+      canvas.width = img.width
       console.log(img)
-      canvas.height = img.height;
-      var ctx = canvas.getContext("2d");
-      ctx.drawImage(img, 0, 0, img.width, img.height);
-      var ext = img.src.substring(img.src.lastIndexOf(".")+1).toLowerCase();
+      canvas.height = img.height
+      var ctx = canvas.getContext(' 2d ')
+      ctx.drawImage(img, 0, 0, img.width, img.height)
+      var ext = img.src.substring(img.src.lastIndexOf(' . ') + 1).toLowerCase()
       console.log(canvas)
-      var dataURL = canvas.toDataURL("image/jpeg");
-      return dataURL;
+      var dataURL = canvas.toDataURL(' image/jpeg ')
+      return dataURL
     }
   },
   created () {

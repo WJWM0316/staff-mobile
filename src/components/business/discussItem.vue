@@ -111,12 +111,7 @@ export default {
   },
   data () {
     return {
-      favorList: [
-        {realName: 'S好'},
-        {realName: 'S好'},
-        {realName: 'S好'},
-        {realName: 'S好'}
-      ]
+      favorList: []
     }
   },
   computed: {
@@ -183,7 +178,7 @@ export default {
     },
     comment () {
       if (this.$route.path !== '/commentDetail') {
-        this.$router.push({path: '/commentDetail', query: {id: this.item.id}})
+        this.$router.push({path: '/commentDetail', query: {id: this.item.id, isCourse: this.isCourse ? 'true' : 'false'}})
         return
       }
       console.log(' 我是点击评论按钮评论事件 ')
