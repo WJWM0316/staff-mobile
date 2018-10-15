@@ -3,7 +3,12 @@
   <div class="all-reply">
     <!-- header -->
     <div class="header">
-      <discuss-item :item="discussInfo" :isShowBorder="false" :isCourse="isCourse" @disableOperationEvents="operation"></discuss-item>
+      <discuss-item
+        :item="discussInfo"
+        :isShowBorder="false"
+        :isCourse="isCourse"
+        @disableOperationEvents="operation"
+        @delComment="delComment"></discuss-item>
     </div>
     <!-- container -->
     <div class="container">
@@ -14,14 +19,24 @@
         </div>
       </div>
       <template v-if="navTabName === 'comment'">
-        <discuss-item v-for="(reply, index) in replyList" :key="index" :item="reply" :isShowBorder="index === replyList.length-1? false : true" @disableOperationEvents="operation"></discuss-item>
+        <discuss-item v-for="(reply, index) in replyList"
+          :key="index"
+          :item="reply"
+          :index="index"
+          :isCourse="isCourse"
+          :isShowBorder="index === replyList.length-1? false : true"
+          @disableOperationEvents="operation"
+          @delComment="delComment"></discuss-item>
+          <div v-if="discussInfo.commentCount === 0">
+            <p class="community-empty-desc">成为第一个评论的人吧~</p>
+          </div>
       </template>
       <template v-else>
         <div class="content-praise" v-for="(favorItem, index) in favorList" :key="index">
           <classmate-item :item="favorItem"></classmate-item>
-          <div v-if="discussInfo.favorCount === 0">
-            <p class="community-empty-desc">成为第一个点赞的人吧~</p>
-          </div>
+        </div>
+        <div v-if="discussInfo.favorCount === 0">
+          <p class="community-empty-desc">成为第一个点赞的人吧~</p>
         </div>
       </template>
     </div>
@@ -199,6 +214,10 @@ export default {
       if (this.navTabName === 'praise' && this.discussInfo.favorCount > 0 && this.favorList.length === 0) {
         this.getFavorList()
       }
+    },
+    /* 删除评论 */
+    delComment (e) {
+      console.log(e)
     }
   },
   created () {
@@ -296,6 +315,17 @@ export default {
         height: 20px;
         margin-right: 2px;
       }
+    }
+    .content-praise{
+      padding: 0 20px;
+    }
+    /* 评论及点赞无数据时提示内容样式    */
+    .community-empty-desc {
+      margin-top: 60px;
+      font-size: 28px;/*px*/
+      color: #bcbcbc;
+      text-align: center;
+      margin-bottom: 15px;
     }
   }
 </style>

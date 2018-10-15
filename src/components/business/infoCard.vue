@@ -122,6 +122,8 @@ export default {
     }
     /*人物标签*/
     .label{
+      display: flex;
+      flex-wrap: nowrap;
       font-size: 24px;/*px*/
       font-weight: 400;
       line-height: 16px;
@@ -139,13 +141,10 @@ export default {
         color: #FFFFFF;
       }
       .name{
-        overflow: hidden;
-        text-overflow:ellipsis;
         white-space: nowrap;
         padding: 0 4px;
         text-align: center;
         display: inline-block;
-        max-width: 90px;
         height: 17px;
         background-color: rgba(255,226,102,0.25);
         color: #D7AB70;
