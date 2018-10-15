@@ -277,6 +277,12 @@ export default {
         this.courseData.list.concat(res.data)
       })
     },
+    getTaLive () {
+      getTaLiveApi().ten(res => {
+        this.liveData.list.concat(res.data)
+      })
+    },
+    pullUp () {},
     init () {
       this.getUserInfo()
       this.getJoinList()
