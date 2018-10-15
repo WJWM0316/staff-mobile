@@ -179,7 +179,7 @@ export default {
 
 <style lang="less" scoped>
 .circleDetail{
-  height: 100%;
+  height: 100vh;
   overflow-y: scroll;
   /*文件下载区域*/
   .fileDownload{

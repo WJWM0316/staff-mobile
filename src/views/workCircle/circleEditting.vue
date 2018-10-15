@@ -19,7 +19,7 @@
       </div>
       <!--选择文件-->
       <div class="file" @click.stop="file">
-        <input id="file" type="file" accept=".xls,.doc,.txt,.pdf" multiple>
+        <input id="file" type="file" multiple>
         <img class="icon" src="@/assets/icon/btn_doc@3x.png"/>
       </div>
       <!--选择链接-->

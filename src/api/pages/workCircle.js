@@ -50,17 +50,15 @@ export const putNostickApi = (data) => {
 /* 关注工作圈 */
 export const putFocusApi = (data) => {
   return request({
-    url: `/jobcircle/focus`,
-    type: 'put',
-    data: data
+    url: `/jobcircle/focus?id=${data}`,
+    type: 'put'
   })
 }
 /* 取消关注 */
 export const putNoFocusApi = (data) => {
   return request({
-    url: `/jobcircle/nofocus`,
-    type: 'put',
-    data: data
+    url: `/jobcircle/nofocus?id=${data}`,
+    type: 'put'
   })
 }
 /* 圈主编辑工作圈封面和名字 */
