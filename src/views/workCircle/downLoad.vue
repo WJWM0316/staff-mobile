@@ -27,6 +27,7 @@
     <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
     <nodata-box v-if="nowFileList.length === 0"></nodata-box>
     <div class="saveBtn" v-if="showSelect" @click.stop="savePic">保存到本地相册</div>
+
   </div>
 </template>
 
@@ -167,10 +168,11 @@ export default {
     savePic () {
       this.selectPicList.forEach((item, index) => {
         let a = document.createElement('a')
+        a.setAttribute('download', '下载图片')
         // 创建一个单击事件
         let event = new MouseEvent('click')
-        // 将a的download属性设置为我们想要下载的图片名称，若name不存在则使用‘下载图片名称’作为默认名称
-        a.download = item.fileInfo.fileName || '下载图片'
+        // // 将a的download属性设置为我们想要下载的图片名称，若name不存在则使用‘下载图片名称’作为默认名称
+        // a.download = item.fileInfo.fileName || '下载图片'
         // 将生成的URL设置为a.href属性
         a.href = item.fileInfo.url
         // 触发a的单击事件
