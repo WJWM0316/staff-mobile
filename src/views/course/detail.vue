@@ -1,5 +1,8 @@
 <template>
   <div class="wrap" v-if="pageInfo">
+    <div class="home" @click.stop="goHome">
+      <i class="icon iconfont icon-btn_homepage"></i>
+    </div>
     <top-header :pageInfo="pageInfo" :isCircle="false" :isJoin="false"></top-header>
     <div class="introduce" v-if="!pageInfo.isJoin && !pageInfo.isMaster || isCourseIntroduce">
       <div class="richText">
@@ -118,6 +121,9 @@ export default {
     },
     getcourseDetail (id) {
       return courseInfoApi(id)
+    },
+    goHome () {
+      this.$router.push({path: '/home'})
     }
   },
   async created () {
@@ -129,6 +135,22 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.home{
+  position: absolute;
+  top: 10px;
+  right: 0px;
+  width: 52px;
+  height: 32px;
+  z-index: 1000;
+  background-color: #FFFFFF;
+  border-radius: 50px 0 0 50px;
+  box-shadow:0px 3px 12px 0px rgba(0,0,0,0.12);
+  text-align: center;
+  line-height: 32px;
+  >i{
+    font-size: 35px;/*px*/
+  }
+}
 .introduce{
   padding-bottom: 49px;
   height: 100vh;

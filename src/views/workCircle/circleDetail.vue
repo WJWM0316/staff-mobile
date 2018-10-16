@@ -159,9 +159,7 @@ export default {
         }
         this.all.pullUpStatus = true
         this.nowPage += 1
-        let res = await this.getPostlist(false)
-        res.meta.currentPage === res.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
-        this.postList.push(...res.data)
+        this.getPostlist(false)
         this.all.pullUpStatus = false
       }
     },

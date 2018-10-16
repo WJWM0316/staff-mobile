@@ -9,7 +9,6 @@
     <div class="picBox" v-if="nowShowMonth === item.str">
       <img class="picItem" v-lazyload v-for="(picItem, index) in nowPicList" :key="index" :src="picItem.fileInfo.smallUrl" />
     </div>
-    <a @click.stop="dowmLoad">下载</a>
   </div>
   </div>
 </template>

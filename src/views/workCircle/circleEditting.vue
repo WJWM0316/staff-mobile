@@ -149,10 +149,14 @@ export default {
       }
       await jobcirclePostApi(param)
       let that = this
-      this.$toast({text: '发帖成功', type: 'success',callBack () {
-        console.log(that.$router)
-        that.$router.go(-1)
-      }})
+      this.$toast({
+        text: '发帖成功',
+        type: 'success',
+        callBack () {
+          console.log(that.$router)
+          that.$router.go(-1)
+        }
+      })
     },
     /* 选择图片 */
     photo () {
