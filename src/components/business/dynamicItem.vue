@@ -13,10 +13,10 @@
       </div>
       <div class="content-images" v-if="item.cardContentFile && item.cardContentFile.length > 0">
         <div class="item-image one" v-if="item.cardContentFile.length === 1">
-          <img :src="item.cardContentFile[0].url || '../../assets/icon/img_head_default.png'" />
+          <img :src="item.cardContentFile[0].url || '../../assets/icon/img_head_default.png'" v-preview="true" @click.stop="preview"/>
         </div>
         <div class="item-image" v-for="(item,index) in item.cardContentFile" :key="index" v-else>
-          <img :src="item.url || '../../assets/icon/img_head_default.png'" />
+          <img :src="item.url || '../../assets/icon/img_head_default.png'" v-preview="true" @click.stop="preview"/>
         </div>
       </div>
       <!--工作圈图片-->
@@ -265,7 +265,8 @@ export default {
       } else {
         this.$emit('setPostTop', this.item)
       }
-    }
+    },
+    preview () {}
   },
   mounted () {}
 }

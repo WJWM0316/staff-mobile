@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     toPersonPage () {
-      this.$router.push({path: '/personalPage', query: {uid: this.item.id}})
+      this.$router.push({path: '/personalPage', query: {uid: this.item.uid}})
     }
   }
 }

@@ -163,8 +163,10 @@ export default {
           array_file_id: this.uploadImgList
         }
         await postPunchCardApi(param)
-        this.$toast({text: '打卡成功', type: 'success'})
-        this.$router.go(-1)
+        let that = this
+        this.$toast({text: '打卡成功', type: 'success', callBack () {
+          that.$router.go(-1)
+        }})
       } catch (e) {
         this.$toast(e)
       }

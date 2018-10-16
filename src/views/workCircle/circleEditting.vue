@@ -148,8 +148,11 @@ export default {
         param.urls = this.inpLink
       }
       await jobcirclePostApi(param)
-      this.$toast({text: '发帖成功', type: 'success'})
-      this.$router.go(-1)
+      let that = this
+      this.$toast({text: '发帖成功', type: 'success',callBack () {
+        console.log(that.$router)
+        that.$router.go(-1)
+      }})
     },
     /* 选择图片 */
     photo () {

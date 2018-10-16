@@ -2,13 +2,13 @@
   <div class="downLoad">
     <div class="monthTitle" v-if="type === 1">
       <span>{{month}}</span>
-      <span class="selectPic" v-if="type === 1" @click.stop="selectPic">多选<span v-if="showSelect">({{selectPicList.length}})</span></span>
+      <!--<span class="selectPic" v-if="type === 1" @click.stop="selectPic">多选<span v-if="showSelect">({{selectPicList.length}})</span></span>-->
     </div>
     <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
     <!--图片-->
     <div class="picBox" v-for="(picItem, index) in nowFileList" :key="index" v-if="type === 1" @click.stop="isSelect(picItem)">
       <div class="chooseImg" v-if="showSelect" :class="{'isChoose': picItem.chooseIndex}"><img v-if="picItem.chooseIndex" src="@/assets/icon/photo_selected@3x.png" /></div>
-      <img class="picItem" v-lazyload :src="picItem.fileInfo.smallUrl" />
+      <img class="picItem" v-lazyload :src="picItem.fileInfo.middleUrl" v-preview="true" data-src="picItem.fileInfo.url"/>
     </div>
     <!--文件和链接-->
     <template v-if="type === 2 || type === 3">
@@ -143,7 +143,7 @@ export default {
         this.all.pullUpStatus = false
       }
     },
-    /* 激活选择图片 */
+    /* 激活选择图片(暂时屏蔽需求) */
     selectPic () {
       this.showSelect = !this.showSelect
     },
