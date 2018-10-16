@@ -11,6 +11,7 @@
         <p class="content-text ellipsis">{{item.cardContent}}</p>
         <p class="full-text-btn">{{isFullText('circle-content')}}</p>
       </div>
+      <!--课程图片-->
       <div class="content-images" v-if="item.cardContentFile && item.cardContentFile.length > 0">
         <div class="item-image one" v-if="item.cardContentFile.length === 1">
           <img :src="item.cardContentFile[0].url || '../../assets/icon/img_head_default.png'" v-preview="true" @click.stop="preview"/>
@@ -22,17 +23,17 @@
       <!--工作圈图片-->
       <div class="content-images" v-if="item.type === '图片'" v-preview="openPreview">
         <div class="item-image one" v-if="item.accessory.length === 1">
-          <img :src="item.accessory[0].url || '../../assets/icon/img_head_default.png'" v-preview='true'/>
+          <img :src="item.accessory[0].url || '../../assets/icon/img_head_default.png'" v-preview='true' @click.stop="preview"/>
         </div>
         <div class="item-image" v-for="(item,index) in item.accessory" :key="index" v-else>
-          <img :src="item.url || '../../assets/icon/img_head_default.png'" />
+          <img :src="item.url || '../../assets/icon/img_head_default.png'" @click.stop="preview"/>
         </div>
       </div>
       <!--视频-->
       <div class="content-video" v-if="item.type === '视频'" @click.stop="playMovie">
         <video class="playVideo" width="416" height="234" controls v-if="movie">
           <source :src="item.accessory[0].url" type="video/mp4">
-          您的浏览器不支持 HTML5 video 标签。
+          您的浏览器不支持 HTML5 video 标签，请升级浏览器或者更换浏览器。
         </video>
         <div class="placeholder" v-else>
         </div>
@@ -88,7 +89,7 @@
   </div>
 </template>
 <script>
-import { getFavorApi, delFavorApi } from '@/api/pages/course'
+import { getFavorApi, delFavorApi, setExcellentCourseCardApi } from '@/api/pages/course'
 import { circleCommonFavorApi, delCircleCommonFavorApi, delCirclePostApi, circlePostToTopApi } from '@/api/pages/workCircle'
 import fileBox from '@c/functional/fileBox'
 export default {
@@ -261,7 +262,7 @@ export default {
     /* 置顶帖子 */
     toTop () {
       if (this.isCourse) {
-        console.log(' 我是课程的置顶帖子 ')
+        this.$emit('setPostTop', this.item)
       } else {
         this.$emit('setPostTop', this.item)
       }

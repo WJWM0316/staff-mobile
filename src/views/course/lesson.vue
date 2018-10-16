@@ -7,19 +7,18 @@
         {{communityCourse.title}}
       </div>
       <div class="header-info">
-        <div><img v-if="communityCourse.tutorUser.avatar" :src="communityCourse.tutorUser.avatar.smallUrl"/><span class="mast-name">{{communityCourse.tutorUser.realname}}</span></div>
-        <div>{{communityCourse.createTime}}</div>
+        <div><img v-if="communityCourse.tutorUser.avatar" :src="communityCourse.tutorUser.avatar.smallUrl"/><span class="mast-name">{{communityCourse.tutorUser.realname}}</span><span>{{communityCourse.createTime}}</span></div>
+        <div class="backCourse" @click.stop="backCourse">课程主页</div>
       </div>
     </div>
     <!--富文本区-->
     <div class="lesson-module">
       <!--视频-->
-      <div class="lesson-video" @click.stop="playVideo($event)" v-if="communityCourse.av && communityCourse.av.attachType==='video'">
-        <video controls ref="video" v-show="!videoPlay"></video>
-        <div class="placeholder" v-show="videoPlay">
-          <!--背景图-->
-          <!--<img />-->
-        </div>
+      <div class="lesson-video" v-if="communityCourse.av && communityCourse.av.attachType==='video'">
+        <video controls ref="video">
+          <source :src="communityCourse.av.url" type="video/mp4">
+             您的浏览器不支持 HTML5 video 标签，请升级浏览器或者更换浏览器。
+        </video>
       </div>
       <!-- 音频 -->
       <div class="audioBox" v-if="communityCourse.av && communityCourse.av.attachType==='audio'">
@@ -77,16 +76,7 @@
                v-for="(item, index) in excellentPunchList"
                :key = "index"
                :item="item"
-               :showDelBtn="true"
-               :communityId="communityId"
-               :isFold="true"
-               :isNeedHot="true"
-               :hideBorder="false"
-               :islesson="true"
-               :disableContentClick="false"
-               @disableOperationEvents="operation"
-               @reFresh="reFresh"
-               @showEvaluate='showEvaluate'
+               @setPostTop="setPostTop"
             ></lessondynamicItem>
             <div class="expand-btn" @click.stop="toPunchList('excellent')" v-if="countCardInfo.totalExcellentCardCount>5">
               <div>
@@ -105,6 +95,7 @@
              v-for="(item, index) in peopleCourseCardList"
              :key = "index"
              :item="item"
+             @setPostTop="setPostTop"
           ></lessondynamicItem>
           <div class="expand-btn all-show" @click.stop="toPunchList('all')" v-if="countCardInfo.totalCardCount>5">
             <div>
@@ -141,7 +132,7 @@ export default {
   data () {
     return {
       video: '', // 视频
-      videoPlay: true, // 视频是否在播放
+      videoPlay: false, // 视频是否在播放
       showIdentification: true,
       disableOperationArr: ['comment'],
       isPlayList: false,
@@ -175,7 +166,8 @@ export default {
         course_section_id: 1
       },
       listPage: 1, // 当前打卡列表的页数
-      messageData: {} // 音频数据
+      messageData: {}, // 音频数据
+      nowChoosePunch: '' // 当前选择的要评选或取消评选优秀打卡的打卡
     }
   },
   computed: {
@@ -213,21 +205,32 @@ export default {
       }
       return getCourseCardListApi(param)
     },
-    /* 播放视频 */
-    playVideo () {
-      console.log(' 播放视频 ')
-    },
-    /**
-     * 点击添加选项item
-     * @param {*} key
-     * @param {*} item
-     */
-    async handleAddActoinItem (key, item) {},
     toMindDetail () {
       this.$router.push({path: '/punchDetail', query: {id: this.communityCourse.peopleCardInfo.id, courseId: this.communityCourse.courseSectionId}})
     },
     toPunch () {
       this.$router.push({path: '/punchEdit', query: {id: this.communityCourse.courseSectionId}})
+    },
+    backCourse () {
+      this.$router.go(-1)
+    },
+    /* 置顶 */
+    async setPostTop (item) {
+      console.log(item)
+      this.addActionsConfig.show = true
+      this.nowChoosePunch = item
+    },
+    async handleAddActoinItem (key, item) {
+      let { id } = this.$route.query
+      let param = {
+        course_section_id: this.nowChoosePunch.courseSectionCardId,
+        is_set_excellent_card: this.nowChoosePunch.isExcellentCard === 0 ? 1 : 0
+      }
+      await setExcellentCourseCardApi(param)
+      let cardList = await this.getCourseCardListApi(id)
+      this.peopleCourseCardList = cardList.data.peopleCourseCardList
+      this.excellentPunchList = cardList.data.excellentPeopleCourseCardList
+      this.$toast({text: '设置优秀打卡成功', type: 'success'})
     }
   },
   created () {
@@ -261,12 +264,18 @@ export default {
       justify-content: space-between;
       font-size: 28px;/*px*/
      .mast-name{
+       margin-right: 20px;
        margin-left: 8px;
      }
      img{
        width: 24px;
        height: 24px;
        border-radius: 50%;
+     }
+     .backCourse{
+       font-weight: 400;
+       font-size: 26px;/*px*/
+       color: #4080AD;
      }
     }
   }

@@ -156,7 +156,14 @@ export const getCirclePeopleListApi = (data) => {
     type: 'get'
   })
 }
-
+// 评论打卡或回复评论
+export const setExcellentCourseCardApi = (data) => {
+  return request({
+    url: `/CourseSection/CourseSectionCard/setExcellentCourseCard`,
+    data,
+    type: 'post'
+  })
+}
 
 
 
