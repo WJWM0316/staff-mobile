@@ -65,7 +65,7 @@
               v-if="index < 5"
             ></infoCard>
           </div>
-          <div class="btn" v-if="joinList.lessons.length > 5">
+          <div class="btn" v-if="joinList.lives.length > 5">
             <button class="jump" @click.stop="jumpList('live')">查看Ta加入的所有直播</button>
           </div>
         </div>
@@ -80,7 +80,7 @@
               v-if="index < 5"
             ></infoCard>
           </div>
-          <div class="btn" v-if="joinList.lessons.length > 5">
+          <div class="btn" v-if="joinList.jobcircles.length > 5">
             <button class="jump" @click.stop="jumpList('jobcircles')">查看Ta加入的所有工作圈</button>
           </div>
         </div>
@@ -319,11 +319,11 @@ export default {
     },
     getJoinList () {
       if (!this.$route.query.uid) {
-        getMyJoinedListApi().then(res => {
+        getMyJoinedListApi({count: 6}).then(res => {
           this.joinList = res.data
         })
       } else {
-        getUserJoinedListApi({uid: this.$route.query.uid}).then(res => {
+        getUserJoinedListApi({uid: this.$route.query.uid, count: 6}).then(res => {
           this.joinList = res.data
         })
       }
