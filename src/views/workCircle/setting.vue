@@ -16,7 +16,7 @@
       <span>置顶该工作圈</span>
       <inline-x-switch :value='isToTop' @on-change="changeStatus"></inline-x-switch>
     </div>
-    <div class="top" v-if="!isOwner">
+    <div class="top" v-if="!isOwner && !pageInfo.isMember">
       <span>关注该工作圈</span>
       <inline-x-switch :value='isFocus' @on-change="focus"></inline-x-switch>
     </div>
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { putStickApi, putNostickApi, putFocusApi, putNoFocusApi, putModifyApi } from '@/api/pages/workCircle'
+import { putStickApi, putNostickApi, putFocusApi, putNoFocusApi, putModifyApi, getCircleDetailApi } from '@/api/pages/workCircle'
 import { InlineXSwitch } from 'vux'
 export default {
   name: 'setting',
@@ -34,6 +34,7 @@ export default {
   },
   data () {
     return {
+      pageInfo: {},
       name: '',
       headerPhoto: '',
       isToTop: '',
@@ -43,12 +44,15 @@ export default {
   },
   methods: {
     /* 初始化函数 */
-    init () {
-      this.headerPhoto = this.$route.query.coverImg
-      this.name = this.$route.query.name
-      this.isFocus = JSON.parse(this.$route.query.isAttention) // 初始化关注
-      this.isToTop = JSON.parse(this.$route.query.isTop) // 初始化置顶
-      this.isOwner = JSON.parse(this.$route.query.isOwner) // 是否圈主
+    async init () {
+      const { id } = this.$route.query
+      let res = await this.getCircleDetail(id)
+      this.pageInfo = res.data
+      this.headerPhoto = res.data.coverImg.middleUrl
+      this.name = res.data.name
+      this.isFocus = res.data.isAttention // 初始化关注
+      this.isToTop = res.data.isTop // 初始化置顶
+      this.isOwner = res.data.isOwner // 是否圈主
       console.log(this.$route.query)
     },
     /* 置顶工作圈 */
@@ -83,12 +87,20 @@ export default {
         }
         /* 修改名字或图片 */
         if (this.name !== this.$route.query.name || this.headerPhoto !== this.$route.query.coverImg) {
-          console.log(this.name)
+          let param = {
+            name: this.name,
+            id: this.$route.query.id
+          }
+          await putModifyApi(param)
         }
+        this.$router.push({path: '/circleDetail', query: {id: this.$route.query.id}})
       } catch (err) {
         alert(err)
       }
-      this.$router.push({path: '/circleDetail', query: {id: this.$route.query.id}})
+    },
+    /* 获取工作圈详情 */
+    getCircleDetail (id) {
+      return getCircleDetailApi(id)
     }
   },
   created () {

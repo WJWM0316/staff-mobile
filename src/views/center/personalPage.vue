@@ -2,8 +2,9 @@
   <div class="personalPage" ref="personalPage"  v-if="userInfo">
     <div class="head">
       <div class="information"
-        v-if="userInfo.base.mobile || userInfo.base.wechat || userInfo.base.email"
-        @click.stop="contactInformation.showSheet = true">联系方式<img class="icon" src="@a/icon/bnt_more_contact@3x.png"></div>
+        v-if="!userInfo.base.mobile || !userInfo.base.wechat || !userInfo.base.email"
+        @click.stop="contactInformation.showSheet = true">联系方式<img class="icon" src="@a/icon/bnt_more_contact@3x.png">
+      </div>
       <div class="msg">
         <div class="photo">
           <img v-if="userInfo.base" :src="userInfo.base.avatar.middleUrl">

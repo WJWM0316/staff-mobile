@@ -1,5 +1,9 @@
 <template>
   <div class="circleDetail">
+    <div class="home">
+      <span><i class="icon iconfont icon-btn_homepage" @click.stop="goHome"></i></span>|
+      <span><i class="icon iconfont icon-btn_search" @click.stop="toSearch"></i></span>
+    </div>
     <circle-header :pageInfo="pageInfo" :isCircle="true"></circle-header>
     <!--下载文件-->
     <div class="fileDownload">
@@ -155,9 +159,7 @@ export default {
         }
         this.all.pullUpStatus = true
         this.nowPage += 1
-        let res = await this.getPostlist(false)
-        res.meta.currentPage === res.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
-        this.postList.push(...res.data)
+        this.getPostlist(false)
         this.all.pullUpStatus = false
       }
     },
@@ -168,6 +170,12 @@ export default {
     /* 去下载页 classfy:1为图片，2为文件，3为链接 */
     toDownLoad (classfy) {
       this.$router.push({path: '/fileDownLoad', query: {id: this.pageInfo.id, type: classfy}})
+    },
+    goHome () {
+      this.$router.push({path: '/home'})
+    },
+    toSearch () {
+      this.$router.push({path: '/search', query: {id: this.pageInfo.id}})
     }
   },
   created () {
@@ -179,8 +187,35 @@ export default {
 
 <style lang="less" scoped>
 .circleDetail{
-  height: 100vh;
+  position: relative;
+  min-height: 100vh;
   overflow-y: scroll;
+  .home{
+    display: flex;
+    flex-wrap: nowrap;
+    z-index: 1000;
+    position: absolute;
+    right: 20px;
+    top: 18px;
+    width: 92px;
+    height: 32px;
+    color: #EDEDED;
+    border-radius: 50px;
+    box-shadow:0px 3px 12px 0px rgba(0,0,0,0.12);
+    line-height: 32px;
+    background-color: #FFFFFF;
+    >span{
+      display: inline-block;
+      width: 45px;
+      height: 32px;
+      text-align: center;
+      line-height: 32px;
+      >i{
+        color: #354048;
+        font-size: 30px;/*px*/
+       }
+    }
+  }
   /*文件下载区域*/
   .fileDownload{
     margin-top: 30px;

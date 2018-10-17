@@ -2,21 +2,21 @@
   <div class="downLoad">
     <div class="monthTitle" v-if="type === 1">
       <span>{{month}}</span>
-      <span class="selectPic" v-if="type === 1" @click.stop="selectPic">多选<span v-if="showSelect">({{selectPicList.length}})</span></span>
+      <!--<span class="selectPic" v-if="type === 1" @click.stop="selectPic">多选<span v-if="showSelect">({{selectPicList.length}})</span></span>-->
     </div>
-    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :isShowNoDataText="nowFileList.length !== 0"></pullUpUi>
     <!--图片-->
     <div class="picBox" v-for="(picItem, index) in nowFileList" :key="index" v-if="type === 1" @click.stop="isSelect(picItem)">
       <div class="chooseImg" v-if="showSelect" :class="{'isChoose': picItem.chooseIndex}"><img v-if="picItem.chooseIndex" src="@/assets/icon/photo_selected@3x.png" /></div>
-      <img class="picItem" v-lazyload :src="picItem.fileInfo.smallUrl" />
+      <img class="picItem" v-lazyload :src="picItem.fileInfo.middleUrl" v-preview="true" data-src="picItem.fileInfo.url"/>
     </div>
     <!--文件和链接-->
     <template v-if="type === 2 || type === 3">
       <div class="fileItemBox" v-for="(fileItem, index) in nowFileList" :key="index">
         <div class="fileTitle" v-if="fileItem.needShowTitle">{{fileItem.month}}</div>
         <div class="fileItemHeader">
-          <div><img class="headerPhoto" :src="fileItem.avatarInfo.smallUrl"/><span>{{fileItem.realname}}</span></div>
-          <div>{{fileItem.createdDay}}</div>
+          <div><img class="headerPhoto" :src="fileItem.avatarInfo.smallUrl"/><span class="fileName">{{fileItem.realname}}</span></div>
+          <div class="fileCreatedTime">{{fileItem.createdDay}}</div>
         </div>
         <!--文件-->
         <file-box v-if="type === 2" :item="fileItem.fileInfo" :isFile="isFile" :fileType='fileItem.fileType'></file-box>
@@ -24,7 +24,7 @@
         <file-box v-if="type === 3" :item="fileItem" :isFile="isFile" :fileType='fileItem.fileType'></file-box>
       </div>
     </template>
-    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :isShowNoDataText="nowFileList.length !== 0"></pullUpUi>
     <nodata-box v-if="nowFileList.length === 0"></nodata-box>
     <div class="saveBtn" v-if="showSelect" @click.stop="savePic">保存到本地相册</div>
 
@@ -98,7 +98,7 @@ export default {
           let result = item.fileInfo.fileName.match(/\.[^\.]+/)
           item.fileType = result[0]
         }
-        if (index === 0 || (index > 0 && item.month === res.data[index - 1].month)) {
+        if (index === 0 || (index > 0 && item.month !== res.data[index - 1].month)) {
           item.needShowTitle = true
         } else {
           item.needShowTitle = false
@@ -144,7 +144,7 @@ export default {
         this.all.pullUpStatus = false
       }
     },
-    /* 激活选择图片 */
+    /* 激活选择图片(暂时屏蔽需求) */
     selectPic () {
       this.showSelect = !this.showSelect
     },
@@ -238,6 +238,12 @@ export default {
       justify-content: space-between;
       padding-top: 15px;
       font-size: 28px;/*px*/
+     .fileCreatedTime{
+       color: #BCBCBC;
+     }
+     .fileName{
+       color: #666666;
+     }
       .headerPhoto{
         border-radius: 50%;
         width: 32px;
@@ -246,11 +252,12 @@ export default {
       }
     }
     .fileTitle{
+      color: #666666;
       margin-right: -20px;
       margin-left: -20px;
-      padding: 0 20px;
-      height: 50px;
-      line-height: 50px;
+      padding: 30px 20px 15px;
+      /*height: 50px;*/
+      /*line-height: 50px;*/
       border-bottom: 1px solid #EEEEEE;/*px*/
     }
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="infoCard"  @click="toDeatil(item.id || item.liveId)">
+  <div class="infoCard"  @click="toDeatil(item.id || item.liveId)" :class="{'newCouse': newCouse}">
     <img class="infoPhoto" v-if="item.coverImg" v-lazyload :src="item.coverImg.smallUrl"/>
     <img class="infoPhoto" v-if="item.courseCoverImg" v-lazyload :src="item.courseCoverImg.smallUrl"/>
     <div class="right">
@@ -76,6 +76,18 @@ export default {
   width:100%;
   padding: 15px 20px 15px 100px;
   position: relative;
+  .newTitle{
+    line-height: ;
+    position: absolute;
+    top: 15px;
+    left: 28px;
+    width: 15px;
+    height: 30px;
+    background-color: #FA6A30;
+    z-index: 2;
+    color: #FFFFFF;
+    font-size: 22px;/*px*/
+  }
   &.newCouse::after {
     width: 18px;
     height: 30px;

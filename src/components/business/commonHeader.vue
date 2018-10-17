@@ -10,7 +10,7 @@
 
     <div class="info" v-if="!isCircle">
       <h3 class="title">{{pageInfo.title}}</h3>
-      <p class="desc">{{pageInfo.groupName}} | {{pageInfo.realname}}</p>
+      <p class="desc">{{pageInfo.groupName || '未设置所属部门'}} | {{pageInfo.realname}}</p>
     </div>
     <div class="circleHeader" v-else>
       {{pageInfo.title}}
@@ -71,17 +71,7 @@ export default {
   },
   methods: {
     toSetting () {
-      this.$router.push({
-        path: '/setting',
-        query: {
-          isOwner: this.pageInfo.isOwner, // 是否圈主
-          id: this.pageInfo.id,
-          coverImg: this.pageInfo.coverImg,
-          name: this.pageInfo.name,
-          isTop: this.pageInfo.isTop,
-          isAttention: this.pageInfo.isAttention
-        }
-      })
+      this.$router.push({path: '/setting', query: {id: this.pageInfo.id}})
     },
     focus () {
       console.log(' guanzhu ')
@@ -91,7 +81,8 @@ export default {
     },
     // 去课程介绍页
     toIntroduction () {
-      this.$router.push({path: '/course/introduce', query: {id: this.pageInfo.id, isCourseIntroduce: true}})
+      this.$router.push({path: '/courseDetail', query: {id: this.pageInfo.id, isCourseIntroduce: true}})
+      this.$emit('toCourseIntroduce')
     },
     /* 去成员列表 */
     toMemberList () {

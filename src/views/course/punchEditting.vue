@@ -18,7 +18,7 @@
         <img class="image" mode="auto" :src="item" />
         <button type="button" class="close" @click="handleDeleteImage(index, item)"><i class="icon iconfont icon-live_btn_close"></i></button>
       </div>
-      <div class="takePhoto" @click.stop="photo">
+      <div class="takePhoto" @click.stop="photo" v-if="images.length < 9">
         <input id="photo" type="file" accept="image/*" capture="camera" multiple>
         <img class="icon" src="@/assets/icon/icon_plus.png" />
       </div>
@@ -56,6 +56,7 @@
 
 <script>
 import { postPunchCardApi, getPunchCardDetailsApi, attachesApi } from '@/api/pages/course'
+import localstorage from '@u/localstorage'
 export default {
   data () {
     return {
@@ -70,7 +71,8 @@ export default {
       images: [], // 选择图片
       uploadImgList: [], // 即将发布的图片
       showTaskWindow: false,
-      taskContent: {} // 打卡编辑页详情
+      taskContent: {}, // 打卡编辑页详情
+      isSend: false // 是否已经发送编辑
     }
   },
   computed: {
@@ -163,8 +165,17 @@ export default {
           array_file_id: this.uploadImgList
         }
         await postPunchCardApi(param)
-        this.$toast({text: '打卡成功', type: 'success'})
-        this.$router.go(-1)
+        let that = this
+        this.$toast({
+          text: '打卡成功',
+          type: 'success',
+          callBack () {
+            that.isSend = true
+            localstorage.remove('draft')
+            localstorage.remove('draftImg')
+            that.$router.go(-1)
+          }
+        })
       } catch (e) {
         this.$toast(e)
       }
@@ -174,12 +185,58 @@ export default {
       this.images.splice(index, 1)
       this.uploadImgList.splice(index, 1)
       console.log(this.images, this.uploadImgList)
+    },
+    /* 是否加载草稿 */
+    loadDraft () {
+      let that = this
+      let content = localstorage.get('draft')
+      let imgList = localstorage.get('draftImg')
+      if (content || imgList) {
+        this.$confirm({
+          title: ' 加载草稿 ',
+          content: ' 检测到有草稿，是否加载？ ',
+          confirmBack () {
+            that.form.content = content
+            that.images = imgList || []
+          },
+          cancelBack () {
+          }
+        })
+      }
     }
   },
   created () {
     let { id } = this.$route.query
     getPunchCardDetailsApi({name: 'courseSectionId', id: id}).then(res => {
       this.taskContent = res.data
+      if (res.data.peopleCourseCardInfo) {
+        // 是否已经打过卡
+        this.form.content = res.data.peopleCourseCardInfo.cardContent
+        res.data.peopleCourseCardInfo.cardContentFile.forEach((item, index) => {
+          this.images.push(item.url)
+        })
+      }
+      // 是否加载草稿
+      this.loadDraft()
+    })
+  },
+  beforeRouteLeave (to, from, next) {
+    if (this.isSend) {
+      next()
+      return
+    }
+    let that = this
+    this.$confirm({
+      title: ' 退出编辑 ',
+      content: ' 是否要退出编辑，内容将自动存 为草稿 ',
+      confirmBack () {
+        localstorage.set('draft', that.form.content)
+        localstorage.set('draftImg', that.images)
+        next()
+      },
+      cancelBack () {
+        next()
+      }
     })
   }
 }

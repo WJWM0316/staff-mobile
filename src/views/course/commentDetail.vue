@@ -7,6 +7,7 @@
         :item="discussInfo"
         :isShowBorder="false"
         :isCourse="isCourse"
+        :showDel="false"
         @disableOperationEvents="operation"
         @delComment="delComment"></discuss-item>
     </div>
