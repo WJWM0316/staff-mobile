@@ -30,9 +30,6 @@ class WS {
         // 未登录先登录再加入直播间
         if (!store.getters.wsLogin) {
           this.login()
-          this.addLive(liveId)
-        } else {
-          this.addLive(liveId)
         }
         if (this.ws.readyState === 1) { // 为1表示连接处于open状态
           clearInterval(this.keepAliveTimer)

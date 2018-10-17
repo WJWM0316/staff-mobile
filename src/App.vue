@@ -37,6 +37,7 @@ import { userInfoApi } from '@/api/pages/center'
 import { Tabbar, TabbarItem } from 'vux'
 import { mapState, mapActions } from 'vuex'
 import WechatMixin from '@/mixins/wechat'
+import ws from '@u/websocket'
 import Vue from 'vue'
 export default {
   mixins: [WechatMixin],
@@ -163,9 +164,14 @@ export default {
       userInfoApi('', false).then(res => {
         this.updata_userInfo(res.data)
       })
+    },
+    creatWs () { // 开启websocket
+      let company = window.localStorage.getItem('XPLUSCompany')
+      ws.create(`ws://work-api.xplus.ziwork.com/${company}`)
     }
   },
   created () {
+    this.creatWs()
     // if (!this.userInfo) {
     //   this.getUserInfo()
     // }
@@ -267,5 +273,25 @@ export default {
 }
 .weui-toast.vux-toast-bottom {
   bottom: 70px;
+}
+.vux-confirm {
+  .weui-dialog__ft:after {
+    display: none;
+  }
+  .weui-dialog__btn:after {
+    top: 10px;
+    transform: scale3d(0.5, 0.7, 1);
+  }
+  .weui-dialog__bd {
+    font-weight: 300;
+    font-size: 30px; /*px*/
+    color: #666;
+  }
+  .weui-dialog__btn {
+    font-size: 34px; /*px*/
+  }
+}
+.weui-tabbar:before {
+  border-color: #DCDCDC;
 }
 </style>

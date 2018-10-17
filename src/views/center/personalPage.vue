@@ -2,7 +2,7 @@
   <div class="personalPage" ref="personalPage"  v-if="userInfo">
     <div class="head">
       <div class="information"
-        v-if="!userInfo.base.mobile || !userInfo.base.wechat || !userInfo.base.email"
+        v-if="userInfo.base.mobile || userInfo.base.wechat || userInfo.base.email"
         @click.stop="contactInformation.showSheet = true">联系方式<img class="icon" src="@a/icon/bnt_more_contact@3x.png"></div>
       <div class="msg">
         <div class="photo">
@@ -46,9 +46,10 @@
               :item="item"
               :key="index"
               type="1"
+              v-if="index < 5"
             ></infoCard>
           </div>
-          <div class="btn">
+          <div class="btn" v-if="joinList.lessons.length > 5">
             <button class="jump" @click.stop="jumpList('course')">查看Ta加入的所有课程</button>
           </div>
         </div>
@@ -60,9 +61,10 @@
               :item="item"
               :key="index"
               type="3"
+              v-if="index < 5"
             ></infoCard>
           </div>
-          <div class="btn">
+          <div class="btn" v-if="joinList.lessons.length > 5">
             <button class="jump" @click.stop="jumpList('live')">查看Ta加入的所有直播</button>
           </div>
         </div>
@@ -74,23 +76,26 @@
               :item="item"
               :key="index"
               type="2"
+              v-if="index < 5"
             ></infoCard>
           </div>
-          <div class="btn">
+          <div class="btn" v-if="joinList.lessons.length > 5">
             <button class="jump" @click.stop="jumpList('jobcircles')">查看Ta加入的所有工作圈</button>
           </div>
         </div>
         <noDataShow v-if="joinList.lessons.length === 0 && joinList.lives.length === 0 && joinList.jobcircles.length === 0"></noDataShow>
       </div>
-      <div class="poster" v-show="tabIndex === 1" v-if="postList">
+      <div class="poster" v-show="tabIndex === 1">
         <dynamicItem
-          v-for="(item, index) in postList"
+          v-for="(item, index) in postData.list"
           :key="index"
           :item="item"
         ></dynamicItem>
-        <noDataShow v-if="postList.length === 0"></noDataShow>
+        <pullUpUi :noData="postData.noData" :pullUpStatus="postData.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+        <noDataShow v-if="postData.list.length === 0"></noDataShow>
       </div>
     </template>
+
     <!-- 外部导师 -->
     <template v-else>
       <div class="tab" :class="{'floor': needFloor}">
@@ -102,30 +107,47 @@
         >{{item}}</span>
       </div>
       <div class="content">
-        <infoCard
-          v-for="(item, index) in courseData.list"
-          :item="item"
-          :key="index"
-          type="1"
-        ></infoCard>
-        <pullUpUi :noData="courseData.noData" :pullUpStatus="courseData.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+        <div v-if="tabExtIndex === 0">
+          <infoCard
+            v-for="item in courseData.list"
+            :item="item"
+            :key="item.id"
+            type="1"
+          ></infoCard>
+          <pullUpUi :noData="courseData.noData" :pullUpStatus="courseData.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+          <noDataShow v-if="courseData.list.length === 0"></noDataShow>
+        </div>
+        <div v-if="tabExtIndex === 1">
+          <infoCard
+            v-for="item in liveData.list"
+            :item="item"
+            :key="item.liveId"
+            type="3"
+          ></infoCard>
+          <pullUpUi :noData="liveData.noData" :pullUpStatus="liveData.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+          <noDataShow v-if="liveData.list.length === 0"></noDataShow>
+        </div>
       </div>
     </template>
-    <actionSheet
-      :showSheet="contactInformation.showSheet"
-      :menus="contactInformation.menus"
-      @choseResult="choseResult"
-      >
-    </actionSheet>
-    <button
-      type="button"
-      ref="copyBtn"
-      v-show=false
-      v-clipboard:copy="contactInformation.copyMessage"
-      v-clipboard:success="onCopy"
-      v-clipboard:error="onError">clipboard复制按钮
-    </button>
 
+    <!-- 复制功能模块 -->
+    <template>
+      <actionSheet
+        :showSheet="contactInformation.showSheet"
+        :menus="contactInformation.menus"
+        @choseResult="choseResult"
+        @clickMask="clickMask"
+        >
+      </actionSheet>
+      <button
+        type="button"
+        ref="copyBtn"
+        v-show=false
+        v-clipboard:copy="contactInformation.copyMessage"
+        v-clipboard:success="onCopy"
+        v-clipboard:error="onError">clipboard复制按钮
+      </button>
+    </template>
   </div>
 </template>
 <script>
@@ -146,20 +168,27 @@ export default {
       tabExtIndex: 0,
       tabList: ['Ta加入的', 'Ta的帖子'],
       extTabList: ['Ta的课程', 'Ta的直播'],
-      joinList: null,
-      postList: null,
-      courseData: {
+      joinList: null, // Ta加入的列表
+      postData: { // Ta参与的帖子
         list: [],
         noData: false,
+        page: 0,
         pullUpStatus: false
       },
-      listData: {
+      courseData: { // 外部导师的课程列表
         list: [],
         noData: false,
+        page: 0,
         pullUpStatus: false
       },
-      needFloor: false,
-      contactInformation: {
+      liveData: { // 外部导师的直播列表
+        list: [],
+        noData: false,
+        page: 0,
+        pullUpStatus: false
+      },
+      needFloor: false, // tab栏悬浮
+      contactInformation: { // 复制对象
         showSheet: false,
         copyMessage: '',
         menus: {}
@@ -186,6 +215,9 @@ export default {
         }, 100)
       }
     },
+    clickMask () {
+      this.contactInformation.showSheet = false
+    },
     onCopy () {
       this.$toast({
         text: '复制成功',
@@ -199,9 +231,16 @@ export default {
       })
     },
     choseTab (index) {
-      this.tabIndex = index
-      if (index === 1 && !this.postList) {
-        this.getPostList({page: 1})
+      if (!this.userInfo.base.isExternalTutor) {
+        this.tabIndex = index
+        if (index === 1 && this.postData.list.length === 0) {
+          this.getPostList({page: 1})
+        }
+      } else {
+        this.tabExtIndex = index
+        if (index === 1 && this.liveData.list.length === 0) {
+          this.getTaLive({page: 1})
+        }
       }
     },
     jumpList (type) {
@@ -218,48 +257,64 @@ export default {
       }
     },
     getUserInfo () {
-      function conType () {
-        if (this.userInfo.base.mobile) this.contactInformation.menus.mobile = `手机号：${this.userInfo.base.mobile}`
-        if (this.userInfo.base.wechat) this.contactInformation.menus.wechat = `微信号：${this.userInfo.base.wechat}`
-        if (this.userInfo.base.email) this.contactInformation.menus.email = `邮箱：${this.userInfo.base.email}`
-      }
-      if (!this.$route.query.uid) {
-        this.userInfo = this.$store.getters.userInfo
-        if (!this.userInfo) {
-          userInfoApi().then(res => {
+      return new Promise((resolve, reject) => {
+        let conType = () => {
+          if (this.userInfo.base.mobile) this.contactInformation.menus.mobile = `手机号：${this.userInfo.base.mobile}`
+          if (this.userInfo.base.wechat) this.contactInformation.menus.wechat = `微信号：${this.userInfo.base.wechat}`
+          if (this.userInfo.base.email) this.contactInformation.menus.email = `邮箱：${this.userInfo.base.email}`
+        }
+        if (!this.$route.query.uid) {
+          this.userInfo = this.$store.getters.userInfo
+          if (!this.userInfo) {
+            userInfoApi().then(res => {
+              this.userInfo = res.data
+              resolve(res.data)
+              conType()
+            })
+          } else {
+            resolve(this.userInfo)
+          }
+        } else {
+          let data = {
+            uid: this.$route.query.uid
+          }
+          getUserInfoApi(data).then(res => {
             this.userInfo = res.data
             conType()
+            resolve(res.data)
           })
         }
-      } else {
-        let data = {
-          uid: this.$route.query.uid
-        }
-        getUserInfoApi(data).then(res => {
-          this.userInfo = res.data
-          conType()
-        })
-      }
+      })
     },
-    getPostList ({page, count}, needLoading) {
-      if (!this.$route.query.uid) {
-        let data = {
-          page: page || 1,
-          count: count || 20
+    getPostList (needLoading) {
+      return new Promise((resolve, reject) => {
+        this.postData.page++
+        if (!this.$route.query.uid) {
+          let data = {
+            uid: this.$route.query.uid,
+            page: this.postData.page
+          }
+          getMyPostListApi(data, needLoading).then(res => {
+            this.postData.list = this.postData.list.concat(res.data)
+            if (res.meta.currentPage === res.meta.lastPage) {
+              this.postData.noData = true
+            }
+            resolve(this.postList)
+          })
+        } else {
+          let data = {
+            uid: this.$route.query.uid,
+            page: this.postData.page
+          }
+          getUserPostListApi(data, needLoading).then(res => {
+            this.postData.list = this.postData.list.concat(res.data)
+            if (res.meta.currentPage === res.meta.lastPage) {
+              this.postData.noData = true
+            }
+            resolve(this.postList)
+          })
         }
-        getMyPostListApi(data, needLoading).then(res => {
-          this.postList = res.data
-        })
-      } else {
-        let data = {
-          uid: this.$route.query.uid,
-          page: page || 1,
-          count: count || 20
-        }
-        getUserPostListApi(data, needLoading).then(res => {
-          this.postList = res.data
-        })
-      }
+      })
     },
     getJoinList () {
       if (!this.$route.query.uid) {
@@ -272,20 +327,67 @@ export default {
         })
       }
     },
-    getTaCourse () {
-      getTaCourseApi().ten(res => {
-        this.courseData.list.concat(res.data)
+    getTaCourse (needLoading) {
+      return new Promise((resolve, reject) => {
+        this.courseData.page++
+        let data = {
+          uid: this.$route.query.uid,
+          page: this.courseData.page
+        }
+        getTaCourseApi(data, needLoading).then(res => {
+          this.courseData.list = this.courseData.list.concat(res.data)
+          if (res.meta.currentPage === res.meta.lastPage) {
+            this.courseData.noData = true
+          }
+          resolve(res)
+        })
       })
     },
-    getTaLive () {
-      getTaLiveApi().ten(res => {
-        this.liveData.list.concat(res.data)
+    getTaLive (needLoading) {
+      return new Promise((resolve, reject) => {
+        this.liveData.page++
+        let data = {
+          uid: this.$route.query.uid,
+          page: this.liveData.page
+        }
+        getTaLiveApi(data, needLoading).then(res => {
+          this.liveData.list = this.liveData.list.concat(res.data)
+          if (res.meta.currentPage === res.meta.lastPage) {
+            this.liveData.noData = true
+          }
+          resolve(res)
+        })
       })
     },
-    pullUp () {},
+    pullUp () {
+      if (!this.userInfo.base.isExternalTutor) {
+        this.postData.pullUpStatus = true
+        this.getPostList(false).then(res => {
+          this.postData.pullUpStatus = false
+        })
+      } else {
+        if (this.tabExtIndex === 0) {
+          this.courseData.pullUpStatus = true
+          this.getTaCourse(false).then(res => {
+            this.courseData.pullUpStatus = false
+          })
+        } else {
+          this.liveData.pullUpStatus = true
+          this.getTaLive(false).then(res => {
+            this.liveData.pullUpStatus = false
+          })
+        }
+      }
+    },
     init () {
-      this.getUserInfo()
-      this.getJoinList()
+      this.getUserInfo().then(res => {
+        console.log(res)
+        if (!res.base.isExternalTutor) {
+          this.getJoinList()
+        } else {
+          this.getTaCourse()
+        }
+      })
     }
   },
   created () {
@@ -363,6 +465,7 @@ export default {
           color: #D7AB70;
           line-height: 29px;
           font-weight: 500;
+          font-family: 'MyNewFont'
         }
         .txt {
           font-size: 24px; /*px*/
@@ -416,6 +519,7 @@ export default {
   .joined {
     padding: 30px 0 0;
     .course, .live, .circles {
+      margin-bottom: 64px;
       .title {
         padding: 0 0 10px 15px;
         color: #929292;
@@ -426,7 +530,7 @@ export default {
       .content {
       }
       .btn {
-        padding: 15px 20px 64px;
+        padding: 15px 20px 0;
         .jump {
           width: 100%;
           height: 40px;

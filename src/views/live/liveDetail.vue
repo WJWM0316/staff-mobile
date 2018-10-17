@@ -13,7 +13,7 @@
     </div>
     <div class="footerBtn">
       <div class="timestatus">
-        <p class="txt" v-if="pageInfo.status === 1">直播于{{pageInfo.expectedStartTime * 1000 | date('MMMDo h:mm')}}开始</p>
+        <p class="txt" v-if="pageInfo.status === 1">直播于{{pageInfo.expectedStartTime * 1000 | date('MMMDo hh:mm')}}开始</p>
         <p class="txt" v-if="pageInfo.status === 2">直播进行中</p>
         <p class="txt" v-if="pageInfo.status === 3">直播已结束</p>
       </div>
@@ -61,7 +61,7 @@ export default {
           width: '14em'
         })
       } else {
-        this.$router.push(`/liveRoom?id=${this.id}&teacherId=${this.pageInfo.masterUid}`)
+        this.$router.push(`/liveRoom?id=${this.id}`)
       }
     }
   },
@@ -111,6 +111,7 @@ export default {
       display: flex;
       text-align: center;
       line-height: 49px;
+      background: #fff;
       box-shadow: 0px -1px 0px 0px rgba(220,220,220,0.5);
       .timestatus {
         flex: 1;
