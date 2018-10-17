@@ -64,6 +64,8 @@
     <div class='testBtn' @click='closeWs'>断线测试</div>
     <div class='testBtn1' @click='leaveLive'>离开测试</div>
     <div class='testBtn2' @click='addLive'>加入测试</div>
+    <div class='testBtn3' @click='endLive'>结束直播测试</div>
+    <div class='testBtn4' @click='startLive'>开启直播测试</div>
     <div class="sendMsg" v-if="$route.query.teacher">
       <select v-model="option.type">
         <option value="text">文本</option>
@@ -84,7 +86,7 @@ import ws from '@u/websocket'
 import liveMessage from '@c/business/liveMessage'
 import questionArea from '@c/business/questionArea'
 import { mapState, mapActions } from 'vuex'
-import { getLiveRoomMsgApi, putQuestionsApi, sendLiveMsgApi, msgPositionApi, getLiveDetailApi } from '@/api/pages/live'
+import { getLiveRoomMsgApi, putQuestionsApi, sendLiveMsgApi, msgPositionApi, getLiveDetailApi, putUpdataLiveApi } from '@/api/pages/live'
 let onMessage = null
 export default {
   components: {
@@ -264,6 +266,20 @@ export default {
     },
     leaveLive () {
       ws.leaveLive(this.id)
+    },
+    endLive () {
+      let data = {
+        liveId: this.id,
+        status: 3
+      }
+      putUpdataLiveApi(data)
+    },
+    startLive () {
+      let data = {
+        liveId: this.id,
+        status: 2
+      }
+      putUpdataLiveApi(data)
     }
   },
   created () {
@@ -326,7 +342,7 @@ export default {
 }
 </script>
 <style lang='less' scoped>
-  .testBtn, .testBtn1, .testBtn2 {
+  .testBtn, .testBtn1, .testBtn2, .testBtn3, .testBtn4 {
     color: #fff;
     font-size: 14px;
     border: 1px solid #000;
@@ -341,6 +357,12 @@ export default {
   }
   .testBtn2 {
     bottom: 20%;
+  }
+  .testBtn3 {
+    bottom: 25%;
+  }
+  .testBtn4 {
+    bottom: 30%;
   }
   .sendMsg {
     width: 40%;

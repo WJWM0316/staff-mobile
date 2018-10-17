@@ -136,6 +136,12 @@ export const endAudioApi = (data, needLoading) => {
     needLoading: false
   })
 }
-
-
-
+// 结束直播
+export const putUpdataLiveApi = (data, needLoading) => {
+  return request({
+    type: 'put',
+    url: `/live/update/${data.liveId}`,
+    data,
+    needLoading: false
+  })
+}

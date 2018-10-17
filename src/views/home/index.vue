@@ -110,7 +110,7 @@ export default {
           data.date = 'hh:mm'
         }
       } else {
-        data.status = '直播中'
+        data.status = '直播进行中'
       }
       return data
     }
@@ -244,6 +244,7 @@ export default {
         font-size: 24px; /*px*/
         line-height: 16px;
         background: url('../../assets/icon/xie.png') repeat-x center center;
+        background-size: auto 10px;
         .inner {
           display: inline-block;
           padding: 0 10px 0 20px;

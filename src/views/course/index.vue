@@ -3,7 +3,6 @@
 	  <div class="classify">
       <span v-for="(item,index) in tabList" :key="index" :class="{ isFocusClassify:showBorder === item.categoryName }" @click="cutoverTab(item)">{{item.categoryName}}</span>
     </div>
-    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
     <div class="content">
       <template v-for="(item, index) in circleList">
         <info-card :item="item" :showIntroduction="false" :origin="true" :key="index"></info-card>

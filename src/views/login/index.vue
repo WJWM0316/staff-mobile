@@ -1,6 +1,6 @@
 <template>
   <div class="wrap">
-    <p class="title">欢迎登录小灯塔Plus</p>
+    <div class="title"><img src="@a/icon/loginBg1.png" alt=""></div>
     <div class="inputBox border-bottom-1px">
       <input class="account" type="text" v-model="account" placeholder="请输入邮箱账号" @input="changeTxt()">
     </div>
@@ -28,11 +28,6 @@ export default {
       let data = {
         email: this.account,
         password: this.password
-      }
-      if (this.account === '13729280262' || this.account === '18520225811' || this.account === '15574964192' || this.account === '18520786912') {
-        window.localStorage.setItem('XPLUSCompany', 'test')
-      } else {
-        window.localStorage.setItem('XPLUSCompany', 'tiger')
       }
       loginApi(data).then(res => {
         localstorage.set('token', res.data.token)
@@ -64,13 +59,15 @@ export default {
 </script>
 <style lang="less" scoped>
   .wrap {
-    padding: 0 30px;
+    padding: 0 44px;
     .title {
-      font-size: 52px; /*px*/
-      line-height: 34px;
-      font-weight: 300;
-      padding: 45px 0 55px;
-      text-align: center;
+      width: 110px;
+      display: block;
+      margin: 0 auto;
+      img {
+        width: 100%;
+        height: 100%;
+      }
     }
     .inputBox {
       padding-bottom: 14px;
