@@ -18,7 +18,7 @@
         <p class="txt" v-if="pageInfo.status === 3">直播已结束</p>
       </div>
       <div class="operBtn">
-        <xButton class="btn" v-if="!pageInfo.isJoin" @click.stop.native="joinLive">点击参与直播</xButton>
+        <xButton class="btn" v-if="!pageInfo.isJoin && !pageInfo.isTutor" @click.stop.native="joinLive">点击参与直播</xButton>
         <xButton class="btn" v-else @click.stop.native="jumpLive">进入直播间</xButton>
       </div>
     </div>

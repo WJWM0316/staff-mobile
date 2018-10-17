@@ -1,6 +1,6 @@
 <template>
   <div class='wrap'>
-    <div class='header' v-if="liveDetail">
+    <div class='header' v-if="liveDetail.title">
       <p class='title'>{{liveDetail.title}}</p>
       <p class='msg'>
         <span class='status green' v-show='liveDetail.status === 2 && wsStatus === 1'>直播进行中</span>
@@ -268,6 +268,7 @@ export default {
       ws.leaveLive(this.id)
     },
     endLive () {
+      if (!this.liveDetail.isTutor) return
       let data = {
         liveId: this.id,
         status: 3
@@ -275,6 +276,7 @@ export default {
       putUpdataLiveApi(data)
     },
     startLive () {
+      if (!this.liveDetail.isTutor) return
       let data = {
         liveId: this.id,
         status: 2
