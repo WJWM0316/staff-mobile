@@ -86,10 +86,12 @@ export default {
     },
     /* 去成员列表 */
     toMemberList () {
-      if (!this.isCircle) { // 课程成员列表
-        this.$router.push({path: '/memberList', query: {id: this.pageInfo.id}})
-      } else {
+      if (this.isCircle) { // 课程成员列表
         this.$router.push({path: '/circleMemberList', query: {id: this.pageInfo.id}})
+      } else if (this.isLive) {
+        this.$router.push({path: '/liveMemberList', query: {id: this.pageInfo.liveId}})
+      } else {
+        this.$router.push({path: '/memberList', query: {id: this.pageInfo.id}})
       }
     }
   },
