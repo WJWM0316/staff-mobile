@@ -9,12 +9,14 @@
 
 <style lang="less" scoped>
   .nodata{
+    margin-top: 50%;
     text-align: center;
     .nodataPic{
       width: 120px;
       height: 120px;
     }
     .txt{
+      color: #BCBCBC;
       margin-top: 15px;
       font-size: 28px;/*px*/
     }

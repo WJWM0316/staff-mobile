@@ -64,9 +64,8 @@ export const putNoFocusApi = (data) => {
 /* 圈主编辑工作圈封面和名字 */
 export const putModifyApi = (data) => {
   return request({
-    url: `/jobcircle/modify/${data.id}`,
-    type: 'put',
-    data: data
+    url: `/jobcircle/modify/${data.id}?name=${data.name}`,
+    type: 'put'
   })
 }
 /* 获取帖子列表 */

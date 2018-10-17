@@ -3,7 +3,7 @@
     <div class="home" @click.stop="goHome">
       <i class="icon iconfont icon-btn_homepage"></i>
     </div>
-    <top-header :pageInfo="pageInfo" :isCircle="false" :isJoin="false"></top-header>
+    <top-header :pageInfo="pageInfo" :isCircle="false" :isJoin="pageInfo.isJoin === 1 ? true : false" @toCourseIntroduce="toCourseIntroduce"></top-header>
     <div class="introduce" v-if="!pageInfo.isJoin && !pageInfo.isMaster || isCourseIntroduce">
       <div class="richText">
         <div class="title">关于课程</div>
@@ -124,6 +124,12 @@ export default {
     },
     goHome () {
       this.$router.push({path: '/home'})
+    },
+    /* 切换课程介绍 */
+    async toCourseIntroduce () {
+      const { isCourseIntroduce } = this.$route.query
+      this.isCourseIntroduce = isCourseIntroduce || false
+      await this.init()
     }
   },
   async created () {

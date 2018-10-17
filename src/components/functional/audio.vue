@@ -82,7 +82,11 @@ export default {
       audioCurId: state => state.global.audioCurId
     }),
     isCurAudio () { // 判断播放的是否当前audio
-      return this.audioCurId === this.messageData.file.id
+      if (this.messageData.file) {
+        return this.audioCurId === this.messageData.file.id
+      } else {
+        return this.audioCurId === this.messageData.id
+      }
     }
   },
   methods: {
@@ -115,7 +119,11 @@ export default {
     play () {
       let playFun = () => {
         if (!this.audio.src || !this.isCurAudio) {
-          this.audio.src = this.messageData.file.url
+          if (this.messageData.file) {
+            this.audio.src = this.messageData.file.url
+          } else {
+            this.audio.src = this.messageData.url
+          }
         }
         // 消除红点
         if (!this.isReaded) {
@@ -124,7 +132,13 @@ export default {
         }
         try {
           setTimeout(() => {
-            this.updata_audioCurId(this.messageData.file.id)
+            let nowId = ''
+            if (this.messageData.file) {
+              nowId = this.messageData.file.id
+            } else {
+              nowId = this.messageData.id
+            }
+            this.updata_audioCurId(nowId)
             this.audio.play()
           }, 200)
         } catch (e) {

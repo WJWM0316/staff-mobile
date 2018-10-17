@@ -2,7 +2,7 @@
   <div class="discussItem" v-if="item">
     <!-- 头像 -->
     <div class="left">
-      <img v-if="item.toUserAvatar" :src="item.toUserAvatar.smallUrl" class="user-image" @click.stop="toUserInfo(item.reviewer.userId)" />
+      <img v-if="item.userAvatar" :src="item.userAvatar.smallUrl" class="user-image" @click.stop="toUserInfo(item.reviewer.userId)" />
     </div>
     <div class="right" :class="{border: isShowBorder}">
       <div class="content-head">
@@ -37,7 +37,7 @@
       <div class="info-area">
         <div>
           <span>{{item.createdAt}}</span>
-          <span v-if="item.isOwner === 1" class="del-btn" @click.stop="del">删除</span>
+          <span v-if="item.isOwner === 1 && showDel" class="del-btn" @click.stop="del">删除</span>
         </div>
         <div class="operation">
           <!-- 点赞按钮 -->
@@ -105,6 +105,10 @@ export default {
       type: Number
     },
     isCourse: {
+      type: Boolean,
+      default: true
+    },
+    showDel: {
       type: Boolean,
       default: true
     }

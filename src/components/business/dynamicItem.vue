@@ -1,10 +1,10 @@
 <template>
   <div class="dynamicItem" :class="{bottomBorder : showBorder}" @click="toDetail">
-    <div class="header" @click.stop="toUserInfo">
+    <div class="header" @click.stop="toUserInfo(item.releaseUser.id)">
       <img class="headerPhoto" v-if="item.releaseUser" :src="item.releaseUser.avatarInfo.smallUrl" />
       <div class="appellation" v-if="item.releaseUser">{{item.releaseUser.realname}}</div>
       <!--置顶按钮-->
-      <div class="evaluate" @click.stop="toTop">...</div>
+      <div class="evaluate" @click.stop="toTop" v-if="item.isOwner || item.isTutor">...</div>
     </div>
     <div class="content">
       <div ref="circle-content">
@@ -190,8 +190,7 @@ export default {
       }
     },
     toUserInfo (userId) {
-      if (this.disableUserClick) {
-      }
+      this.$router.push({path: '/personalPage', query: {uid: userId}})
     },
     /*  点赞  */
     async praise () {

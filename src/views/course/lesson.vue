@@ -7,7 +7,7 @@
         {{communityCourse.title}}
       </div>
       <div class="header-info">
-        <div><img v-if="communityCourse.tutorUser.avatar" :src="communityCourse.tutorUser.avatar.smallUrl"/><span class="mast-name">{{communityCourse.tutorUser.realname}}</span><span>{{communityCourse.createTime}}</span></div>
+        <div><img v-if="communityCourse.tutorUser.avatarInfo" :src="communityCourse.tutorUser.avatarInfo.smallUrl"/><span class="mast-name">{{communityCourse.tutorUser.realname}}</span><span>{{communityCourse.createTime}}</span></div>
         <div class="backCourse" @click.stop="backCourse">课程主页</div>
       </div>
     </div>
@@ -102,6 +102,9 @@
               查看所有打卡 <span>({{countCardInfo.totalCardCount}})</span>
             </div>
           </div>
+        </div>
+        <div class="all-punch" v-else>
+          没有更多内容了
         </div>
         <!--底部打卡按钮区-->
         <div v-if="communityCourse.isTutor !== 1">

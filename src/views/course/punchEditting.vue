@@ -18,7 +18,7 @@
         <img class="image" mode="auto" :src="item" />
         <button type="button" class="close" @click="handleDeleteImage(index, item)"><i class="icon iconfont icon-live_btn_close"></i></button>
       </div>
-      <div class="takePhoto" @click.stop="photo">
+      <div class="takePhoto" @click.stop="photo" v-if="images.length < 9">
         <input id="photo" type="file" accept="image/*" capture="camera" multiple>
         <img class="icon" src="@/assets/icon/icon_plus.png" />
       </div>
@@ -203,7 +203,6 @@ export default {
           }
         })
       }
-      console.log(imgList, this.images)
     }
   },
   created () {
