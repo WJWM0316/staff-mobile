@@ -274,7 +274,10 @@ export default {
 .weui-toast.vux-toast-bottom {
   bottom: 70px;
 }
-.vux-confirm {
+.weui-dialog {
+  border-radius: 6px;
+}
+.vux-confirm, .vux-alert {
   .weui-dialog__ft:after {
     display: none;
   }
@@ -286,6 +289,13 @@ export default {
     font-weight: 300;
     font-size: 30px; /*px*/
     color: #666;
+  }
+  .weui-dialog__hd {
+    .weui-dialog__title {
+      color: #354048;
+      font-size: 36px; /*px*/
+      font-weight: 500;
+    }
   }
   .weui-dialog__btn {
     font-size: 34px; /*px*/
