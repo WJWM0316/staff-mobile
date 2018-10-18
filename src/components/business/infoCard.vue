@@ -160,6 +160,7 @@ export default {
         // max-width: 80px;
         text-align: center;
         display: inline-block;
+        padding: 0 4px;
         height: 17px;
         line-height: 17px;
         background-color: #354048;
