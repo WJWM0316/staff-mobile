@@ -164,7 +164,7 @@ export default {
         line-height: 17px;
         background-color: #354048;
         color: #FFFFFF;
-        .setEllipsis();
+        // .setEllipsis();
       }
       .name{
         white-space: nowrap;
