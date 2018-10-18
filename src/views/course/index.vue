@@ -5,7 +5,7 @@
     </div>
     <div class="content">
       <template v-for="(item, index) in circleList">
-        <info-card :item="item" :showIntroduction="false" :origin="true" :key="index"></info-card>
+        <info-card :item="item" :needProgress="false" :key="index"></info-card>
       </template>
     </div>
     <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>

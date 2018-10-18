@@ -1,7 +1,7 @@
 <template>
   <div class="liveDetail">
     <commonHeader
-      :isLive=true
+      :type='3'
       :pageInfo="pageInfo"
     ></commonHeader>
     <div class="content">
@@ -98,7 +98,6 @@ export default {
         padding: 14px 0;
         color: #354048;
         font-weight: 300;
-        font-size: 30px; /*px*/
         line-height: 22px;
       }
     }

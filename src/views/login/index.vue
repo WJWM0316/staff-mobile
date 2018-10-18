@@ -1,7 +1,7 @@
 <template>
   <div class="wrap">
     <div class="title">
-      <img src="@a/icon/loginBg1.png" alt="">
+      <img src="https://xplus-uploads-test.oss-cn-shenzhen.aliyuncs.com/default/loginBg1.png" alt="">
       <span class="msg">你的努力值得被看见</span>
     </div>
     <div class="form">
@@ -79,7 +79,7 @@ export default {
     height: 100vh;
     box-sizing: border-box;
     padding: 44px 40px;
-    background: url(../../assets/icon/loginBg2.png) no-repeat center center;
+    background: url('https://xplus-uploads-test.oss-cn-shenzhen.aliyuncs.com/default/loginBg2.png') no-repeat center center;
     background-size: auto 100%;
     .title {
       text-align: center;
