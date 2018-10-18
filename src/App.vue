@@ -166,7 +166,7 @@ export default {
       })
     },
     creatWs () { // 开启websocket
-      let company = window.localStorage.getItem('XPLUSCompany')
+      let company = location.href.split('/')[3] || 'tiger'
       ws.create(`ws://work-api.xplus.ziwork.com/${company}`)
     }
   },

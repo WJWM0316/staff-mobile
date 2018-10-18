@@ -80,7 +80,7 @@ export default {
     box-sizing: border-box;
     padding: 44px 40px;
     background: url(../../assets/icon/loginBg2.png) no-repeat center center;
-    background-size: 100% 100%;
+    background-size: auto 100%;
     .title {
       text-align: center;
       img {

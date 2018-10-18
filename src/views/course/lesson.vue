@@ -316,13 +316,13 @@ export default {
     }
     /*课节富文本*/
     .module-content{
-      display: -webkit-box;
       box-sizing: border-box;
       padding: 0 20px;
       margin-top: 30px;
       width: 100%;
-      min-height: 400px;
-      font-size: 0.234rem;
+      font-size: 16px;
+      line-height: 24px;
+      word-break: break-all;
     }
     /* 音频样式 */
     .audioBox{
