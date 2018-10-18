@@ -388,10 +388,12 @@ export default {
       text-align: center;
       position: relative;
       .title {
+        margin: 0 auto;
         font-size: 30px; /*px*/
-        font-weight:400;
+        font-weight: 700;
         color: #22292C;
         line-height: 20px;
+        .setEllipsis(50%);
       }
       .msg {
         font-size:24px; /*px*/
