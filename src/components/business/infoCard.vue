@@ -125,7 +125,7 @@ export default {
       color: #354048;
       font-size: 30px;/*px*/
       line-height: 20px;
-      font-weight: 400;
+      font-weight: 300;
       &.ellipsis1 {
         .setEllipsisLn(1)
       }
@@ -143,7 +143,7 @@ export default {
     /*人物标签*/
     .label{
       font-size: 24px;/*px*/
-      font-weight: 400;
+      font-weight: 300;
       line-height: 16px;
       margin: 5px 0 0px;
       .setEllipsisLn(1);

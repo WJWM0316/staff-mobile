@@ -301,7 +301,7 @@ export default {
             width: 33px;
             height: 24px;
             color: #354048;
-            font-weight: 400;
+            font-weight: 300;
             font-size: 24px; /*px*/
             line-height: 20px;
             text-align: center;
@@ -322,7 +322,7 @@ export default {
       float: right;
       font-size: 24px; /*px*/
       color: #354048;
-      font-weight: 400;
+      font-weight: 300;
       display: inline-block;
       position: absolute;
       right: 15px;

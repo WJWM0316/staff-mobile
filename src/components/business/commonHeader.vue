@@ -93,59 +93,58 @@ export default {
 }
 </script>
 
-<style lang="less" type="text/less">
-@import url("~STYLE/mixins.less");
+<style lang="less">
 .m-community {
   display: block;
   .cover-container {
-      .cover {
-        background: #F2F2F2;
-        width: 100%;
-        height: 90px;
-      }
-      /*头部改变新增属性*/
-      position: relative;
+    .cover {
+      background: #F2F2F2;
+      width: 100%;
       height: 90px;
-      .header-photo{
-          display:block;
-          width:110px;
-          height: 110px;
-          box-shadow:0px 4px 19px 0px rgba(75,65,50,0.17);
-          position: absolute;
-          top: 15px;
-          left:50%;
-          transform:translateX(-50%);
-          margin-bottom:3.75px;
-          >img{
-            border-radius: 6px;
-            width: 100%;
-            height: 100%;
-            box-sizing: border-box;
-            border: 0.5px solid #ffffff;
-          }
-      }
     }
-    .circle{
+    /*头部改变新增属性*/
+    position: relative;
+    height: 90px;
+    .header-photo{
+        display:block;
+        width:110px;
+        height: 110px;
+        box-shadow:0px 4px 19px 0px rgba(75,65,50,0.17);
+        position: absolute;
+        top: 15px;
+        left:50%;
+        transform:translateX(-50%);
+        margin-bottom:3.75px;
+        >img{
+          border-radius: 6px;
+          width: 100%;
+          height: 100%;
+          box-sizing: border-box;
+          border: 0.5px solid #ffffff;
+        }
+    }
+  }
+  .circle{
+    height: 101px;
+    .cover{
       height: 101px;
-      .cover{
-        height: 101px;
-      }
-      .header-photo{
-        box-shadow: none;
+    }
+    .header-photo{
+      box-shadow: none;
+      width: 80px;
+      height: 80px;
+      top: 42px;
+      >img{
         width: 80px;
         height: 80px;
-        top: 42px;
-        >img{
-          width: 80px;
-          height: 80px;
-          border-radius: 50%;
-        }
+        border-radius: 50%;
       }
     }
+  }
   .circleHeader{
     color: #354048;
     font-size: 36px;/*px*/
-    font-weight: 500;
+    font-weight: 700;
     line-height: 22px;
     margin: 29px 0 23px;
     text-align: center;
@@ -157,7 +156,7 @@ export default {
       display: block;
       line-height: 23px;
       font-size: 36px;/*px*/
-      font-weight: 500;
+      font-weight: 700;
       color: #354048;
     }
 
@@ -184,7 +183,7 @@ export default {
         font-size: 22px;/*px*/
       }
       .num{
-        font-weight: 400;
+        font-weight: 300;
         color: #D7AB70;
         font-size: 32px;/*px*/
       }
@@ -224,7 +223,7 @@ export default {
       line-height: 25px;
       font-size: 24px;/*px*/
       color: #D7AB70;
-      font-weight: 500;
+      font-weight: 700;
       border-radius: 15px;
     }
   }

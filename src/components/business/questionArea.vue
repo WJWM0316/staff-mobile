@@ -285,7 +285,7 @@ export default {
         .title {
           padding: 20px 20px 0;
           font-size: 28px; /*px*/
-          font-weight: 400;
+          font-weight: 300;
           line-height: 14px;
           color: #354048;
         }

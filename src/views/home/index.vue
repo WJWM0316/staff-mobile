@@ -222,7 +222,7 @@ export default {
           .num {
             font-size: 76px; /*px*/
             color: #354048;
-            font-weight: 500;
+            font-weight: 700;
             line-height: 50px;
             font-family: 'MyNewFont'
           }
@@ -340,7 +340,7 @@ export default {
         font-size: 40px; /*px*/
         line-height: 24px;
         color: #929292;
-        font-weight: 500;
+        font-weight: 700;
         .icon {
           width: 6px;
           height: 20px;

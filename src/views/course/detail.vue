@@ -148,7 +148,7 @@ export default {
       color: #929292;
       line-height: 24px;
       font-size: 40px;/*px*/
-      font-weight: 500;
+      font-weight: 700;
       &::before{
         content: '';
         display: block;
@@ -209,7 +209,7 @@ export default {
         display: flex;
         .reverse, .study{
           color: #D7AB70;
-          font-weight: 400;
+          font-weight: 300;
           >img{
             width: 15px;
             height: 15px;
@@ -235,7 +235,7 @@ export default {
          text-overflow: ellipsis;
          overflow: hidden;
          font-size: 30px;/*px*/
-         font-weight: 400;
+         font-weight: 300;
          margin-right: 15px;
          padding-top: 20.5px;
          padding-bottom: 15px;

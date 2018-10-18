@@ -276,7 +276,7 @@ export default {
       margin-top: 12.5px;
       justify-content: space-between;
       font-size: 24px;/*px*/
-      font-weight: 400;
+      font-weight: 300;
       align-items: center;
       color: #929292;
       .operation {
@@ -335,7 +335,7 @@ export default {
         }
         .praise-name {
           font-size: 28px;/*px*/
-          font-weight: 500;
+          font-weight: 700;
           flex-grow: 1;
           overflow: hidden;
           text-overflow:ellipsis;

@@ -490,7 +490,7 @@ export default {
           margin-left: 10px;
           .text {
             font-size: 26px;/*px*/
-            font-weight: 400;
+            font-weight: 300;
             display: block;
             max-width: 261px;
             overflow: hidden;
@@ -498,7 +498,7 @@ export default {
             white-space: nowrap;
           }
           .text:last-of-type {
-            font-weight: 400;
+            font-weight: 300;
             margin-top: 1px;
             color: #bcbcbc;
           }

@@ -196,7 +196,7 @@ export default {
       font-size: 30px;/*px*/
       border-bottom: solid 0.5px #DCDCDC; /* no */
       span {
-        font-weight: 500;
+        font-weight: 700;
         line-height: 21px;
         margin-right: 31.5px;
         padding: 17.5px 0 8px;

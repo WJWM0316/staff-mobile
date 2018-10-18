@@ -95,7 +95,7 @@ export default {
     }
     .message-con {
       max-width: 262px;
-      font-weight: 400;
+      font-weight: 300;
       float: left;
       .name {
         color: #929292;

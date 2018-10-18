@@ -199,7 +199,7 @@ export default {
       .txt {
         font-size: 40px; /*px*/
         line-height: 20px;
-        font-weight: 500;
+        font-weight: 700;
         color: #929292;
       }
     }

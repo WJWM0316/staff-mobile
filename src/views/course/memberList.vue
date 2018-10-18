@@ -103,7 +103,7 @@ export default {
       padding-right: 6px;
       font-size: 30px;  /*px*/
       color: #929292;
-      font-weight: 500;
+      font-weight: 700;
     }
   }
   .Mask{

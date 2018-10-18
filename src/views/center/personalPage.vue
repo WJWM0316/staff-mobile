@@ -445,7 +445,7 @@ export default {
         font-size: 36px; /*px*/
         color: #354048;
         line-height: 22px;
-        font-weight: 500;
+        font-weight: 700;
         margin-top: 10px;
       }
       .position {
@@ -465,7 +465,7 @@ export default {
           font-size: 58px; /*px*/
           color: #D7AB70;
           line-height: 29px;
-          font-weight: 500;
+          font-weight: 700;
           font-family: 'MyNewFont'
         }
         .txt {
@@ -500,7 +500,7 @@ export default {
       font-weight: 300;
       &.selected {
         color: #354048;
-        font-weight: 500;
+        font-weight: 700;
         position: relative;
         height: 100%;
         line-height: 44px;
@@ -525,7 +525,7 @@ export default {
         padding: 0 0 10px 15px;
         color: #929292;
         font-size: 36px; /*px*/
-        font-weight: 500;
+        font-weight: 700;
         line-height: 22px;
       }
       .content {

@@ -116,7 +116,7 @@ export default {
         width: 100%;
         .name {
           font-size: 40px; /*px*/
-          font-weight: 500;
+          font-weight: 700;
           line-height: 24px;
           color: #354048;
         }
@@ -129,7 +129,7 @@ export default {
         }
         .editBtn {
           font-size: 24px; /*px*/
-          font-weight: 400;
+          font-weight: 300;
           line-height: 16px;
           color: #D7AB70;
           margin-top: 17px;

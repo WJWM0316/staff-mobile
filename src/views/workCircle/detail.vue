@@ -222,7 +222,7 @@ export default {
       font-size: 30px;/*px*/
       border-bottom: solid 1px #DCDCDC; /* no */
       span {
-        font-weight: 500;
+        font-weight: 700;
         line-height: 21px;
         margin-right: 32px;
         padding: 18px 0 9px;

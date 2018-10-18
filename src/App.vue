@@ -294,7 +294,7 @@ export default {
     .weui-dialog__title {
       color: #354048;
       font-size: 36px; /*px*/
-      font-weight: 500;
+      font-weight: 700;
     }
   }
   .weui-dialog__btn {

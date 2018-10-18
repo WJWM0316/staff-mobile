@@ -116,14 +116,14 @@ export default {
       .title {
         font-size: 32px; /*px*/
         line-height: 20px;
-        font-weight: 400;
+        font-weight: 300;
         color: #354048;
       }
       .msg {
         color: #BCBCBC;
         font-size: 24px; /*px*/
         line-height: 16px;
-        font-weight: 400;
+        font-weight: 300;
         margin-top: 5px;
       }
       &.hasFile {
@@ -149,7 +149,7 @@ export default {
     padding: 0 20px;
     .title {
       font-size: 28px; /*px*/
-      font-weight: 400;
+      font-weight: 300;
       color: #354048;
       line-height: 18px;
       padding-top: 23px;
