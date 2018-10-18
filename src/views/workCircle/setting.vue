@@ -83,7 +83,8 @@ export default {
           await putNostickApi(this.$route.query.id)
         }
         /* 关注操作 */
-        if (!this.isFocus && !this.isOwner) {
+        if (!this.isOwner && !this.pageInfo.isMember) {
+          console.log(this.isOwner, this.pageInfo.isMember)
           await putNoFocusApi(this.$route.query.id)
         }
         /* 修改名字或图片 */

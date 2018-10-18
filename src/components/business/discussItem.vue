@@ -2,14 +2,14 @@
   <div class="discussItem" v-if="item">
     <!-- 头像 -->
     <div class="left">
-      <img v-if="item.userAvatar" :src="item.userAvatar.smallUrl" class="user-image" @click.stop="toUserInfo(item.reviewer.userId)" />
+      <img v-if="item.userAvatar" :src="item.userAvatar.smallUrl" class="user-image" @click.stop="toUserInfo(item.uid)" />
     </div>
     <div class="right" :class="{border: isShowBorder}">
       <div class="content-head">
         <div class="user-box" v-if="true">
           <div>
             <!-- 用户名 -->
-            <p class="user-name master" @click.stop="toUserInfo(item.reviewer.userId)">{{item.userName}}</p>
+            <p class="user-name master" @click.stop="toUserInfo(item.uid)">{{item.userName}}</p>
             <!-- 用户头衔 -->
             <p class="user-career" v-if="item.userTitle">{{item.userTitle}}</p>
           </div>
@@ -28,7 +28,7 @@
       <!-- 发表内容 类型: 指定回复人 无指定回复人 -->
       <div class="publish-content">
         <!-- 指定回复人 -->
-        <p class="content-text" v-if="item.ancestorCommentId !== item.parentCommentId">回复<span style="color: #4080AD; display: inline-block; z-index: 9;" @click.stop="toUserInfo(item.receiver.userId)">{{item.toUserName}}</span>：{{item.content}}</p>
+        <p class="content-text" v-if="item.ancestorCommentId !== item.parentCommentId">回复<span style="color: #4080AD; display: inline-block; z-index: 9;" @click.stop="toUserInfo(item.uid)">{{item.toUserName}}</span>：{{item.content}}</p>
         <!-- 无指定回复人 -->
         <p class="content-text" v-else>{{item.content}}</p>
       </div>
@@ -59,7 +59,7 @@
         <div class="praise-block" v-if="item.favorCount > 0">
           <img class="icon-zan" src="@/assets/icon/bnt_zan@3x.png" />
           <div class="praise-name">
-            <span class="favor-name" v-for="(favor, favorIndex) in item.favorUsers" :key="favorIndex" @click.stop="toUserInfo(favor.userId)">{{favorIndex > 0 ?  ','+favor.realname : favor.realname}}</span>
+            <span class="favor-name" v-for="(favor, favorIndex) in item.favorUsers" :key="favorIndex" @click.stop="toUserInfo(favor.uid)">{{favorIndex > 0 ?  ','+favor.realname : favor.realname}}</span>
           </div>
           <span class="praise-total" v-if="item.favorCount > 3">等{{item.favorCount}}人觉得很赞</span>
         </div>
@@ -68,13 +68,13 @@
           <div class="reply" v-for="(reply,index) in item.replyCommentList" :key="index">
             <div v-if="reply.ancestorCommentId !== reply.parentCommentId">
               <p>
-                <span class="favor-name" @click.stop="toUserInfo(reply.reviewer.userId)">{{reply.userName}}</span> 回复 <span class="favor-name" @click.stop="toUserInfo(reply.receiver.userId)">{{reply.toUserName}}</span>：{{reply.content}}
+                <span class="favor-name" @click.stop="toUserInfo(reply.uid)">{{reply.userName}}</span> 回复 <span class="favor-name" @click.stop="toUserInfo(reply.uid)">{{reply.toUserName}}</span>：{{reply.content}}
               </p>
             </div>
             <div v-else>
               <div>
-                <p v-if="true"><span class="favor-name" @click.stop="toUserInfo(reply.reviewer.userId)">{{reply.userName}}</span>: {{reply.content}}</p>
-                <p v-else><span class="favor-name" @click.stop="toUserInfo(reply.reviewer.userId)">{{reply.reviewer.realName}}</span>: {{reply.content}}</p>
+                <p v-if="true"><span class="favor-name" @click.stop="toUserInfo(reply.uid)">{{reply.userName}}</span>: {{reply.content}}</p>
+                <p v-else><span class="favor-name" @click.stop="toUserInfo(reply.uid)">{{reply.reviewer.realName}}</span>: {{reply.content}}</p>
               </div>
             </div>
           </div>
@@ -177,8 +177,9 @@ export default {
     commentAreaClick () {
       console.log(' 我是底部评论区点击评论事件 ')
     },
-    toUserInfo () {
-      console.log(' 我是去个人详情页的事件 ')
+    toUserInfo (id) {
+      console.log(id)
+      this.$router.push({path: '/personalPage', query: {uid: id}})
     },
     comment () {
       if (this.$route.path !== '/commentDetail') {

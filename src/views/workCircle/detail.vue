@@ -222,7 +222,6 @@ export default {
       font-size: 30px;/*px*/
       border-bottom: solid 1px #DCDCDC; /* no */
       span {
-        font-weight: 700;
         line-height: 21px;
         margin-right: 32px;
         padding: 18px 0 9px;
@@ -230,7 +229,6 @@ export default {
       &.comment span:nth-of-type(1),
       &.praise span:nth-of-type(2) {
         color: #354048;
-        font-weight: 700;
         position: relative;
       }
       &.comment span:nth-of-type(1):after,

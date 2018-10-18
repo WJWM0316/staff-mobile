@@ -1,5 +1,6 @@
 <template>
   <div class="infoCard"  @click="toDeatil(item.id || item.liveId)" :class="{'newCouse': item.isNew}">
+    <img v-if="item.isTop" class="setTop" src="@/assets/icon/settop.png" />
     <img class="infoPhoto" v-if="item.coverImg" v-lazyload :src="item.coverImg.smallUrl"/>
     <img class="infoPhoto" v-if="item.courseCoverImg" v-lazyload :src="item.courseCoverImg.smallUrl"/>
     <div class="right">
@@ -76,6 +77,14 @@ export default {
   width:100%;
   padding: 15px 20px 15px 100px;
   position: relative;
+  .setTop{
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    z-index: 3;
+  }
   .newTitle{
     line-height: ;
     position: absolute;
@@ -141,7 +150,7 @@ export default {
       font-size: 24px;/*px*/
       font-weight: 300;
       line-height: 16px;
-      margin: 5px 0 0px;
+      margin: 10px 0 0px;
       white-space: initial;
       .setEllipsis();
       & > span {

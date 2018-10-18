@@ -1,9 +1,9 @@
 <template>
   <div class="backHome">
-    <div class="home" v-if="type === 3 || type === 1" @click.stop="toHome">
+    <div class="home" v-if="type === '3' || type === '1'" @click.stop="toHome">
       <i class="homeIcon icon iconfont icon-btn_homepage"></i>
     </div>
-    <div class="homeSearch" v-if="type === 2">
+    <div class="homeSearch" v-if="type === '2'">
       <span><i class="icon iconfont icon-btn_homepage" @click.stop="toHome"></i></span>|
       <span><i class="icon iconfont icon-btn_search" @click.stop="toSearch"></i></span>
     </div>
@@ -13,8 +13,8 @@
 export default {
   props: {
     type: {
-      type: Number,
-      default: 1 // 1只有首页按钮 2首页+搜索
+      type: String,
+      default: '1' // 1只有首页按钮 2首页+搜索
     }
   },
   methods: {
@@ -32,7 +32,7 @@ export default {
 <style lang="less" scoped>
   .backHome {
     .home {
-      position: fixed;
+      position: absolute;
       top: 35px;
       right: 0;
       background: #fff;

@@ -7,7 +7,7 @@
         {{communityCourse.title}}
       </div>
       <div class="header-info">
-        <div><img v-if="communityCourse.tutorUser.avatarInfo" :src="communityCourse.tutorUser.avatarInfo.smallUrl"/><span class="mast-name">{{communityCourse.tutorUser.realname}}</span><span>{{communityCourse.createTime}}</span></div>
+        <div class="left"><img v-if="communityCourse.tutorUser.avatarInfo" :src="communityCourse.tutorUser.avatarInfo.smallUrl"/><span class="mast-name">{{communityCourse.tutorUser.realname | ellipsis(12)}}</span><span>{{communityCourse.createTime}}</span></div>
         <div class="backCourse" @click.stop="backCourse">课程主页</div>
       </div>
     </div>
@@ -166,7 +166,10 @@ export default {
       },
       lessonData: {},
       jsonData: { // 获取课节详情的筛选条件参数
-        course_section_id: 1
+        course_section_id: 1,
+        order: {
+          punch_card_time: 'asc'
+        }
       },
       listPage: 1, // 当前打卡列表的页数
       messageData: {}, // 音频数据
@@ -259,6 +262,7 @@ export default {
       color: #354048;
     }
     .header-info{
+      color: #666666;
       margin-top: 20px;
       box-sizing: border-box;
       width: 100%;
@@ -266,6 +270,10 @@ export default {
       display: flex;
       justify-content: space-between;
       font-size: 28px;/*px*/
+     .left{
+       display: flex;
+       align-items: center;
+     }
      .mast-name{
        margin-right: 20px;
        margin-left: 8px;
