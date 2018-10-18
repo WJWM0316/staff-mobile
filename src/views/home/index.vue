@@ -384,7 +384,7 @@ export default {
       }
       .enter {
         width: 100%;
-        padding: 20px;
+        padding: 7px 20px 20px 20px;
         box-sizing: border-box;
         img {
           width: 100%;
