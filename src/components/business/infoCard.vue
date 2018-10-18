@@ -1,5 +1,5 @@
 <template>
-  <div class="infoCard"  @click="toDeatil(item.id || item.liveId)" :class="{'newCouse': item.isNew}">
+  <div class="infoCard"  @click="toDeatil(item.id || item.liveId)" :class="{'newCouse': item.isNew, 'recommend': recommend}">
     <img v-if="item.isTop" class="setTop" src="@/assets/icon/settop.png" />
     <img class="infoPhoto" v-if="item.coverImg" v-lazyload :src="item.coverImg.smallUrl"/>
     <img class="infoPhoto" v-if="item.courseCoverImg" v-lazyload :src="item.courseCoverImg.smallUrl"/>
@@ -47,6 +47,10 @@ export default {
       default: true
     },
     ellipsis2: { // title两行缩略
+      type: Boolean,
+      default: false
+    },
+    recommend: { // 是否是首页的推荐
       type: Boolean,
       default: false
     }
@@ -115,9 +119,10 @@ export default {
     font-size: 20px; /*px*/
     font-weight: 300;
     color: #fff;
-    line-height: 24px;
+    line-height: 14px;
     display: flex;
     align-items: center;
+    white-space: normal;
   }
   .infoPhoto{
     display: block;
@@ -137,7 +142,6 @@ export default {
       color: #354048;
       font-size: 30px;/*px*/
       line-height: 20px;
-      font-weight: 700;
       &.ellipsis1 {
         .setEllipsis()
       }
@@ -157,7 +161,7 @@ export default {
       font-size: 24px;/*px*/
       font-weight: 300;
       line-height: 16px;
-      margin: 10px 0 0px;
+      margin: 5px 0 0px;
       white-space: initial;
       .setEllipsis();
       & > span {
@@ -234,6 +238,16 @@ export default {
           color: #D7AB70;
         }
       }
+    }
+  }
+  &.recommend {
+    padding-left: 108px;
+    .infoPhoto {
+      width: 89px;
+      height: 89px;
+    }
+    .right {
+      height: 89px;
     }
   }
 }

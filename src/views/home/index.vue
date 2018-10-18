@@ -1,10 +1,10 @@
 <template>
   <div class="wrap">
     <div class="headBox"></div>
-    <div class="head" v-if="headInfo">
+    <div class="head" v-if="headInfo" @click.stop="toCenter">
       <div class="welcome">
         <div class="text">
-          <span class="name">{{headInfo.base.realname | ellipsis(8)}}</span>,欢迎回来～
+          <span class="name">{{headInfo.base.realname | ellipsis(8)}}</span>，欢迎回来～
           <p class="msg">你的学习时长已超越<span class="num">{{headInfo.study.surpass}}%</span>的同事啦</p>
         </div>
         <div class="photo" v-if="headInfo.base.avatar"><img :src="headInfo.base.avatar.middleUrl" alt=""></div>
@@ -66,6 +66,7 @@
                 type="1"
                 :needProgress="false"
                 :ellipsis2="true"
+                :recommend="true"
               ></infoCard>
             </div>
           </div>
@@ -118,6 +119,9 @@ export default {
     }
   },
   methods: {
+    toCenter () {
+      this.$router.push('/center')
+    },
     getHomeInfo () {
       getHomeInfoApi({count: 6}).then(res => {
         this.homeInfo = res.data
