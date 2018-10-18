@@ -3,21 +3,25 @@
 	  <div class="classify">
       <span v-for="(item,index) in tabList" :key="index" :class="{ 'isFocusClassify':showBorder === item.categoryName }" @click="cutoverTab(item)">{{item.categoryName}}</span>
     </div>
+    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :isShowNoDataText="circleList.length > 0"></pullUpUi>
     <div class="content">
       <template v-for="(item, index) in circleList">
         <info-card :item="item" :needProgress="false" :key="index" :ellipsis2="true"></info-card>
       </template>
     </div>
-    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :isShowNoDataText="circleList.length > 0"></pullUpUi>
+    <nodata-box v-if="circleList.length === 0"></nodata-box>
 	</div>
 </template>
 
 <script>
 import { courseListApi, categoryApi } from '@/api/pages/course'
 import infoCard from '@c/business/infoCard.vue'
+import nodataBox from '@c/business/nodataBox'
 export default {
   components: {
-    infoCard
+    infoCard,
+    nodataBox
   },
   data () {
     return {

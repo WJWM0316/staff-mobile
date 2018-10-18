@@ -46,6 +46,12 @@ const routers = [
     name: 'memberList',
     meta: { title: '成员列表' },
     component: resolve => require(['@/views/course/memberList'], resolve)
+  },
+  {
+    path: '/punchList',
+    name: 'punchList',
+    meta: { title: '成员列表' },
+    component: resolve => require(['@/views/course/punchList'], resolve)
   }
 ]
 

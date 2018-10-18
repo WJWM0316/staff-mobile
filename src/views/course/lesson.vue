@@ -31,7 +31,7 @@
     <!-- 已加入 -->
     <template>
         <!--本节任务-->
-        <div class="lesson-task" v-if="communityCourse.punchCardTitle || communityCourse.punchCardImgInfo || communityCourse.punchCardImgInfo.length>0">
+        <div class="lesson-task" v-if="communityCourse.punchCardTitle || communityCourse.punchCardCImgInfo || communityCourse.punchCardCImgInfo.length>0">
           <!--头部标题-->
           <div class="headerBox">
             <div class="title-pic1">
@@ -65,11 +65,11 @@
             </div>
             <div class="title-pic2"></div>
           </div>
-          <div class="no-punch" v-if="peopleCourseCardList && peopleCourseCardList.length === 0">
+          <div class="no-punch" v-if="peopleCourseCardListCount === 0">
             还没人打卡哦，赶紧点击下方“去打卡”， 成为本节第一个打卡的人吧～
           </div>
           <!--优秀头部标题图片-->
-          <div class="excellentPunchList"  v-if="excellentPunchList && excellentPunchList.length>0">
+          <div class="excellentPunchList"  v-if="excellentPeopleCourseCardListCount > 5">
             <div class="excellent-punch">
               <div class="excellent-punch-title">优秀打卡</div>
             </div>
@@ -81,7 +81,7 @@
                :item="item"
                @setPostTop="setPostTop"
             ></lessondynamicItem>
-            <div class="expand-btn" @click.stop="toPunchList('excellent')" v-if="countCardInfo.totalExcellentCardCount>5">
+            <div class="expand-btn" @click.stop="toPunchList('excellent')" v-if="excellentPeopleCourseCardListCount>5">
               <div>
                 查看所有优秀打卡 <span>({{countCardInfo.totalExcellentCardCount}})</span>
               </div>
@@ -89,7 +89,7 @@
           </div>
         </div>
         <!--所有打卡区-->
-        <div class="all-punch" v-if="peopleCourseCardList && peopleCourseCardList.length>0">
+        <div class="all-punch" v-if="peopleCourseCardListCount !== 0">
           <div class="excellent-punch">
             <div class="excellent-punch-title">所有打卡</div>
           </div>
@@ -100,9 +100,9 @@
              :item="item"
              @setPostTop="setPostTop"
           ></lessondynamicItem>
-          <div class="expand-btn all-show" @click.stop="toPunchList('all')" v-if="countCardInfo.totalCardCount>5">
+          <div class="expand-btn all-show" @click.stop="toPunchList('all')" v-if="peopleCourseCardListCount > 5">
             <div>
-              查看所有打卡 <span>({{countCardInfo.totalCardCount}})</span>
+              查看所有打卡 <span>({{peopleCourseCardListCount}})</span>
             </div>
           </div>
         </div>
@@ -141,7 +141,9 @@ export default {
       isPlayList: false,
       // 所有打卡数据
       peopleCourseCardList: '',
+      peopleCourseCardListCount: '',
       excellentPunchList: '',
+      excellentPeopleCourseCardListCount: '',
       // 是否试读
       trialReading: 0, // 0是非试读， 1是试读
       // 最新课节信息
@@ -194,6 +196,8 @@ export default {
       }
       this.peopleCourseCardList = cardList.data.peopleCourseCardList
       this.excellentPunchList = cardList.data.excellentPeopleCourseCardList
+      this.peopleCourseCardListCount = cardList.data.peopleCourseCardListCount
+      this.excellentPeopleCourseCardListCount = cardList.data.excellentPeopleCourseCardListCount
     },
     /* 获取课节详情 */
     getlessonData (id) {
@@ -237,6 +241,10 @@ export default {
       this.peopleCourseCardList = cardList.data.peopleCourseCardList
       this.excellentPunchList = cardList.data.excellentPeopleCourseCardList
       this.$toast({text: '设置优秀打卡成功', type: 'success'})
+    },
+    /* 去打卡列表 */
+    toPunchList (to) {
+      this.$router.push({path: '/punchList', query: {type: to, id: this.communityCourse.courseSectionId}})
     }
   },
   created () {
