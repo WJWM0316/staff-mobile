@@ -80,6 +80,7 @@ export default {
     joinCourse () {
       getCourseJoinApi({id: this.$route.query.id}).then(() => {
         this.init()
+        this.$alert({title: '欢迎加入课程', content: '本课程已添加到首页-正在学习列表，开始学习吧～'})
       })
     },
     toLesson (item) {

@@ -137,7 +137,7 @@ export default {
       console.log(e)
     },
     async handleAddActoinItem (key, item) {
-      circlePostToTopApi(this.nowChoosePost.id).then(res => {
+      circlePostToTopApi({id: this.nowChoosePost.id}).then(res => {
         this.reverse(this.sort)
         this.$toast({text: '帖子置顶成功', type: 'success'})
       })

@@ -301,11 +301,12 @@ export default {
         width: 30px;
         height: 30px;
         font-size: 30px;
+        line-height: 30px;
         color: #DBDBDB;
         writing-mode: tb-rl;
         white-space: nowrap;
         position:absolute;
-        right: -14px;
+        right: -10px;
         top: 5px;
         .evaluateWindow{
           background-color: #FFFFFF;
