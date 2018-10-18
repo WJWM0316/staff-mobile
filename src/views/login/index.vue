@@ -81,6 +81,7 @@ export default {
     padding: 44px 40px;
     background: url('https://xplus-uploads-test.oss-cn-shenzhen.aliyuncs.com/default/loginBg2.png') no-repeat center center;
     background-size: auto 100%;
+    background-attachment: fixed;
     .title {
       text-align: center;
       img {

@@ -64,6 +64,8 @@
               <infoCard
                 :item="n"
                 type="1"
+                :needProgress="false"
+                :ellipsis2="true"
               ></infoCard>
             </div>
           </div>

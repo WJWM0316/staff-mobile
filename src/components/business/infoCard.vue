@@ -4,7 +4,7 @@
     <img class="infoPhoto" v-if="item.courseCoverImg" v-lazyload :src="item.courseCoverImg.smallUrl"/>
     <div class="right">
       <div class="title"
-        :class="{'ellipsis1' : type === '3' || (type === '1' && item.isJoin), 'ellipsis2' : type === '2' || type === '1' && (!item.isJoin || item.isMaster)}">
+        :class="{'ellipsis1' : type === '3' || (type === '1' && item.isJoin) && !ellipsis2, 'ellipsis2' : type === '2' || (type === '1' && (!item.isJoin || item.isMaster) || ellipsis2)}">
         {{item.name || item.title}}
       </div>
       <template v-if="!item.userTitle || item.userTitle.length === 0">
@@ -41,9 +41,13 @@ export default {
       type: String,
       default: '1'
     },
-    needProgress: {
+    needProgress: { // 需要进度条
       type: Boolean,
       default: true
+    },
+    ellipsis2: { // title两行缩略
+      type: Boolean,
+      default: false
     }
   },
   watch: {
