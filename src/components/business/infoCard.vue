@@ -139,7 +139,7 @@ export default {
       line-height: 16px;
       margin: 5px 0 0px;
       white-space: initial;
-      .setEllipsisLn(1);
+      .setEllipsis();
       & > span {
         vertical-align: top;
       }
