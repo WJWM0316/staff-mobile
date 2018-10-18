@@ -38,7 +38,7 @@
 
 // 单行超出省略
 .setEllipsis (@width: 100%) {
-//width: @width;
+  width: @width;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -90,7 +90,6 @@
 .setCheck (@type: radio) {
   position: relative;
   display: inline-block;
-
   & > input[type="@{type}"] {
     position: absolute;
     left: 0;
@@ -99,91 +98,7 @@
     height: 0;
     visibility: hidden;
   }
-
   & > label {
     display: inline-block;
-  }
-}
-
-// modal
-.setModal () {
-  display: block;
-  position: absolute;
-  left: 0;
-  top: 0;
-  background: rgba(0, 0, 0, .5);
-  width: 100%;
-  height: 100%;
-  z-index: 15;
-
-  .wrapper {
-    .setFlex();
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-  }
-}
-
-// 小红点标签
-.setTag () {
-  display: inline-block;
-  box-sizing: border-box;
-  background: #f12c20;
-  min-width: 18px;
-  height: 18px;
-  line-height: 18px;
-  padding: 0 3px;
-  border-radius: 9px;
-  font-size: 13px;
-  font-weight: normal;
-  text-align: center;
-  color: #fff;
-}
-
-// tabs通用
-.setTabs () {
-  font-size: 0;
-
-  .item {
-    position: relative;
-    box-sizing: border-box;
-    display: inline-block;
-    margin: 0 15px;
-    padding: 18px 11px 14px;
-    font-size: 14px;
-    color: #929292;
-
-    &::after {
-      display: block;
-      box-sizing: border-box;
-      position: absolute;
-      left: 0;
-      bottom: 3px;
-      background: #ffe266;
-      width: 100%;
-      height: 3px;
-      border-radius: 2px;
-    }
-
-    &.z-active {
-      font-weight: bold;
-      color: #354048;
-
-      &::after {
-        content: " ";
-      }
-    }
-
-    .text {
-      position: relative;
-      .addon {
-        .setTag();
-        position: absolute;
-        left: ~"calc(100% + 1px)";
-        top: -10px;
-      }
-    }
   }
 }

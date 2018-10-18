@@ -12,7 +12,7 @@
       <!-- mediaType 0是文本，1是文件， 2是图片， 3是音频， 4是视频， 5是链接 -->
       <div class="desc-middle" v-if="item.mediaType === 0 && item.abstract">{{item.abstract}}</div>
       <!--音频-->
-      <audioBox v-if="item.mediaType === 3" :messageData="item"></audioBox>
+      <audioBox v-if="item.mediaType === 3" :messageData="audioData"></audioBox>
       <div class="desc-middle-return">
         <img class="icon-zhuang" src="@a/icon/icon_original.png">
         <div class="desc-middle-return-two">
@@ -38,6 +38,11 @@ export default {
   computed: {
     circleId () {
       return String(this.item.beReturnedId)
+    },
+    audioData () {
+      let data = {}
+      data.file = this.item.abstract
+      return data
     }
   },
   props: {
@@ -52,11 +57,6 @@ export default {
   },
   data () {
     return {
-      audio: '',
-      audioTimer: '',
-      video: '',
-      currVideoIndex: '',
-      isAudio: true,
       typeStr: ['文本', '文件', '图片', '音频', '视频', '链接'],
       msgType: ['[圈]', '[圈]', '[课]', '[课]', '[直]']
     }
@@ -78,7 +78,7 @@ export default {
             this.$router.push(`/punchDetail?id=${this.item.sourceId}`)
             break
           case 4:
-            this.$router.push(`/liveRoom?id=${this.item.sourceId}`)
+            this.$router.push(`/liveRoom?id=${this.item.sourceId}&openArea=true`)
             break
         }
       }
@@ -90,7 +90,6 @@ export default {
   }
 }
 </script>
-
 <style lang="less">
   .message-item {
     padding: 0px 15px;

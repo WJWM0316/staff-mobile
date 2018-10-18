@@ -6,6 +6,12 @@ const routers = [
     component: resolve => require(['@/views/course/index'], resolve)
   },
   {
+    path: '/myCourse',
+    name: 'myCourse',
+    meta: { title: '我的课程' },
+    component: resolve => require(['@/views/course/myCourse'], resolve)
+  },
+  {
     path: '/courseDetail',
     name: 'courseDetail',
     meta: { title: '课程详情' },

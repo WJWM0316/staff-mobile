@@ -6,7 +6,7 @@
           <img class="pull-icon" src="../../assets/icon/loading.png" v-if="downType === 'refresh'">
           <img class="loadmore" src="../../assets/icon/loadMore.gif" v-else>
         </div>
-        <div class="content" :class="{'pulldownUi': pulldownUi && pulldown}">
+        <div class="content" :style="{minHeight: minHeight}" :class="{'pulldownUi': pulldownUi && pulldown}">
           <slot></slot>
         </div>
         <div class="loading-pos" ref="loadingPos" v-if="pullup && pullupUi">
@@ -151,8 +151,15 @@ export default {
   },
   data () {
     return {
+      scroll: null,
       pulldownUi: false,
       pullupUi: false
+    }
+  },
+  computed: {
+    minHeight () {
+      if (!this.scroll) return
+      return this.scroll.wrapperHeight + 1 + 'px'
     }
   },
   mounted () {
@@ -188,7 +195,6 @@ export default {
         pullUpLoad: this.pullup,
         freeScroll: this.freeScroll
       })
-
       // 是否派发滚动事件
       if (this.listenScroll || this.pulldown || this.pullup) {
         let me = this

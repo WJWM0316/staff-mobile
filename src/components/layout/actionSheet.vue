@@ -4,6 +4,7 @@
       v-model="isShow"
       show-cancel
       :menus="menus"
+      @on-click-mask="clickMask"
       @on-click-menu="choseResult"
     ></actionsheet>
   </div>
@@ -37,6 +38,9 @@ export default {
     }
   },
   methods: {
+    clickMask () {
+      this.$emit('clickMask')
+    },
     choseResult (menuKey, menuItem) {
       this.$emit('choseResult', menuKey, menuItem)
     }

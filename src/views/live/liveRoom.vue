@@ -1,12 +1,13 @@
 <template>
   <div class='wrap'>
-    <div class='header'>
-      <p class='title'>教你如何高效记单词</p>
+    <div class='header' v-if="liveDetail.title">
+      <p class='title'>{{liveDetail.title}}</p>
       <p class='msg'>
-        <span class='status green' v-show='wsStatus === 1'>直播进行中</span>
-        <span class='status red' v-show='wsStatus === 0'>直播连接中</span>
-        <span class='status red' v-show='wsStatus === 2'>直播未连接</span>
-        <span class='num'>{{onlineNum}}人参与</span>
+        <span class='status green' v-show='liveDetail.status === 2 && wsStatus === 1'>直播进行中</span>
+        <span class='status red' v-show='liveDetail.status === 2 && wsStatus === 0'>直播连接中</span>
+        <span class='status red' v-show='liveDetail.status === 2 && wsStatus === 2'>直播未连接</span>
+         <span class='status red' v-show='liveDetail.status === 3'>直播已结束</span>
+        <span class='num' v-if="liveDetail.status !== 3">{{onlineNum}}人参与</span>
       </p>
       <div class='more' @click.stop="jumpMore">
         <span>更多介绍</span>
@@ -32,7 +33,7 @@
         @pullingUp='loadNext'
         >
         <div class='startTime'>
-          <span class='txt'>7月13日9:30 直播开始</span>
+          <span class='txt'>{{liveDetail.expectedStartTime * 1000 | date('MMMDo hh:mm')}} 直播开始</span>
         </div>
         <div class='message' ref="message">
           <live-message
@@ -44,10 +45,9 @@
             @nextMusic='nextMusic'
           ></live-message>
         </div>
-        <!-- <p v-for='(n, index) in 200' :key='index'>{{n}}</p> -->
-        <!-- <div class='endTime'>
-          <span class='txt'>7月13日9:30 直播介绍</span>
-        </div> -->
+        <div class='endTime' v-if="liveDetail.status === 3">
+          <span class='txt'>{{liveDetail.endTime * 1000 | date('MMMDo hh:mm')}} 直播结束</span>
+        </div>
       </scroller>
       <div class="scrollBtn">
         <i class="btn" @click.stop="scrollTo('top')"><img src="@a/icon/live_btn_gotop@3x.png" alt=""></i>
@@ -64,6 +64,8 @@
     <div class='testBtn' @click='closeWs'>断线测试</div>
     <div class='testBtn1' @click='leaveLive'>离开测试</div>
     <div class='testBtn2' @click='addLive'>加入测试</div>
+    <div class='testBtn3' @click='endLive'>结束直播测试</div>
+    <div class='testBtn4' @click='startLive'>开启直播测试</div>
     <div class="sendMsg" v-if="$route.query.teacher">
       <select v-model="option.type">
         <option value="text">文本</option>
@@ -84,7 +86,7 @@ import ws from '@u/websocket'
 import liveMessage from '@c/business/liveMessage'
 import questionArea from '@c/business/questionArea'
 import { mapState, mapActions } from 'vuex'
-import { getLiveRoomMsgApi, putQuestionsApi, sendLiveMsgApi, msgPositionApi } from '@/api/pages/live'
+import { getLiveRoomMsgApi, putQuestionsApi, sendLiveMsgApi, msgPositionApi, getLiveDetailApi, putUpdataLiveApi } from '@/api/pages/live'
 let onMessage = null
 export default {
   components: {
@@ -96,14 +98,18 @@ export default {
     return {
       option: {
         liveId: this.$route.query.id,
-        teacherId: this.$route.query.teacherId,
+        teacherId: null,
         type: null
+      },
+      liveDetail: {
+        status: null,
+        title: null,
+        expectedStartTime: null
       },
       content: '',
       fileId: '',
       id: '',
       list: [],
-      onlineNum: 0, // 在线人数
       problemTxt: '', // 提交的问题
       openArea: false,
       isPulldown: true, // 是否开启下拉
@@ -115,7 +121,8 @@ export default {
   computed: {
     ...mapState({
       wsStatus: state => state.websocket.wsStatus,
-      sendData: state => state.websocket.sendData
+      sendData: state => state.websocket.sendData,
+      onlineNum: state => state.websocket.onlineNum
     })
   },
   watch: {
@@ -126,7 +133,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'updata_sendData'
+      'updata_sendData',
+      'updata_onlineNum'
     ]),
     jumpMore () {
       this.$router.push(`/liveDetail?id=${this.id}`)
@@ -152,6 +160,15 @@ export default {
     },
     _closeArea () {
       this.openArea = false
+    },
+    async getDetail () {
+      let res = await getLiveDetailApi({id: this.option.liveId})
+      this.liveDetail = res.data
+      this.option.teacherId = res.data.masterUid
+      // 直播未结束都可以加入直播
+      if (this.liveDetail.status !== 3) {
+        this.addLive()
+      }
     },
     getMessage ({msgId, action, needLoading = true}) {
       let data = {
@@ -186,7 +203,7 @@ export default {
       this.$refs.messageItem[index].$children[0].play()
     },
     loadPrev () {
-      if (this.isPulldown) {
+      if (this.isPulldown && this.list[0].messageId) {
         this.getMessage({msgId: this.list[0].messageId, action: 2, needLoading: false}).then(res => {
           this.$refs.scroll.pulldownUi = false
           // 等scroll重新渲染完毕后定位到上次的位置
@@ -200,7 +217,7 @@ export default {
       }
     },
     loadNext () {
-      if (this.isPullup) {
+      if (this.isPullup && this.list[this.list.length - 1].messageId) {
         this.getMessage({msgId: this.list[this.list.length - 1].messageId, action: 1, needLoading: false}).then(res => {
           this.$refs.scroll.pullupUi = false
           if (res.data.length === 0) {
@@ -237,27 +254,45 @@ export default {
     send (data) {
       ws.send(data)
     },
+    creatWs () { // 开启websocket
+      let company = window.localStorage.getItem('XPLUSCompany')
+      ws.create(`ws://work-api.xplus.ziwork.com/${company}`)
+    },
     closeWs () {
       ws.close()
     },
-    addLive () {
+    addLive () { // 加入直播间
       ws.addLive(this.id)
     },
     leaveLive () {
       ws.leaveLive(this.id)
     },
-    creatWs () {
-      let company = window.localStorage.getItem('XPLUSCompany')
-      ws.create(`ws://work-api.xplus.ziwork.com/${company}`, this.$route.query.id)
+    endLive () {
+      if (!this.liveDetail.isTutor) return
+      let data = {
+        liveId: this.id,
+        status: 3
+      }
+      putUpdataLiveApi(data)
+    },
+    startLive () {
+      if (!this.liveDetail.isTutor) return
+      let data = {
+        liveId: this.id,
+        status: 2
+      }
+      putUpdataLiveApi(data)
     }
   },
   created () {
-    this.id = this.$route.query.id
+    let {id, openArea} = this.$route.query
+    this.id = id
+    if (openArea) this.openArea = true
+    this.getDetail()
     this.getMessage({page: 1, action: 1})
   },
   mounted () {
     let that = this
-    this.creatWs() // 开启直播
     // 直播消息回调
     onMessage = (obj) => {
       let data = obj.detail
@@ -281,24 +316,35 @@ export default {
             break
           // 其他人加入该直播间
           case 'live_login':
-            that.onlineNum = data.data.onlineLiveCount
+            that.updata_onlineNum(data.data.onlineLiveCount)
             break
           // 其他人离开该直播间
           case 'live_logout':
-            that.onlineNum = data.data.onlineLiveCount
+            that.updata_onlineNum(data.data.onlineLiveCount)
             break
+          // 直播结束
+          case 'live_end': {
+            that.liveDetail.status = 3
+          }
         }
       }
     }
     window.addEventListener('wsOnMessage', onMessage)
   },
   beforeDestroy () {
+    if (this.liveDetail.status === 3 && this.list.length > 0) {
+      let data = {
+        liveId: this.id,
+        messageId: this.list[this.list.length - 1].messageId
+      }
+      msgPositionApi(data)
+    }
     window.removeEventListener('wsOnMessage', onMessage)
   }
 }
 </script>
 <style lang='less' scoped>
-  .testBtn, .testBtn1, .testBtn2 {
+  .testBtn, .testBtn1, .testBtn2, .testBtn3, .testBtn4 {
     color: #fff;
     font-size: 14px;
     border: 1px solid #000;
@@ -313,6 +359,12 @@ export default {
   }
   .testBtn2 {
     bottom: 20%;
+  }
+  .testBtn3 {
+    bottom: 25%;
+  }
+  .testBtn4 {
+    bottom: 30%;
   }
   .sendMsg {
     width: 40%;

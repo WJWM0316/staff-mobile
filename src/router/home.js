@@ -8,7 +8,7 @@ const routers = [
   {
     path: '/home',
     name: 'home',
-    meta: { title: '首页', needBottomTab: true, pullDown: true },
+    meta: { title: 'XPLUS', needBottomTab: true, pullDown: true },
     component: resolve => require(['@/views/home/index'], resolve)
   }
 ]

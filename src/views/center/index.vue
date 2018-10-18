@@ -21,7 +21,7 @@
           <img src="@a/icon/btn_enter@2x.png" alt="">
         </i>
       </div>
-      <div class="item"  @click.stop="jump('message')" :class="{'red' : pageInfo.noteCount > 0}">
+      <div class="item"  @click.stop="jump('message')" :class="{'red' : userInfo.noteCount > 0}">
         <div>
           <i class="icon1 iconfont icon-btn_comment"></i>
           <span class="txt">我的消息</span>
@@ -78,6 +78,7 @@ export default {
           break
         case 'message':
           this.$router.push('/message')
+          this.userInfo.noteCount = 0
           break
         case 'help':
           this.$router.push('/help')

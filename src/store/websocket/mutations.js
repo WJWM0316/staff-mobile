@@ -15,5 +15,8 @@ export default {
   },
   [types.WSLOGIN] (state, data) {
     state.wsLogin = data
+  },
+  [types.ONLINENUM] (state, data) {
+    state.onlineNum = data
   }
 }

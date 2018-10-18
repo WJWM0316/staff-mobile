@@ -1,5 +1,5 @@
 <template>
-  <div class="aduio" :class="{'isRead': !isReaded && !isLesson, 'isReadEnd': !isReadEnded}"  @click.stop="play">
+  <div class="aduio" :class="{'isRead': !isReaded && isNeedRead, 'isReadEnd': !isReadEnded && isNeedEnd}"  @click.stop="play">
     <div class="playBtn" :class="{'lessonPlayBtn': isLesson}">
       <img src="@a/icon/playing.png" v-show="status === 0">
       <img src="@a/icon/music_loading.png" class="load" v-show="status === 1">
@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="duration lessonDuration" v-if="isLesson">{{messageData.duration}}s</div>
-    <div class="duration" v-else>111s</div>
+    <div class="duration" v-else>{{messageData.file.duration}}</div>
   </div>
 </template>
 <script>
@@ -26,11 +26,11 @@ import browser from '@u/browser'
 import Vue from 'vue'
 export default {
   props: {
-    isRead: {
+    isNeedRead: { // 是否需要红点标识
       type: Boolean,
-      default: true
+      default: false
     },
-    isReadEnd: {
+    isNeedEnd: { // 是否需要已结束标识
       type: Boolean,
       default: false
     },

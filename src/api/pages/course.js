@@ -1,16 +1,17 @@
 import { request } from '../require.js'
-// 社区基本信息
-export const getCommunityApi = (data) => {
-  return request({
-    url: '/wap/beacon/community',
-    data,
-    isLoading: true
-  })
-}
 // 课程列表接口
 export const courseListApi = (data, needLoading) => {
   return request({
     url: '/course/courseList',
+    type: 'post',
+    data,
+    needLoading: needLoading
+  })
+}
+// 我的课程列表
+export const myCourseListApi = (data, needLoading) => {
+  return request({
+    url: '/course/myCourse',
     type: 'post',
     data,
     needLoading: needLoading
@@ -54,11 +55,12 @@ export const getCourseCardListApi = (data) => {
   })
 }
 // 加入课程
-export const getCourseJoinApi = (data) => {
+export const getCourseJoinApi = (data, needLoading) => {
   return request({
     url: `/course/courseJoin`,
     type: 'post',
-    data
+    data,
+    needLoading
   })
 }
 // 打卡或评论点赞

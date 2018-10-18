@@ -10,8 +10,7 @@ import bookHouse from './bookHouse'
 import login from './login'
 
 Vue.use(Router)
-let company = location.href.split('/')[3]
-// let company = window.localStorage.getItem('XPLUSCompany') || 'tiger'
+let company = location.href.split('/')[3] || 'tiger'
 
 const routes = [
   ...home,

@@ -63,12 +63,10 @@ export default {
   methods: {
     remove () {
       localstorage.remove('historyList')
-      this.historyList = []
+      this.historyList[this.historyIndex].list = []
     },
     resultClick (id) {
-      // && this.historyList[this.historyIndex].list.indexOf(this.value) === -1
-      if (this.value) {
-        console.log(this.historyList, this.historyList[this.historyIndex])
+      if (this.value && this.historyList[this.historyIndex].list.indexOf(this.value) === -1) {
         this.historyList[this.historyIndex].list.unshift(this.value)
         if (this.historyList[this.historyIndex].list.length > 6) {
           this.historyList[this.historyIndex].list.pop()
@@ -179,6 +177,9 @@ export default {
         line-height: 32px;
         border-radius: 3px;
         display: inline-block;
+        max-width: 150px;
+        box-sizing: border-box;
+        .setEllipsis();
       }
     }
   }

@@ -12,9 +12,7 @@
   </div>
   </div>
 </template>
-
 <script>
-import saveAs from 'file-saver'
 import { getPicturemonthApi, getPictureApi } from '@/api/pages/workCircle'
 export default {
   name: 'Album',
@@ -38,9 +36,6 @@ export default {
     /* 展开点击月份相册 */
     async showAlbum (item) {
       this.$router.push({path: '/fileDownLoad', query: {item: item.str, month: item.month, id: this.$route.query.id, type: 1}})
-    },
-    dowmLoad () {
-      saveAs.saveAs('http://staff-wap.xplus.ziwork.com/images/tiger/img/2018/1013/10/5bc15f987213f.jpg', 'image.jpg')
     }
   },
   created () {

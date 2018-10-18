@@ -11,6 +11,8 @@
         :messageData="messageData"
         :audioList="audioList"
         :key="messageData.messageId"
+        isNeedRead
+        isNeedEnd
         @removeRed="removeRed"
         @nextMusic='nextMusic'
         @endAudio='endAudio'
@@ -27,7 +29,7 @@ export default {
   },
   props: {
     bgColor: {
-      type: String,
+      defaultImg: String,
       default: '#ffffff'
     },
     audioList: {

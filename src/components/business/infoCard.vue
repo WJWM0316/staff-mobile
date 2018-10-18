@@ -7,7 +7,12 @@
         :class="{'ellipsis1' : type === '3' || (type === '1' && item.isJoin), 'ellipsis2' : type === '2' || type === '1' && (!item.isJoin || item.isMaster)}">
         {{item.name || item.title}}
       </div>
-      <div class="label"><span class="department" v-if="item.groupName">{{item.groupName}}</span><span class="name" v-if="item.realname">{{item.realname}}</span></div>
+      <template v-if="!item.userTitle || item.userTitle.length === 0">
+        <div class="label"><span class="department" v-if="item.groupName">{{item.groupName}}</span><span class="name" v-if="item.realname">{{item.realname}}</span></div>
+      </template>
+      <template v-else>
+        <div class="label userTitle" v-if="item.userTitle.length > 0">{{item.realname}} | {{item.userTitle[0].title}}</div>
+      </template>
       <!-- <div class="label" v-if="item.isRole === 5"></div> -->
       <div class="progress" v-if="type === '1' && item.isJoin">
         <p class="txt" v-if="item.progress === 0">本课程还未学习</p>
@@ -28,7 +33,6 @@
 <script>
 import moment from 'moment'
 export default {
-  name: 'infoCard',
   props: {
     item: {
       type: Object
@@ -134,14 +138,22 @@ export default {
     }
     /*人物标签*/
     .label{
-      display: flex;
-      flex-wrap: nowrap;
       font-size: 24px;/*px*/
       font-weight: 400;
       line-height: 16px;
       margin: 5px 0 0px;
+      .setEllipsisLn(1);
+      & > span {
+        vertical-align: top;
+      }
+      &.userTitle {
+        font-size: 24px;/*px*/
+        font-weight: 300;
+        line-height: 16px;
+        color: #929292;
+      }
       .department{
-        max-width: 135px;
+        max-width: 80px;
         overflow: hidden;
         text-overflow:ellipsis;
         white-space: nowrap;

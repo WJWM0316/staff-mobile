@@ -35,5 +35,12 @@ export default {
       commit(types.WSLOGIN, data)
       resolve()
     })
+  },
+  // 更新当前在线人数
+  updata_onlineNum: ({commit}, data) => {
+    return new Promise((resolve, reject) => {
+      commit(types.ONLINENUM, data)
+      resolve()
+    })
   }
 }

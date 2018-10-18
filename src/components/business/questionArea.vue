@@ -169,6 +169,7 @@ export default {
     getList ({page = 1, count = 20, type}, needLoading) {
       return new Promise((resolve, reject) => {
         let data = {
+          live_id: this.$route.query.id,
           page: page || 1,
           count: count || 20,
           type: type

@@ -26,37 +26,50 @@
     </div>
     <template v-if="homeInfo">
       <div class="live" v-if="homeInfo.lives">
-        <div class="time">直播预告·{{homeInfo.lives[0].expectedStartTime * 1000 | date('MMMDo h:mm')}}</div>
+        <div class="time"><span class="inner" :class="homeInfo.lives[0].status === 1 ? 'notBegin' : 'begin'">{{liveData.status}}<span v-if="liveData.date">·{{homeInfo.lives[0].expectedStartTime * 1000 | date(liveData.date)}}</span></span></div>
         <div class="content" @click.stop="jump('liveDetail', homeInfo.lives[0].liveId)">
           <img class="icon1" src="@a/icon/list_icon_live@3x.png" alt="">
           <div class="msg">
             <p class="liveTitle">{{homeInfo.lives[0].title}}</p>
             <p class="name">{{homeInfo.lives[0].groupName}} | {{homeInfo.lives[0].realname}}</p>
           </div>
-          <img class="icon2" src="@a/icon/list_live_icon_more@3x.png" alt="">
+          <img class="icon2" src="@a/icon/83714243584516615.png" alt="">
         </div>
       </div>
-      <div class="course">
+      <div class="course" :class="{'padTop': !homeInfo.lives}">
+        <!-- 正在学习 -->
         <div class="title border-bottom-1px"><i class="icon"></i>正在学习</div>
-        <infoCard
-          v-for="(n, index) in homeInfo.courses"
-          :key="index"
-          :item="n"
-          v-if="index < 3"
-          type="1"
-        ></infoCard>
-        <div class="btnBox"><div class="btn" @click.stop="jump('course')">查看所有课程</div></div>
-        <div class="title"><i class="icon"></i>推荐课程</div>
-        <div class="scrollX">
-          <div class="courseItem" v-for="(n, index) in homeInfo.topCourse" :key="index">
-            <infoCard
-              :item="n"
-              type="1"
-            ></infoCard>
+        <template v-if="homeInfo.courses">
+          <infoCard
+            v-for="(n, index) in homeInfo.courses"
+            :key="index"
+            :item="n"
+            v-if="index < 3"
+            type="1"
+          ></infoCard>
+          <div class="btnBox"><div class="btn" @click.stop="jump('myCourse')">查看所有课程</div></div>
+        </template>
+        <!-- 去选课 -->
+        <template v-else>
+          <div class="noCourse">
+            <p class="txt">还没有学习任何课程～</p>
+            <xButton class="jumpBtn" @click.stop.native="jump('course')">去选课</xButton>
           </div>
-        </div>
-        <div class="btnBox"><div class="btn" @click.stop="jump('course')">发现更多课程</div></div>
-        <div class="title"><i class="icon"></i>更多学习</div>
+        </template>
+        <!-- 推荐课程 -->
+        <template v-if="homeInfo.topCourse">
+          <div class="title"><i class="icon"></i>推荐课程</div>
+          <div class="scrollX">
+            <div class="courseItem" v-for="(n, index) in homeInfo.topCourse" :key="index">
+              <infoCard
+                :item="n"
+                type="1"
+              ></infoCard>
+            </div>
+          </div>
+          <div class="btnBox"><div class="btn" @click.stop="jump('course')">发现更多课程</div></div>
+          <div class="title"><i class="icon"></i>更多学习</div>
+        </template>
         <div class="enter" @click.stop="jump('liveList')">
           <img src="@a/icon/home_banner_right@3x.png" alt="">
         </div>
@@ -84,7 +97,23 @@ export default {
   computed: {
     ...mapState({
       userInfo: state => state.global.userInfo
-    })
+    }),
+    liveData () {
+      // 直播未开始状态
+      let data = {}
+      if (this.homeInfo.lives[0].status === 1) {
+        data.status = '直播预告'
+        // 超过一天
+        if (this.homeInfo.lives[0].expectedStartTime * 1000 - new Date().getTime() > 24 * 3600 * 1000) {
+          data.date = 'MMMDo hh:mm'
+        } else {
+          data.date = 'hh:mm'
+        }
+      } else {
+        data.status = '直播进行中'
+      }
+      return data
+    }
   },
   methods: {
     getHomeInfo () {
@@ -117,6 +146,9 @@ export default {
           break
         case 'course':
           this.$router.push('/course')
+          break
+        case 'myCourse':
+          this.$router.push('/myCourse')
           break
       }
     },
@@ -192,6 +224,7 @@ export default {
             color: #354048;
             font-weight: 500;
             line-height: 50px;
+            font-family: 'MyNewFont'
           }
           .txt {
             font-size: 24px; /*px*/
@@ -210,6 +243,38 @@ export default {
         color: #929292;
         font-size: 24px; /*px*/
         line-height: 16px;
+        background: url('../../assets/icon/xie.png') repeat-x center center;
+        background-size: auto 10px;
+        .inner {
+          display: inline-block;
+          padding: 0 10px 0 20px;
+          background: #fff;
+          position: relative;
+          &.notBegin::after {
+            content: '';
+            display: block;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #FFE266;
+            position: absolute;
+            top: 50%;
+            margin-top: -2.5px;
+            left: 10px;
+          }
+          &.begin::after {
+            content: '';
+            display: block;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #0FD685;
+            position: absolute;
+            top: 50%;
+            margin-top: -2.5px;
+            left: 10px;
+          }
+        }
       }
       .content {
         margin-top: 5px;
@@ -218,6 +283,7 @@ export default {
         height: 56px;
         display: flex;
         align-items: center;
+        box-sizing: border-box;
         .setEllipsis();
         .msg {
           width: 100%;
@@ -242,29 +308,46 @@ export default {
           left: 0;
         }
         .icon2 {
-          width: 30px;
-          height: 30px;
+          width: 8px;
+          height: 14px;
           position: absolute;
           top: 50%;
-          margin-top: -15px;
+          margin-top: -4px;
           right: 0;
         }
       }
     }
     .course {
+      &.padTop {
+        padding-top: 38px;
+      }
+      .noCourse {
+        padding-top: 39px;
+        text-align: center;
+        font-size: 30px; /*px*/
+        font-weight: 300;
+        color: #354048;
+        line-height: 20px;
+        .jumpBtn {
+          width: 210px;
+          height: 44px;
+          border-radius: 50px;
+          margin: 15px auto 40px;
+        }
+      }
       .title {
-        padding: 50px 20px 0;
+        padding: 50px 20px 10px;
         font-size: 40px; /*px*/
         line-height: 24px;
         color: #929292;
-        padding-bottom: 10px;
+        font-weight: 500;
         .icon {
           width: 6px;
           height: 20px;
           display: inline-block;
           background: #FFE266;
           margin-right: 12px;
-          vertical-align: -4px;
+          vertical-align: -3px;
         }
       }
       .btnBox {
@@ -276,6 +359,7 @@ export default {
           text-align: center;
           border-radius: 22px;
           background: #F8F8F8;
+          color: #666;
           font-size: 28px; /*px*/
           font-weight: 300;
         }
@@ -283,17 +367,23 @@ export default {
       .scrollX {
         width: 100%;
         overflow-x: auto;
+        overflow-y: hidden;
         white-space: nowrap;
         font-size: 0;
         margin-bottom: 20px;
+        padding: 10px 15px;
+        box-sizing: border-box;
         .courseItem {
           width: 284px;
           display: inline-block;
           background: #fff;
-          box-shadow: 0px 6px 20px 0px rgba(0,0,0,0.07) inset;
+          box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.07);
           border-radius: 3px;
           margin-right: 10px;
           vertical-align: top;
+          &:last-child {
+            margin-right: 0;
+          }
         }
       }
       .enter {
