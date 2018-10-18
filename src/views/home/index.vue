@@ -267,7 +267,7 @@ export default {
             width: 5px;
             height: 5px;
             border-radius: 50%;
-            background: #0FD685;
+            background: #FA6A30;
             position: absolute;
             top: 50%;
             margin-top: -2.5px;
@@ -276,7 +276,7 @@ export default {
         }
       }
       .content {
-        margin-top: 5px;
+        margin-top: 12px;
         padding: 0 27px 0 70px;
         position: relative;
         height: 56px;
