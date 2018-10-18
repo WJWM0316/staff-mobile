@@ -1,7 +1,7 @@
 <template>
   <div class="liveDetail">
     <commonHeader
-      :isLive=true
+      :type=3
       :pageInfo="pageInfo"
     ></commonHeader>
     <div class="content">

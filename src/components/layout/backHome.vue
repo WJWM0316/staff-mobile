@@ -1,33 +1,79 @@
 <template>
   <div class="backHome">
-    <div class="home">
-      <i class="homeIcon">
-        <img src="@a/icon/bnt_homepage@2x.png" alt="">
-      </i>
+    <div class="home" v-if="type === 3 || type === 1" @click.stop="toHome">
+      <i class="homeIcon icon iconfont icon-btn_homepage"></i>
+    </div>
+    <div class="homeSearch" v-if="type === 2">
+      <span><i class="icon iconfont icon-btn_homepage" @click.stop="toHome"></i></span>|
+      <span><i class="icon iconfont icon-btn_search" @click.stop="toSearch"></i></span>
     </div>
   </div>
 </template>
-<script></script>
-<style lang="less">
+<script>
+export default {
+  props: {
+    type: {
+      type: Number,
+      default: 1 // 1只有首页按钮 2首页+搜索
+    }
+  },
+  methods: {
+    toHome () {
+      this.$router.push({path: '/home'})
+    },
+    toSearch () {
+      this.$router.push({path: '/search', query: {id: this.$route.query.id}})
+    }
+  },
+  created () {
+  }
+}
+</script>
+<style lang="less" scoped>
   .backHome {
-    position: fixed;
-    top: 35px;
-    right: 0;
     .home {
+      position: fixed;
+      top: 35px;
+      right: 0;
+      background: #fff;
+      border-radius: 50px 0 0 50px;
+      overflow: hidden;
       width: 45px;
       height: 32px;
       display: flex;
-      justify-content: center;
+      padding: 0 12px 0 15px;
+      box-sizing: border-box;
       align-items: center;
+      box-shadow: 0px 1px 6px 0px rgba(0,0,0,0.12);
       .homeIcon {
-        width: 18px;
-        height: 18px;
-        display: block;
-        img {
-          width: 100%;
-          height: 100%;
-          display: block;
-        }
+        color: #354048;
+        font-size: 30px;/*px*/
+      }
+    }
+    .homeSearch{
+      display: flex;
+      flex-wrap: nowrap;
+      z-index: 1000;
+      position: absolute;
+      right: 20px;
+      top: 18px;
+      width: 92px;
+      height: 32px;
+      color: #EDEDED;
+      border-radius: 50px;
+      box-shadow:0px 3px 12px 0px rgba(0,0,0,0.12);
+      line-height: 32px;
+      background-color: #FFFFFF;
+      >span{
+        display: inline-block;
+        width: 45px;
+        height: 32px;
+        text-align: center;
+        line-height: 32px;
+        >i{
+          color: #354048;
+          font-size: 30px;/*px*/
+         }
       }
     }
   }
