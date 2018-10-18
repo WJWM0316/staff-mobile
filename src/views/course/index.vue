@@ -1,7 +1,7 @@
 <template>
 	<div class="coursePage">
 	  <div class="classify">
-      <span v-for="(item,index) in tabList" :key="index" :class="{ isFocusClassify:showBorder === item.categoryName }" @click="cutoverTab(item)">{{item.categoryName}}</span>
+      <span v-for="(item,index) in tabList" :key="index" :class="{ 'isFocusClassify':showBorder === item.categoryName }" @click="cutoverTab(item)">{{item.categoryName}}</span>
     </div>
     <div class="content">
       <template v-for="(item, index) in circleList">

@@ -31,7 +31,7 @@
     <!-- 已加入 -->
     <template>
         <!--本节任务-->
-        <div class="lesson-task" v-if="communityCourse.punchCardTitle || communityCourse.punchCardImgInfo.length>0">
+        <div class="lesson-task" v-if="communityCourse.punchCardTitle || communityCourse.punchCardImgInfo || communityCourse.punchCardImgInfo.length>0">
           <!--头部标题-->
           <div class="headerBox">
             <div class="title-pic1">

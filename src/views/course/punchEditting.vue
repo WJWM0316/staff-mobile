@@ -144,17 +144,6 @@ export default {
     closeTask () {
       this.showTaskWindow = false
     },
-    /* 预备发布 */
-    async readyPublish () {
-      this.images.map(function (item, index) {
-        let reader = new FileReader()
-        reader.readAsBinaryString(item)
-        reader.onload = function () {
-          console.log(this.result)
-        }
-      })
-      console.log(this.images)
-    },
     /* 发布 */
     async Publish () {
       try {
@@ -173,6 +162,7 @@ export default {
             that.isSend = true
             localstorage.remove('draft')
             localstorage.remove('draftImg')
+            localstorage.remove('draftImgId')
             that.$router.go(-1)
           }
         })
@@ -191,6 +181,7 @@ export default {
       let that = this
       let content = localstorage.get('draft')
       let imgList = localstorage.get('draftImg')
+      let imgUploadList = localstorage.get('draftImgId')
       if (content || imgList) {
         this.$confirm({
           title: ' 加载草稿 ',
@@ -198,6 +189,7 @@ export default {
           confirmBack () {
             that.form.content = content
             that.images = imgList || []
+            that.uploadImgList = imgUploadList || []
           },
           cancelBack () {
           }
@@ -214,6 +206,7 @@ export default {
         this.form.content = res.data.peopleCourseCardInfo.cardContent
         res.data.peopleCourseCardInfo.cardContentFile.forEach((item, index) => {
           this.images.push(item.url)
+          this.uploadImgList.push(item.id)
         })
       }
       // 是否加载草稿
@@ -232,6 +225,7 @@ export default {
       confirmBack () {
         localstorage.set('draft', that.form.content)
         localstorage.set('draftImg', that.images)
+        localstorage.set('draftImgId', that.uploadImgList)
         next()
       },
       cancelBack () {
