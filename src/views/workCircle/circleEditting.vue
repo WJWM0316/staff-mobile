@@ -71,6 +71,10 @@
         </div>
       </div>
     </div>
+    <div class="circleSelf" @click.stop="setCircleSelf">
+      <i class="icon iconfont icon-select" :class="{'isCircleSelf': isCircleSelf}"></i>
+      仅工作圈成员可见
+    </div>
     <div class="btn-container">
       <button type="button" class="u-btn-publish" :disabled="!canPublish" @click="handleSubmit">发布</button>
     </div>
@@ -115,7 +119,8 @@ export default {
       fileData: '', // 存在上传的文件数据
       uploadImgList: [], // 存放上传图片id的数组
       inpLink: '', // 输入的链接
-      showMask: false // 展示链接输入框
+      showMask: false, // 展示链接输入框
+      isCircleSelf: false // 是否仅限圈内可见
     }
   },
   methods: {
@@ -136,7 +141,8 @@ export default {
     async readyPublish () {
       let param = {
         community_id: this.$route.query.id,
-        content: this.form.content
+        content: this.form.content,
+        visible: this.isCircleSelf ? 1 : 0
       }
       if (this.fileType === 0) {
         param.pictures = this.uploadImgList
@@ -285,6 +291,12 @@ export default {
     },
     postLink () {
       this.showMask = true
+    },
+    closeTask () {
+      this.showMask = false
+    },
+    setCircleSelf () {
+      this.isCircleSelf = !this.isCircleSelf
     }
   }
 }
@@ -462,7 +474,7 @@ export default {
         right: -7px;
         top: -10px;
         z-index: 7;
-        line-height: 15px;
+        line-height: 16px;
         text-align: center;
         >i{
           font-size: 20px;/*px*/
@@ -509,6 +521,18 @@ export default {
       .text{
         color: #111111 !important;
         font-size: 28px !important;/*px*/
+      }
+    }
+    .circleSelf{
+      margin-top: 20px;
+      font-size: 26px;/*px*/
+      color: #929292;
+      >i{
+        font-size: 30px;/*px*/
+       margin-right: 4px;
+      }
+      .isCircleSelf{
+        color: #FFE266;
       }
     }
     .btn-container {
@@ -615,7 +639,6 @@ export default {
       z-index: 8888;
       .inpLeft{
         position: absolute;
-        border-right: 2px solid #4E78A1;
         padding-right: 8px;
         bottom: 32px;
         left: 32px;
@@ -639,6 +662,7 @@ export default {
         color: #BCBCBC;
         box-sizing: border-box;
         padding-left: 45px;
+        font-size: 30px;/*px*/
       }
       .linkBtn{
         position: absolute;

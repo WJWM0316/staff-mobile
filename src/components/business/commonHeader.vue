@@ -18,9 +18,9 @@
     </div>
     <!--左边加入人数-->
     <div class="member" @click.stop="toMemberList">
-      <div class="left">
+      <div class="left" v-if="pageInfo.memberCount !== 0">
         <p><span class="num">{{pageInfo.memberCount}}</span> 人</p>
-        <p v-if="isLive">参与了直播</p>
+        <p v-if="type === '3'">参与了直播</p>
         <p v-else>和你一起学习</p>
       </div>
       <!--加入人员头像-->
@@ -85,6 +85,7 @@ export default {
       } else if (this.type === '3') {
         this.$router.push({path: '/liveMemberList', query: {id: this.pageInfo.liveId}})
       } else {
+        if (!this.pageInfo.isJoin) return
         this.$router.push({path: '/memberList', query: {id: this.pageInfo.id}})
       }
     }
