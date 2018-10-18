@@ -18,23 +18,25 @@
     </div>
     <!--左边加入人数-->
     <div class="member" @click.stop="toMemberList">
-      <div class="left" v-if="pageInfo.memberCount !== 0">
-        <p><span class="num">{{pageInfo.memberCount}}</span> 人</p>
-        <p v-if="type === '3'">参与了直播</p>
-        <p v-else>和你一起学习</p>
-      </div>
-      <!--加入人员头像-->
-      <div class="center">
-        <img class="user_icon defaultImg" v-for="(item, index) in pageInfo.memberInfo" :src="item.avatarInfo.smallUrl" :key="index" />
-        <img class="user_icon four" src="../../assets/icon/firends-call-more.png" v-if="pageInfo.memberCount > 3"/>
-      </div>
+      <template v-if="pageInfo.memberCount !== 0">
+        <div class="left">
+          <p><span class="num">{{pageInfo.memberCount}}</span> 人</p>
+          <p v-if="type === '3'">参与了直播</p>
+          <p v-else>和你一起学习</p>
+        </div>
+        <!--加入人员头像-->
+        <div class="center">
+          <img class="user_icon defaultImg" v-for="(item, index) in pageInfo.memberInfo" :src="item.avatarInfo.smallUrl" :key="index" />
+          <img class="user_icon four" src="../../assets/icon/firends-call-more.png" v-if="pageInfo.memberCount > 3"/>
+        </div>
+      </template>
       <!--右边入口按钮-->
-      <div class="right" v-if="type !== '2'">
+      <div class="right" v-if="type === '1'">
         <div v-if="pageInfo.isJoin || pageInfo.isMaster" @click.stop="toIntroduction">
           课程介绍<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
         </div>
       </div>
-      <div v-else>
+      <div v-if="type === '2'">
         <div class="right" @click.stop="toSetting" v-if="type === '2' && ((pageInfo.isMember || pageInfo.isOwner) || (!pageInfo.isMember && pageInfo.isAttention))">
             设置<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
         </div>
