@@ -247,7 +247,7 @@ export default {
     jumpList (type) {
       switch (type) {
         case 'course':
-          this.$router.push('/course')
+          this.$router.push('/myCourse')
           break
         case 'live':
           this.$router.push('/live')

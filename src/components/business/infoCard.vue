@@ -119,7 +119,7 @@ export default {
       line-height: 20px;
       font-weight: 300;
       &.ellipsis1 {
-        .setEllipsisLn(1)
+        .setEllipsis()
       }
       &.ellipsis2 {
         .setEllipsisLn(2)
@@ -138,6 +138,7 @@ export default {
       font-weight: 300;
       line-height: 16px;
       margin: 5px 0 0px;
+      white-space: initial;
       .setEllipsisLn(1);
       & > span {
         vertical-align: top;

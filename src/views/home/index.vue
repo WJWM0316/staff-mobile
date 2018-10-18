@@ -44,10 +44,10 @@
             v-for="(n, index) in homeInfo.courses"
             :key="index"
             :item="n"
-            v-if="index < 3"
+            v-if="index < 5"
             type="1"
           ></infoCard>
-          <div class="btnBox"><div class="btn" @click.stop="jump('myCourse')">查看所有课程</div></div>
+          <div class="btnBox" v-if="homeInfo.courses.length > 5"><div class="btn" @click.stop="jump('myCourse')">查看所有课程</div></div>
         </template>
         <!-- 去选课 -->
         <template v-else>
@@ -117,7 +117,7 @@ export default {
   },
   methods: {
     getHomeInfo () {
-      getHomeInfoApi().then(res => {
+      getHomeInfoApi({count: 6}).then(res => {
         this.homeInfo = res.data
       })
     },
@@ -126,11 +126,6 @@ export default {
         userInfoApi().then(res => {
           this.headInfo = res.data
           this.$store.dispatch('updata_userInfo', res.data)
-          if (res.data.base.mobile === '13729280262' || res.data.base.mobile === '18520225811' || res.data.base.mobile === '18520786912' || res.data.base.mobile === '15574964192') {
-            window.localStorage.setItem('XPLUSCompany', 'test')
-          } else {
-            window.localStorage.setItem('XPLUSCompany', 'tiger')
-          }
         })
       } else {
         this.headInfo = this.userInfo
