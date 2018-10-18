@@ -1,6 +1,6 @@
 <template>
   <div class="wrap" v-if="pageInfo">
-    <top-header :pageInfo="pageInfo" :type=1 @toCourseIntroduce="toCourseIntroduce"></top-header>
+    <top-header :pageInfo="pageInfo" :type='1' @toCourseIntroduce="toCourseIntroduce"></top-header>
     <div class="introduce" v-if="!pageInfo.isJoin && !pageInfo.isMaster || isCourseIntroduce">
       <div class="richText">
         <div class="title">关于课程</div>

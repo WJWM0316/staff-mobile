@@ -1,7 +1,7 @@
 <template>
   <div class="m-community">
     <!--灯塔头部-->
-    <div class="cover-container" :class="{circle: type === 2}">
+    <div class="cover-container" :class="{circle: type === '2'}">
       <div class="cover"></div>
       <span class="header-photo"  v-if="pageInfo.coverImg">
         <img :src="pageInfo.coverImg.middleUrl"/>
@@ -9,7 +9,7 @@
       <backHome :type="type"></backHome>
     </div>
 
-    <div class="info" v-if="type !== 2">
+    <div class="info" v-if="type !== '2'">
       <h3 class="title">{{pageInfo.title}}</h3>
       <p class="desc">{{pageInfo.groupName || '未设置所属部门'}} | {{pageInfo.realname}}</p>
     </div>
@@ -29,13 +29,13 @@
         <img class="user_icon four" src="../../assets/icon/firends-call-more.png" v-if="pageInfo.memberCount > 3"/>
       </div>
       <!--右边入口按钮-->
-      <div class="right" v-if="type !== 2">
+      <div class="right" v-if="type !== '2'">
         <div v-if="pageInfo.isJoin || pageInfo.isMaster" @click.stop="toIntroduction">
           课程介绍<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
         </div>
       </div>
       <div v-else>
-        <div class="right" @click.stop="toSetting" v-if="type === 2 && ((pageInfo.isMember || pageInfo.isOwner) || (!pageInfo.isMember && pageInfo.isAttention))">
+        <div class="right" @click.stop="toSetting" v-if="type === '2' && ((pageInfo.isMember || pageInfo.isOwner) || (!pageInfo.isMember && pageInfo.isAttention))">
             设置<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
         </div>
         <div class="focus" @click.stop="focus" v-else>
@@ -80,9 +80,9 @@ export default {
     },
     /* 去成员列表 */
     toMemberList () {
-      if (this.type === 2) { // 课程成员列表
+      if (this.type === '2') {
         this.$router.push({path: '/circleMemberList', query: {id: this.pageInfo.id}})
-      } else if (this.type === 3) {
+      } else if (this.type === '3') {
         this.$router.push({path: '/liveMemberList', query: {id: this.pageInfo.liveId}})
       } else {
         this.$router.push({path: '/memberList', query: {id: this.pageInfo.id}})

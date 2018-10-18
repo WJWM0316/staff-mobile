@@ -14,7 +14,7 @@
         <div class="label userTitle" v-if="item.userTitle.length > 0">{{item.realname}} | {{item.userTitle[0].title}}</div>
       </template>
       <!-- <div class="label" v-if="item.isRole === 5"></div> -->
-      <div class="progress" v-if="type === '1' && item.isJoin">
+      <div class="progress" v-if="type === '1' && item.isJoin && needProgress">
         <p class="txt" v-if="item.progress === 0">本课程还未学习</p>
         <p class="txt" v-if="item.progress > 0 && item.progress !== 100">已学习 <span class="num">{{item.progress}}%</span></p>
         <p class="txt" v-if="item.progress === 100">本课程已学完</p>
@@ -40,6 +40,10 @@ export default {
     type: { // 1是课程 2是工作圈 3是直播
       type: String,
       default: '1'
+    },
+    needProgress: {
+      type: Boolean,
+      default: true
     }
   },
   watch: {
