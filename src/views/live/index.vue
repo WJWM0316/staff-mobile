@@ -150,7 +150,7 @@ export default {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .live {
     padding-top: 44px;
     .tab {

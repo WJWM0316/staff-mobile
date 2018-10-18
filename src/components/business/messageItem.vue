@@ -10,7 +10,7 @@
       </div>
       <!--文字-->
       <!-- mediaType 0是文本，1是文件， 2是图片， 3是音频， 4是视频， 5是链接 -->
-      <div class="desc-middle" v-if="item.mediaType === 0 && item.abstract">{{item.abstract}}</div>
+      <div class="desc-middle" v-if="item.abstract">{{item.abstract}}</div>
       <!--音频-->
       <audioBox v-if="item.mediaType === 3" :messageData="audioData"></audioBox>
       <div class="desc-middle-return">

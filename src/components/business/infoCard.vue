@@ -61,7 +61,11 @@ export default {
       } else if (this.type === '2') {
         this.$router.push({path: '/circleDetail', query: {id: id}})
       } else {
-        this.$router.push({path: '/liveDetail', query: {id: id}})
+        if (this.item.isJoin) {
+          this.$router.push({path: '/liveRoom', query: {id: id}})
+        } else {
+          this.$router.push({path: '/liveDetail', query: {id: id}})
+        }
       }
     }
   },
