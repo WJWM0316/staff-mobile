@@ -69,7 +69,7 @@ export default {
     padding: 50px 30px 0;
     .title {
       font-size: 48px; /*px*/
-      font-weight: 400;
+      font-weight: 300;
       color: #354048;
       line-height: 28px;
     }

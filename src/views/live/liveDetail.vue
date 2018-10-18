@@ -1,7 +1,7 @@
 <template>
   <div class="liveDetail">
     <commonHeader
-      :type='3'
+      type='3'
       :pageInfo="pageInfo"
     ></commonHeader>
     <div class="content">
@@ -90,7 +90,7 @@ export default {
         .txt {
           font-size: 40px; /*px*/
           line-height: 20px;
-          font-weight: 500;
+          font-weight: 700;
           color: #929292;
         }
       }
@@ -120,7 +120,7 @@ export default {
       .operBtn {
         flex-basis: 150px;
         color: #354048;
-        font-weight: 400;
+        font-weight: 300;
         background: #FFE266;
         &.joined {
           background: #EDEDED;

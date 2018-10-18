@@ -276,7 +276,7 @@ export default {
        border-radius: 50%;
      }
      .backCourse{
-       font-weight: 400;
+       font-weight: 300;
        font-size: 26px;/*px*/
        color: #4080AD;
      }

@@ -295,7 +295,7 @@ export default {
         align-items: center;
         color: #4080AD;
         font-size: 28px;/*px*/
-        font-weight: 500;
+        font-weight: 700;
       }
       .evaluate{
         width: 30px;
@@ -357,7 +357,7 @@ export default {
         margin-top: 6px;
         font-size: 30px;/*px*/
         color: #4080ad;
-        font-weight: 400;
+        font-weight: 300;
         line-height: 19px;
       }
       /*  图片部分  */
@@ -473,7 +473,7 @@ export default {
         }
         .praise-name {
           color: #4080AD;
-          font-weight: 500;
+          font-weight: 700;
           margin: 0 6px;
           overflow: hidden;
           text-overflow:ellipsis;
@@ -493,7 +493,7 @@ export default {
           margin-top: 5px;
           .favor-name {
             font-size: 28px;/*px*/
-            font-weight: 500;
+            font-weight: 700;
             color: #4080AD;
           }
           &:nth-of-type(1) {

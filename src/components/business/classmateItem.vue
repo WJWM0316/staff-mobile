@@ -67,7 +67,7 @@ export default {
     .name {
       font-size: 30px;/*px*/
       color: #354048;
-      font-weight: 400;
+      font-weight: 300;
       .managerTitle{
         display: inline-block;
         font-size: 24px;/*px*/

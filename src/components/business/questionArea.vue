@@ -29,7 +29,9 @@
           <div class='mine' v-if="scrollPart.list.length > 0">
             <div class="title">我的提问</div>
             <div class="block border-bottom-1px" v-for='(item, index) in scrollPart.list' :key="index" v-if="scrollPart.myListLength > index">
-              <div class="time"><span v-if="item.answerInfo">{{item.answerInfo.createdAt * 1000 | activeTime}}</span><span>{{item.problemInfo.createdAt * 1000 | activeTime}}</span></div>
+              <div class="time">
+                <span v-if="item.answerInfo">{{item.answerInfo.createdAt * 1000 | activeTime}}</span>
+                <span v-else>{{item.problemInfo.createdAt * 1000 | activeTime}}</span></div>
               <liveMessage
                 class="msg"
                 :messageData='item.problemInfo'
@@ -135,10 +137,12 @@ export default {
   methods: {
     loadPrev () {
       if (this.tabIndex === 0) {
+        this.scrollPart.list = []
         this.getList({page: 1, type: 'my'}, false).then(res => {
           this.$refs.scrollPart.pulldownUi = false
         })
       } else {
+        this.scrollAll.list = []
         this.getList({page: 1, type: 'all'}, false).then(res => {
           this.$refs.scrollAll.pulldownUi = false
         })
@@ -197,7 +201,6 @@ export default {
               this.scrollAll.noData = true
             }
           }
-          // this.scrollPart.list = res.data
         })
       })
     },
@@ -285,7 +288,7 @@ export default {
         .title {
           padding: 20px 20px 0;
           font-size: 28px; /*px*/
-          font-weight: 400;
+          font-weight: 300;
           line-height: 14px;
           color: #354048;
         }

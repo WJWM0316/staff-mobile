@@ -249,7 +249,7 @@ export default {
         color: #354048;
         font-size: 30px;/*px*/
         span {
-          font-weight: 500;
+          font-weight: 700;
           line-height: 21px;
           margin-right: 31.5px;
           padding: 17.5px 0 8px;
@@ -274,7 +274,7 @@ export default {
       }
       & .container-title {
         font-size: 15px;
-        font-weight: 500;
+        font-weight: 700;
         color: #354048;
         padding: 10px 0;
         border-bottom: solid 1px #dcdcdc; /* no */

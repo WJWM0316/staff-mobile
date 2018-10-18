@@ -124,7 +124,7 @@ export default {
     height: 95px;
     border-bottom: 1px solid #EDEDED;/*px*/
     >.head_txt{
-      font-weight: 400;
+      font-weight: 300;
     }
     >.head_img{
       width: 60px;
@@ -176,7 +176,7 @@ export default {
     font-size: 32px;/*px*/
     border-radius: 22px;
     color: #354048;
-    font-weight: 400;
+    font-weight: 300;
     margin: 50px 30px 0;
     background-color: #FFE266;
   }

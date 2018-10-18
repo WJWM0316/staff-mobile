@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="desc-bottom">
-        <div class="send-time">{{item.createdAt | date('MM-DD HH:mm')}}</div>
+        <div class="send-time">{{item.createdAt * 1000 | date('MM-DD HH:mm')}}</div>
         <div class="linght-house">
           <span>{{msgType[item.sourceFrom]}} {{item.title}}</span>
         </div>

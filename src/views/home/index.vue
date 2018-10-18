@@ -44,10 +44,10 @@
             v-for="(n, index) in homeInfo.courses"
             :key="index"
             :item="n"
-            v-if="index < 3"
+            v-if="index < 5"
             type="1"
           ></infoCard>
-          <div class="btnBox"><div class="btn" @click.stop="jump('myCourse')">查看所有课程</div></div>
+          <div class="btnBox" v-if="homeInfo.courses.length > 5"><div class="btn" @click.stop="jump('myCourse')">查看所有课程</div></div>
         </template>
         <!-- 去选课 -->
         <template v-else>
@@ -64,6 +64,8 @@
               <infoCard
                 :item="n"
                 type="1"
+                :needProgress="false"
+                :ellipsis2="true"
               ></infoCard>
             </div>
           </div>
@@ -117,7 +119,7 @@ export default {
   },
   methods: {
     getHomeInfo () {
-      getHomeInfoApi().then(res => {
+      getHomeInfoApi({count: 6}).then(res => {
         this.homeInfo = res.data
       })
     },
@@ -126,11 +128,6 @@ export default {
         userInfoApi().then(res => {
           this.headInfo = res.data
           this.$store.dispatch('updata_userInfo', res.data)
-          if (res.data.base.mobile === '13729280262' || res.data.base.mobile === '18520225811' || res.data.base.mobile === '18520786912' || res.data.base.mobile === '15574964192') {
-            window.localStorage.setItem('XPLUSCompany', 'test')
-          } else {
-            window.localStorage.setItem('XPLUSCompany', 'tiger')
-          }
         })
       } else {
         this.headInfo = this.userInfo
@@ -222,7 +219,6 @@ export default {
           .num {
             font-size: 76px; /*px*/
             color: #354048;
-            font-weight: 500;
             line-height: 50px;
             font-family: 'MyNewFont'
           }
@@ -268,7 +264,7 @@ export default {
             width: 5px;
             height: 5px;
             border-radius: 50%;
-            background: #0FD685;
+            background: #FA6A30;
             position: absolute;
             top: 50%;
             margin-top: -2.5px;
@@ -277,7 +273,7 @@ export default {
         }
       }
       .content {
-        margin-top: 5px;
+        margin-top: 12px;
         padding: 0 27px 0 70px;
         position: relative;
         height: 56px;
@@ -340,7 +336,7 @@ export default {
         font-size: 40px; /*px*/
         line-height: 24px;
         color: #929292;
-        font-weight: 500;
+        font-weight: 700;
         .icon {
           width: 6px;
           height: 20px;
@@ -388,7 +384,7 @@ export default {
       }
       .enter {
         width: 100%;
-        padding: 20px;
+        padding: 7px 20px 20px 20px;
         box-sizing: border-box;
         img {
           width: 100%;

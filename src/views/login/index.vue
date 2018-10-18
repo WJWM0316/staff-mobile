@@ -81,6 +81,7 @@ export default {
     padding: 44px 40px;
     background: url('https://xplus-uploads-test.oss-cn-shenzhen.aliyuncs.com/default/loginBg2.png') no-repeat center center;
     background-size: auto 100%;
+    background-attachment: fixed;
     .title {
       text-align: center;
       img {
@@ -131,7 +132,7 @@ export default {
           border: none;
           color: #fff;
           font-size: 32px; /*px*/
-          font-weight: 400;
+          font-weight: 300;
           line-height: 20px;
           padding-left: 38px;
           background: url('../../assets/icon/icon_account@3x.png') no-repeat left center;

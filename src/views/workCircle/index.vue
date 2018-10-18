@@ -194,7 +194,7 @@ export default {
         }
       }
       .isFocusClassify{
-        font-weight: 500;
+        font-weight: 700;
         position: relative;
         &::after{
           content: "";

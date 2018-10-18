@@ -272,6 +272,8 @@ export default {
       position: relative;
     }
     .content {
+      padding-bottom: 54px;
+      box-sizing: border-box;
       &.pulldownUi {
         padding-top: 54px;
       }

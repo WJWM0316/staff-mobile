@@ -17,7 +17,7 @@
   </div>
 </template>
 
-<style lang="less" scoped type="text/less">
+<style lang="less" scoped>
   .suspension-input {
     position: fixed;
     bottom: 0;
@@ -58,7 +58,7 @@
         padding: 0 10px;
         border-radius: 0;
         font-size: 15px;
-        font-weight: 500;
+        font-weight: 700;
         color: #d7ab70;
       }
     }

@@ -56,7 +56,7 @@ export default {
     padding: 40px 0 0;
     color: #354048;
     font-size: 30px; /*px*/
-    font-weight: 400;
+    font-weight: 300;
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;

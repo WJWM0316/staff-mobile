@@ -187,14 +187,14 @@ export default {
         width: 100%;
         border: none;
         text-align: right;
-        font-weight: 400;
+        font-weight: 300;
         color: #354048;
         font-size: 30px; /*px*/
       }
       .operResult {
         width: 100%;
         display: block;
-        font-weight: 400;
+        font-weight: 300;
         color: #354048;
         text-align: right;
         font-size: 30px; /*px*/

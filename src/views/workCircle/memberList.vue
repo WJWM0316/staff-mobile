@@ -87,7 +87,7 @@ export default {
     .txt {
       font-size: 30px;  /*px*/
       color: #929292;
-      font-weight: 500;
+      font-weight: 700;
     }
   }
 }

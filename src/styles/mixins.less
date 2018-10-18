@@ -48,9 +48,10 @@
 // 多行超出省略
 .setEllipsisLn (@line: 2) {
   display: -webkit-box;
-  text-overflow: ellipsis;
   -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
   -webkit-line-clamp: @line;
+  white-space: normal;
   overflow: hidden;
 }
 

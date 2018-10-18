@@ -388,14 +388,16 @@ export default {
       text-align: center;
       position: relative;
       .title {
+        margin: 0 auto;
         font-size: 30px; /*px*/
-        font-weight:400;
+        font-weight: 700;
         color: #22292C;
         line-height: 20px;
+        .setEllipsis(50%);
       }
       .msg {
         font-size:24px; /*px*/
-        font-weight: 400;
+        font-weight: 300;
         line-height: 16px;
         color: #929292;
         .status {
@@ -449,7 +451,7 @@ export default {
       background: #FFF2F2;
       color: #FF3434;
       font-size: 28px; /*px*/
-      font-weight: 400;
+      font-weight: 300;
       padding: 0 14px 0 18px;
       z-index: 1;
       line-height: 40px;
@@ -486,7 +488,7 @@ export default {
             color: #929292;
             font-size: 24px; /*px*/
             line-height: 16px;
-            font-weight: 400;
+            font-weight: 300;
             background: #EDEDED;
             border-radius: 14px;
           }
@@ -547,7 +549,7 @@ export default {
       .submit {
         font-size: 30px; /*px*/
         line-height: 20px;
-        font-weight: 500;
+        font-weight: 700;
         color: #D7AB70;
         padding: 0 0 0 16px;
       }

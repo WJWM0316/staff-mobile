@@ -1,6 +1,6 @@
 <template>
   <div class="circleDetail">
-    <circle-header :pageInfo="pageInfo" :type='2'></circle-header>
+    <circle-header :pageInfo="pageInfo" type='2'></circle-header>
     <!--下载文件-->
     <div class="fileDownload">
       <div class="downloadImg" @click.stop="toAlbum">
@@ -191,7 +191,7 @@ export default {
     .downloadFile, .downloadImg, .link{
       color: #929292;
       font-size: 26px;/*px*/
-      font-weight: 400;
+      font-weight: 300;
       width: 125px;
       height: 49px;
       display: flex;
@@ -236,7 +236,7 @@ export default {
       }
       >.reverse{
         color: #D7AB70;
-        font-weight: 400;
+        font-weight: 300;
         >img{
           width: 15px;
           height: 15px;
@@ -308,7 +308,7 @@ export default {
       >.post{
         margin-top: 5px;
         font-size: 22px;/*px*/
-        font-weight: 400;
+        font-weight: 300;
         color: #D7AB70;
         text-align: center;
         width: 100%;

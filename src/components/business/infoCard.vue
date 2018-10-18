@@ -4,7 +4,7 @@
     <img class="infoPhoto" v-if="item.courseCoverImg" v-lazyload :src="item.courseCoverImg.smallUrl"/>
     <div class="right">
       <div class="title"
-        :class="{'ellipsis1' : type === '3' || (type === '1' && item.isJoin), 'ellipsis2' : type === '2' || type === '1' && (!item.isJoin || item.isMaster)}">
+        :class="{'ellipsis1' : type === '3' || (type === '1' && !ellipsis2), 'ellipsis2' : type === '2' || (type === '1' && ellipsis2)}">
         {{item.name || item.title}}
       </div>
       <template v-if="!item.userTitle || item.userTitle.length === 0">
@@ -41,9 +41,13 @@ export default {
       type: String,
       default: '1'
     },
-    needProgress: {
+    needProgress: { // 需要进度条
       type: Boolean,
       default: true
+    },
+    ellipsis2: { // title两行缩略
+      type: Boolean,
+      default: false
     }
   },
   watch: {
@@ -117,9 +121,9 @@ export default {
       color: #354048;
       font-size: 30px;/*px*/
       line-height: 20px;
-      font-weight: 400;
+      font-weight: 300;
       &.ellipsis1 {
-        .setEllipsisLn(1)
+        .setEllipsis()
       }
       &.ellipsis2 {
         .setEllipsisLn(2)
@@ -135,10 +139,11 @@ export default {
     /*人物标签*/
     .label{
       font-size: 24px;/*px*/
-      font-weight: 400;
+      font-weight: 300;
       line-height: 16px;
       margin: 5px 0 0px;
-      .setEllipsisLn(1);
+      white-space: initial;
+      .setEllipsis();
       & > span {
         vertical-align: top;
       }
@@ -150,16 +155,13 @@ export default {
       }
       .department{
         max-width: 80px;
-        overflow: hidden;
-        text-overflow:ellipsis;
-        white-space: nowrap;
-        padding: 0 4px;
         text-align: center;
         display: inline-block;
         height: 17px;
         line-height: 17px;
         background-color: #354048;
         color: #FFFFFF;
+        .setEllipsis();
       }
       .name{
         white-space: nowrap;
