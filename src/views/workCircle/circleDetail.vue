@@ -1,6 +1,6 @@
 <template>
   <div class="circleDetail">
-    <circle-header :pageInfo="pageInfo" :type='2'></circle-header>
+    <circle-header :pageInfo="pageInfo" type='2'></circle-header>
     <!--下载文件-->
     <div class="fileDownload">
       <div class="downloadImg" @click.stop="toAlbum">

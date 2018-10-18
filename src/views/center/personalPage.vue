@@ -465,7 +465,6 @@ export default {
           font-size: 58px; /*px*/
           color: #D7AB70;
           line-height: 29px;
-          font-weight: 700;
           font-family: 'MyNewFont'
         }
         .txt {

@@ -20,7 +20,7 @@
     <div class="member" @click.stop="toMemberList">
       <div class="left">
         <p><span class="num">{{pageInfo.memberCount}}</span> 人</p>
-        <p v-if="isLive">参与了直播</p>
+        <p v-if="type === '3'">参与了直播</p>
         <p v-else>和你一起学习</p>
       </div>
       <!--加入人员头像-->
@@ -56,8 +56,8 @@ export default {
   name: 'courseHeader',
   props: {
     type: {
-      type: Number,
-      default: 0 // 1课程 2工作区 3直播
+      type: String,
+      default: '1' // 1课程 2工作区 3直播
     },
     pageInfo: {
       type: Object

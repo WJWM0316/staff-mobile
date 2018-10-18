@@ -222,7 +222,6 @@ export default {
           .num {
             font-size: 76px; /*px*/
             color: #354048;
-            font-weight: 700;
             line-height: 50px;
             font-family: 'MyNewFont'
           }

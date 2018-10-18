@@ -1,7 +1,7 @@
 <template>
   <div class="liveDetail">
     <commonHeader
-      :type='3'
+      type='3'
       :pageInfo="pageInfo"
     ></commonHeader>
     <div class="content">
