@@ -11,25 +11,27 @@
 
     <div class="info" v-if="type !== '2'">
       <h3 class="title">{{pageInfo.title}}</h3>
-      <p class="desc">{{pageInfo.groupName || '未设置所属部门'}} | {{pageInfo.realname}}</p>
+      <p class="desc" v-if="pageInfo.userTitle"><span v-for="(n, index) in pageInfo.userTitle" :key="index">{{n.title}} </span> | {{pageInfo.realname}}</p>
+      <p class="desc" v-else>{{pageInfo.groupName || '未设置所属部门'}} | {{pageInfo.realname}}</p>
     </div>
     <div class="circleHeader" v-else>
-      {{pageInfo.title}}
+      {{pageInfo.name}}
     </div>
     <!--左边加入人数-->
     <div class="member" @click.stop="toMemberList">
-      <template v-if="pageInfo.memberCount !== 0">
-        <div class="left">
-          <p><span class="num">{{pageInfo.memberCount}}</span> 人</p>
-          <p v-if="type === '3'">参与了直播</p>
-          <p v-else>和你一起学习</p>
-        </div>
-        <!--加入人员头像-->
-        <div class="center">
-          <img class="user_icon defaultImg" v-for="(item, index) in pageInfo.memberInfo" :src="item.avatarInfo.smallUrl" :key="index" />
-          <img class="user_icon four" src="../../assets/icon/firends-call-more.png" v-if="pageInfo.memberCount > 3"/>
-        </div>
-      </template>
+      <div class="left" v-if="pageInfo.memberCount !== 0">
+        <p><span class="num">{{pageInfo.memberCount}}</span> 人</p>
+        <p v-if="type === '3'">参与了直播</p>
+        <p v-else>
+          <span v-show="type === '2'">和你一起工作</span>
+          <span v-show="type === '1'">和你一起学习</span>
+        </p>
+      </div>
+      <!--加入人员头像-->
+      <div class="center">
+        <img class="user_icon defaultImg" v-for="(item, index) in pageInfo.memberInfo" :src="item.avatarInfo.smallUrl" :key="index" />
+        <img class="user_icon four" src="../../assets/icon/firends-call-more.png" v-if="pageInfo.memberCount > 3"/>
+      </div>
       <!--右边入口按钮-->
       <div class="right" v-if="type === '1'">
         <div v-if="pageInfo.isJoin || pageInfo.isMaster" @click.stop="toIntroduction">

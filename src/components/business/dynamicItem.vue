@@ -1,8 +1,8 @@
 <template>
   <div class="dynamicItem" :class="{bottomBorder : showBorder}" @click="toDetail">
-    <div class="header" @click.stop="toUserInfo(item.releaseUser.id)">
+    <div class="header">
       <img class="headerPhoto" v-if="item.releaseUser.avatarInfo" :src="item.releaseUser.avatarInfo.smallUrl" />
-      <div class="appellation" v-if="item.releaseUser">{{item.releaseUser.realname}}</div>
+      <div class="appellation" v-if="item.releaseUser" @click.stop="toUserInfo(item.releaseUser.id)">{{item.releaseUser.realname}}</div>
       <!--置顶按钮-->
       <div class="evaluate" @click.stop="toTop" v-if="item.isOwner || item.isTutor">...</div>
     </div>
@@ -66,13 +66,13 @@
         </div>
       </div>
     <template v-if="showCommunicate">
-      <div class="comment-area" v-if="item.favorList.length > 0 || item.hotComments.length > 0">
+      <div class="comment-area" v-if="item.favorTotal > 0 || item.hotComments.length > 0">
         <div class="praise-block" :class="{'praise-block-marBot': item.hotComments.length > 0}" v-if="item.favorList.length > 0">
           <img class="icon-zan" src="./../../assets/icon/bnt_zan@3x.png" />
           <div class="praise-name">
             <span class="favor-name" v-for="(favor,favorIndex) in item.favorList" :key="favorIndex" @click.stop="toUserInfo(favor.userId)">{{favorIndex > 0 ?  ','+favor.realname : favor.realname}}</span>
           </div>
-          <span class="praise-total" v-if="item.favorList.length > 3">等{{item.favors.length}}人觉得很赞</span>
+          <span class="praise-total" v-if="item.favorTotal > 3">等{{item.favorTotal}}人觉得很赞</span>
         </div>
         <div class="reply-block"  v-if="item.hotComments.length > 0">
           <template>

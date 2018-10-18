@@ -32,7 +32,7 @@ export default {
 <style lang="less" scoped>
   .backHome {
     .home {
-      position: fixed;
+      position: absolute;
       top: 35px;
       right: 0;
       background: #fff;

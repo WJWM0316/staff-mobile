@@ -161,7 +161,7 @@ export default {
         page: this.page
       }
       let res = await getCommentListApi(param)
-      this.commentList.push(...res.data)
+      this.commentList = res.data
     },
     /* 获取打卡详情 */
     async getPunchCardDetails () {

@@ -6,7 +6,7 @@
     <div class="userInfo-desc">
       <div class="name">{{item.realname}}<span class="managerTitle" v-show="false">管理员</span></div>
       <!-- roleId 4是内部导师 5是外部导师 6是普通学员 -->
-      <div class="persion-info" v-if="item.roleId === 5"><span v-for="(n, index) in item.userTitle" :key="index">{{n.title}} </span></div>
+      <div class="persion-info" v-if="item.roleId === 5 || item.userTitle"><span v-for="(n, index) in item.userTitle" :key="index">{{n.title}} </span></div>
       <div class="persion-info" v-else>{{item.occupation || '该成员未设置职称'}} | {{item.groupName || '未设置部门'}}</div>
     </div>
     <div class="excellent" v-if="item.punchCardCount">
