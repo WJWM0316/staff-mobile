@@ -1,5 +1,5 @@
 <template>
-  <div class="infoCard"  @click="toDeatil(item.id || item.liveId)" :class="{'newCouse': newCouse}">
+  <div class="infoCard"  @click="toDeatil(item.id || item.liveId)" :class="{'newCouse': item.isNew}">
     <img class="infoPhoto" v-if="item.coverImg" v-lazyload :src="item.coverImg.smallUrl"/>
     <img class="infoPhoto" v-if="item.courseCoverImg" v-lazyload :src="item.courseCoverImg.smallUrl"/>
     <div class="right">
@@ -49,15 +49,7 @@ export default {
   watch: {
     item () {}
   },
-  computed: {
-    newCouse () {
-      if (this.type === '1' && new Date().getTime() - new Date(this.item.createdAt).getTime() > 7 * 24 * 3600 * 1000) {
-        return true
-      } else {
-        return false
-      }
-    }
-  },
+  computed: {},
   methods: {
     toDeatil (id) {
       if (this.type === '1') {
