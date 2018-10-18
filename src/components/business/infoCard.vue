@@ -151,16 +151,13 @@ export default {
       }
       .department{
         max-width: 80px;
-        overflow: hidden;
-        text-overflow:ellipsis;
-        white-space: nowrap;
-        padding: 0 4px;
         text-align: center;
         display: inline-block;
         height: 17px;
         line-height: 17px;
         background-color: #354048;
         color: #FFFFFF;
+        .setEllipsis();
       }
       .name{
         white-space: nowrap;
