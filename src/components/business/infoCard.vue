@@ -4,7 +4,7 @@
     <img class="infoPhoto" v-if="item.courseCoverImg" v-lazyload :src="item.courseCoverImg.smallUrl"/>
     <div class="right">
       <div class="title"
-        :class="{'ellipsis1' : type === '3' || (type === '1' && item.isJoin) && !ellipsis2, 'ellipsis2' : type === '2' || (type === '1' && (!item.isJoin || item.isMaster) || ellipsis2)}">
+        :class="{'ellipsis1' : type === '3' || (type === '1' && !ellipsis2), 'ellipsis2' : type === '2' || (type === '1' && ellipsis2)}">
         {{item.name || item.title}}
       </div>
       <template v-if="!item.userTitle || item.userTitle.length === 0">
