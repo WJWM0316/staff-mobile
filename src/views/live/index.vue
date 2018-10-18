@@ -71,8 +71,16 @@ export default {
   methods: {
     choseTab (index) {
       this.tabIndex = index
-      if (!this.all.isLoad) {
-        this.getRecentList({page: 1}, true)
+      if (this.tabIndex === 1) {
+        this.$router.push('/live?type=all')
+        if (!this.all.isLoad) {
+          this.getRecentList({page: 1}, true)
+        }
+      } else {
+        this.$router.push('/live')
+        if (this.joined.list.length === 0) {
+          this.getJoinList({page: 1}, true)
+        }
       }
     },
     pullUp () {
@@ -146,7 +154,12 @@ export default {
     }
   },
   created () {
-    this.getJoinList({page: 1}, true)
+    if (this.$route.query.type) {
+      this.tabIndex = 1
+      this.getRecentList({page: 1}, true)
+    } else {
+      this.getJoinList({page: 1}, true)
+    }
   }
 }
 </script>
