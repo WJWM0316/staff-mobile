@@ -98,7 +98,6 @@ export default {
         padding: 14px 0;
         color: #354048;
         font-weight: 300;
-        font-size: 30px; /*px*/
         line-height: 22px;
       }
     }
