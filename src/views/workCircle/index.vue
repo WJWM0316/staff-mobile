@@ -135,18 +135,18 @@ export default {
       top: 0;
       left: 0;
       background-color: #FFFFFF;
-      box-shadow:0px 3px 5px 0px #F8F8F8;
+      box-shadow:0px 3px 5px 0px rgba(248,248,248,1);
       width: 100%;
       height: 49px;
       display: flex;
       justify-content: center;
-      z-index: 99;
+      z-index: 999;
       align-items: center;
       >span{
         line-height: 49px;
         width: 35px;
         text-align: center;
-        color: #354048;
+        color: #BCBCBC;
         font-size: 34px;/*px*/
         display: inline-block;
       }
@@ -154,6 +154,7 @@ export default {
         margin-right: 60px;
       }
       .bottom{
+        color: #354048;
         position: relative;
         &::after{
           content: "";
@@ -180,7 +181,7 @@ export default {
       top: 49px;
       left: 0;
       right: 0;
-      z-index: 999;
+      z-index: 99;
       >span{
         font-weight: 300;
         display: inline-block;

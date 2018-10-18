@@ -180,6 +180,7 @@ export default {
         this.getCommentList()
         this.item.commentTotal += 1
         this.$toast({text: '评论成功', type: 'success'})
+        this.isShow = false
       }).catch(e => {
         this.$toast({text: '评论失败'})
       })

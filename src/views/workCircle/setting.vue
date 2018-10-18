@@ -39,7 +39,9 @@ export default {
       headerPhoto: '',
       isToTop: '',
       isFocus: true,
-      isOwner: false
+      isOwner: false,
+      lastTop: '', // 原来的状态
+      lastName: ''
     }
   },
   methods: {
@@ -50,6 +52,7 @@ export default {
       this.pageInfo = res.data
       this.headerPhoto = res.data.coverImg.middleUrl
       this.name = res.data.name
+      this.lastName = res.data.name
       this.isFocus = res.data.isAttention // 初始化关注
       this.isToTop = res.data.isTop // 初始化置顶
       this.isOwner = res.data.isOwner // 是否圈主
@@ -73,12 +76,10 @@ export default {
     /* 保存 */
     async save () {
       try {
-        let isTop = JSON.parse(this.$route.query.isTop)
         /* 置顶操作 */
-        if (this.isToTop !== isTop && this.isToTop) {
+        if (this.isToTop !== this.lastTop && this.isToTop) {
           await putStickApi(this.$route.query.id)
-        } else if (this.isToTop !== isTop && !this.isToTop) {
-          console.log(this.isToTop, isTop, this.isToTop !== this.$route.query.isTop)
+        } else if (this.isToTop !== this.lastTop && !this.isToTop) {
           await putNostickApi(this.$route.query.id)
         }
         /* 关注操作 */
@@ -86,7 +87,7 @@ export default {
           await putNoFocusApi(this.$route.query.id)
         }
         /* 修改名字或图片 */
-        if (this.name !== this.$route.query.name || this.headerPhoto !== this.$route.query.coverImg) {
+        if (this.name !== this.lastName) {
           let param = {
             name: this.name,
             id: this.$route.query.id
@@ -95,7 +96,7 @@ export default {
         }
         this.$router.push({path: '/circleDetail', query: {id: this.$route.query.id}})
       } catch (err) {
-        alert(err)
+        console.log(err)
       }
     },
     /* 获取工作圈详情 */

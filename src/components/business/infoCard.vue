@@ -161,6 +161,7 @@ export default {
         text-align: center;
         display: inline-block;
         height: 17px;
+        line-height: 17px;
         background-color: #354048;
         color: #FFFFFF;
       }
@@ -170,6 +171,7 @@ export default {
         text-align: center;
         display: inline-block;
         height: 17px;
+        line-height: 17px;
         background-color: rgba(255,226,102,0.25);
         color: #D7AB70;
       }

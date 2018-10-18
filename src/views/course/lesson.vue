@@ -59,11 +59,14 @@
         <!--优秀打卡区-->
         <div class="lesson-punch">
           <!--头部标题-->
-          <div class="headerBox" v-if="(excellentPunchList && excellentPunchList.length>0) || (peopleCourseCardList && peopleCourseCardList.length>0)">
+          <div class="headerBox">
             <div class="title-pic1">
               <span class="txt">打卡区</span>
             </div>
             <div class="title-pic2"></div>
+          </div>
+          <div class="no-punch" v-if="peopleCourseCardList && peopleCourseCardList.length === 0">
+            还没人打卡哦，赶紧点击下方“去打卡”， 成为本节第一个打卡的人吧～
           </div>
           <!--优秀头部标题图片-->
           <div class="excellentPunchList"  v-if="excellentPunchList && excellentPunchList.length>0">
@@ -102,9 +105,6 @@
               查看所有打卡 <span>({{countCardInfo.totalCardCount}})</span>
             </div>
           </div>
-        </div>
-        <div class="all-punch" v-else>
-          没有更多内容了
         </div>
         <!--底部打卡按钮区-->
         <div v-if="communityCourse.isTutor !== 1">
@@ -377,6 +377,14 @@ export default {
   .lesson-punch{
     .headerBox{
       margin-left: 20px;
+    }
+    .no-punch{
+      color: #929292;
+      font-size: 28px;/*px*/
+      padding: 0 54px;
+      padding-bottom: 169px;
+      padding-top: 45px;
+      text-align: center;
     }
   }
   .lesson-punch,
