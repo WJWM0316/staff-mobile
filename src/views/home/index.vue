@@ -120,7 +120,7 @@ export default {
   },
   methods: {
     toCenter () {
-      this.$router.push('/center')
+      this.$router.push('/personalPage')
     },
     getHomeInfo () {
       getHomeInfoApi({count: 6}).then(res => {
