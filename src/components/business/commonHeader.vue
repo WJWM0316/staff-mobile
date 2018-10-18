@@ -18,7 +18,7 @@
     <!--左边加入人数-->
     <div class="member" @click.stop="toMemberList">
       <div class="left">
-        <p><span class="num">{{pageInfo.memberCount}}</span> 人</p>
+        <p><span class="num">{{pageInfo.memberCount-1}}</span> 人</p>
         <p v-if="isLive">参与了直播</p>
         <p v-else>和你一起学习</p>
       </div>

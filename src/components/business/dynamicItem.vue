@@ -1,7 +1,7 @@
 <template>
   <div class="dynamicItem" :class="{bottomBorder : showBorder}" @click="toDetail">
     <div class="header" @click.stop="toUserInfo(item.releaseUser.id)">
-      <img class="headerPhoto" v-if="item.releaseUser" :src="item.releaseUser.avatarInfo.smallUrl" />
+      <img class="headerPhoto" v-if="item.releaseUser.avatarInfo" :src="item.releaseUser.avatarInfo.smallUrl" />
       <div class="appellation" v-if="item.releaseUser">{{item.releaseUser.realname}}</div>
       <!--置顶按钮-->
       <div class="evaluate" @click.stop="toTop" v-if="item.isOwner || item.isTutor">...</div>
