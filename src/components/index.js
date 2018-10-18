@@ -4,10 +4,12 @@ import { AlertPlugin, ToastPlugin, WechatPlugin, ConfirmPlugin } from 'vux'
 import xButton from '@c/layout/xButton'
 import actionSheet from '@c/layout/actionSheet'
 import pullUpUi from '@c/layout/pullUpUi'
+import noDataShow from '@c/layout/noDataShow'
 
 Vue.component('xButton', xButton) // 按钮
 Vue.component('actionSheet', actionSheet)
 Vue.component('pullUpUi', pullUpUi)
+Vue.component('noDataShow', noDataShow)
 
 Vue.use(AlertPlugin)
 Vue.use(ToastPlugin)

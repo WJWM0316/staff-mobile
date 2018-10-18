@@ -39,13 +39,13 @@ export default {
   },
   mounted () {
     let that = this
-    let tabHeight = this.$refs.pullUpTip.clientHeight
+    let tabHeight = 59 * window.dpr
     let winHeight = window.screen.height * window.dpr
     window.onscroll = (e) => {
-      if (!this.isShow) {
+      if (window.scrollY && !this.isShow) {
         this.isShow = true
       }
-      if (window.scrollY + tabHeight / 4 >= document.body.clientHeight - winHeight) {
+      if (window.scrollY && window.scrollY + tabHeight / 4 >= document.body.clientHeight - winHeight) {
         if (!this.pullUpStatus && !this.noData) {
           this.$emit('pullUp')
           console.log('加载更多数据')

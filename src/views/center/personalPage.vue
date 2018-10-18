@@ -454,6 +454,7 @@ export default {
         line-height: 18px;
         font-weight: 300;
         margin-top: 7px;
+        .setEllipsis();
       }
     }
     .studyMsg {

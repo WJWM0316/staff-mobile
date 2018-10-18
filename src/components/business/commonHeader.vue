@@ -33,12 +33,12 @@
         <img class="user_icon four" src="../../assets/icon/firends-call-more.png" v-if="pageInfo.memberCount > 3"/>
       </div>
       <!--右边入口按钮-->
-      <div class="right" v-if="type !== '2'">
+      <div class="right" v-if="type === '1'">
         <div v-if="pageInfo.isJoin || pageInfo.isMaster" @click.stop="toIntroduction">
           课程介绍<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
         </div>
       </div>
-      <div v-else>
+      <div v-if="type === '2'">
         <div class="right" @click.stop="toSetting" v-if="type === '2' && ((pageInfo.isMember || pageInfo.isOwner) || (!pageInfo.isMember && pageInfo.isAttention))">
             设置<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
         </div>

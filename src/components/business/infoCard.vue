@@ -9,7 +9,7 @@
         {{item.name || item.title}}
       </div>
       <template v-if="!item.userTitle || item.userTitle.length === 0">
-        <div class="label"><span class="department" v-if="item.groupName">{{item.groupName}}</span><span class="name" v-if="item.realname">{{item.realname}}</span></div>
+        <div class="label"><span class="department" v-if="item.groupName">{{item.groupName | ellipsis(10)}}</span><span class="name" v-if="item.realname">{{item.realname}}</span></div>
       </template>
       <template v-else>
         <div class="label userTitle" v-if="item.userTitle.length > 0">{{item.realname}} | {{item.userTitle[0].title}}</div>
@@ -62,7 +62,11 @@ export default {
       } else if (this.type === '2') {
         this.$router.push({path: '/circleDetail', query: {id: id}})
       } else {
-        this.$router.push({path: '/liveDetail', query: {id: id}})
+        if (this.item.isJoin) {
+          this.$router.push({path: '/liveRoom', query: {id: id}})
+        } else {
+          this.$router.push({path: '/liveDetail', query: {id: id}})
+        }
       }
     }
   },
@@ -111,6 +115,9 @@ export default {
     font-size: 20px; /*px*/
     font-weight: 300;
     color: #fff;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
   }
   .infoPhoto{
     display: block;
@@ -130,7 +137,7 @@ export default {
       color: #354048;
       font-size: 30px;/*px*/
       line-height: 20px;
-      font-weight: 300;
+      font-weight: 700;
       &.ellipsis1 {
         .setEllipsis()
       }
@@ -163,14 +170,15 @@ export default {
         color: #929292;
       }
       .department{
-        max-width: 80px;
+        // max-width: 80px;
         text-align: center;
         display: inline-block;
+        padding: 0 4px;
         height: 17px;
         line-height: 17px;
         background-color: #354048;
         color: #FFFFFF;
-        .setEllipsis();
+        // .setEllipsis();
       }
       .name{
         white-space: nowrap;

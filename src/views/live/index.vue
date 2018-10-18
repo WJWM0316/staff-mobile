@@ -15,6 +15,7 @@
           <infoCard type="3" v-for="item in joined.list" :key="item.liveId" :item="item"></infoCard>
         </div>
         <pullUpUi :noData="joined.noData" :pullUpStatus="joined.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+        <noDataShow v-if="joined.list.length === 0"></noDataShow>
       </div>
       <div class="all" v-if="tabIndex === 1">
         <div class="list">
@@ -34,6 +35,7 @@
           </template>
         </div>
         <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+        <noDataShow v-if="all.list1.length === 0 && all.list2.length === 0"></noDataShow>
       </div>
     </div>
   </div>
@@ -148,7 +150,7 @@ export default {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .live {
     padding-top: 44px;
     .tab {

@@ -44,7 +44,7 @@
             v-for="(n, index) in homeInfo.courses"
             :key="index"
             :item="n"
-            v-if="index < 5"
+            v-if="index < 6"
             type="1"
           ></infoCard>
           <div class="btnBox" v-if="homeInfo.courses.length > 5"><div class="btn" @click.stop="jump('myCourse')">查看所有课程</div></div>
@@ -184,7 +184,6 @@ export default {
         justify-content: space-between;
         .text {
           font-size: 48px; /*px*/
-          font-weight: 300;
           color: #D7AB70;
           line-height: 28px;
           .msg {
@@ -192,6 +191,7 @@ export default {
             font-size: 24px; /*px*/
             line-height: 16px;
             color: #666666;
+            font-weight: 300;
             .num {
               color: #D7AB70;
             }

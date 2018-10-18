@@ -194,6 +194,7 @@ export default {
   }
   #page {
     position: relative;
+    min-height: 100vh;
     .pulldown-tip {
       height: 54px;
       width: 100%;
