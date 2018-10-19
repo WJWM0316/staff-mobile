@@ -177,6 +177,7 @@ export default {
       background-color: #FFFFFF;
       line-height: 40px;
       white-space: nowrap;
+      overflow-y: hidden;
       overflow-x: scroll;
       padding: 0 20px;
       height: 40px;
