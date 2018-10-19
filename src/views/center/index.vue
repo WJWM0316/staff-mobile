@@ -41,9 +41,7 @@
       </div>
       <div class="item"  @click.stop="jump('settings')">
         <div>
-          <i class="icon">
-            <img src="@a/icon/112430611557630831.png" alt="">
-          </i>
+          <i class="icon1 iconfont icon-set"></i>
           <span class="txt">账号管理</span>
         </div>
         <i class="icon2">

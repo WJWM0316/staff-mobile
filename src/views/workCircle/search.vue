@@ -95,7 +95,9 @@ export default {
         })
       }, time)
     },
-    onCancel () {}
+    onCancel () {
+      this.results = []
+    }
   },
   created () {
     this.historyList = localstorage.get('historyList') || [{list: []}]
@@ -107,7 +109,53 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
+.vux-search-box {
+  .weui-search-bar:before, .weui-search-bar:after, .weui-search-bar__form:after {
+    display: none;
+  }
+  .weui-cells:before {
+    display: none;
+  }
+  .weui-search-bar__box .weui-icon-clear {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .weui-search-bar__label {
+    background: rgba(251,251,251,1);
+  }
+  .weui-search-bar__label span {
+    vertical-align: unset;
+  }
+  .weui-search-bar__cancel-btn {
+    line-height: 36px;
+    font-size: 30px; /*px*/
+    color: #D7AB70;
+  }
+  .weui-search-bar {
+    padding: 10px 20px;
+    background-color: #fff;
+    .weui-search-bar__form {
+      border-radius: 20px;
+      border: 1px solid rgba(237,237,237,1);
+      overflow: hidden;
+    }
+    .weui-search-bar__box {
+      overflow: hidden;
+      background: rgba(251,251,251,1);
+      .weui-search-bar__input {
+        height: 36px;
+        padding: 0 10px;
+        font-size: 30px; /*px*/
+        color: #354048;
+        font-weight: 300;
+      }
+    }
+    .weui-icon-search {
+      line-height: 36px;
+    }
+  }
+}
 .search {
   .list {
     padding: 10px 0 0 20px;
@@ -179,7 +227,7 @@ export default {
         display: inline-block;
         max-width: 150px;
         box-sizing: border-box;
-        .setEllipsis();
+        .setEllipsis(auto);
       }
     }
   }
