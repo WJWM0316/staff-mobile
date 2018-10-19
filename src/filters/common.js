@@ -53,12 +53,12 @@ Vue.filter('fileCover', (value) => {
     return ''
   }
   if (value === 'doc' || value === 'docx') {
-    return '/static/suffix/word.png'
+    return 'https://xplus-uploads-test.oss-cn-shenzhen.aliyuncs.com/default/word.png'
   } else if (value === 'xls' || value === 'xlsx') {
-    return '/static/suffix/xls.png'
+    return 'https://xplus-uploads-test.oss-cn-shenzhen.aliyuncs.com/default/xls.png'
   } else if (value === 'ppt') {
-    return '/static/suffix/ppt.png'
+    return 'https://xplus-uploads-test.oss-cn-shenzhen.aliyuncs.com/default/ppt.png'
   } else if (value === 'pdf') {
-    return '/static/suffix/pdf.png'
+    return 'https://xplus-uploads-test.oss-cn-shenzhen.aliyuncs.com/default/pdf.png'
   }
 })

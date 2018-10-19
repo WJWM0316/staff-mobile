@@ -124,10 +124,7 @@ export default {
       handler: function () {
         this.isfavor = this.item.isFavor
         this.item.type === '文件' ? this.isFile = true : this.isFile = false
-        if (this.item.accessory && this.item.accessory.length > 0 && this.item.accessory[0].attachType === 'doc') {
-          let result = this.item.accessory[0].fileName.match(/\.[^\.]+/)
-          this.fileType = result[0]
-        }
+        this.fileType = this.item.accessory[0].attachType
       }
     }
   },

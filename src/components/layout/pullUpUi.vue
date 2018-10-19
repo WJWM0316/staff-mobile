@@ -62,7 +62,7 @@ export default {
       font-weight: 300;
       color: #BCBCBC;
       text-align: center;
-      padding: 20px 0 5px;
+      padding: 20px 0 20px;
     }
   }
 </style>
