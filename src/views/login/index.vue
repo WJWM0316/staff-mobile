@@ -46,6 +46,8 @@ export default {
       loginApi(data).then(res => {
         localstorage.set('token', res.data.token)
         localstorage.set('account', {account: this.account, password: this.password})
+        let company = location.href.split('/')[3] || 'tiger'
+        localstorage.set('XPLUSCompany', company)
         userInfoApi().then(res0 => {
           this.$store.dispatch('updata_userInfo', res0.data)
           this.$toast({

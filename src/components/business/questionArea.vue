@@ -1,118 +1,130 @@
 <template>
-  <div class='questionArea'>
-    <div class='areaWrap'>
-      <div class='tab border-bottom-1px'>
-        <div class="close icon iconfont icon-live_btn_close" @click.stop="closeArea"></div>
-        <span
-          class='tabItem'
-          v-for='(item, index) in tabList'
-          :key='index'
-          :class="{'selected': tabIndex === index}"
-          @click.stop='choseTab(index)'
-        >{{item}}</span>
-      </div>
-      <div class='messageWrap' v-show='tabIndex === 0'>
-        <scroller
-          class='scroll'
-          ref='scrollPart'
-          :pulldown=true
-          :pullup="pullup"
-          :listenScroll=true
-          :freeScroll=true
-          :noData="scrollPart.noData"
-          :list='scrollPart.list'
-          downType='refresh'
-          bgColor = '#fff'
-          @pullingDown='loadPrev'
-          @pullingUp='loadNext'
-        >
-          <div class='mine' v-if="scrollPart.list.length > 0">
-            <div class="title">我的提问</div>
-            <div class="block border-bottom-1px" v-for='(item, index) in scrollPart.list' :key="index" v-if="scrollPart.myListLength > index">
+  <Popup v-model="show" position='bottom' height="100%" is-transparent>
+    <div class='questionArea'>
+      <div class='areaWrap'>
+        <div class='tab border-bottom-1px'>
+          <div class="close icon iconfont icon-live_btn_close" @click.stop="closeArea"></div>
+          <span
+            class='tabItem'
+            v-for='(item, index) in tabList'
+            :key='index'
+            :class="{'selected': tabIndex === index}"
+            @click.stop='choseTab(index)'
+          >{{item}}</span>
+        </div>
+        <div class='messageWrap' v-show='tabIndex === 0'>
+          <scroller
+            class='scroll'
+            ref='scrollPart'
+            :pulldown=true
+            :pullup="pullup"
+            :listenScroll=true
+            :freeScroll=true
+            :noData="scrollPart.noData"
+            :list='scrollPart.list'
+            downType='refresh'
+            bgColor = '#fff'
+            @pullingDown='loadPrev'
+            @pullingUp='loadNext'
+          >
+            <div class='mine' v-if="scrollPart.list.length > 0">
+              <div class="title">我的提问</div>
+              <div class="block border-bottom-1px" v-for='(item, index) in scrollPart.list' :key="index" v-if="scrollPart.myListLength > index">
+                <div class="time">
+                  <span v-if="item.answerInfo">{{item.answerInfo.createdAt * 1000 | activeTime}}</span>
+                  <span v-else>{{item.problemInfo.createdAt * 1000 | activeTime}}</span></div>
+                <liveMessage
+                  class="msg"
+                  :messageData='item.problemInfo'
+                  bgColor="#F8F8F8"
+                  ref='messageItem'
+                ></liveMessage>
+                <liveMessage
+                  class="msg"
+                  :messageData='item.answerInfo'
+                  bgColor="#FFF5CA"
+                  ref='messageItem'
+                ></liveMessage>
+              </div>
+            </div>
+            <div class="other" v-if="scrollPart.list.length > scrollPart.myListLength">
+              <div class="title">其他已回答提问</div>
+              <div class="block border-bottom-1px" v-for='(item, index) in scrollPart.list' :key="index" v-if="scrollPart.myListLength < index">
+                <div class="time"><span v-if="item.answerInfo">{{item.answerInfo.createdAt * 1000 | activeTime}}</span><span v-else>{{item.problemInfo.createdAt * 1000 | activeTime}}</span></div>
+                <liveMessage
+                  class="msg"
+                  :messageData='item.problemInfo'
+                  bgColor="#F8F8F8"
+                  ref='messageItem'
+                ></liveMessage>
+                <liveMessage
+                  class="msg"
+                  :messageData='item.answerInfo'
+                  bgColor="#FFF5CA"
+                  ref='messageItem'
+                ></liveMessage>
+              </div>
+            </div>
+            <noDataShow v-if="scrollPart.list.length === 0"></noDataShow>
+          </scroller>
+        </div>
+        <div class="messageWrap" v-show='tabIndex === 1'>
+          <scroller
+            class='scroll'
+            ref='scrollAll'
+            :pulldown=true
+            :pullup=true
+            :listenScroll=true
+            :freeScroll=true
+            :list='scrollAll.list'
+            :noData = 'scrollAll.noData'
+            downType ='refresh'
+            bgColor = '#ffffff'
+            @pullingDown='loadPrev'
+            @pullingUp='loadNext'
+          >
+            <div class="block border-bottom-1px" v-for='(item, index) in scrollAll.list' :key="index">
               <div class="time">
-                <span v-if="item.answerInfo">{{item.answerInfo.createdAt * 1000 | activeTime}}</span>
-                <span v-else>{{item.problemInfo.createdAt * 1000 | activeTime}}</span></div>
+                <span v-if="item.answerInfo">{{item.answerInfo.createdAt | activeTime}}</span>
+                <span v-else>{{item.problemInfo.createdAt | activeTime}}</span></div>
               <liveMessage
                 class="msg"
+                v-if="item.problemInfo"
                 :messageData='item.problemInfo'
                 bgColor="#F8F8F8"
                 ref='messageItem'
               ></liveMessage>
               <liveMessage
                 class="msg"
+                v-if="item.answerInfo"
                 :messageData='item.answerInfo'
                 bgColor="#FFF5CA"
                 ref='messageItem'
               ></liveMessage>
             </div>
-          </div>
-          <div class="other" v-if="scrollPart.list.length > scrollPart.myListLength">
-            <div class="title">其他已回答提问</div>
-            <div class="block border-bottom-1px" v-for='(item, index) in scrollPart.list' :key="index" v-if="scrollPart.myListLength < index">
-              <div class="time"><span v-if="item.answerInfo">{{item.answerInfo.createdAt * 1000 | activeTime}}</span><span v-else>{{item.problemInfo.createdAt * 1000 | activeTime}}</span></div>
-              <liveMessage
-                class="msg"
-                :messageData='item.problemInfo'
-                bgColor="#F8F8F8"
-                ref='messageItem'
-              ></liveMessage>
-              <liveMessage
-                class="msg"
-                :messageData='item.answerInfo'
-                bgColor="#FFF5CA"
-                ref='messageItem'
-              ></liveMessage>
-            </div>
-          </div>
-        </scroller>
-      </div>
-      <div class="messageWrap" v-show='tabIndex === 1'>
-        <scroller
-          class='scroll'
-          ref='scrollAll'
-          :pulldown=true
-          :pullup=true
-          :listenScroll=true
-          :freeScroll=true
-          :list='scrollAll.list'
-          :noData = 'scrollAll.noData'
-          downType ='refresh'
-          bgColor = '#ffffff'
-          @pullingDown='loadPrev'
-          @pullingUp='loadNext'
-        >
-          <div class="block border-bottom-1px" v-for='(item, index) in scrollAll.list' :key="index">
-            <div class="time">
-              <span v-if="item.answerInfo">{{item.answerInfo.createdAt | activeTime}}</span>
-              <span v-else>{{item.problemInfo.createdAt | activeTime}}</span></div>
-            <liveMessage
-              class="msg"
-              v-if="item.problemInfo"
-              :messageData='item.problemInfo'
-              bgColor="#F8F8F8"
-              ref='messageItem'
-            ></liveMessage>
-            <liveMessage
-              class="msg"
-              v-if="item.answerInfo"
-              :messageData='item.answerInfo'
-              bgColor="#FFF5CA"
-              ref='messageItem'
-            ></liveMessage>
-          </div>
-        </scroller>
+            <noDataShow v-if="scrollAll.list.length === 0"></noDataShow>
+          </scroller>
+        </div>
       </div>
     </div>
-  </div>
+  </Popup>
 </template>
 <script>
 import scroller from '@c/layout/scroller'
 import liveMessage from '@c/business/liveMessage'
+import { Popup } from 'vux'
 import { getProblemListApi } from '@/api/pages/live'
 export default {
   components: {
     scroller,
-    liveMessage
+    liveMessage,
+    Popup
+  },
+  props: {
+    show: {
+      type: Boolean,
+      default: false
+    }
   },
   data () {
     return {
@@ -221,13 +233,9 @@ export default {
 </script>
 <style lang='less' scoped>
   .questionArea {
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     padding-top: 28px;
-    background: rgba(0, 0, 0, 0.7);
     box-sizing: border-box;
     overflow: hidden;
     z-index: 3;

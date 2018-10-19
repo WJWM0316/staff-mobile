@@ -3,7 +3,7 @@
     <div class="loading-container" v-show="pullUpStatus && !noData">
       <img class="loadmore" src="@/assets/icon/loadMore.gif">
     </div>
-    <p class="loading-connecting" v-show="noData && isShowNoDataText">没有更多数据</p>
+    <p class="loading-connecting" v-show="noData">没有更多数据</p>
   </div>
 </template>
 <script>
@@ -16,10 +16,6 @@ export default {
     noData: {
       type: Boolean,
       default: false
-    },
-    isShowNoDataText: {
-      type: Boolean,
-      default: true
     }
   },
   computed: {
@@ -29,6 +25,7 @@ export default {
       this.status = val
     },
     noData (val) {
+      console.log(val, 1111111111)
     }
   },
   data () {
@@ -44,6 +41,7 @@ export default {
     window.onscroll = (e) => {
       if (window.scrollY && !this.isShow) {
         this.isShow = true
+        console.log(11111111)
       }
       if (window.scrollY && window.scrollY + tabHeight / 4 >= document.body.clientHeight - winHeight) {
         if (!this.pullUpStatus && !this.noData) {
