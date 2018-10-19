@@ -84,7 +84,7 @@ export default {
       favorList: [], // 点赞列表
       displaySuspensionInput: false,
       suspensionInputPlaceholder: '来分享你的想法吧～',
-      isShow: false,
+      isShow: true,
       commentIndex: -1,
       favorPges: 1, // 当前点赞列表翻页页数
       addActionsConfig: { // 置顶评选

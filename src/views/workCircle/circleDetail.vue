@@ -23,7 +23,6 @@
         <div v-if="sort === 'asc'" class="reverse" @click.stop="reverse('desc')"><img src="../../assets/icon/bnt_order@3x.png"/>倒序</div>
         <div v-else class="reverse" @click.stop="reverse('asc')"><img src="../../assets/icon/bnt_order@3x.png"/>正序</div>
       </div>
-      <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :isShowNoDataText="postListTotal !== 0"></pullUpUi>
       <div class="bottom">
         <!--置顶帖子-->
         <div class="priorityPost">
@@ -37,7 +36,7 @@
         <dynamic-item v-for="(item,index) in postList" :key="index" :item="item" :index="index" :isCourse="false" @setPostTop="toTop" v-if="!item.isTop"></dynamic-item>
       </div>
       <nodata-box v-if="postListTotal === 0"></nodata-box>
-      <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :isShowNoDataText="postListTotal !== 0"></pullUpUi>
+      <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
     </div>
     <!-- 发帖   -->
     <div class="postBox" @click.stop="toEdit" v-if="pageInfo.isMember || pageInfo.isOwner">
@@ -125,7 +124,7 @@ export default {
         sort: this.sort
       }
       let res = await getPostlistApi(param, needLoading)
-      res.meta.currentPage === res.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
+      res.meta.currentPage >= res.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
       this.postListTotal = res.meta.total
       this.postList.push(...res.data)
     },
