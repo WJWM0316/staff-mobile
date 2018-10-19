@@ -396,6 +396,7 @@ export default {
         position: relative;
         display: inline-block;
         .playVideo{
+          background-color: #000000;
           height: 187px;
         }
         .placeholder {

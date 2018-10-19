@@ -16,7 +16,7 @@
       <!--选择视频-->
       <div class="audio" @click.stop="video">
         <input v-if="!isiOS" id="video" type="file" accept="video/*" capture="camcorder" multiple>
-        <input v-else id="video" type="file" multiple>
+        <input v-else id="video" type="file" accept="*" multiple>
         <img class="icon" src="@/assets/icon/btn_video@3x.png"/>
       </div>
       <!--选择文件-->
@@ -52,14 +52,14 @@
     <!--文件-->
     <div class="file" v-if="fileType === 2">
       <div class="delBtn" @click="del"><i class="icon iconfont icon-live_btn_close"></i></div>
-      <div class="content-file" @click.stop="fileOpen('https://cdnstatic.ziwork.com/test/file/2018-05-29/4475f3474790d39f9e051b46480fea02.xlsx')">
+      <div class="content-file" @click.stop="fileOpen(fileData.url)">
         <img v-show="fileData.extension === 'pdf'" class="file-logo" src="./../../assets/suffix/pdf.png" />
         <img v-show="fileData.extension === 'xls' || fileData.extension === 'xlsx'" class="file-logo" src="../../assets/suffix/xls.png" />
         <img v-show="fileData.extension === 'word'" class="file-logo" src="../../assets/suffix/word.png" />
         <img v-show="fileData.extension === 'ppt'" class="file-logo" src="../../assets/suffix/ppt.png" />
         <div class="file-desc">
-          <p class="text">{{fileData.key}}</p>
-          <p class="text">{{fileData.size}}</p>
+          <p class="text">{{fileData.fileName}}</p>
+          <p class="text">{{fileData.sizeM}}</p>
         </div>
       </div>
     </div>
@@ -215,6 +215,7 @@ export default {
       document.getElementById('video').addEventListener('change', function (e) {
         let reader = new FileReader()
         let videoFile = this.files[0]
+        console.log(videoFile)
         reader.readAsDataURL(this.files[0])
         reader.onload = function () {
           that.attachType = 'video'
@@ -300,6 +301,9 @@ export default {
     },
     setCircleSelf () {
       this.isCircleSelf = !this.isCircleSelf
+    },
+    fileOpen (url) {
+      window.location.href = url
     }
   },
   created () {
