@@ -193,7 +193,7 @@ export default {
     box-sizing: border-box;
   }
   #page {
-    position: relative;
+    // position: relative;
     // min-height: 100vh;
     .pulldown-tip {
       height: 54px;

@@ -148,7 +148,6 @@ export default {
     /* 滚动触发事件 */
     async pullUp () {
       if (this.isLastPage) {
-        console.log(' 111111 ')
         this.all.pullUpStatus = false
         this.all.noData = true
       } else {
@@ -157,7 +156,7 @@ export default {
         }
         this.all.pullUpStatus = true
         this.nowPage += 1
-        this.getPostlist(false)
+        await this.getPostlist(false)
         this.all.pullUpStatus = false
       }
     },
