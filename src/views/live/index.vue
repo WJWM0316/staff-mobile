@@ -10,28 +10,28 @@
       >{{item}}</span>
     </div>
     <div class="main">
-      <div class="joined" v-if="tabIndex === 0">
+      <div class="joined" v-show="tabIndex === 0">
         <div class="list">
-          <infoCard type="3" v-for="item in joined.list" :key="item.liveId" :item="item"></infoCard>
+          <infoCard type="3" v-for="(item, index) in joined.list" :key='index+1' :item="item"></infoCard>
         </div>
         <pullUpUi :noData="joined.noData" :pullUpStatus="joined.pullUpStatus" @pullUp="pullUp"></pullUpUi>
         <noDataShow v-if="joined.list.length === 0"></noDataShow>
       </div>
-      <div class="all" v-if="tabIndex === 1">
+      <div class="all" v-show="tabIndex === 1">
         <div class="list">
           <template v-if="all.list1.length > 0">
             <div class="head">
               <i class="icon"></i>
               <span class="txt">近期直播</span>
             </div>
-            <infoCard type="3" v-for="item in all.list1" :key="item.liveId" :item="item"></infoCard>
+            <infoCard type="3" v-for="(item, index) in all.list1" :key='index+2' :item="item"></infoCard>
           </template>
           <template v-if="all.list2.length > 0">
             <div class="head">
               <i class="icon"></i>
               <span class="txt">回顾直播</span>
             </div>
-            <infoCard type="3" v-for="item in all.list2" :key="item.liveId" :item="item"></infoCard>
+            <infoCard type="3" v-for="(item, index) in all.list2" :key='index+3' :item="item"></infoCard>
           </template>
         </div>
         <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
@@ -151,15 +151,25 @@ export default {
           resolve(res)
         })
       })
+    },
+    init () {
+      if (this.$route.query.type) {
+        this.tabIndex = 1
+        this.getRecentList({page: 1}, true)
+      } else {
+        this.getJoinList({page: 1}, true)
+      }
+    }
+  },
+  watch: {
+    '$route' (val) {
+      let index = 0
+      this.$route.query.type ? index = 1 : index = 0
+      this.choseTab(index)
     }
   },
   created () {
-    if (this.$route.query.type) {
-      this.tabIndex = 1
-      this.getRecentList({page: 1}, true)
-    } else {
-      this.getJoinList({page: 1}, true)
-    }
+    this.init()
   }
 }
 </script>

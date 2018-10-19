@@ -377,7 +377,7 @@ export default {
           width: 284px;
           display: inline-block;
           background: #fff;
-          box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.07);
+          box-shadow: 0px 6px 20px 0px rgba(0,0,0,0.07);
           border-radius: 3px;
           margin-right: 10px;
           vertical-align: top;
