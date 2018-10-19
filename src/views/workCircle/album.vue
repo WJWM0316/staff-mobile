@@ -10,12 +10,17 @@
       <img class="picItem" v-lazyload v-for="(picItem, index) in nowPicList" :key="index" :src="picItem.fileInfo.smallUrl" />
     </div>
   </div>
+  <nodata-box v-if="monthList.length === 0"></nodata-box>
   </div>
 </template>
 <script>
 import { getPicturemonthApi, getPictureApi } from '@/api/pages/workCircle'
+import nodataBox from '@c/business/nodataBox'
 export default {
   name: 'Album',
+  components: {
+    nodataBox
+  },
   data () {
     return {
       monthList: [],

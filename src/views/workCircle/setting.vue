@@ -38,7 +38,7 @@ export default {
       name: '',
       headerPhoto: '',
       isToTop: '',
-      isFocus: true,
+      isFocus: '',
       isOwner: false,
       lastTop: '', // 原来的状态
       lastName: ''
@@ -54,7 +54,8 @@ export default {
       this.name = res.data.name
       this.lastName = res.data.name
       this.isFocus = res.data.isAttention // 初始化关注
-      this.isToTop = res.data.isTop // 初始化置顶
+      this.lastTop = res.data.isTop // 保留原始置顶状态
+      this.isToTop = res.data.isTop // 初始化置顶状态
       this.isOwner = res.data.isOwner // 是否圈主
       console.log(this.$route.query)
     },
@@ -77,13 +78,15 @@ export default {
     async save () {
       try {
         /* 置顶操作 */
-        if (this.isToTop !== this.lastTop && this.isToTop) {
-          await putStickApi(this.$route.query.id)
-        } else if (this.isToTop !== this.lastTop && !this.isToTop) {
-          await putNostickApi(this.$route.query.id)
+        if (this.isToTop !== this.lastTop) {
+          if (this.isToTop) {
+            await putStickApi(this.$route.query.id)
+          } else {
+            await putNostickApi(this.$route.query.id)
+          }
         }
         /* 关注操作 */
-        if (!this.isOwner && !this.pageInfo.isMember) {
+        if (!this.isOwner && !this.pageInfo.isMember && !this.isFocus) {
           console.log(this.isOwner, this.pageInfo.isMember)
           await putNoFocusApi(this.$route.query.id)
         }

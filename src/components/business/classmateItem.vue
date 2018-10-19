@@ -41,6 +41,7 @@ export default {
 
 <style lang="less" scoped>
 .classmateItem {
+  margin-top: 15px;
   padding: 15px 0 0 65px;
   position: relative;
   .userInfo-img {
@@ -84,6 +85,7 @@ export default {
       }
     }
     .persion-info{
+      font-weight: 300;
       padding-top: 4px;
       font-size: 26px;/*px*/
       line-height: 17px;

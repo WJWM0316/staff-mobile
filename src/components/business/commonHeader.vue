@@ -75,6 +75,7 @@ export default {
       console.log(' guanzhu ')
       putFocusApi(this.pageInfo.id).then(res => {
         this.pageInfo.isAttention = true
+        this.$toast({text: '关注成功', type: 'success'})
       })
     },
     // 去课程介绍页
@@ -147,6 +148,7 @@ export default {
     }
   }
   .circleHeader{
+    padding: 0 20px;
     color: #354048;
     font-size: 36px;/*px*/
     font-weight: 700;

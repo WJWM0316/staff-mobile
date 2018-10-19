@@ -5,7 +5,7 @@
       <span class="all" :class="{bottom : isFocus==='all'}" @click="tab('all')">全部</span>
     </div>
     <div class="classify">
-      <span v-for="(item,index) in tabList" :key="index" :class="{ isFocusClassify:showBorder === item.groupName }" @click="cutoverTab(item)">{{item.groupName}}</span>
+      <span class="tabItem" v-for="(item,index) in tabList" :key="index" :class="{ isFocusClassify:showBorder === item.groupName }" @click="cutoverTab(item)">{{item.groupName}}</span>
     </div>
     <div class="content">
       <template v-for="(item, index) in circleList">
@@ -156,6 +156,7 @@ export default {
         margin-right: 60px;
       }
       .bottom{
+        font-weight: 700;
         color: #354048;
         position: relative;
         &::after{
@@ -195,9 +196,13 @@ export default {
           font-weight: 700;
         }
       }
+      .tabItem{
+        color: #929292;
+      }
       .isFocusClassify{
         font-weight: 700;
         position: relative;
+        color: #354048;
         &::after{
           content: "";
           display: block;
