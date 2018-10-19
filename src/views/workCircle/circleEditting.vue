@@ -421,6 +421,7 @@ export default {
         position: relative;
         width: 102px;
         height: 102px;
+        box-sizing: border-box;
         background: #FFFFFF;
         border: 1px dashed #EDEDED;
         display: flex;
