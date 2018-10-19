@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap">
+  <div class="wrap" :style="{'height':  winHeight}">
     <div class="title">
       <img src="https://xplus-uploads-test.oss-cn-shenzhen.aliyuncs.com/default/loginBg1.png" alt="">
       <span class="msg">你的努力值得被看见</span>
@@ -28,6 +28,7 @@ export default {
     return {
       account: '',
       password: '',
+      winHeight: 0,
       accountErr: false // 邮箱格式输入错误
     }
   },
@@ -73,17 +74,19 @@ export default {
     let data = localstorage.get('account')
     this.account = data.account
     this.password = data.password
+  },
+  mounted () {
+    this.winHeight = window.innerHeight + 'px'
   }
 }
 </script>
 <style lang="less" scoped>
   .wrap {
-    height: 100vh;
     box-sizing: border-box;
     padding: 44px 40px;
-    background: url('https://xplus-uploads-test.oss-cn-shenzhen.aliyuncs.com/default/loginBg2.png') no-repeat center center;
+    background: #000 url('https://xplus-uploads-test.oss-cn-shenzhen.aliyuncs.com/default/loginBg2%403x.png') no-repeat center center;
     background-size: 100% 100%;
-    background-attachment: fixed;
+    position: relative;
     .title {
       text-align: center;
       img {
@@ -159,11 +162,13 @@ export default {
     }
     .btnBox {
       width: 100%;
-      padding: 0 40px;
+      padding: 0 80px;
+      position: absolute;
+      bottom: 54px;
       font-weight: 300;
       font-size: 28px; /*px*/
       color: #fff;
-      margin-top: 118px;
+      left: 0;
       box-sizing: border-box;
       display: flex;
       justify-content: space-between;

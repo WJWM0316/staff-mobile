@@ -167,7 +167,7 @@ export default {
     },
     creatWs () { // 开启websocket
       let company = location.href.split('/')[3] || 'tiger'
-      ws.create(`ws://work-api.xplus.ziwork.com/${company}`)
+      ws.create(`ws://work-api.xplus.xiaodengta.com/${company}`)
     }
   },
   created () {
