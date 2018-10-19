@@ -141,6 +141,9 @@ export default {
         line-height: 18px;
         margin-top: 2px;
       }
+      .funtional {
+        padding: 0 30px;
+      }
     }
   }
 </style>

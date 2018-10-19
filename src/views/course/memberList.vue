@@ -59,6 +59,9 @@ export default {
           this.teacherList = this.teacherList.concat(res.data.role)
           this.excellentList = this.excellentList.concat(res.data.excellent)
           this.studentList = this.studentList.concat(res.data.peoples)
+          if (res.meta.currentPage === res.meta.lastPage) {
+            this.noData = true
+          }
           resolve(res)
         })
       })
@@ -68,9 +71,6 @@ export default {
       this.pullUpStatus = true
       this.getStudentList({page: this.page}, false).then(res => {
         this.pullUpStatus = false
-        if (res.data.length === 0) {
-          this.noData = true
-        }
       })
     },
     showMask () {
