@@ -6,6 +6,7 @@
        :item="item"
        @setPostTop="setPostTop"
     ></lessondynamicItem>
+    <pullUpUi :noData="noData" :pullUpStatus="pullUpStatus" @pullUp="pullUp"></pullUpUi>
     <actionsheet v-model="addActionsConfig.show" :menus="isExcellentCard?addActionsConfig.menus2:addActionsConfig.menus" show-cancel @on-click-menu="handleAddActoinItem" />
   </div>
 </template>
@@ -30,6 +31,7 @@ export default {
       },
       listPage: 1, // 当前打卡列表页数
       punchList: [],
+      punchCount: '', // 当前打卡数量
       addActionsConfig: {
         show: false,
         menus: [{
@@ -42,7 +44,9 @@ export default {
         }]
       },
       nowChoosePunch: '',
-      isExcellentCard: 0
+      isExcellentCard: 0,
+      noData: false,
+      pullUpStatus: false
     }
   },
   methods: {
@@ -65,6 +69,7 @@ export default {
       let { type } = this.$route.query
       let res = await this.getCourseCardListApi()
       type === 'all' ? this.punchList = res.data.peopleCourseCardList : this.punchList = res.data.excellentPeopleCourseCardList
+      this.punchCount = res.data.peopleCourseCardListCount
     },
     /* 置顶 */
     async setPostTop (item) {
@@ -80,6 +85,18 @@ export default {
       await setExcellentCourseCardApi(param)
       this.getCourseCardListApi()
       this.$toast({text: '设置优秀打卡成功', type: 'success'})
+    },
+    async pullUp () {
+      if (this.punchCount === this.punchList.length) {
+        this.noData = true
+        this.pullUpStatus = false
+      } else {
+        if (this.punchList.length === 0) return
+        this.listPage += 1
+        let res = await this.getCourseCardListApi()
+        let { type } = this.$route.query
+        type === 'all' ? this.punchList.push(...res.data.peopleCourseCardList) : this.punchList.push(...res.data.excellentPeopleCourseCardList)
+      }
     }
   },
   created () {

@@ -468,7 +468,7 @@ export default {
           height: 15px;
         }
         .praise-total {
-          width: 120px;
+          width: 140px;
           font-weight: 300;
           color: #354048;
         }
