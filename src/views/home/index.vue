@@ -16,7 +16,7 @@
         </div>
         <div class="item">
           <p class="num">{{headInfo.study.lessonCount}}</p>
-          <p class="txt">完成课程数/个</p>
+          <p class="txt">在学课程数/个</p>
         </div>
         <div class="item">
           <p class="num">{{headInfo.study.sessionCardCount}}</p>
