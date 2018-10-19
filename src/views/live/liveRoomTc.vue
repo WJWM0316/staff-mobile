@@ -54,14 +54,7 @@
         <i class="btn" @click.stop="scrollTo('bottom')"><img src="@a/icon/live_btn_gobase@3x.png" alt=""></i>
       </div>
     </div>
-    <div class='footer'>
-      <div class='txtBar'>
-        <input class='bar' v-focus type='text' v-model='problemTxt' placeholder='请输入你的问题'>
-      </div>
-      <div class='submit' @click.stop='putQuestions'>提问</div>
-      <div class="area icon iconfont icon-live_btn_answers" @click.stop="openArea = true"></div>
-    </div>
-    <questionArea :show="openArea" @closeArea="_closeArea"></questionArea>
+    <questionArea v-if="openArea" @closeArea="_closeArea"></questionArea>
   </div>
 </template>
 <script>

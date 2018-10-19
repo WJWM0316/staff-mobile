@@ -39,6 +39,10 @@ export default {
         }
         getMemberListApi(data, needLoading).then(res => {
           this.studentList = this.studentList.concat(res.data)
+          if (res.meta.currentPage === res.meta.lastPage) {
+            this.noData = true
+            console.log(111, this.noData)
+          }
           resolve(res)
         })
       })
@@ -60,9 +64,6 @@ export default {
       this.pullUpStatus = true
       this.getStudentList({page: this.page}, false).then(res => {
         this.pullUpStatus = false
-        if (res.data.length === 0) {
-          this.noData = true
-        }
       })
     }
   },
