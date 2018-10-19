@@ -41,7 +41,6 @@ export default {
           this.studentList = this.studentList.concat(res.data)
           if (res.meta.currentPage === res.meta.lastPage) {
             this.noData = true
-            console.log(111, this.noData)
           }
           resolve(res)
         })
