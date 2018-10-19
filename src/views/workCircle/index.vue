@@ -197,6 +197,7 @@ export default {
         }
       }
       .tabItem{
+        font-size: 26px;/*px*/
         color: #929292;
       }
       .isFocusClassify{
