@@ -72,6 +72,7 @@ export default {
   },
   created () {
     let data = localstorage.get('account')
+    if (!data) return
     this.account = data.account
     this.password = data.password
   },
