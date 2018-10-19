@@ -83,7 +83,7 @@ export default {
     padding: 44px 40px;
     background: url('https://xplus-uploads-test.oss-cn-shenzhen.aliyuncs.com/default/loginBg2.png') no-repeat center center;
     background-size: 100% 100%;
-    position: relative;
+    background-attachment: fixed;
     .title {
       text-align: center;
       img {
@@ -159,13 +159,11 @@ export default {
     }
     .btnBox {
       width: 100%;
-      padding: 0 80px;
-      position: absolute;
-      bottom: 54px;
+      padding: 0 40px;
       font-weight: 300;
       font-size: 28px; /*px*/
       color: #fff;
-      left: 0;
+      margin-top: 118px;
       box-sizing: border-box;
       display: flex;
       justify-content: space-between;
