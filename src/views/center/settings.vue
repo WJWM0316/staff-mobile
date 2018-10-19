@@ -20,6 +20,7 @@
   </div>
 </template>
 <script>
+import localstorage from '@u/localstorage'
 import {outLoginApi} from '@/api/pages/login'
 export default {
   methods: {
@@ -34,6 +35,7 @@ export default {
         content: '确定退出账号？',
         confirmBack: () => {
           outLoginApi().then(res => {
+            localstorage.remove('XPLUSCompany')
             this.$toast({
               text: '退出成功',
               type: 'success',
