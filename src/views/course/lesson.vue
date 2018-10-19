@@ -15,8 +15,8 @@
     <div class="lesson-module">
       <!--视频-->
       <div class="lesson-video" v-if="communityCourse.av && communityCourse.av.attachType==='video'">
-        <video controls ref="video">
-          <source :src="communityCourse.av.url" :poster="communityCourse.av.coverImg.url" type="video/mp4">
+        <video :poster="communityCourse.av.coverImg.url" controls ref="video">
+          <source :src="communityCourse.av.url" type="video/mp4">
              您的浏览器不支持 HTML5 video 标签，请升级浏览器或者更换浏览器。
         </video>
       </div>

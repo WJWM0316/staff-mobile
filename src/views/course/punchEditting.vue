@@ -1,7 +1,7 @@
 <template>
   <div class="p-publish-content">
     <div class="form-group">
-      <textarea name="content" class="control" maxlength="1000" placeholder="说说你的想法..." v-model="form.content" />
+      <textarea name="content" class="control" maxlength="1000" placeholder="请输入打卡内容..." v-model="form.content" />
       <p class="addon" :class="{ 'z-active': form.content.length > 0 }"><span class="current">{{form.content.length}}</span>/{{lengths.textMax}}</p>
     </div>
     <!--微信图片上传-->
@@ -314,7 +314,7 @@ export default {
         width: 108px;
         height: 108px;
         background: #FFFFFF;
-        border: 1px dashed #EDEDED;
+        border: 1px solid #EDEDED;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -335,7 +335,7 @@ export default {
       }
     }
     .btn-container {
-      margin: 40px 0px;
+      margin: 25px 0px 30px;
       .u-btn-publish {
         border: none;
         padding: 10px;
@@ -383,15 +383,20 @@ export default {
         background-color: #F8F8F8;
         border-radius: 20px 20px 0 0;
         color:#929292;
+        font-weight: 300;
         display: flex;
         align-items: center;
         justify-content: center;
         img{
           margin-left: 2px;
+          width: 18px;
+          height: 18px;
         }
       }
       .taskbody{
         background-color: #FFFFFF;
+        color: #354048;
+        font-weight: 300;
         padding: 20px;
         height: 319px;
         overflow-y: scroll;
