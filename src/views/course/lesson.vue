@@ -304,7 +304,7 @@ export default {
     }
   }
   .lesson-module{
-    margin-top: 15px;
+    margin-top: 30px;
     /*课节视频*/
     .lesson-video{
       margin-top: 28px;

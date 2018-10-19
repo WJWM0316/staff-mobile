@@ -395,10 +395,13 @@ export default {
         margin-top: 5px;
         position: relative;
         display: inline-block;
+        .playVideo{
+          height: 187px;
+        }
         .placeholder {
           width: 335px;
           height: 187px;
-          background: rgba(0, 0, 0, .8) url('./../../assets/icon/video-play.png') no-repeat center;
+          background: rgba(0, 0, 0, .8) url('~@/assets/icon/video-play.png') no-repeat center;
           background-size: 17.5px 17.5px;
           img {
             width: 100%;
