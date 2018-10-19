@@ -7,24 +7,27 @@
     <div class="classify">
       <span v-for="(item,index) in tabList" :key="index" :class="{ isFocusClassify:showBorder === item.groupName }" @click="cutoverTab(item)">{{item.groupName}}</span>
     </div>
-    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :isShowNoDataText="circleList.length > 0"></pullUpUi>
     <div class="content">
       <template v-for="(item, index) in circleList">
         <info-card type="2" :item="item" :showIntroduction="false" :origin="false" :key="index"></info-card>
       </template>
     </div>
-    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :isShowNoDataText="circleList.length > 0"></pullUpUi>
+    <nodata-box v-if="circleList.length === 0"></nodata-box>
   </div>
 </template>
 
 <script>
 import infoCard from '@c/business/infoCard.vue'
 import { getJobcircleApi, getAttentionsApi, getCircleClassfyApi } from '@/api/pages/workCircle'
+import nodataBox from '@c/business/nodataBox'
 export default {
   name: 'workCircle',
   components: {
     infoCard,
-    scroll
+    scroll,
+    nodataBox
   },
   data () {
     return {
