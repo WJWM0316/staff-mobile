@@ -9,12 +9,14 @@
     <div class="select-box" v-show="isChoose" v-if="isChoose">
       <!--选择图片-->
       <div class="takePhoto" @click.stop="photo">
-        <input id="photo" type="file" accept="image/*" capture="camera" multiple>
+        <input v-if="!isiOS" id="photo" type="file" accept="image/*" capture="camera" multiple>
+        <input v-else id="photo" type="file" multiple>
         <img class="icon" src="@/assets/icon/btn_pic@3x.png" alt="" />
       </div>
       <!--选择视频-->
       <div class="audio" @click.stop="video">
-        <input id="video" type="file" accept="video/*" capture="camcorder" multiple>
+        <input v-if="!isiOS" id="video" type="file" accept="video/*" capture="camcorder" multiple>
+        <input v-else id="video" type="file" multiple>
         <img class="icon" src="@/assets/icon/btn_video@3x.png"/>
       </div>
       <!--选择文件-->
@@ -120,7 +122,8 @@ export default {
       uploadImgList: [], // 存放上传图片id的数组
       inpLink: '', // 输入的链接
       showMask: false, // 展示链接输入框
-      isCircleSelf: false // 是否仅限圈内可见
+      isCircleSelf: false, // 是否仅限圈内可见
+      isiOS: ''
     }
   },
   methods: {
@@ -298,6 +301,11 @@ export default {
     setCircleSelf () {
       this.isCircleSelf = !this.isCircleSelf
     }
+  },
+  created () {
+    let u = navigator.userAgent
+    let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
+    this.isiOS = isiOS
   }
 }
 </script>
@@ -660,9 +668,10 @@ export default {
         position: absolute;
         left: 20px;
         bottom: 20px;
-        color: #BCBCBC;
+        color: #354048;
         box-sizing: border-box;
         padding-left: 45px;
+        padding-right: 20px;
         font-size: 30px;/*px*/
       }
       .linkBtn{

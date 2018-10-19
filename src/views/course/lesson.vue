@@ -251,7 +251,9 @@ export default {
     this.init()
   },
   beforeDestroy () {
-    window.audio.pause()
+    if (window.audio) {
+      window.audio.pause()
+    }
   }
 }
 </script>
