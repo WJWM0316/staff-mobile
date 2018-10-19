@@ -240,8 +240,8 @@ export default {
       ws.send(data)
     },
     creatWs () { // 开启websocket
-      let company = window.localStorage.getItem('XPLUSCompany')
-      ws.create(`ws://work-api.xplus.ziwork.com/${company}`)
+      let company = location.href.split('/')[3] || 'tiger'
+      ws.create(`ws://work-api.xplus.xiaodengta.com/${company}`)
     },
     closeWs () {
       ws.close()
