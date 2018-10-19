@@ -1,5 +1,5 @@
 <template>
-   <div class="loading-pos" ref="pullUpTip" v-show="isShow">
+   <div class="loading-pos" ref="pullUpTip">
     <div class="loading-container" v-show="pullUpStatus && !noData">
       <img class="loadmore" src="@/assets/icon/loadMore.gif">
     </div>
@@ -22,7 +22,6 @@ export default {
   },
   watch: {
     pullUpStatus (val) {
-      this.status = val
     },
     noData (val) {
       console.log(val, 1111111111)
@@ -30,7 +29,6 @@ export default {
   },
   data () {
     return {
-      isShow: false,
       status: false
     }
   },
@@ -39,10 +37,6 @@ export default {
     let tabHeight = 59 * window.dpr
     let winHeight = window.screen.height * window.dpr
     window.onscroll = (e) => {
-      if (window.scrollY && !this.isShow) {
-        this.isShow = true
-        console.log(11111111)
-      }
       if (window.scrollY && window.scrollY + tabHeight / 4 >= document.body.clientHeight - winHeight) {
         if (!this.pullUpStatus && !this.noData) {
           this.$emit('pullUp')
@@ -68,7 +62,7 @@ export default {
       font-weight: 300;
       color: #BCBCBC;
       text-align: center;
-      padding: 5px 0 35px;
+      padding: 20px 0 5px;
     }
   }
 </style>
