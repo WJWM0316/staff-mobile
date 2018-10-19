@@ -21,7 +21,7 @@
           <img src="@a/icon/btn_enter@2x.png" alt="">
         </i>
       </div>
-      <div class="item"  @click.stop="jump('message')" :class="{'red' : userInfo.noteCount > 0}">
+      <div class="item" @click.stop="jump('message')" :class="{'red' : userInfo.noteCount > 0}">
         <div>
           <i class="icon1 iconfont icon-btn_comment"></i>
           <span class="txt">我的消息</span>
@@ -30,7 +30,7 @@
           <img src="@a/icon/btn_enter@2x.png" alt="">
         </i>
       </div>
-      <div class="item"  @click.stop="jump('help')">
+      <div class="item" @click.stop="jump('help')">
         <div>
           <i class="icon1 iconfont icon-icon_list_help"></i>
           <span class="txt">使用帮助</span>
@@ -39,7 +39,7 @@
           <img src="@a/icon/btn_enter@2x.png" alt="">
         </i>
       </div>
-      <div class="item"  @click.stop="jump('settings')">
+      <div class="item" @click.stop="jump('settings')">
         <div>
           <i class="icon1 iconfont icon-set"></i>
           <span class="txt">账号管理</span>
