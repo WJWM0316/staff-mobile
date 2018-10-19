@@ -40,7 +40,7 @@
       </div>
       <!--文件，链接-->
       <div v-if="item.type === '链接' || item.type === '文件'">
-        <file-box :item="item" :isFile="isFile" :fileType='fileType'></file-box>
+        <file-box :item="item" :isFile="isFile"></file-box>
       </div>
     </div>
       <div class="info-area">
@@ -123,8 +123,6 @@ export default {
       immediate: true,
       handler: function () {
         this.isfavor = this.item.isFavor
-        this.item.type === '文件' ? this.isFile = true : this.isFile = false
-        this.fileType = this.item.accessory[0].attachType
       }
     }
   },
@@ -133,9 +131,7 @@ export default {
   data () {
     return {
       isfavor: false,
-      movie: true, // 视频播放开关
-      fileType: '', // 文件的类型xml，或者其他
-      isFile: true // 是否文件类型
+      movie: true // 视频播放开关
     }
   },
   methods: {
