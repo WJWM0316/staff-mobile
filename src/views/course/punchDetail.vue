@@ -19,7 +19,7 @@
             <i class="hot-icon"><img src="../../assets/icon/icon_hotcomment@3x.png" alt=""></i><span>热门评论</span>
           </div>
           <!--全部评论-->
-          <div class="hot-area" v-if="commentItem.isHot === 0 && index === hotCommentNum">
+          <div class="hot-area" v-if="index === hotCommentNum">
             <i class="hot-icon"><img src="../../assets/icon/tab-massage-3@3x.png" alt=""></i><span>全部评论</span>
           </div>
           <discuss-item :index="index" :item="commentItem" :isShowBorder="index === commentList.length-1 || index === hotCommentNum-1? false : true" @delComment="delComment"></discuss-item>
@@ -152,6 +152,7 @@ export default {
       }
       let res = await getHotCommentListApi(param)
       this.hotCommentNum = res.data.length
+      console.log(this.hotCommentNum)
       return res.data
     },
     /* 获取全部打卡评论列表 */
