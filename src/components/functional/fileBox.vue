@@ -1,8 +1,11 @@
 <template>
   <div class="fileBox">
-    <template v-if="item.type === '文件'">
+    <template v-if="isFile">
       <div class="content-file" @click.stop="fileOpen(item.url || item.accessory[0].url)">
-        <img class="file-logo" :src="item.accessory[0].attachType | fileCover"/>
+        <img v-show="fileType === '.pdf'" class="file-logo" src="@/assets/suffix/pdf.png" />
+        <img v-show="fileType === '.xls' || fileType === '.xlsx'" class="file-logo" src="@/assets/suffix/xls.png" />
+        <img v-show="fileType === '.word'" class="file-logo" src="@/assets/suffix/word.png" />
+        <img v-show="fileType === '.ppt'" class="file-logo" src="@/assets/suffix/ppt.png" />
         <div class="file-desc">
           <p class="text">{{item.fileName || item.accessory[0].fileName}}</p>
           <p class="text">{{item.sizeM || item.accessory[0].sizeM}}</p>
@@ -10,7 +13,7 @@
       </div>
     </template>
     <!--链接-->
-    <div class="postLink" v-if="item.type === '链接'">
+    <div class="postLink" v-if="!isFile">
       <a @click.stop="" class="content-file" :href="item.url">
         <img v-show="true" class="file-logo" src="@/assets/icon/postLink.png" />
         <div class="file-desc">
@@ -27,6 +30,14 @@ export default{
   props: {
     item: {
       type: Object
+    },
+    isFile: { // 是否文件类型，默认为文件
+      type: Boolean,
+      default: true
+    },
+    fileType: {
+      type: String,
+      default: ''
     }
   },
   methods: {
