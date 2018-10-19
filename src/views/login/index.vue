@@ -49,6 +49,7 @@ export default {
         localstorage.set('account', {account: this.account, password: this.password})
         let company = location.href.split('/')[3] || 'tiger'
         localstorage.set('XPLUSCompany', company)
+        ws.create(`ws://work-api.xplus.xiaodengta.com/${company}`)
         userInfoApi().then(res0 => {
           this.$store.dispatch('updata_userInfo', res0.data)
           this.$toast({
