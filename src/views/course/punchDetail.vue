@@ -71,7 +71,7 @@ export default {
       item: '',
       displaySuspensionInput: false,
       suspensionInputPlaceholder: '来分享你的想法吧～',
-      isShow: false,
+      isShow: true,
       commentIndex: -1,
       nowPges: 1, // 点赞列表当前页数
       page: 1, // 评论列表当前页数
@@ -117,7 +117,7 @@ export default {
         content: value // 评论内容
       }
       courseCardCommentApi(params).then(res => {
-        this.getCommentList()
+        this.assembleList()
         this.item.commentTotal += 1
         this.$toast({text: '评论成功', type: 'success'})
       })
@@ -152,7 +152,7 @@ export default {
       }
       let res = await getHotCommentListApi(param)
       this.hotCommentNum = res.data.length
-      this.commentList.push(...res.data)
+      return res.data
     },
     /* 获取全部打卡评论列表 */
     async getCommentList () {
@@ -161,7 +161,13 @@ export default {
         page: this.page
       }
       let res = await getCommentListApi(param)
-      this.commentList = res.data
+      return res.data
+    },
+    /* 合并热门评论与全部评论 */
+    async assembleList () {
+      let hot = await this.getHotCommentList()
+      let all = await this.getCommentList()
+      this.commentList = [...hot, ...all]
     },
     /* 获取打卡详情 */
     async getPunchCardDetails () {
@@ -171,8 +177,7 @@ export default {
     },
     async init () {
       await this.getPunchCardDetails()
-      await this.getHotCommentList()
-      await this.getCommentList()
+      this.assembleList()
     },
     /* 删除评论 */
     delComment (index) {
@@ -187,6 +192,7 @@ export default {
 
 <style lang="less" scoped>
 .postDetail{
+  padding-bottom: 40px;
   .container{
     padding: 0 20px;
     .ceiling-box {

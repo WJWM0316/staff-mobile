@@ -25,7 +25,7 @@ export default {
       jsonData: { // 获取课节详情的筛选条件参数
         course_section_id: 1,
         order: {
-          punch_card_time: 'asc'
+          punch_card_time: 'desc'
         }
       },
       listPage: 1, // 当前打卡列表页数
@@ -65,7 +65,6 @@ export default {
       let { type } = this.$route.query
       let res = await this.getCourseCardListApi()
       type === 'all' ? this.punchList = res.data.peopleCourseCardList : this.punchList = res.data.excellentPeopleCourseCardList
-      console.log(this.punchList)
     },
     /* 置顶 */
     async setPostTop (item) {

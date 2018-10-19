@@ -50,7 +50,7 @@ export const lessonDetailApi = (id) => {
 // 课节打卡列表
 export const getCourseCardListApi = (data) => {
   return request({
-    url: `/CourseSectionCard?jsonData=${data.jsonData}&page=${data.page}&pageCount=${data.pageCount}`,
+    url: `/CourseSectionCard?jsonData=${data.jsonData}&page=${data.page}&pageCount=${data.pageCount}&type=${data.type}`,
     type: 'get'
   })
 }

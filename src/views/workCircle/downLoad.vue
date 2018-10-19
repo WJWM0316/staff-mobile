@@ -236,7 +236,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-top: 15px;
+      padding-top: 30px;
       font-size: 28px;/*px*/
      .fileCreatedTime{
        color: #BCBCBC;

@@ -83,7 +83,7 @@
             ></lessondynamicItem>
             <div class="expand-btn" @click.stop="toPunchList('excellent')" v-if="excellentPeopleCourseCardListCount>5">
               <div>
-                查看所有优秀打卡 <span>({{countCardInfo.totalExcellentCardCount}})</span>
+                查看所有优秀打卡 <span>({{excellentPeopleCourseCardListCount}})</span>
               </div>
             </div>
           </div>
@@ -170,7 +170,7 @@ export default {
       jsonData: { // 获取课节详情的筛选条件参数
         course_section_id: 1,
         order: {
-          punch_card_time: 'asc'
+          punch_card_time: 'desc'
         }
       },
       listPage: 1, // 当前打卡列表的页数
