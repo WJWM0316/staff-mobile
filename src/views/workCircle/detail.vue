@@ -213,6 +213,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .postDetail{
+  padding-bottom: 40px;
   .container{
     padding: 0 20px;
     .ceiling-box {

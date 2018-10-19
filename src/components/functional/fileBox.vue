@@ -1,14 +1,11 @@
 <template>
   <div class="fileBox">
     <template v-if="isFile">
-      <div class="content-file" @click.stop="fileOpen(item.url || item.accessory[0].url)">
-        <img v-show="item.accessory[0].extension === 'pdf'" class="file-logo" src="@/assets/suffix/pdf.png" />
-        <img v-show="item.accessory[0].extension === 'xls' || item.accessory[0].extension === 'xlsx'" class="file-logo" src="@/assets/suffix/xls.png" />
-        <img v-show="item.accessory[0].extension === 'doc'" class="file-logo" src="@/assets/suffix/word.png" />
-        <img v-show="item.accessory[0].extension === 'ppt'" class="file-logo" src="@/assets/suffix/ppt.png" />
+      <div class="content-file" @click.stop="fileOpen(fileType.url)">
+        <img class="file-logo" :src="fileType.extension | fileCover" />
         <div class="file-desc">
-          <p class="text">{{item.fileName || item.accessory[0].fileName}}</p>
-          <p class="text">{{item.sizeM || item.accessory[0].sizeM}}</p>
+          <p class="text">{{fileType.fileName}}</p>
+          <p class="text">{{fileType.sizeM}}</p>
         </div>
       </div>
     </template>
@@ -34,10 +31,15 @@ export default{
     isFile: { // 是否文件类型，默认为文件
       type: Boolean,
       default: true
-    },
-    fileType: {
-      type: String,
-      default: ''
+    }
+  },
+  computed: {
+    fileType () {
+      if (this.item.accessory) {
+        return this.item.accessory[0]
+      } else {
+        return this.item
+      }
     }
   },
   methods: {

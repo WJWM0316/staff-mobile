@@ -57,6 +57,7 @@
         <img v-show="fileData.extension === 'xls' || fileData.extension === 'xlsx'" class="file-logo" src="../../assets/suffix/xls.png" />
         <img v-show="fileData.extension === 'word'" class="file-logo" src="../../assets/suffix/word.png" />
         <img v-show="fileData.extension === 'ppt'" class="file-logo" src="../../assets/suffix/ppt.png" />
+        <img v-show="fileData.extension === 'doc'" class="file-logo" src="@/assets/suffix/word.png" />
         <div class="file-desc">
           <p class="text">{{fileData.fileName}}</p>
           <p class="text">{{fileData.sizeM}}</p>
