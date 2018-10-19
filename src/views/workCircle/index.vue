@@ -7,13 +7,12 @@
     <div class="classify">
       <span v-for="(item,index) in tabList" :key="index" :class="{ isFocusClassify:showBorder === item.groupName }" @click="cutoverTab(item)">{{item.groupName}}</span>
     </div>
-    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :isShowNoDataText="circleList.length > 0"></pullUpUi>
     <div class="content">
       <template v-for="(item, index) in circleList">
         <info-card type="2" :item="item" :showIntroduction="false" :origin="false" :key="index"></info-card>
       </template>
     </div>
-    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :isShowNoDataText="circleList.length > 0"></pullUpUi>
+    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
     <nodata-box v-if="circleList.length === 0"></nodata-box>
   </div>
 </template>
