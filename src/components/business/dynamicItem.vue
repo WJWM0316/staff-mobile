@@ -40,7 +40,7 @@
       </div>
       <!--文件，链接-->
       <div v-if="item.type === '链接' || item.type === '文件'">
-        <file-box :item="item" :isFile="isFile"></file-box>
+        <file-box :item="item"></file-box>
       </div>
     </div>
       <div class="info-area">
