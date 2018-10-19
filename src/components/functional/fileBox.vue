@@ -4,7 +4,7 @@
       <div class="content-file" @click.stop="fileOpen(item.url || item.accessory[0].url)">
         <img v-show="fileType === '.pdf'" class="file-logo" src="@/assets/suffix/pdf.png" />
         <img v-show="fileType === '.xls' || fileType === '.xlsx'" class="file-logo" src="@/assets/suffix/xls.png" />
-        <img v-show="fileType === '.word'" class="file-logo" src="@/assets/suffix/word.png" />
+        <img v-show="fileType === '.doc'" class="file-logo" src="@/assets/suffix/word.png" />
         <img v-show="fileType === '.ppt'" class="file-logo" src="@/assets/suffix/ppt.png" />
         <div class="file-desc">
           <p class="text">{{item.fileName || item.accessory[0].fileName}}</p>
