@@ -6,8 +6,8 @@
       auto-scroll-to-top
       @on-cancel="onCancel"
       ref="search">
-        <div class="list">
-          <div class="item border-bottom-1px" :class="{'hasFile': item.type !== '无文件'}" v-for="(item, index) in this.results" :key="index" @click.stop="resultClick(item.id)">
+      <div class="list">
+          <div class="item border-bottom-1px" :class="{'hasFile': item.type !== '无文件'}" v-for="(item, index) in results" :key="index" @click.stop="resultClick(item.id)">
             <div class="photo" v-if="item.type !== '无文件'">
               <img v-if="item.type === '图片'" :src="item.accessory[0].smallUrl">
               <img v-if="item.type === '文件'" :src="item.accessory[0].attachType | fileCover">
@@ -18,7 +18,8 @@
               <p class="msg">{{item.releaseUser.realname}} {{item.releaseUser.createdAt}}</p>
             </div>
           </div>
-       </div>
+          <noDataShow v-if="results && results.length === 0"></noDataShow>
+      </div>
     </search>
     <div class="history" v-if="!value && showHistory.list.length > 0">
       <div class="title border-bottom-1px">历史搜索<i class="icon"><img @click.stop="remove" src="@a/icon/search_btn_delete@3x.png" alt=""></i></div>
@@ -96,7 +97,7 @@ export default {
       }, time)
     },
     onCancel () {
-      this.results = []
+      this.results = null
     }
   },
   created () {
