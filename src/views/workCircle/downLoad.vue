@@ -27,7 +27,6 @@
     <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :isShowNoDataText="nowFileList.length !== 0"></pullUpUi>
     <nodata-box v-if="nowFileList.length === 0"></nodata-box>
     <div class="saveBtn" v-if="showSelect" @click.stop="savePic">保存到本地相册</div>
-
   </div>
 </template>
 

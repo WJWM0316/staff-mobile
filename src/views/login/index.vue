@@ -23,6 +23,7 @@
 import { userInfoApi } from '@/api/pages/center'
 import { loginApi } from '@/api/pages/login'
 import localstorage from '@u/localstorage'
+import ws from '@u/websocket'
 export default {
   data () {
     return {
