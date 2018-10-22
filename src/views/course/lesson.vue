@@ -337,6 +337,8 @@ export default {
     }
     /*课节富文本*/
     .module-content{
+      font-weight: 300;
+      color: #354048;
       box-sizing: border-box;
       padding: 0 20px;
       margin-top: 30px;
