@@ -19,7 +19,9 @@
         <button type="button" class="close" @click="handleDeleteImage(index, item)"><i class="icon iconfont icon-live_btn_close"></i></button>
       </div>
       <div class="takePhoto" @click.stop="photo" v-if="images.length < 9">
-        <input id="photo" type="file" accept="image/*" capture="camera" multiple>
+        <!--<input id="photo" type="file" accept="image/*" capture="camera" multiple>-->
+        <input v-if="!isiOS" id="photo" type="file" accept="image/*" capture="camera" multiple>
+        <input v-else id="photo" type="file" multiple>
         <img class="icon" src="@/assets/icon/icon_plus.png" />
       </div>
     </div>
@@ -28,7 +30,7 @@
       <button type="button" class="u-btn-publish" :disabled="!canPublish" @click="handleSubmit">发表</button>
     </div>
     <!--打卡任务-->
-    <div class="showTask" @click.stop="showTask" v-if="taskContent.punchCardTitle && taskContent.punchCardCImgInfo">本节打卡任务 <img src="@/assets/icon/btn_up_task@3x.png"/></div>
+    <div class="showTask" @click.stop="showTask" v-if="taskContent.punchCardTitle || (taskContent.punchCardCImgInfo && taskContent.punchCardCImgInfo.length > 0)">本节打卡任务 <img src="@/assets/icon/btn_up_task@3x.png"/></div>
     <div class="taskWindow" v-if="showTaskWindow">
       <div class="taskhead" @click.stop="closeTask">本节打卡任务 <img src="@/assets/icon/btn_packup_task@3x.png"/></div>
       <div class="taskbody">
@@ -72,7 +74,8 @@ export default {
       uploadImgList: [], // 即将发布的图片
       showTaskWindow: false,
       taskContent: {}, // 打卡编辑页详情
-      isSend: false // 是否已经发送编辑
+      isSend: false, // 是否已经发送编辑
+      isiOS: '' // 是否ios
     }
   },
   computed: {
@@ -198,6 +201,9 @@ export default {
     }
   },
   created () {
+    let u = navigator.userAgent
+    let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
+    this.isiOS = isiOS
     let { id } = this.$route.query
     getPunchCardDetailsApi({name: 'courseSectionId', id: id}).then(res => {
       this.taskContent = res.data

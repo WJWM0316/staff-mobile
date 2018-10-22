@@ -43,14 +43,14 @@
           <div class="content-txt" v-html="communityCourse.punchCardTitle">
           </div>
           <div class="content-img">
-            <div class="content-images">
+            <div class="content-images" v-if="communityCourse.punchCardCImgInfo">
               <!-- 图片为 1 张时 -->
               <div class="item-image one" v-if="communityCourse.punchCardCImgInfo && communityCourse.punchCardCImgInfo.length === 1">
-                <img :src="communityCourse.punchCardCImgInfo[0].url" @click.stop="previewImage(communityCourse.punchCardCImgInfo[0].pictureUrl)" />
+                <img :src="communityCourse.punchCardCImgInfo[0].url" @click.stop="previewImage(communityCourse.punchCardCImgInfo[0].url)" />
               </div>
               <!--  图片为 多 张时  -->
               <div class="item-image" v-for="(file, index) in communityCourse.punchCardCImgInfo" :key="index" v-else>
-                <img :src="file.pictureUrl" v-if="!file.holder" @click.stop="previewImage(file.pictureUrl)" />
+                <img :src="file.url" @click.stop="previewImage(file.url)" />
               </div>
             </div>
           </div>
@@ -337,6 +337,8 @@ export default {
     }
     /*课节富文本*/
     .module-content{
+      font-weight: 300;
+      color: #354048;
       box-sizing: border-box;
       padding: 0 20px;
       margin-top: 30px;

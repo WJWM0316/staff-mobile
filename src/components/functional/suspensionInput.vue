@@ -40,7 +40,7 @@
         margin-top: 0;
         width: 315px;
         height: 34px;
-        border-radius: 3px;
+        border-radius: 20px;
         background-color: #fff;
         font-size: 14px;
         padding: 0 10px;

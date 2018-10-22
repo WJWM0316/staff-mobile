@@ -11,7 +11,7 @@
 
     <div class="info" v-if="type !== '2'">
       <h3 class="title">{{pageInfo.title}}</h3>
-      <p class="desc" v-if="pageInfo.userTitle && type === '1'"><span v-for="(n, index) in pageInfo.userTitle" :key="index">{{n.title}} |</span> {{pageInfo.realname}}</p>
+      <p class="desc" v-if="pageInfo.userTitle.length > 0 && type === '1'"><span v-for="(n, index) in pageInfo.userTitle" :key="index">{{n.title}} |</span> {{pageInfo.realname}}</p>
       <p class="desc" v-else>{{pageInfo.groupName || '未设置所属部门'}} | {{pageInfo.realname}}</p>
     </div>
     <div class="circleHeader" v-else>
@@ -72,10 +72,9 @@ export default {
       this.$router.push({path: '/setting', query: {id: this.pageInfo.id}})
     },
     focus () {
-      console.log(' guanzhu ')
       putFocusApi(this.pageInfo.id).then(res => {
         this.pageInfo.isAttention = true
-        this.$toast({text: '关注成功', type: 'success'})
+        this.$toast({text: '关注成功', type: 'text'})
       })
     },
     // 去课程介绍页
@@ -104,7 +103,7 @@ export default {
   display: block;
   .cover-container {
     .cover {
-      background: #F2F2F2;
+      /*background: #F2F2F2;*/
       width: 100%;
       height: 90px;
     }
@@ -133,6 +132,9 @@ export default {
   .circle{
     height: 101px;
     .cover{
+      background-image: url(../../assets/icon/headerbg.png);
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
       height: 101px;
     }
     .header-photo{

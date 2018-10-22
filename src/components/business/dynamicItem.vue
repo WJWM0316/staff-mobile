@@ -81,6 +81,7 @@
               <div class="reply" v-for="(reply,index) in item.hotComments" :key="index">
                 <p class="favor-content"><span class="favor-name">{{reply.userName}}：</span>{{reply.content}}</p>
               </div>
+              <p class="more-content" v-if="item.commentTotal > 3" @click.stop="comment">查看更多评论 </p>
             </div>
           </template>
         </div>
@@ -443,7 +444,7 @@ export default {
           }
         }
         .comment {
-          margin-left: 15px;
+          margin-left: 29px;
         }
       }
       /*时间和删除按钮*/
@@ -535,6 +536,11 @@ export default {
               background: url(../../assets/icon/icon_hotcomment@3x.png) no-repeat;
               background-size: 100% 100%;
             }
+          }
+          .more-content{
+            display: -webkit-inline-box;
+            font-size: 28px;/*px*/
+            color: #4080AD;
           }
         }
         /*热评标志样式*/

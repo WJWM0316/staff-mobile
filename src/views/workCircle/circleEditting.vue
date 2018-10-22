@@ -37,7 +37,8 @@
         <div class="close" @click="handleDeleteImage(index, item)"><i class="icon iconfont icon-live_btn_close"></i></div>
       </div>
       <div class="takePhoto" @click.stop="photo" v-if="images.length < 20">
-        <input id="photo" type="file" accept="image/*" capture="camera" multiple>
+        <input v-if="!isiOS" id="photo" type="file" accept="image/*" capture="camera" multiple>
+        <input v-else id="photo" type="file" multiple>
         <img class="icon" src="@/assets/icon/icon_plus.png" />
       </div>
     </div>
@@ -499,7 +500,7 @@ export default {
       }
       /*  文件  */
       .content-file {
-        margin-top: 10px;
+        margin-top: 15px;
         display: flex;
         align-items: center;
         background-color: #F8F8F8;
@@ -550,7 +551,7 @@ export default {
       }
     }
     .btn-container {
-      margin: 40px 0px;
+      margin: 30px 0px;
       .u-btn-publish {
         border: none;
         padding: 10px;
@@ -648,8 +649,7 @@ export default {
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: #000;
-      opacity: 0.5;
+      background-color: rgba(0,0,0,0.5);
       z-index: 8888;
       .inpLeft{
         position: absolute;

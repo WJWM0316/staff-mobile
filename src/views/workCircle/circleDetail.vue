@@ -233,6 +233,8 @@ export default {
         color: #929292;
       }
       >.reverse{
+        display: flex;
+        align-items: center;
         color: #D7AB70;
         font-weight: 300;
         >img{
