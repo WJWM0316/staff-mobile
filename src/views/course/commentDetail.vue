@@ -8,6 +8,7 @@
         :isShowBorder="false"
         :isCourse="isCourse"
         :showDel="false"
+        :isShowComment="false"
         @disableOperationEvents="operation"
         @delComment="delComment"></discuss-item>
     </div>
@@ -212,7 +213,7 @@ export default {
       if (this.navTabName !== targetName) {
         this.navTabName = targetName
       }
-      if (this.navTabName === 'praise' && this.discussInfo.favorCount > 0 && this.favorList.length === 0) {
+      if (this.navTabName === 'praise' && this.discussInfo.favorCount !== this.favorList.length && this.favorList.length === 0) {
         this.getFavorList()
       }
     },

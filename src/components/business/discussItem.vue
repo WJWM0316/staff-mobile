@@ -47,7 +47,7 @@
         </div>
       </div>
       <!-- 评论区 -->
-      <div class="comment-area" v-if="item.replyCount > 0 || item.favorCount > 0" @click="commentAreaClick">
+      <div class="comment-area" v-if="(item.replyCount > 0 || item.favorCount > 0) && isShowComment" @click="commentAreaClick">
         <!-- 点赞信息 -->
         <div class="praise-block" v-if="item.favorCount > 0">
           <img class="icon-zan" src="@/assets/icon/bnt_zan@3x.png" />
@@ -57,7 +57,7 @@
           <span class="praise-total" v-if="item.favorCount > 3">等{{item.favorCount}}人觉得很赞</span>
         </div>
         <!-- 评论信息 -->
-        <div class="reply-block" v-if="item.replyCommentList.length > 0">
+        <div class="reply-block" v-if="item.replyCount > 0">
           <div class="reply" v-for="(reply,index) in item.replyCommentList" :key="index">
             <div v-if="reply.ancestorCommentId !== reply.parentCommentId">
               <p>
@@ -102,6 +102,10 @@ export default {
       default: true
     },
     showDel: {
+      type: Boolean,
+      default: true
+    },
+    isShowComment: {
       type: Boolean,
       default: true
     }
@@ -203,6 +207,7 @@ export default {
         }
         this.item.isFavor = 1
         this.item.favorCount += 1
+        if (!this.item.favorUsers) this.item.favorUsers = []
         this.item.favorUsers.push({realname: this.item.userName})
         this.$toast({text: '点赞成功', type: 'success'})
       } else {
@@ -213,9 +218,11 @@ export default {
         }
         this.item.isFavor = 0
         this.item.favorCount -= 1
+        let that = this
         this.item.favorUsers.map(function (item, index) {
-          if (item.realname === this.item.userName) {
-            console.log(this)
+          if (item.realname === that.item.userName) {
+            that.item.favorUsers.splice(index, 1)
+            console.log(that.item.userName, index)
           }
         })
         this.$toast({text: '取消点赞成功'})
