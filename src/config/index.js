@@ -8,5 +8,5 @@ const settings = {
   host: process.env.NODE_ENV === 'development' ? `/xplus_wap` : process.env.NODE_ENV !== 'production' ? this.devApi : this.productApi,
   websocketUrl: process.env.NODE_ENV === 'development' ? this.devWsApi : process.env.NODE_ENV !== 'production' ? this.devWsApi : this.productWsApi
 }
-console.log(process.env.NODE_PRODTYPE, 11111111111)
+console.log(process.env.NODE_ENV, 11111111111)
 export default settings
