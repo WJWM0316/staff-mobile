@@ -14,7 +14,6 @@ Vue.prototype.$wechat = wx
 Vue.wx = wx
 
 Vue.config.productionTip = false
-console.log(process.env.NODE_ENV, '111111测试环境变量名')
 
 new Vue({
   router,
