@@ -8,9 +8,9 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
-    "build": "cross-env NODE_TYPE='productionDev' && node build/build.js",
-    "build:dev": "export NODE_TYPE='productionDev' && node build/build.js",
-    "build:prod": "export NODE_ENV='productionTrue' && node build/build.js"
+    "build": "set NODE_TYPE='development' && node build/build.js",
+    "build:dev": "export NODE_TYPE='development' && node build/build.js",
+    "build:prod": "export NODE_TYPE='production' && node build/build.js"
   },
   "dependencies": {
     "better-scroll": "^1.12.6",
