@@ -6,19 +6,12 @@
     </div>
     <div class="right" :class="{border: isShowBorder}">
       <div class="content-head">
-        <div class="user-box" v-if="true">
+        <div class="user-box">
           <div>
             <!-- 用户名 -->
             <p class="user-name master" @click.stop="toUserInfo(item.uid)">{{item.userName}}</p>
             <!-- 用户头衔 -->
             <p class="user-career" v-if="item.userTitle">{{item.userTitle}}</p>
-          </div>
-        </div>
-        <div class="other-box" v-else>
-          <div>
-            <!-- 用户名 -->
-            <span class="user-name guest" @click.stop="toUserInfo(item.reviewer.userId)">我是谁，我在哪</span>
-            <!-- 用户头衔 -->
           </div>
         </div>
       </div>
@@ -54,7 +47,7 @@
         </div>
       </div>
       <!-- 评论区 -->
-      <div class="comment-area" v-if="item.replyCount > 0" @click="commentAreaClick">
+      <div class="comment-area" v-if="item.replyCount > 0 || item.favorCount > 0" @click="commentAreaClick">
         <!-- 点赞信息 -->
         <div class="praise-block" v-if="item.favorCount > 0">
           <img class="icon-zan" src="@/assets/icon/bnt_zan@3x.png" />
@@ -210,6 +203,7 @@ export default {
         }
         this.item.isFavor = 1
         this.item.favorCount += 1
+        this.item.favorUsers.push({realname: this.item.userName})
         this.$toast({text: '点赞成功', type: 'success'})
       } else {
         if (this.isCourse) {
@@ -219,6 +213,11 @@ export default {
         }
         this.item.isFavor = 0
         this.item.favorCount -= 1
+        this.item.favorUsers.map(function (item, index) {
+          if (item.realname === this.item.userName) {
+            console.log(this)
+          }
+        })
         this.$toast({text: '取消点赞成功'})
       }
     },
