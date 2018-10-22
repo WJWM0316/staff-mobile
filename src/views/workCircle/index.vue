@@ -142,6 +142,7 @@ export default {
       height: 49px;
       display: flex;
       justify-content: center;
+      flex-wrap: nowrap;
       z-index: 999;
       align-items: center;
       >span{
