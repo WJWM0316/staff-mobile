@@ -166,6 +166,15 @@ export const setExcellentCourseCardApi = (data) => {
     type: 'post'
   })
 }
+// 导师端课程列表
+export const getCourseTcApi = (data, needLoading) => {
+  return request({
+    url: `/course/myMasterCourse`,
+    data,
+    type: 'post',
+    needLoading: needLoading
+  })
+}
 
 
 
