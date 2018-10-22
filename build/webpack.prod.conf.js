@@ -12,6 +12,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const env = require('../config/prod.env')
+console.log(process.env.NODE_TYPE, '测试环境变量名', env)
 
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -31,7 +32,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env,
-      'productType': process.env.NODE_TYPE
+      'process.type': process.env.NODE_TYPE
     }),
     new UglifyJsPlugin({
       uglifyOptions: {
@@ -142,6 +143,5 @@ if (config.build.bundleAnalyzerReport) {
   const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
   webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 }
-console.log(process.env.NODE_TYPE, '测试环境变量名')
 
 module.exports = webpackConfig
