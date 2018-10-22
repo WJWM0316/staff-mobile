@@ -1,4 +1,4 @@
 'use strict'
 module.exports = {
-  NODE_ENV: process.env.NODE_ENT
+  NODE_ENV: '"production"'
 }
