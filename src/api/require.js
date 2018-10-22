@@ -8,7 +8,7 @@ import localstorage from '@u/localstorage'
 Vue.use(VueAxios, axios)
 let company = location.href.split('/')[3]
 // 动态设置本地和线上接口域名
-console.log(process.env.OWNNER_ENV, '测试环境变量名')
+console.log(process.env.NODE_ENV, '测试环境变量名')
 if (process.env.NODE_ENV !== 'production') {
   Vue.axios.defaults.baseURL = settings.host
 } else {
