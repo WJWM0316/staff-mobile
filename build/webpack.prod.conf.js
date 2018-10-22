@@ -141,6 +141,6 @@ if (config.build.bundleAnalyzerReport) {
   const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
   webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 }
-console.log(process.env.NODE_PRODTYPE, '测试环境变量名')
+console.log(process.env.NODE_ENT, '测试环境变量名')
 
 module.exports = webpackConfig
