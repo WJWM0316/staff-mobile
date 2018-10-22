@@ -1,5 +1,5 @@
 <template>
-   <div class="loading-pos" ref="pullUpTip">
+   <div class="loading-pos" ref="pullUpTip" v-show="window.scrollY > 0">
     <div class="loading-container" v-show="pullUpStatus && !noData">
       <img class="loadmore" src="@/assets/icon/loadMore.gif">
     </div>

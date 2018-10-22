@@ -4,6 +4,10 @@
       <span :class="{'cur': tabIndex === index, 'red': index === 1}" v-for="(item, index) in tabList" :key="index"  @click.stop="choseTab(index)" >{{item}}</span>
     </div>
     <i class="icon iconfont icon-read_btn_datalog sidebarBtn" @click.stop="showSide = true"></i>
+    <div class="courseList" v-show="tabIndex === 0">
+    </div>
+    <div class="liveList" v-show="tabIndex === 1"></div>
+    <!-- 侧边栏 -->
     <Popup v-model="showSide" position="left" class="sidebar">
       <div class="inner"  v-if="userInfo">
         <div class="head">
@@ -24,6 +28,7 @@
 <script>
 import { Popup } from 'vux'
 import { userInfoApi } from '@/api/pages/center'
+import { getCourseTcApi } from '@/api/pages/course'
 import { mapState } from 'vuex'
 export default {
   components: {
