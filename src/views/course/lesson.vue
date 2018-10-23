@@ -46,11 +46,11 @@
             <div class="content-images" v-if="communityCourse.punchCardCImgInfo">
               <!-- 图片为 1 张时 -->
               <div class="item-image one" v-if="communityCourse.punchCardCImgInfo && communityCourse.punchCardCImgInfo.length === 1">
-                <img :src="communityCourse.punchCardCImgInfo[0].url" @click.stop="previewImage(communityCourse.punchCardCImgInfo[0].url)" />
+                <img :src="communityCourse.punchCardCImgInfo[0].url" v-preview="true" />
               </div>
               <!--  图片为 多 张时  -->
               <div class="item-image" v-for="(file, index) in communityCourse.punchCardCImgInfo" :key="index" v-else>
-                <img :src="file.url" @click.stop="previewImage(file.url)" />
+                <img :src="file.url" v-preview="true" />
               </div>
             </div>
           </div>

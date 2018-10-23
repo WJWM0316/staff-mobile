@@ -38,7 +38,7 @@
       </div>
       <div class="takePhoto" @click.stop="photo" v-if="images.length < 20">
         <input v-if="!isiOS" id="photo" type="file" accept="image/*" capture="camera" multiple>
-        <input v-else id="photo" type="file" multiple>
+        <input v-else id="photo" type="file" multiple="9">
         <img class="icon" src="@/assets/icon/icon_plus.png" />
       </div>
     </div>
@@ -174,18 +174,21 @@ export default {
       let that = this
       document.getElementById('photo').addEventListener('change', function (e) {
         let reader = new FileReader()
-        let imgFile = this.files[0]
+        let imgFile = this.files
         reader.readAsDataURL(this.files[0])
         let inp2 = this.cloneNode(true)
         this.parentNode.replaceChild(inp2, this)
         reader.onload = function () {
           that.attachType = 'img'
-          that.uploadFile(imgFile).then(res => {
-            that.isChoose = false
-            that.fileType = 0
-            that.images.push(res.data[0].url)
-            that.uploadImgList.push(res.data[0].id)
-          })
+          for (let i = 0; i < imgFile.length; i++) {
+            that.uploadFile(imgFile[i]).then(res => {
+              that.isChoose = false
+              that.fileType = 0
+              that.images.push(res.data[0].url)
+              that.uploadImgList.push(res.data[0].id)
+            })
+          }
+          
         }
       })
     },

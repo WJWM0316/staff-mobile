@@ -21,7 +21,7 @@
       <div class="takePhoto" @click.stop="photo" v-if="images.length < 9">
         <!--<input id="photo" type="file" accept="image/*" capture="camera" multiple>-->
         <input v-if="!isiOS" id="photo" type="file" accept="image/*" capture="camera" multiple>
-        <input v-else id="photo" type="file" multiple>
+        <input v-else id="photo" type="file" multiple="9">
         <img class="icon" src="@/assets/icon/icon_plus.png" />
       </div>
     </div>
