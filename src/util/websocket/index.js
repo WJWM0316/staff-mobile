@@ -58,6 +58,10 @@ class WS {
               this.isLogin = false
               store.dispatch('updata_wsLogin', false)
               router.push('/login')
+            } else {
+              if (this.isAgained) return
+              this.isAgained = true
+              this.create(this.url, this.liveId) // 如果失败了重启一下
             }
             break
           case 'live.add':

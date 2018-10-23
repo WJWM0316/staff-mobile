@@ -71,6 +71,7 @@ import ws from '@u/websocket'
 import liveMessage from '@c/business/liveMessage'
 import questionArea from '@c/business/questionArea'
 import { mapState, mapActions } from 'vuex'
+import settings from '@/config'
 import { getLiveRoomMsgApi, putQuestionsApi, sendLiveMsgApi, msgPositionApi, getLiveDetailApi, putUpdataLiveApi } from '@/api/pages/live'
 let onMessage = null
 export default {
@@ -241,7 +242,8 @@ export default {
     },
     creatWs () { // 开启websocket
       let company = location.href.split('/')[3] || 'tiger'
-      ws.create(`ws://work-api.xplus.xiaodengta.com/${company}`)
+      let websocketUrl = settings.websocketUrl
+      ws.create(`${websocketUrl}/${company}`)
     },
     closeWs () {
       ws.close()

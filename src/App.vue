@@ -37,6 +37,7 @@ import { userInfoApi } from '@/api/pages/center'
 import { Tabbar, TabbarItem } from 'vux'
 import { mapState, mapActions } from 'vuex'
 import WechatMixin from '@/mixins/wechat'
+import settings from '@/config'
 import ws from '@u/websocket'
 import Vue from 'vue'
 export default {
@@ -167,7 +168,8 @@ export default {
     },
     creatWs () { // 开启websocket
       let company = location.href.split('/')[3] || 'tiger'
-      ws.create(`ws://work-api.xplus.xiaodengta.com/${company}`)
+      let websocketUrl = settings.websocketUrl
+      ws.create(`${websocketUrl}/${company}`)
     }
   },
   created () {

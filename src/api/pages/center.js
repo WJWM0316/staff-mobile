@@ -19,7 +19,15 @@ export const getUserInfoApi = (data, needLoading) => {
     needLoading: needLoading
   })
 }
-
+// 导师端获取导师的基本信息
+export const getTutorInfoApi = (data, needLoading) => {
+  return request({
+    type: 'get',
+    url: `/tutor/info`,
+    data,
+    needLoading: needLoading
+  })
+}
 // 编辑用户信息
 export const editUserInfoApi = (data, needLoading) => {
   return request({
@@ -29,7 +37,6 @@ export const editUserInfoApi = (data, needLoading) => {
     needLoading: needLoading
   })
 }
-
 // 获取当前用户的已加入列表
 export const getMyJoinedListApi = (data, needLoading) => {
   return request({

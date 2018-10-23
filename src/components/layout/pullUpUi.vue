@@ -1,9 +1,9 @@
 <template>
-   <div class="loading-pos" ref="pullUpTip" v-show="window.scrollY > 0">
+   <div class="loading-pos" ref="pullUpTip" v-show="show">
     <div class="loading-container" v-show="pullUpStatus && !noData">
       <img class="loadmore" src="@/assets/icon/loadMore.gif">
     </div>
-    <p class="loading-connecting" v-show="noData">没有更多数据</p>
+    <p class="loading-connecting" v-show="!pullUpStatus && noData">没有更多数据</p>
   </div>
 </template>
 <script>
@@ -24,12 +24,12 @@ export default {
     pullUpStatus (val) {
     },
     noData (val) {
-      console.log(val, 1111111111)
     }
   },
   data () {
     return {
-      status: false
+      status: false,
+      show: false
     }
   },
   mounted () {
@@ -37,6 +37,7 @@ export default {
     let tabHeight = 59 * window.dpr
     let winHeight = window.screen.height * window.dpr
     window.onscroll = (e) => {
+      this.show = true
       if (window.scrollY && window.scrollY + tabHeight / 4 >= document.body.clientHeight - winHeight) {
         if (!this.pullUpStatus && !this.noData) {
           this.$emit('pullUp')
