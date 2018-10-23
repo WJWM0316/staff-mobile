@@ -189,6 +189,17 @@ export default {
           }
         }
       }
+      .logo {
+        width: 130px;
+        position: fixed;
+        left: 50%;
+        margin-left: -65px;
+        bottom: 20px;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
     }
   }
 </style>
