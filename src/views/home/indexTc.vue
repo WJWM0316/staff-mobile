@@ -21,13 +21,14 @@
           <li><i class="icon iconfont icon-icon_password1"></i>密码修改</li>
           <li><i class="icon iconfont icon-icon_loginout"></i>登出登录</li>
         </ul>
+        <div class="logo"><img src="@a/icon/toturBg.png" alt=""></div>
       </div>
     </Popup>
   </div>
 </template>
 <script>
 import { Popup } from 'vux'
-import { userInfoApi } from '@/api/pages/center'
+import { getTutorInfoApi } from '@/api/pages/center'
 import { getCourseTcApi } from '@/api/pages/course'
 import { mapState } from 'vuex'
 export default {
@@ -43,7 +44,17 @@ export default {
     return {
       tabIndex: 0,
       tabList: ['课程', '直播'],
-      showSide: false
+      showSide: false,
+      courseList: {
+        list: [],
+        noData: false,
+        pullUpStatus: false
+      },
+      liveList: {
+        list: [],
+        noData: false,
+        pullUpStatus: false
+      }
     }
   },
   methods: {
@@ -52,15 +63,30 @@ export default {
     },
     getUserInfo () {
       if (!this.userInfo) {
-        userInfoApi().then(res => {
-          console.log(res.data)
+        getTutorInfoApi().then(res => {
           this.$store.dispatch('updata_userInfo', res.data)
         })
+      }
+    },
+    getCourse () {
+      return new Promise((resolve, reject) => {
+        getCourseTcApi().then(res => {
+          this.courseList.list = this.courseList.list.concat(res.data)
+        })
+      })
+    },
+    init () {
+      if (!this.$route.query.live) {
+        this.tabIndex = 0
+        this.getCourse()
+      } else {
+        this.tabIndex = 1
       }
     }
   },
   created () {
     this.getUserInfo()
+    this.init()
   }
 }
 </script>
@@ -148,6 +174,20 @@ export default {
       }
       .funtional {
         padding: 0 30px;
+        margin-top: 50px;
+        color: #354048;
+        font-weight: 700;
+        font-size: 30px; /*px*/
+        > li {
+          margin-bottom: 30px;
+          line-height: 20px;
+          vertical-align: middle;
+          .icon {
+            font-size: 40px; /*px*/
+            margin-right: 19px;
+            color: rgb(188, 188, 188);
+          }
+        }
       }
     }
   }

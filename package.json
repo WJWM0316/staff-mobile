@@ -10,7 +10,7 @@
     "lint": "eslint --ext .js,.vue src",
     "build": "set NODE_TYPE='development' && node build/build.js",
     "build:dev": "export NODE_TYPE='development' && node build/build.js",
-    "build:prod": "export NODE_TYPE='production' && node build/build.js"
+    "build:pro": "export NODE_TYPE='production' && node build/build.js"
   },
   "dependencies": {
     "better-scroll": "^1.12.6",
