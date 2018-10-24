@@ -183,9 +183,9 @@ export default {
         this.$router.push({path: '/commentDetail', query: {id: this.item.id, isCourse: this.isCourse ? 'true' : 'false'}})
         return
       }
-      console.log(' 我是点击评论按钮评论事件 ')
       let param = {
-        id: this.item.id // 评论的id
+        id: this.item.id, // 评论的id
+        name: this.item.userName
       }
       this.$emit('disableOperationEvents', {
         eventType: 'comment',

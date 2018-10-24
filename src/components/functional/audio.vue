@@ -16,7 +16,7 @@
         ></div>
       </div>
     </div>
-    <div class="duration lessonDuration" v-if="isLesson">{{(messageData.duration-messageData.duration%60)/60}}:{{messageData.duration%60}}</div>
+    <div class="duration lessonDuration" v-if="isLesson">{{messageData.duration | conversion}}</div>
     <div class="duration" v-else>{{messageData.file.duration}}</div>
   </div>
 </template>
@@ -214,7 +214,7 @@ export default {
     height: 40px;
     padding: 0 15px 0 10px;
     white-space: nowrap;
-    background: #FFF5CA;
+    background: #FFFBEC;
     border: 1px solid #FFE266;
     box-sizing: border-box;
     border-radius:0px 20px 20px 19px;
@@ -328,6 +328,7 @@ export default {
       right: 15px;
     }
     .lessonDuration{
+      font-size: 28px;/*px*/
       color: #929292;
       right: 25px;
     }

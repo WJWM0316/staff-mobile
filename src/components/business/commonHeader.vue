@@ -43,7 +43,7 @@
             设置<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
         </div>
         <div class="focus" @click.stop="focus" v-else>
-          + 关注
+          <i class="icon iconfont icon-add"></i> 关注
         </div>
       </div>
     </div>
@@ -234,6 +234,9 @@ export default {
       color: #D7AB70;
       font-weight: 700;
       border-radius: 15px;
+      >i{
+        font-size: 25px;/*px*/
+      }
     }
   }
 }

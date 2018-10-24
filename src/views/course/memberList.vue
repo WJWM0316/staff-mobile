@@ -59,7 +59,7 @@ export default {
           this.teacherList = this.teacherList.concat(res.data.role)
           this.excellentList = this.excellentList.concat(res.data.excellent)
           this.studentList = this.studentList.concat(res.data.peoples)
-          if (res.meta.currentPage === res.meta.lastPage) {
+          if (res.data.peopleTotal === this.studentList.length) {
             this.noData = true
           }
           resolve(res)

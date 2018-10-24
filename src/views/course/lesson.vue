@@ -118,7 +118,7 @@
           </div>
         </div>
     </template>
-    <actionsheet v-model="addActionsConfig.show" :menus="isExcellentCard?addActionsConfig.menus2:addActionsConfig.menus" show-cancel @on-click-menu="handleAddActoinItem" />
+    <actionsheet v-model="addActionsConfig.show" :menus="nowChoosePunch.isExcellentCard === 1?addActionsConfig.menus2:addActionsConfig.menus" show-cancel @on-click-menu="handleAddActoinItem" />
   </div>
 </template>
 <script>
@@ -232,6 +232,7 @@ export default {
     },
     async handleAddActoinItem (key, item) {
       let { id } = this.$route.query
+      console.log(this.nowChoosePunch.isExcellentCard === 0, this.nowChoosePunch.isExcellentCard)
       let param = {
         course_section_id: this.nowChoosePunch.courseSectionCardId,
         is_set_excellent_card: this.nowChoosePunch.isExcellentCard === 0 ? 1 : 0

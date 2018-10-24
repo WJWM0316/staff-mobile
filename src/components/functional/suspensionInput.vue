@@ -39,13 +39,13 @@
       & .user-input {
         margin-top: 0;
         width: 315px;
-        height: 34px;
+        height: 39px;
         border-radius: 20px;
         background-color: #fff;
         font-size: 14px;
         padding: 0 10px;
         & input {
-          line-height: 34px;
+          line-height: 39px;
           width: 100%;
           height: 100%;
           border-style: none;
