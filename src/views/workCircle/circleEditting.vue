@@ -38,7 +38,7 @@
       </div>
       <div class="takePhoto" @click.stop="photo" v-if="images.length < 20">
         <input v-if="!isiOS" id="photo" type="file" accept="image/*" capture="camera" multiple>
-        <input v-else id="photo" type="file" multiple="9">
+        <input v-else id="photo" type="file" multiple>
         <img class="icon" src="@/assets/icon/icon_plus.png" />
       </div>
     </div>
@@ -76,7 +76,8 @@
       </div>
     </div>
     <div class="circleSelf" @click.stop="setCircleSelf">
-      <i class="icon iconfont icon-select" :class="{'isCircleSelf': isCircleSelf}"></i>
+      <i class="icon iconfont icon-unselect" v-if="isCircleSelf"></i>
+      <i class="icon iconfont icon-select isCircleSelf" v-else></i>
       仅工作圈成员可见
     </div>
     <div class="btn-container">
@@ -181,6 +182,7 @@ export default {
         reader.onload = function () {
           that.attachType = 'img'
           for (let i = 0; i < imgFile.length; i++) {
+            console.log(that.uploadImgList.length)
             that.uploadFile(imgFile[i]).then(res => {
               that.isChoose = false
               that.fileType = 0
@@ -188,7 +190,6 @@ export default {
               that.uploadImgList.push(res.data[0].id)
             })
           }
-          
         }
       })
     },
@@ -209,6 +210,7 @@ export default {
      */
     handleDeleteImage (index, image) {
       this.images.splice(index, 1)
+      this.uploadImgList.splice(index, 1)
       if (this.images.length === 0) {
         this.isChoose = true
         this.fileType = ''

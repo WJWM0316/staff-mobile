@@ -26,6 +26,7 @@
           :item="reply"
           :index="index"
           :isCourse="isCourse"
+          :isShowComment="false"
           :isShowBorder="index === replyList.length-1? false : true"
           @disableOperationEvents="operation"
           @delComment="delComment"></discuss-item>

@@ -10,7 +10,7 @@
       <span class="txt">优秀成员</span>
       <i class="icon iconfont icon-btn_inf_outstanding" @click.stop="showMask"></i>
     </div>
-    <classmateItem v-for="(item, index) in excellentList" :key="'excellent'+index" :item="item"></classmateItem>
+    <classmateItem v-for="(item, index) in excellentList" :key="'excellent'+index" :item="item" :index="index"></classmateItem>
     <div class="title" v-if="studentList.length > 0">
       <i class="icon iconfont icon-icon_list_number"></i>
       <span class="txt">成员列表</span>

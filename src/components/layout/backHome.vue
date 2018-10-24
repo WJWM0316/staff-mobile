@@ -5,7 +5,7 @@
     </div>
     <div class="homeSearch" v-if="type === '2'">
       <span><i class="icon iconfont icon-btn_homepage" @click.stop="toHome"></i></span>|
-      <span><i class="icon iconfont icon-btn_search" @click.stop="toSearch"></i></span>
+      <span><i class="icon iconfont icon-bar_icon_search" @click.stop="toSearch"></i></span>
     </div>
   </div>
 </template>
