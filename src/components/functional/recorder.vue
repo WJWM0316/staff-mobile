@@ -5,8 +5,8 @@
         <i class="icon icon-remake"></i>
         <span class="text">重录</span>
       </button>
-      <button type="button" class="control btn" @touchstart.stop="handleStart" @touchend.stop="handleFinish">
-        <div class="operBtn">
+      <button type="button" class="control btn" @touchstart.stop="touchstartFun()" @touchend.stop="touchendFun()">
+        <div class="operBtn" :class="{'playing': status === 'recording'}">
           <i class="icon iconfont" :class="btnClass"></i>
         </div>
         <span class="text" v-show="status === 'default'">最多录制60秒，点击开始</span>
@@ -40,7 +40,7 @@ export default {
       if (this.status === 'default' || this.status === 'finish') {
         return 'icon-record'
       } else if (this.status === 'recording') {
-        return 'icon-btn_stop playing'
+        return 'icon-btn_stop'
       } else {
         return 'icon-btn_pause'
       }
@@ -150,18 +150,30 @@ export default {
       this.progress = 0
       this.stopInterval()
     },
+    touchstartFun () {
+      if (this.status === 'default') {
+        this.handleStart()
+      } else if (this.status === 'finish') {
+        this.handlePlay()
+      } else{
+        this.handleStop()
+      }
+    },
+    touchendFun () {
+      if (this.status === 'recording') {
+        this.handleFinish()
+      }
+    },
     /**
      * 开始录音
      */
     handleStart () {
-      console.log(111111)
       this.manager && this.manager.startRecord()
     },
     /**
      * 完成录音
      */
     handleFinish () {
-      console.log(22222222)
       this.manager && this.manager.stopRecord()
     },
     /**
