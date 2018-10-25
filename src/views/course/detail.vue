@@ -131,10 +131,6 @@ export default {
     const { isCourseIntroduce } = this.$route.query
     this.isCourseIntroduce = isCourseIntroduce || false
     await this.init()
-  },
-  beforeRouteEnter (to, from, next) {
-    console.log(from)
-    next()
   }
 }
 </script>

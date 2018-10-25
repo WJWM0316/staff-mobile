@@ -79,7 +79,7 @@ export default {
     },
     async handleAddActoinItem (key, item) {
       let param = {
-        course_section_id: this.nowChoosePunch.courseSectionCardId,
+        course_section_card_id: this.nowChoosePunch.courseSectionCardId,
         is_set_excellent_card: this.nowChoosePunch.isExcellentCard === 0 ? 1 : 0
       }
       if (item) {

@@ -25,6 +25,9 @@
         <div class="item-image one" v-if="item.accessory.length === 1">
           <img :src="item.accessory[0].url || '../../assets/icon/img_head_default.png'" v-preview='true' @click.stop="preview"/>
         </div>
+        <div class="item-image four" v-for="(item,index) in item.accessory" :key="index" v-else-if="item.accessory.length === 4">
+          <img :src="item.url || '../../assets/icon/img_head_default.png'" v-preview='true' @click.stop="preview"/>
+        </div>
         <div class="item-image" v-for="(item,index) in item.accessory" :key="index" v-else>
           <img :src="item.url || '../../assets/icon/img_head_default.png'" @click.stop="preview"/>
         </div>
@@ -389,6 +392,11 @@ export default {
         .item-image.one {
           width: 136px;
           height: 136px;
+        }
+        .item-image.four {
+          width: 136px;
+          height: 136px;
+          margin-left: 5px;
         }
       }
       /*  视频部分  */
