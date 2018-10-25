@@ -210,9 +210,8 @@ export default {
       this.$confirm({
         title: '发布语音',
         content: '确定要该发布语音',
-        onConfirm: () => {
-          console.log(111, self)
-          self.upload()
+        confirmBack: () => {
+          this.upload()
         }
       })
     },
