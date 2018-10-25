@@ -121,13 +121,9 @@ export default {
      * 上传文件到微信服务器
      */
     async upload () {
-      try {
-        this.$emit('uploading')
-        const res = await this.wechatUploadVoice(this.localId)
-        this.uploadWechatSuccess(res)
-      } catch (error) {
-        this.$vux.toast.text(error.message, 'bottom')
-      }
+      this.$emit('uploading')
+      const res = await this.wechatUploadVoice(this.localId)
+      this.uploadWechatSuccess(res)
     },
     /**
      * 文件成功上传到微信服务器
@@ -137,8 +133,8 @@ export default {
         mediaId: serverId,
         type: 'audio'
       }
-      const { files } = await this.wxUploadFile(data)
-      this.$emit('upload-success', files)
+      const res = await this.wxUploadFile(data)
+      this.$emit('upload-success', res)
     },
     /**
      * 清除
@@ -209,10 +205,11 @@ export default {
      */
     handlePublish () {
       const self = this
-      this.$vux.confirm.show({
-        content: this.publishConfirmContent,
-        onConfirm () {
-          // self.upload()
+      this.$confirm({
+        title: '发布语音',
+        content: '确定要该发布语音',
+        onConfirm: () => {
+          this.upload()
         }
       })
     },

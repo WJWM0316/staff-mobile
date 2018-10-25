@@ -78,7 +78,7 @@
             <upLoadFile
              class="upLoadImg"
              attach_type="img"
-             :count='1'
+             count='1'
              @upLoadResult="upLoadResult"
             >
             </upLoadFile>
@@ -92,7 +92,7 @@
             <botInput @sendMsg="sendMsg"></botInput>
           </div>
           <div class="audioType" v-if="curOperType === 'audio'">
-            <recorder></recorder>
+            <recorder @upload-success="upLoadResult"></recorder>
           </div>
         </div>
       </div>
@@ -190,7 +190,7 @@ export default {
         this.option.content = tutorTxt
       } else {
         this.option.fileId = this.fileId
-      } 
+      }
       sendLiveMsgApi(this.option).then(res => {
       })
     },
