@@ -66,6 +66,16 @@ export default {
           sourceType: options.sourceType || ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
           success: async function (res) {
             resolve(res.localIds)
+            res.localIds.forEach(item => {
+              this.wechatUploadImage(item).then(res0 => {
+                console.log(res0)
+                let data = {
+                  mediaId: res0.sourceId,
+                  type: 'img'
+                }
+                this.wxUploadFile(data).then(res1 => {})
+              })
+            })
           },
           fail: function (e) {
             reject(e)
