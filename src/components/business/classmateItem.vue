@@ -65,10 +65,12 @@ export default {
       height: 100%;
     }
     .mark{
+      width: 21px;
+      height: 21px;
       position: absolute;
       bottom: -3px;
       right: -3px;
-      z-index: 9999;
+      z-index: 999;
     }
   }
   .userInfo-desc {

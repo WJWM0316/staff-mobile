@@ -50,7 +50,7 @@ const routers = [
   {
     path: '/punchList',
     name: 'punchList',
-    meta: { title: '成员列表' },
+    meta: { title: '打卡列表' },
     component: resolve => require(['@/views/course/punchList'], resolve)
   }
 ]
