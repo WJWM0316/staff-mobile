@@ -7,12 +7,12 @@
       </button>
       <button type="button" class="control btn" @touchstart.stop="handleStart" @touchend.stop="handleFinish">
         <div class="operBtn">
-          <i class="icon iconfont" :class="[{'icon-record': status === 'default' || status === 'finish'}, {'icon-btn_stop': status === 'recording'}, {'icon-btn_pause': status === 'listening'}]"></i>
+          <i class="icon iconfont" :class="btnClass"></i>
         </div>
-        <span class="text" v-if="status === 'default'">最多录制60秒，点击开始</span>
-        <span class="text" v-if="status === 'recording'">录制中</span>
-        <span class="text" v-if="status === 'finish'">点击试听</span>
-        <span class="text" v-if="status === 'listening'">停止</span>
+        <span class="text" v-show="status === 'default'">最多录制60秒，点击开始</span>
+        <span class="text" v-show="status === 'recording'">录制中</span>
+        <span class="text" v-show="status === 'finish'">点击试听</span>
+        <span class="text" v-show="status === 'listening'">停止</span>
       </button>
       <button type="button" v-if="status === 'finish'" class="publish btn right" @click="handlePublish">
         <i class="icon icon-send"></i>
@@ -33,6 +33,17 @@ export default {
       status: 'default',
       localId: '', // 录音文件localId
       recorderInterval: null
+    }
+  },
+  computed: {
+    btnClass () {
+      if (this.status === 'default' || this.status === 'finish') {
+        return 'icon-record'
+      } else if (this.status === 'recording') {
+        return 'icon-btn_stop playing'
+      } else {
+        return 'icon-btn_pause'
+      }
     }
   },
   methods: {
