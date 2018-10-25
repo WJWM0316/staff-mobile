@@ -43,6 +43,10 @@ export default {
       type: String,
       default: '' // 默认图片
     },
+    count: { // 用于微信图片选择的数量
+      type: Number,
+      default: 1
+    },
     multiple: {
       type: Boolean,
       default: true // 需要多选
@@ -120,7 +124,10 @@ export default {
       }
     },
     wxChoseImg () {
-      this.wechatChooseImage().then(res => {
+      let option = {
+        count: count
+      }
+      this.wechatChooseImage(option).then(res => {
         res.forEach(item => {
           this.wechatUploadImage(item).then(res0 => {
             let data = {

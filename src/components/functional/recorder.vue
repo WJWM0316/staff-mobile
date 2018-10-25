@@ -7,7 +7,7 @@
       </button>
       <button type="button" class="control btn" @touchstart.stop="touchstartFun()" @touchend.stop="touchendFun()">
         <div class="btnShadow">
-          <div class="operBtn" :class="{'playing': status === 'recording'}">
+          <div class="operBtn" :class="{'playing': status === 'recording' || status === 'listening'}">
             <i class="icon iconfont" :class="btnClass"></i>
           </div>
         </div>

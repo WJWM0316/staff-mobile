@@ -78,7 +78,7 @@
             <upLoadFile
              class="upLoadImg"
              attach_type="img"
-             :multiple="true"
+             :count='1'
              @upLoadResult="upLoadResult"
             >
             </upLoadFile>
@@ -185,13 +185,12 @@ export default {
       }
     },
     sendMsg (tutorTxt) {
+      this.option.type = 'text'
       if (this.curOperType === 'text') {
-        this.option.type = 'text'
         this.option.content = tutorTxt
       } else {
-        this.option.type = 'img'
         this.option.fileId = this.fileId
-      }
+      } 
       sendLiveMsgApi(this.option).then(res => {
       })
     },
