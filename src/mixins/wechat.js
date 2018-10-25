@@ -1,5 +1,5 @@
 // 微信jssdk mixin
-import { getWechatSignApi } from '@/api/common'
+import { getWechatSignApi, wxUploadFileApi } from '@/api/common'
 import browser from '@/util/browser'
 import Vue from 'vue'
 export default {
@@ -267,6 +267,22 @@ export default {
       }
     },
 
+    /**
+     * 微信上传转存
+     * @return {Object}
+     */
+    wxUploadFile ({mediaId, type, duration}) {
+      return new Promise((resolve, reject) => {
+        let data = {
+          attach_id: mediaId,
+          attach_type: type,
+          duration: duration || 0
+        }
+        wxUploadFileApi(data).then(res => {
+          resolve(res)
+        })
+      })
+    },
     /**
      * 微信分享
      */

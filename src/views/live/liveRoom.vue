@@ -1,6 +1,6 @@
 <template>
-  <div class='wrap'>
-    <div class='header' v-if="liveDetail.title">
+  <div class='wrap' v-if="liveDetail.title">
+    <div class='header'>
       <p class='title'>{{liveDetail.title}}</p>
       <p class='msg'>
         <span class='status green' v-show='liveDetail.status === 2 && wsStatus === 1'>直播进行中</span>
@@ -9,9 +9,12 @@
          <span class='status red' v-show='liveDetail.status === 3'>直播已结束</span>
         <span class='num' v-if="liveDetail.status !== 3">{{onlineNum}}人参与</span>
       </p>
-      <div class='more' @click.stop="jumpMore">
+      <div class='more' @click.stop="jumpMore" v-if="!liveDetail.isTutor">
         <span>更多介绍</span>
         <i class='icon iconfont icon-list_live_icon_more'></i>
+      </div>
+      <div class="end" v-else @click.stop="endLive">
+        <i class='icon iconfont icon-close'></i>
       </div>
     </div>
     <div class='failShow' v-show='wsStatus === 2' @click.stop='creatWs'>
@@ -54,6 +57,8 @@
         <i class="btn" @click.stop="scrollTo('bottom')"><img src="@a/icon/live_btn_gobase@3x.png" alt=""></i>
       </div>
     </div>
+    <!-- 普通学员操作权限 -->
+    <template v-if="!liveDetail.isTutor">
     <div class='footer'>
       <div class='txtBar'>
         <input class='bar' v-focus type='text' v-model='problemTxt' placeholder='请输入你的问题'>
@@ -61,7 +66,40 @@
       <div class='submit' @click.stop='putQuestions'>提问</div>
       <div class="area icon iconfont icon-live_btn_answers" @click.stop="openArea = true"></div>
     </div>
-    <questionArea :show="openArea" @closeArea="_closeArea"></questionArea>
+    </template>
+    <!-- 导师操作权限 -->
+    <template v-else>
+      <div class="sendArea">
+        <div class="operArea">
+          <span @click.stop="tutorOper('text')"><i class="icon1 iconfont icon-icon_writing" :class="{'curOperType': curOperType === 'text'}"></i></span>
+          <span @click.stop="tutorOper('audio')"><i class="icon2 iconfont icon-btn_record" :class="{'curOperType': curOperType === 'audio'}"></i></span>
+          <span @click.stop="tutorOper('img')">
+            <i class="icon3 iconfont icon-btn_photo"></i>
+            <upLoadFile
+             class="upLoadImg"
+             attach_type="img"
+             :multiple="true"
+             @upLoadResult="upLoadResult"
+            >
+            </upLoadFile>
+          </span>
+          <span @click.stop="tutorOper('answer')">
+            <i class="icon4 iconfont icon-icon_mymeaasage" :data-num="1"></i>
+          </span>
+        </div>
+        <div class="typeBox">
+          <div class="textType" v-if="curOperType === 'text'">
+            <botInput @sendMsg="sendMsg"></botInput>
+          </div>
+          <div class="audioType" v-if="curOperType === 'audio'">
+            <recorder></recorder>
+          </div>
+        </div>
+      </div>
+    </template>
+    <!-- 问答区 -->
+    <questionArea :show="openArea" @closeArea="_closeArea" v-if="!liveDetail.isTutor"></questionArea>
+    <answerArea :show="openArea" @closeArea="_closeArea" :tutorInfo="liveDetail" v-else></answerArea>
   </div>
 </template>
 <script>
@@ -70,6 +108,10 @@ import localstorage from '@u/localstorage'
 import ws from '@u/websocket'
 import liveMessage from '@c/business/liveMessage'
 import questionArea from '@c/business/questionArea'
+import answerArea from '@c/business/answerArea'
+import recorder from '@c/functional/recorder'
+import upLoadFile from '@c/functional/upLoadFile'
+import botInput from '@c/layout/botInput'
 import { mapState, mapActions } from 'vuex'
 import settings from '@/config'
 import { getLiveRoomMsgApi, putQuestionsApi, sendLiveMsgApi, msgPositionApi, getLiveDetailApi, putUpdataLiveApi } from '@/api/pages/live'
@@ -78,7 +120,11 @@ export default {
   components: {
     scroller,
     liveMessage,
-    questionArea
+    questionArea,
+    answerArea,
+    recorder,
+    upLoadFile,
+    botInput
   },
   data () {
     return {
@@ -92,16 +138,15 @@ export default {
         title: null,
         expectedStartTime: null
       },
-      content: '',
-      fileId: '',
       id: '',
       list: [],
       problemTxt: '', // 提交的问题
       openArea: false,
       isPulldown: true, // 是否开启下拉
       isPullup: true, // 是否开启上拉
-      resData: {},
-      audioList: [] // 音频列表
+      audioList: [], // 音频列表
+      curOperType: null, // 导师选择发布的类型
+      fileId: null // 导师发布的附件id
     }
   },
   computed: {
@@ -112,9 +157,13 @@ export default {
     })
   },
   watch: {
-    list () {
-    },
+    list () {},
     wsStatus () {},
+    liveDetail () {
+      if (this.liveDetail.status === 2) {
+        this.isPullup = false
+      }
+    },
     sendData () {}
   },
   methods: {
@@ -122,13 +171,25 @@ export default {
       'updata_sendData',
       'updata_onlineNum'
     ]),
+    upLoadResult (e) {
+      this.fileId = e[0].id
+      this.sendMsg()
+    },
     jumpMore () {
       this.$router.push(`/liveDetail?id=${this.id}`)
     },
-    sendMsg () {
-      if (this.option.type === 'text') {
-        this.option.content = this.content
+    tutorOper (type) {
+      this.curOperType = type
+      if (type === 'answer') {
+        this.openArea = true
+      }
+    },
+    sendMsg (tutorTxt) {
+      if (this.curOperType === 'text') {
+        this.option.type = 'text'
+        this.option.content = tutorTxt
       } else {
+        this.option.type = 'img'
         this.option.fileId = this.fileId
       }
       sendLiveMsgApi(this.option).then(res => {
@@ -181,6 +242,13 @@ export default {
             }
           })
         }
+        this.$nextTick(() => {
+          if (this.liveDetail.status === 2) {
+            setTimeout(() => {
+              this.$refs.scroll.scrollBottom()
+            }, 500)
+          }
+        })
         return res
       })
     },
@@ -255,20 +323,32 @@ export default {
       ws.leaveLive(this.id)
     },
     endLive () {
-      if (!this.liveDetail.isTutor) return
-      let data = {
-        liveId: this.id,
-        status: 3
-      }
-      putUpdataLiveApi(data)
+      this.$confirm({
+        title: '结束直播',
+        content: '1.直播结束后，不可以继续更新内容 \n2.直播结束3天后，不会再收到学员的提问，但可以回答学员的问题',
+        confirmBack: () => {
+          if (!this.liveDetail.isTutor) return
+          let data = {
+            liveId: this.id,
+            status: 3
+          }
+          putUpdataLiveApi(data)
+        }
+      })
     },
     startLive () {
-      if (!this.liveDetail.isTutor) return
-      let data = {
-        liveId: this.id,
-        status: 2
-      }
-      putUpdataLiveApi(data)
+      this.$confirm({
+        title: '开始直播',
+        content: '1.开始直播后，可发送语音、文字、图片内容 \n2.开始直播后，所有学员都可进入直播间 \n3.在顶部栏右上角，点击结束按钮可结束直播',
+        confirmBack: () => {
+          if (!this.liveDetail.isTutor) return
+          let data = {
+            liveId: this.id,
+            status: 2
+          }
+          putUpdataLiveApi(data)
+        }
+      })
     }
   },
   created () {
@@ -399,6 +479,21 @@ export default {
           color: rgba(220, 220, 220, 1);
         }
       }
+      .end {
+        width: 29px;
+        height: 29px;
+        background: #F8F8F8;
+        border: 1px solid rgba(220,220,220,1);
+        position: absolute;
+        top: 11px;
+        right: 12px;
+        box-sizing: border-box;
+        border-radius: 50%;
+        .icon-close {
+          font-size: 36px; /*px*/
+          color: #354048;
+        }
+      }
     }
     .failShow {
       width: 100%;
@@ -453,6 +548,9 @@ export default {
         }
         .message {
           padding-bottom: 25px;
+          .live-message::last-child {
+            padding-bottom: 0;
+          }
         }
       }
       .scrollBtn {
@@ -515,6 +613,71 @@ export default {
         font-size: 30px; /*px*/
         color: #D7AB70;
         padding: 0 20px 0 22px;
+      }
+    }
+    .sendArea {
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background-color: #fff;
+      box-shadow:0px -1px 0px 0px rgba(0,0,0,0.05);
+      .operArea {
+        width: 100%;
+        height: 49px;
+        box-sizing: border-box;
+        display: flex;
+        > span {
+          flex: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+          .icon1 {
+            font-size: 38px; /*px*/
+            color: rgb(53, 64, 72);
+          }
+          .icon2 {
+            font-size: 42px; /*px*/
+            color: rgb(53, 64, 72);
+          }
+          .icon3 {
+            font-size: 33px; /*px*/
+            color: rgb(53, 64, 72);
+          }
+          .icon4 {
+            font-size: 38px; /*px*/
+            color: rgb(53, 64, 72);
+            position: relative;
+            &::after {
+              content: attr(data-num);
+              width: 15px;
+              height: 15px;
+              border-radius: 50%;
+              background: #FF4949;
+              font-size: 18px; /*px*/
+              color: #fff;
+              line-height: 15px;
+              text-align: center;
+              position: absolute;
+              top: -5px;
+              right: -5px;
+            }
+          }
+          .curOperType {
+            color: rgb(215, 175, 112);
+          }
+          .upLoadImg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+          }
+        }
+      }
+      .typeBox {
+        box-shadow: 0px -1px 0px 0px rgba(0,0,0,0.05);
       }
     }
   }

@@ -8,16 +8,21 @@
         <div id="button" @click="commit">确定</div>
       </div>
     </div>
-    <div class="upLoadImg">
-      <img v-if="fileUrl[fileUrl.length - 1]" :src="fileUrl[fileUrl.length - 1]" alt="" id="image">
-      <img v-else :src="imgUrl" alt="" id="image">
-      <input class="upLoadBtn"
-        @change="choseFile"
-        ref="upLoadBtn"
-        type="file"
-        :multiple="isMultiple"
-        :accept="acceptType"
-      />
+    <div class="upLoadFileBox">
+      <template v-if="attach_type !== 'img'">
+        <img v-if="fileUrl[fileUrl.length - 1]" :src="fileUrl[fileUrl.length - 1]" alt="" id="image">
+        <img v-else :src="imgUrl" alt="" id="image">
+        <input class="upLoadBtn"
+          @change="choseFile"
+          ref="upLoadBtn"
+          type="file"
+          :multiple="isMultiple && multiple"
+          :accept="acceptType"
+        />
+      </template>
+      <template v-else>
+        <div class="upLoadBtn" @click.stop="wxChoseImg"></div>
+      </template>
     </div>
   </div>
 </template>
@@ -37,6 +42,10 @@ export default {
     imgUrl: {
       type: String,
       default: '' // 默认图片
+    },
+    multiple: {
+      type: Boolean,
+      default: true // 需要多选
     }
   },
   computed: {
@@ -109,6 +118,11 @@ export default {
           this.$emit('upLoadResult', res.data)
         })
       }
+    },
+    wxChoseImg () {
+      this.wechatChooseImage().then(res => {
+        console.log(res)
+      })
     },
     // dataUrl 转 file
     dataURLtoFile (dataurl, filename = 'file') {
@@ -183,7 +197,7 @@ export default {
   max-width: 100%;
 }
 .upLoadFile {
-  .upLoadImg {
+  .upLoadFileBox {
     width: 100%;
     height: 100%;
     position: relative;

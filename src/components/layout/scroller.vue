@@ -54,6 +54,13 @@ export default {
       default: false
     },
     /**
+     * 是否开启=纵向滚动
+     */
+    scrollY: {
+      type: Boolean,
+      default: false
+    },
+    /**
      * 是否派发滚动事件
      */
     listenScroll: {
@@ -178,6 +185,7 @@ export default {
         probeType: this.probeType,
         click: this.click,
         scrollX: this.scrollX,
+        scrollY: this.scrollY,
         bounce: {
           top: this.bounce,
           bottom: this.bounce,
@@ -296,7 +304,7 @@ export default {
         font-weight: 300;
         color: #BCBCBC;
         text-align: center;
-        padding: 15px 0 35px;
+        padding: 35px 0 15px;
       }
     }
     .pulldownTip {
