@@ -17,6 +17,10 @@
         @nextMusic='nextMusic'
         @endAudio='endAudio'
       ></audio-message>
+      <img
+        class="imgPriview"
+        v-if="messageData.type === 'img'"
+        :src="messageData.file.middleUrl" :data-src="messageData.file.url">
     </div>
   </div>
 </template>
@@ -110,6 +114,11 @@ export default {
         color: #354048;
         background: #fff;
         border-radius: 3px;
+      }
+      .imgPriview {
+        height: 200px;
+        width: auto;
+        display: block;
       }
     }
   }

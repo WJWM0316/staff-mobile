@@ -88,7 +88,15 @@ export const getProblemListApi = (data, needLoading) => {
     needLoading: needLoading
   })
 }
-
+// 获取导师问答列表
+export const getAnswerListApi = (data, needLoading) => {
+  return request({
+    type: 'post',
+    url: `/live/masterProblemList`,
+    data,
+    needLoading: needLoading
+  })
+}
 // 提问
 export const putQuestionsApi = (data, needLoading) => {
   return request({
@@ -98,7 +106,15 @@ export const putQuestionsApi = (data, needLoading) => {
     needLoading: needLoading
   })
 }
-
+// 导师回答
+export const putAnswerApi = (data, needLoading) => {
+  return request({
+    type: 'post',
+    url: `/live/addAnswer`,
+    data,
+    needLoading: needLoading
+  })
+}
 // 发布直播消息
 export const sendLiveMsgApi = (data, needLoading) => {
   return request({
@@ -145,3 +161,13 @@ export const putUpdataLiveApi = (data, needLoading) => {
     needLoading: false
   })
 }
+// 导师端获取直播列表
+export const getTutorLiveApi = (data, needLoading) => {
+  return request({
+    type: 'get',
+    url: `/live/tutorLive`,
+    data,
+    needLoading: needLoading
+  })
+}
+

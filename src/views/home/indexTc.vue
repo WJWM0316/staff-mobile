@@ -5,8 +5,15 @@
     </div>
     <i class="icon iconfont icon-read_btn_datalog sidebarBtn" @click.stop="showSide = true"></i>
     <div class="courseList" v-show="tabIndex === 0">
+      <infoCard v-for="item in courseList.list" :key="item.id" :item="item" type='1' :ellipsis2='true'></infoCard>
+      <pullUpUi v-if="tabIndex === 0" :noData="courseList.noData" :pullUpStatus="courseList.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+      <noDataShow v-if="courseList.list.length === 0"></noDataShow>
     </div>
-    <div class="liveList" v-show="tabIndex === 1"></div>
+    <div class="liveList" v-show="tabIndex === 1">
+      <infoCard v-for="item in liveList.list" :key="item.id" :item="item" type='3'></infoCard>
+      <pullUpUi v-if="tabIndex === 1" :noData="liveList.noData" :pullUpStatus="liveList.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+      <noDataShow v-if="liveList.list.length === 0"></noDataShow>
+    </div>
     <!-- 侧边栏 -->
     <Popup v-model="showSide" position="left" class="sidebar">
       <div class="inner"  v-if="userInfo">
@@ -30,10 +37,13 @@
 import { Popup } from 'vux'
 import { getTutorInfoApi } from '@/api/pages/center'
 import { getCourseTcApi } from '@/api/pages/course'
+import { getTutorLiveApi } from '@/api/pages/live'
+import infoCard from '@c/business/infoCard'
 import { mapState } from 'vuex'
 export default {
   components: {
-    Popup
+    Popup,
+    infoCard
   },
   computed: {
     ...mapState({
@@ -48,11 +58,13 @@ export default {
       courseList: {
         list: [],
         noData: false,
+        page: 0,
         pullUpStatus: false
       },
       liveList: {
         list: [],
         noData: false,
+        page: 0,
         pullUpStatus: false
       }
     }
@@ -60,6 +72,12 @@ export default {
   methods: {
     choseTab (index) {
       this.tabIndex = index
+      if (index === 1) {
+        this.$router.push('/homeTc?live=true')
+      } else {
+        this.$router.push('/homeTc')
+      }
+      this.init()
     },
     getUserInfo () {
       if (!this.userInfo) {
@@ -70,17 +88,48 @@ export default {
     },
     getCourse () {
       return new Promise((resolve, reject) => {
-        getCourseTcApi().then(res => {
+        this.courseList.page++
+        getCourseTcApi({page: this.courseList.page}).then(res => {
           this.courseList.list = this.courseList.list.concat(res.data)
+          if (res.meta.currentPage === res.meta.lastPage) {
+            this.courseList.noData = true
+          }
         })
       })
+    },
+    getLive () {
+      return new Promise((resolve, reject) => {
+        this.liveList.page++
+        getTutorLiveApi({page: this.liveList.page}).then(res => {
+          this.liveList.list = this.liveList.list.concat(res.data)
+          if (res.meta.currentPage === res.meta.lastPage) {
+            this.liveList.noData = true
+          }
+        })
+      })
+    },
+    async pullUp () {
+      if (this.tabIndex === 0) {
+        this.courseList.pullUpStatus = true
+        await this.getCourse()
+        this.courseList.pullUpStatus = false
+      } else {
+        this.liveList.pullUpStatus = true
+        await this.getLive()
+        this.liveList.pullUpStatus = false
+      }
     },
     init () {
       if (!this.$route.query.live) {
         this.tabIndex = 0
-        this.getCourse()
+        if (this.courseList.list.length === 0) {
+          this.getCourse()
+        }
       } else {
         this.tabIndex = 1
+        if (this.liveList.list.length === 0) {
+          this.getLive()
+        }
       }
     }
   },
@@ -191,10 +240,10 @@ export default {
       }
       .logo {
         width: 130px;
-        position: fixed;
+        position: absolute;
         left: 50%;
         margin-left: -65px;
-        bottom: 20px;
+        bottom: 70px;
         img {
           width: 100%;
           height: 100%;

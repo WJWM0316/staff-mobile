@@ -1,5 +1,5 @@
 // 微信jssdk mixin
-import { getWechatSignApi } from '@/api/common'
+import { getWechatSignApi, wxUploadFileApi } from '@/api/common'
 import browser from '@/util/browser'
 import Vue from 'vue'
 export default {
@@ -173,10 +173,10 @@ export default {
          * @return {Promise}
          */
         startRecord () {
-          self.$wechat.startRecord({
+          Vue.wx.startRecord({
             success: () => {
               this.triggerCallback('onStartRecord')
-              self.$wechat.onVoiceRecordEnd({
+              Vue.wx.onVoiceRecordEnd({
                 // 录音时间超过一分钟没有停止的时候会执行 complete 回调
                 complete: res => {
                   _localId = res.localId
@@ -192,7 +192,7 @@ export default {
          * @return {Promise}
          */
         stopRecord ({ callStopRecord = true } = {}) {
-          self.$wechat.stopRecord({
+          Vue.wx.stopRecord({
             success: res => {
               if (callStopRecord) {
                 _localId = res.localId
@@ -212,13 +212,13 @@ export default {
             console.log('没有找到localId')
             return
           }
-          self.$wechat.playVoice({
+          Vue.wx.playVoice({
             localId: localId, // 需要播放的音频的本地ID，由stopRecord接口获得
             success: () => {
               this.triggerCallback('onPlayVoice')
             }
           })
-          self.$wechat.onVoicePlayEnd({
+          Vue.wx.onVoicePlayEnd({
             success: res => {
               // var localId = res.localId // 返回音频的本地ID
               this.triggerCallback('onPlayVoiceEnded', res)
@@ -236,7 +236,7 @@ export default {
             console.log('没有找到localId')
             return
           }
-          self.$wechat.pauseVoice({
+          Vue.wx.pauseVoice({
             localId: localId, // 需要暂停的音频的本地ID，由stopRecord接口获得
             success: () => {
               this.triggerCallback('onPauseVoice')
@@ -255,7 +255,7 @@ export default {
             console.log('没有找到localId')
             return
           }
-          self.$wechat.stopVoice({
+          Vue.wx.stopVoice({
             localId: localId, // 需要停止的音频的本地ID，由stopRecord接口获得
             success: () => {
               if (callStopVoice) {
@@ -267,6 +267,22 @@ export default {
       }
     },
 
+    /**
+     * 微信上传转存
+     * @return {Object}
+     */
+    wxUploadFile ({mediaId, type, duration}) {
+      return new Promise((resolve, reject) => {
+        let data = {
+          attach_id: mediaId,
+          attach_type: type,
+          duration: duration || 0
+        }
+        wxUploadFileApi(data).then(res => {
+          resolve(res)
+        })
+      })
+    },
     /**
      * 微信分享
      */

@@ -11,7 +11,7 @@
 
     <div class="info" v-if="type !== '2'">
       <h3 class="title">{{pageInfo.title}}</h3>
-      <p class="desc" v-if="pageInfo.userTitle.length > 0 && type === '1'"><span v-for="(n, index) in pageInfo.userTitle" :key="index">{{n.title}} |</span> {{pageInfo.realname}}</p>
+      <p class="desc" v-if="pageInfo.userTitle && pageInfo.userTitle.length > 0"><span v-for="(n, index) in pageInfo.userTitle" :key="index">{{n.title}} |</span> {{pageInfo.realname}}</p>
       <p class="desc" v-else>{{pageInfo.groupName || '未设置所属部门'}} | {{pageInfo.realname}}</p>
     </div>
     <div class="circleHeader" v-else>

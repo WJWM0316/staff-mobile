@@ -5,7 +5,7 @@
       <span class="editBox">
         <upLoadFile class="photo defaultImg"
           :imgUrl="pageInfo.avatar.smallUrl"
-          attach_type="avatar"
+          attach_type="img"
           @upLoadResult="upLoadResult"
         ></upLoadFile>
       </span>

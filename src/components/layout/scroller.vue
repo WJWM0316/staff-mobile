@@ -13,7 +13,7 @@
           <div class="loading-container" v-if="!noData">
             <img class="loadmore" src="../../assets/icon/loadMore.gif">
           </div>
-          <p class="loading-connecting" v-else>没有更多数据</p>
+          <!-- <p class="loading-connecting" v-else>没有更多数据</p> -->
         </div>
       </div>
     </div>
@@ -52,6 +52,13 @@ export default {
     scrollX: {
       type: Boolean,
       default: false
+    },
+    /**
+     * 是否开启=纵向滚动
+     */
+    scrollY: {
+      type: Boolean,
+      default: true
     },
     /**
      * 是否派发滚动事件
@@ -178,6 +185,7 @@ export default {
         probeType: this.probeType,
         click: this.click,
         scrollX: this.scrollX,
+        scrollY: this.scrollY,
         bounce: {
           top: this.bounce,
           bottom: this.bounce,
@@ -272,7 +280,7 @@ export default {
       position: relative;
     }
     .content {
-      padding-bottom: 54px;
+      // padding-bottom: 54px;
       box-sizing: border-box;
       &.pulldownUi {
         padding-top: 54px;
@@ -284,6 +292,7 @@ export default {
       position: absolute;
       left: 0;
       bottom: 0;
+      background-color: #fff;
       .loadmore {
         padding: 30px 0 15px;
         width: 34px;
