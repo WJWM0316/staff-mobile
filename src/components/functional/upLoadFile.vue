@@ -125,7 +125,7 @@ export default {
     },
     wxChoseImg () {
       let option = {
-        count: count
+        count: this.count
       }
       this.wechatChooseImage(option).then(res => {
         res.forEach(item => {
