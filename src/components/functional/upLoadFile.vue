@@ -137,7 +137,7 @@ export default {
             console.log(res0, 11111111)
             this.wxUploadFile(data).then(res1 => {
               console.log(res1, 11111111)
-              this.$emit('upLoadResult', res1)
+              this.$emit('upLoadResult', res1.data)
             })
           })
         })

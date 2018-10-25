@@ -123,6 +123,7 @@ export default {
     async upload () {
       this.$emit('uploading')
       const res = await this.wechatUploadVoice(this.localId)
+      console.log(res, 12121)
       this.uploadWechatSuccess(res)
     },
     /**
@@ -134,7 +135,8 @@ export default {
         type: 'audio'
       }
       const res = await this.wxUploadFile(data)
-      this.$emit('upload-success', res)
+      console.log(res, 3333333)
+      this.$emit('upload-success', res.data)
     },
     /**
      * 清除
