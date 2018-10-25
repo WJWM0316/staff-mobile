@@ -176,7 +176,7 @@ export default {
           Vue.wx.startRecord({
             success: () => {
               this.triggerCallback('onStartRecord')
-              self.$wechat.onVoiceRecordEnd({
+              Vue.wx.$wechat.onVoiceRecordEnd({
                 // 录音时间超过一分钟没有停止的时候会执行 complete 回调
                 complete: res => {
                   _localId = res.localId
