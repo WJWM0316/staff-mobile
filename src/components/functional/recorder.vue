@@ -39,6 +39,7 @@ export default {
     init () {
       this.manager.onStartRecord = () => {
         this.status = 'recording'
+        console.log(this.status, 11111111111)
         this.startInterval()
         this.$emit('recording')
       }
