@@ -6,8 +6,10 @@
         <span class="text">重录</span>
       </button>
       <button type="button" class="control btn" @touchstart.stop="touchstartFun()" @touchend.stop="touchendFun()">
-        <div class="operBtn" :class="{'playing': status === 'recording'}">
-          <i class="icon iconfont" :class="btnClass"></i>
+        <div class="btnShadow">
+          <div class="operBtn" :class="{'playing': status === 'recording'}">
+            <i class="icon iconfont" :class="btnClass"></i>
+          </div>
         </div>
         <span class="text" v-show="status === 'default'">最多录制60秒，点击开始</span>
         <span class="text" v-show="status === 'recording'">录制中</span>
@@ -232,7 +234,7 @@ export default {
 
 <style lang="less">
 .m-recorder {
-  padding: 35px 0 20px;
+  padding: 25px 0 20px;
   background: #fff;
   -webkit-user-select:none;
   -webkit-user-drag:none;
@@ -253,7 +255,6 @@ export default {
   .controls {
     position: relative;
     text-align: center;
-
     .btn {
       background: none;
       line-height: 1;
@@ -286,22 +287,26 @@ export default {
       }
 
       &.control {
-        .operBtn {
-          width: 74px;
-          height: 74px;
-          margin: 0 auto;
-          background-color: #FFE266;
-          border-radius: 50%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin-bottom: 15px;
-          .icon {
-            font-size: 60px; /*px*/
-            color: rgb(102, 102, 102);
-          }
-          &.playing {
-            animation: twinkle 5s linear infinite;
+        .btnShadow {
+          padding: 10px;
+          overflow: hidden;
+          .operBtn {
+            width: 74px;
+            height: 74px;
+            margin: 0 auto;
+            background-color: #FFE266;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            .icon {
+              font-size: 60px; /*px*/
+              color: rgb(102, 102, 102);
+            }
+            &.playing {
+              animation: twinkle 5s linear infinite;
+            }
           }
         }
         .text {
