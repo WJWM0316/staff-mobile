@@ -46,11 +46,11 @@
             <div class="content-images" v-if="communityCourse.punchCardCImgInfo">
               <!-- 图片为 1 张时 -->
               <div class="item-image one" v-if="communityCourse.punchCardCImgInfo && communityCourse.punchCardCImgInfo.length === 1">
-                <img :src="communityCourse.punchCardCImgInfo[0].url" @click.stop="previewImage(communityCourse.punchCardCImgInfo[0].url)" />
+                <img :src="communityCourse.punchCardCImgInfo[0].url" v-preview="true" />
               </div>
               <!--  图片为 多 张时  -->
               <div class="item-image" v-for="(file, index) in communityCourse.punchCardCImgInfo" :key="index" v-else>
-                <img :src="file.url" @click.stop="previewImage(file.url)" />
+                <img :src="file.url" v-preview="true" />
               </div>
             </div>
           </div>
@@ -69,7 +69,7 @@
             还没人打卡哦，赶紧点击下方“去打卡”， 成为本节第一个打卡的人吧～
           </div>
           <!--优秀头部标题图片-->
-          <div class="excellentPunchList"  v-if="excellentPeopleCourseCardListCount > 5">
+          <div class="excellentPunchList"  v-if="excellentPeopleCourseCardListCount > 0">
             <div class="excellent-punch">
               <div class="excellent-punch-title">优秀打卡</div>
             </div>
@@ -118,7 +118,7 @@
           </div>
         </div>
     </template>
-    <actionsheet v-model="addActionsConfig.show" :menus="isExcellentCard?addActionsConfig.menus2:addActionsConfig.menus" show-cancel @on-click-menu="handleAddActoinItem" />
+    <actionsheet v-model="addActionsConfig.show" :menus="nowChoosePunch.isExcellentCard === 1?addActionsConfig.menus2:addActionsConfig.menus" show-cancel @on-click-menu="handleAddActoinItem" />
   </div>
 </template>
 <script>
@@ -232,8 +232,9 @@ export default {
     },
     async handleAddActoinItem (key, item) {
       let { id } = this.$route.query
+      console.log(this.nowChoosePunch.isExcellentCard === 0, this.nowChoosePunch.isExcellentCard)
       let param = {
-        course_section_id: this.nowChoosePunch.courseSectionCardId,
+        course_section_card_id: this.nowChoosePunch.courseSectionCardId,
         is_set_excellent_card: this.nowChoosePunch.isExcellentCard === 0 ? 1 : 0
       }
       await setExcellentCourseCardApi(param)

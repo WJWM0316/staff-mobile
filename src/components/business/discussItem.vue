@@ -71,8 +71,8 @@
               </div>
             </div>
           </div>
-          <div class="reply" v-if="item.replyCommentList.length > 3">
-            <span class="favor-name">查看全部{{item.commentTotal}}条回复</span>
+          <div class="reply" v-if="item.replyCount > 3">
+            <span class="favor-name" @click.stop="comment">查看全部{{item.commentTotal}}条回复</span>
           </div>
         </div>
       </div>
@@ -183,9 +183,9 @@ export default {
         this.$router.push({path: '/commentDetail', query: {id: this.item.id, isCourse: this.isCourse ? 'true' : 'false'}})
         return
       }
-      console.log(' 我是点击评论按钮评论事件 ')
       let param = {
-        id: this.item.id // 评论的id
+        id: this.item.id, // 评论的id
+        name: this.item.userName
       }
       this.$emit('disableOperationEvents', {
         eventType: 'comment',
@@ -208,7 +208,7 @@ export default {
         this.item.isFavor = 1
         this.item.favorCount += 1
         if (!this.item.favorUsers) this.item.favorUsers = []
-        this.item.favorUsers.push({realname: this.item.userName})
+        this.item.favorUsers.push({realname: this.item.currentUserInfo.realname})
         this.$toast({text: '点赞成功', type: 'success'})
       } else {
         if (this.isCourse) {
@@ -220,9 +220,9 @@ export default {
         this.item.favorCount -= 1
         let that = this
         this.item.favorUsers.map(function (item, index) {
-          if (item.realname === that.item.userName) {
+          if (item.realname === that.item.currentUserInfo.realname) {
             that.item.favorUsers.splice(index, 1)
-            console.log(that.item.userName, index)
+            console.log(that.item.currentUserInfo.realname, index)
           }
         })
         this.$toast({text: '取消点赞成功'})
@@ -292,12 +292,12 @@ export default {
         .praise , .comment{
           font-size: 12px;
           font-weight: 300;
-          color: #929292;
+          color: #354048;
           line-height: 1;
           display: flex;
           align-items: center;
           padding: 0 2px;
-          margin-right: 14.5px;
+          margin-right: 30px;
           img{
             width: 17px;
             height: 17px;

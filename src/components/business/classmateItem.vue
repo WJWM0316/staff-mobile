@@ -2,11 +2,14 @@
   <div class="classmateItem" v-if="item" @click.stop="toPersonPage">
     <div class="userInfo-img">
       <img class="headImg" v-lazyload :src="item.avatarInfo.smallUrl || '@a/icon/default.png'">
+      <img class="mark" src="@/assets/icon/first.png" alt="" v-if="item.punchCardCount && index < 3 && index === 0" />
+      <img class="mark" src="@/assets/icon/two.png" alt="" v-if="item.punchCardCount && index < 3 && index === 1" />
+      <img class="mark" src="@/assets/icon/three.png" alt="" v-if="item.punchCardCount && index < 3 && index === 2" />
     </div>
     <div class="userInfo-desc">
       <div class="name">{{item.realname}}<span class="managerTitle" v-show="false">管理员</span></div>
       <!-- roleId 4是内部导师 5是外部导师 6是普通学员 -->
-      <div class="persion-info" v-if="item.roleId === 5 || item.userTitle"><span v-for="(n, index) in item.userTitle" :key="index">{{n.title}} </span></div>
+      <div class="persion-info" v-if="item.roleId === 5 || item.isExternalTutor === 1"><span v-for="(n, index) in item.userTitle" :key="index">{{n.title}} </span></div>
       <div class="persion-info" v-else>{{item.occupation || '该成员未设置职称'}} | {{item.groupName || '未设置部门'}}</div>
     </div>
     <div class="excellent" v-if="item.punchCardCount">
@@ -24,6 +27,10 @@ export default {
       default: () => {
         return {}
       }
+    },
+    index: {
+      type: Number,
+      default: 0
     }
   },
   data () {
@@ -45,18 +52,23 @@ export default {
   padding: 15px 0 0 65px;
   position: relative;
   .userInfo-img {
-    overflow: hidden;
-    border-radius: 50%;
-    border: 1px solid rgba(220,220,220,1);
     width: 50px;
     height: 50px;
     position: absolute;
     top: 15px;
     left: 0;
     .headImg{
+      border: 1px solid rgba(220,220,220,1);
+      border-radius: 50%;
       display: block;
       width: 100%;
       height: 100%;
+    }
+    .mark{
+      position: absolute;
+      bottom: -3px;
+      right: -3px;
+      z-index: 9999;
     }
   }
   .userInfo-desc {

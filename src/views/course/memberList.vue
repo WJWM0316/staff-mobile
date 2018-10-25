@@ -10,7 +10,7 @@
       <span class="txt">优秀成员</span>
       <i class="icon iconfont icon-btn_inf_outstanding" @click.stop="showMask"></i>
     </div>
-    <classmateItem v-for="(item, index) in excellentList" :key="'excellent'+index" :item="item"></classmateItem>
+    <classmateItem v-for="(item, index) in excellentList" :key="'excellent'+index" :item="item" :index="index"></classmateItem>
     <div class="title" v-if="studentList.length > 0">
       <i class="icon iconfont icon-icon_list_number"></i>
       <span class="txt">成员列表</span>
@@ -59,7 +59,7 @@ export default {
           this.teacherList = this.teacherList.concat(res.data.role)
           this.excellentList = this.excellentList.concat(res.data.excellent)
           this.studentList = this.studentList.concat(res.data.peoples)
-          if (res.meta.currentPage === res.meta.lastPage) {
+          if (res.data.peopleTotal === this.studentList.length) {
             this.noData = true
           }
           resolve(res)

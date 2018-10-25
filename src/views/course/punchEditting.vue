@@ -21,7 +21,7 @@
       <div class="takePhoto" @click.stop="photo" v-if="images.length < 9">
         <!--<input id="photo" type="file" accept="image/*" capture="camera" multiple>-->
         <input v-if="!isiOS" id="photo" type="file" accept="image/*" capture="camera" multiple>
-        <input v-else id="photo" type="file" multiple>
+        <input v-else id="photo" type="file" multiple="9">
         <img class="icon" src="@/assets/icon/icon_plus.png" />
       </div>
     </div>
@@ -40,11 +40,11 @@
           <div class="content-images">
             <!-- 图片为 1 张时 -->
             <div class="item-image one" v-if="taskContent.punchCardCImgInfo && taskContent.punchCardCImgInfo.length === 1">
-              <img :src="taskContent.punchCardCImgInfo[0].smallUrl || '@/assets/icon/img_head_default.png'" @click.stop="previewImage(taskContent.courseCardFile[0].fileUrl)" />
+              <img :src="taskContent.punchCardCImgInfo[0].smallUrl || '@/assets/icon/img_head_default.png'" v-preview="true" />
             </div>
             <!--  图片为 多 张时  -->
             <div class="item-image" v-for="(file,index) in taskContent.punchCardCImgInfo" :key="index" v-else>
-              <img :src="file.smallUrl || '@/assets/icon/img_head_default.png'" v-if="!file.holder" @click.stop="previewImage(file.fileUrl)" />
+              <img :src="file.smallUrl || '@/assets/icon/img_head_default.png'" v-if="!file.holder" v-preview="true" />
             </div>
           </div>
         </div>
@@ -91,15 +91,18 @@ export default {
       let that = this
       document.getElementById('photo').addEventListener('change', function (e) {
         let reader = new FileReader()
-        let imgFile = this.files[0]
+        let imgFile = this.files
         reader.readAsDataURL(this.files[0])
         let inp2 = this.cloneNode(true)
         this.parentNode.replaceChild(inp2, this)
         reader.onload = function () {
-          that.uploadImg(imgFile).then(res => {
-            that.images.push(res.data[0].url)
-            that.uploadImgList.push(res.data[0].id)
-          })
+          for (let i = 0; i < imgFile.length; i++) {
+            if (that.uploadImgList.length >= 9) return
+            that.uploadImg(imgFile[i]).then(res => {
+              that.images.push(res.data[0].url)
+              that.uploadImgList.push(res.data[0].id)
+            })
+          }
         }
       })
     },

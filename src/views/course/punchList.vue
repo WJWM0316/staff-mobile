@@ -79,12 +79,14 @@ export default {
     },
     async handleAddActoinItem (key, item) {
       let param = {
-        course_section_id: this.nowChoosePunch.courseSectionCardId,
+        course_section_card_id: this.nowChoosePunch.courseSectionCardId,
         is_set_excellent_card: this.nowChoosePunch.isExcellentCard === 0 ? 1 : 0
       }
-      await setExcellentCourseCardApi(param)
-      this.getCourseCardListApi()
-      this.$toast({text: '设置优秀打卡成功', type: 'success'})
+      if (item) {
+        await setExcellentCourseCardApi(param)
+        this.getCourseCardListApi()
+        this.$toast({text: '设置优秀打卡成功', type: 'success'})
+      }
     },
     async pullUp () {
       if (this.punchCount === this.punchList.length) {
@@ -106,7 +108,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .punchList{
-    color: #FFFFFF;
-  }
+  .punchList{}
 </style>

@@ -26,6 +26,7 @@
           :item="reply"
           :index="index"
           :isCourse="isCourse"
+          :isShowComment="false"
           :isShowBorder="index === replyList.length-1? false : true"
           @disableOperationEvents="operation"
           @delComment="delComment"></discuss-item>
@@ -179,6 +180,9 @@ export default {
     async comment (param) {
       console.log(param.id)
       this.replyId = param.id
+      if (param.name) {
+        this.suspensionInputPlaceholder = `回复${param.name}`
+      }
       this.isShow = true
       this.displaySuspensionInput = true
     },

@@ -196,6 +196,7 @@ export default {
   padding-bottom: 40px;
   .container{
     padding: 0 20px;
+    padding-bottom: 20px;
     .ceiling-box {
       display: flex;
       align-items: center;

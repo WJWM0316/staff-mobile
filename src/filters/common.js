@@ -62,3 +62,23 @@ Vue.filter('fileCover', (value) => {
     return 'https://xplus-uploads-test.oss-cn-shenzhen.aliyuncs.com/default/pdf.png'
   }
 })
+
+// 音频时间转换
+Vue.filter('conversion', (value) => {
+  if (value === 0) {
+    return ' 00:00 '
+  } else {
+    let min, second
+    if (parseInt(value / 60) < 10) {
+      min = `0${parseInt(value / 60)}`
+    } else {
+      min = `${parseInt(value / 60)}`
+    }
+    if (value % 60 < 10) {
+      second = `0${value % 60}`
+    } else {
+      second = `${value % 60}`
+    }
+    return `${min}:${second}`
+  }
+})

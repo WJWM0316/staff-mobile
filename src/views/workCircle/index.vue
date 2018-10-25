@@ -145,13 +145,14 @@ export default {
       flex-wrap: nowrap;
       z-index: 999;
       align-items: center;
-      >span{
+      .all, .attention{
         line-height: 49px;
+        display: inline-block;
         width: 35px;
         text-align: center;
         color: #BCBCBC;
         font-size: 34px;/*px*/
-        display: inline-block;
+        white-space: nowrap;
       }
       .attention{
         margin-right: 60px;
