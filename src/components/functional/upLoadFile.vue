@@ -121,6 +121,19 @@ export default {
     },
     wxChoseImg () {
       this.wechatChooseImage().then(res => {
+        this.$emit('upLoadResult', res)
+        res.forEach(item => {
+          this.wechatUploadImage(item).then(res0 => {
+            console.log(res0, 22222222)
+            let data = {
+              mediaId: res0.sourceId,
+              type: 'img'
+            }
+            this.wxUploadFile(data).then(res1 => {
+              console.log(res1, 11111111111)
+            })
+          })
+        })
         console.log(res)
       })
     },
