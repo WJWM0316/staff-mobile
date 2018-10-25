@@ -126,7 +126,7 @@ export default {
           this.wechatUploadImage(item).then(res0 => {
             console.log(res0, 22222222)
             let data = {
-              mediaId: res0.sourceId,
+              mediaId: res0.serverId,
               type: 'img'
             }
             this.wxUploadFile(data).then(res1 => {
