@@ -186,10 +186,14 @@ export default {
       }
     },
     sendMsg (tutorTxt) {
-      this.option.type = 'text'
       if (this.curOperType === 'text') {
+        this.option.type = 'text'
         this.option.content = tutorTxt
+      } else if (this.curOperType === 'img') {
+        this.option.type = 'img'
+        this.option.fileId = this.fileId
       } else {
+        this.option.type = 'audio'
         this.option.fileId = this.fileId
       }
       sendLiveMsgApi(this.option).then(res => {

@@ -211,7 +211,8 @@ export default {
         title: '发布语音',
         content: '确定要该发布语音',
         onConfirm: () => {
-          this.upload()
+          console.log(111, self)
+          self.upload()
         }
       })
     },
