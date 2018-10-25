@@ -72,7 +72,7 @@
             </div>
           </div>
           <div class="reply" v-if="item.replyCount > 3">
-            <span class="favor-name" @click.stop="comment">查看全部{{item.commentTotal}}条回复</span>
+            <span class="favor-name" @click.stop="comment">查看全部{{item.replyCount}}条回复</span>
           </div>
         </div>
       </div>

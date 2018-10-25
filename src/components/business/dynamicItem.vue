@@ -73,7 +73,7 @@
         <div class="praise-block" :class="{'praise-block-marBot': item.hotComments.length > 0}" v-if="item.favorList.length > 0">
           <img class="icon-zan" src="./../../assets/icon/bnt_zan@3x.png" />
           <div class="praise-name">
-            <span class="favor-name" v-for="(favor,favorIndex) in item.favorList" :key="favorIndex" @click.stop="toUserInfo(favor.userId)">{{favorIndex > 0 ?  ','+favor.realname : favor.realname}}</span>
+            <span class="favor-name" v-for="(favor,favorIndex) in item.favorList" :key="favorIndex" @click.stop="toUserInfo(favor.uid)">{{favorIndex > 0 ?  ','+favor.realname : favor.realname}}</span>
           </div>
           <span class="praise-total" v-if="item.favorTotal > 3">等{{item.favorTotal}}人觉得很赞</span>
         </div>
@@ -84,7 +84,6 @@
               <div class="reply" v-for="(reply,index) in item.hotComments" :key="index">
                 <p class="favor-content"><span class="favor-name">{{reply.userName}}：</span>{{reply.content}}</p>
               </div>
-              <p class="more-content" v-if="item.commentTotal > 3" @click.stop="comment">查看更多评论 </p>
             </div>
           </template>
         </div>

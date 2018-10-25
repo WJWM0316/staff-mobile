@@ -283,6 +283,8 @@ export default {
             this.userInfo = res.data
             conType()
             resolve(res.data)
+          }).catch(res => {
+            this.$router.go(-1)
           })
         }
       })

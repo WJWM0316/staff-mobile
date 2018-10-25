@@ -89,13 +89,15 @@ export default {
 .memberList {
   padding: 0 20px;
   .title {
+    display: flex;
+    align-items: center;
     font-size: 0;
     padding-top: 20px;
     &:nth-of-type(3), &:nth-of-type(5){
         padding-top: 50px;
     }
     .icon {
-      font-size: 30px; /*px*/
+      font-size: 40px; /*px*/
       color: #929292;
       padding-right: 10px;
     }
