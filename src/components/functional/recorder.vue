@@ -155,7 +155,7 @@ export default {
         this.handleStart()
       } else if (this.status === 'finish') {
         this.handlePlay()
-      } else{
+      } else {
         this.handleStop()
       }
     },
@@ -296,12 +296,12 @@ export default {
           justify-content: center;
           align-items: center;
           margin-bottom: 15px;
-          .icon-record {
+          .icon {
             font-size: 60px; /*px*/
             color: rgb(102, 102, 102);
           }
           &.playing {
-            animation: twinkle 3s linear infinite;
+            animation: twinkle 5s linear infinite;
           }
         }
         .text {
