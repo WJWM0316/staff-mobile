@@ -3,31 +3,25 @@
     <div class="controls">
       <!-- 默认 -->
       <template v-if="status === 'default'">
-        <button type="button" class="control btn" @click="handleStart">
+        <button type="button" class="restart btn left" @click="handleRestart">
+          <i class="icon icon-remake"></i>
+          <span class="text">重录</span>
+        </button>
+        <button type="button" class="control btn" @touchstart.stop="handleStart" @touchend.stop="handleFinish">
           <div class="operBtn">
-            <i class="icon iconfont icon-record"></i>
+            <i class="icon iconfont icon-record" :class="[{'icon-record': status === 'default'}, {'icon-btn_stop': status === 'recording'}]"></i>
           </div>
-          <span class="text">最多录制60秒，点击开始</span>
+          <span class="text" v-if="status === 'default'">最多录制60秒，点击开始</span>
+          <span class="text" v-if="status === 'recording'">录制中</span>
+          <span class="text" v-if="status === 'finish'">点击试听</span>
+          <span class="text" v-if="status === 'listening'">停止</span>
+          <span class="text" v-if="status === 'listening'">停止</span>
+        </button>
+        <button type="button" class="publish btn right" @click="handlePublish">
+          <i class="icon icon-send"></i>
+          <span class="text">发送</span>
         </button>
       </template>
-      <!-- 录制中 -->
-      <template v-if="status === 'recording'">
-        <button type="button" class="control btn" @click="handleFinish">
-          <i class="icon icon-btn_stop"></i>
-          <span class="text">完成</span>
-        </button>
-      </template>
-      <!-- 暂停中 -->
-      <!-- <template v-if="status === 'pause'">
-        <button type="button" class="control btn" @click="handleResume">
-          <i class="icon u-icon-btn-recorder-start"></i>
-          <span class="text">继续</span>
-        </button>
-        <button type="button" class="finish btn right" @click="handleFinish">
-          <i class="icon u-icon-btn-recorder-finish"></i>
-          <span class="text">完成</span>
-        </button>
-      </template> -->
       <!-- 完成录制 -->
       <template v-if="status === 'finish'">
         <button type="button" class="restart btn left" @click="handleRestart">
@@ -35,8 +29,10 @@
           <span class="text">重录</span>
         </button>
         <button type="button" class="control btn" @click="handlePlay">
-          <i class="icon icon-record"></i>
-          <span class="text">试听</span>
+          <div class="operBtn">
+            <i class="icon iconfont icon-record"></i>
+          </div>
+          <span class="text">点击试听</span>
         </button>
         <button type="button" class="publish btn right" @click="handlePublish">
           <i class="icon icon-send"></i>
@@ -50,7 +46,9 @@
           <span class="text">重录</span>
         </button>
         <button type="button" class="control btn" @click="handleStop">
-          <i class="icon icon-btn_pause"></i>
+          <div class="operBtn">
+            <i class="icon iconfont icon-btn_pause"></i>
+          </div>
           <span class="text">停止</span>
         </button>
         <button type="button" class="publish btn right" @click="handlePublish">
@@ -90,6 +88,7 @@ export default {
   methods: {
     init () {
       this.manager.onStartRecord = () => {
+        console.log(12222222222222)
         this.status = 'recording'
         this.startInterval()
         this.$emit('recording')
@@ -195,12 +194,14 @@ export default {
      * 开始录音
      */
     handleStart () {
+      console.log(111111)
       this.manager && this.manager.startRecord()
     },
     /**
      * 完成录音
      */
     handleFinish () {
+      console.log(22222222)
       this.manager && this.manager.stopRecord()
     },
     /**
@@ -256,10 +257,12 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .m-recorder {
   padding: 35px 0 20px;
   background: #fff;
+  -webkit-user-select:none;
+  -webkit-user-drag:none;
   &.z-finish,
   &.z-listening {
     .duration {
@@ -323,6 +326,9 @@ export default {
           .icon-record {
             font-size: 60px; /*px*/
             color: rgb(102, 102, 102);
+          }
+          &.playing {
+            animation: twinkle 3s linear infinite;
           }
         }
         .text {
