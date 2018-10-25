@@ -172,6 +172,7 @@ export default {
       'updata_onlineNum'
     ]),
     upLoadResult (e) {
+      console.log(e, '上传后获取的文件')
       this.fileId = e[0].id
       this.sendMsg()
     },
