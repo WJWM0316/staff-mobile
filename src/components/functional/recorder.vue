@@ -1,25 +1,23 @@
 <template>
   <div class="m-recorder" :class="`z-${status}`">
     <div class="controls">
-      <template v-if="status === 'default'">
-        <button type="button" v-if="status === 'finish'" class="restart btn left" @click="handleRestart">
-          <i class="icon icon-remake"></i>
-          <span class="text">重录</span>
-        </button>
-        <button type="button" class="control btn" @touchstart.stop="handleStart" @touchend.stop="handleFinish">
-          <div class="operBtn">
-            <i class="icon iconfont icon-record" :class="[{'icon-record': status === 'default'}, {'icon-btn_stop': status === 'recording'}]"></i>
-          </div>
-          <span class="text" v-if="status === 'default'">最多录制60秒，点击开始</span>
-          <span class="text" v-if="status === 'recording'">录制中</span>
-          <span class="text" v-if="status === 'finish'">点击试听</span>
-          <span class="text" v-if="status === 'listening'">停止</span>
-        </button>
-        <button type="button" v-if="status === 'finish'" class="publish btn right" @click="handlePublish">
-          <i class="icon icon-send"></i>
-          <span class="text">发送</span>
-        </button>
-      </template>
+      <button type="button" v-if="status === 'finish'" class="restart btn left" @click="handleRestart">
+        <i class="icon icon-remake"></i>
+        <span class="text">重录</span>
+      </button>
+      <button type="button" class="control btn" @touchstart.stop="handleStart" @touchend.stop="handleFinish">
+        <div class="operBtn">
+          <i class="icon iconfont" :class="[{'icon-record': status === 'default'}, {'icon-btn_stop': status === 'recording'}]"></i>
+        </div>
+        <span class="text" v-if="status === 'default'">最多录制60秒，点击开始</span>
+        <span class="text" v-if="status === 'recording'">录制中</span>
+        <span class="text" v-if="status === 'finish'">点击试听</span>
+        <span class="text" v-if="status === 'listening'">停止</span>
+      </button>
+      <button type="button" v-if="status === 'finish'" class="publish btn right" @click="handlePublish">
+        <i class="icon icon-send"></i>
+        <span class="text">发送</span>
+      </button>
     </div>
   </div>
 </template>
