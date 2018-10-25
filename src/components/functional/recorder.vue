@@ -48,6 +48,7 @@ export default {
         this.status = 'finish'
         this.duration = this.progress
         this.progress = 0
+        console.log(this.status, 222222222222)
         this.stopInterval()
         alert(res.localId)
         this.$emit('finish', res)
@@ -57,6 +58,7 @@ export default {
         this.status = 'finish'
         this.duration = 60000
         this.progress = 0
+        console.log(this.status, 33333333)
         this.stopInterval()
         this.$toast({
           text: '已达到此音频的最大长度限制。',
