@@ -7,7 +7,7 @@
       </button>
       <button type="button" class="control btn" @touchstart.stop="handleStart" @touchend.stop="handleFinish">
         <div class="operBtn">
-          <i class="icon iconfont" :class="[{'icon-record': status === 'default'}, {'icon-btn_stop': status === 'recording'}]"></i>
+          <i class="icon iconfont" :class="[{'icon-record': status === 'default' || status === 'finish'}, {'icon-btn_stop': status === 'recording'}, {'icon-btn_pause': status === 'listening'}]"></i>
         </div>
         <span class="text" v-if="status === 'default'">最多录制60秒，点击开始</span>
         <span class="text" v-if="status === 'recording'">录制中</span>
@@ -39,7 +39,6 @@ export default {
     init () {
       this.manager.onStartRecord = () => {
         this.status = 'recording'
-        console.log(this.status, 11111111111)
         this.startInterval()
         this.$emit('recording')
       }
@@ -48,9 +47,7 @@ export default {
         this.status = 'finish'
         this.duration = this.progress
         this.progress = 0
-        console.log(this.status, 222222222222)
         this.stopInterval()
-        alert(res.localId)
         this.$emit('finish', res)
       }
       this.manager.onRecordEnded = res => {
@@ -58,7 +55,6 @@ export default {
         this.status = 'finish'
         this.duration = 60000
         this.progress = 0
-        console.log(this.status, 33333333)
         this.stopInterval()
         this.$toast({
           text: '已达到此音频的最大长度限制。',
