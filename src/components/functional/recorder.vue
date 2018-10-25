@@ -171,21 +171,14 @@ export default {
     /**
      * 文件成功上传到微信服务器
      */
-    // async uploadWechatSuccess ({ serverId }) {
-    //   // todo 上传微信服务器成功，通知服务器，并发布
-    //   try {
-    //     const params = {
-    //       medias: [{
-    //         mediaId: serverId,
-    //         fileType: 'audio'
-    //       }]
-    //     }
-    //     const { files } = await wechatUploadFileApi(params)
-    //     this.$emit('upload-success', files)
-    //   } catch (error) {
-    //     this.$vux.toast.test(error.message, 'bottom')
-    //   }
-    // },
+    async uploadWechatSuccess ({ serverId }) {
+      let data = {
+        mediaId: serverId,
+        type: 'audio'
+      }
+      const { files } = await this.wxUploadFile(data)
+      this.$emit('upload-success', files)
+    },
     /**
      * 清除
      */
@@ -256,6 +249,9 @@ export default {
         this.handleStop()
       }
     }
+  },
+  mounted () {
+    this.manager = this.getWechatRecorder()
   }
 }
 </script>
