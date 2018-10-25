@@ -125,6 +125,7 @@ export default {
         res.forEach(item => {
           this.wechatUploadImage(item).then(res0 => {
             console.log(res0, 22222222)
+            alert(res0.serverId)
             let data = {
               mediaId: res0.serverId,
               type: 'img'
