@@ -290,6 +290,7 @@ export default {
         .btnShadow {
           padding: 10px;
           overflow: hidden;
+          overflow: hidden;
           .operBtn {
             width: 74px;
             height: 74px;
@@ -305,7 +306,7 @@ export default {
               color: rgb(102, 102, 102);
             }
             &.playing {
-              animation: twinkle 5s linear infinite;
+              animation: twinkle 2s linear infinite;
             }
           }
         }
