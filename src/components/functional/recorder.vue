@@ -1,9 +1,8 @@
 <template>
   <div class="m-recorder" :class="`z-${status}`">
     <div class="controls">
-      <!-- 默认 -->
       <template v-if="status === 'default'">
-        <button type="button" class="restart btn left" @click="handleRestart">
+        <button type="button" v-if="status === 'finish'" class="restart btn left" @click="handleRestart">
           <i class="icon icon-remake"></i>
           <span class="text">重录</span>
         </button>
@@ -15,45 +14,10 @@
           <span class="text" v-if="status === 'recording'">录制中</span>
           <span class="text" v-if="status === 'finish'">点击试听</span>
           <span class="text" v-if="status === 'listening'">停止</span>
-          <span class="text" v-if="status === 'listening'">停止</span>
         </button>
-        <button type="button" class="publish btn right" @click="handlePublish">
+        <button type="button" v-if="status === 'finish'" class="publish btn right" @click="handlePublish">
           <i class="icon icon-send"></i>
           <span class="text">发送</span>
-        </button>
-      </template>
-      <!-- 完成录制 -->
-      <template v-if="status === 'finish'">
-        <button type="button" class="restart btn left" @click="handleRestart">
-          <i class="icon icon-remake"></i>
-          <span class="text">重录</span>
-        </button>
-        <button type="button" class="control btn" @click="handlePlay">
-          <div class="operBtn">
-            <i class="icon iconfont icon-record"></i>
-          </div>
-          <span class="text">点击试听</span>
-        </button>
-        <button type="button" class="publish btn right" @click="handlePublish">
-          <i class="icon icon-send"></i>
-          <span class="text">{{publishBtnText}}</span>
-        </button>
-      </template>
-      <!-- 试听中 -->
-      <template v-if="status === 'listening'">
-        <button type="button" class="restart btn left" @click="handleRestart">
-          <i class="icon icon-remake"></i>
-          <span class="text">重录</span>
-        </button>
-        <button type="button" class="control btn" @click="handleStop">
-          <div class="operBtn">
-            <i class="icon iconfont icon-btn_pause"></i>
-          </div>
-          <span class="text">停止</span>
-        </button>
-        <button type="button" class="publish btn right" @click="handlePublish">
-          <i class="icon icon-send"></i>
-          <span class="text">{{publishBtnText}}</span>
         </button>
       </template>
     </div>
@@ -63,18 +27,6 @@
 import WechatMixin from '@/mixins/wechat'
 export default {
   mixins: [WechatMixin],
-  props: {
-    // 上传按钮文本
-    publishBtnText: {
-      type: String,
-      default: '发布'
-    },
-    // 上传确认信息框
-    publishConfirmContent: {
-      type: String,
-      default: '确定要发布？'
-    }
-  },
   data () {
     return {
       manager: null, // 录音管理器
@@ -88,7 +40,6 @@ export default {
   methods: {
     init () {
       this.manager.onStartRecord = () => {
-        console.log(12222222222222)
         this.status = 'recording'
         this.startInterval()
         this.$emit('recording')
@@ -99,6 +50,7 @@ export default {
         this.duration = this.progress
         this.progress = 0
         this.stopInterval()
+        alert(res.localId)
         this.$emit('finish', res)
       }
       this.manager.onRecordEnded = res => {
