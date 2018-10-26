@@ -5,14 +5,16 @@
         <i class="icon icon-remake"></i>
         <span class="text">重录</span>
       </button>
-      <button type="button" class="control btn" @touchstart.stop="handleStart" @touchend.stop="handleFinish">
-        <div class="operBtn">
-          <i class="icon iconfont" :class="[{'icon-record': status === 'default'}, {'icon-btn_stop': status === 'recording'}]"></i>
+      <button type="button" class="control btn" @touchstart.stop="touchstartFun()" @touchend.stop="touchendFun()">
+        <div class="btnShadow">
+          <div class="operBtn" :class="{'playing': status === 'recording' || status === 'listening'}">
+            <i class="icon iconfont" :class="btnClass"></i>
+          </div>
         </div>
-        <span class="text" v-if="status === 'default'">最多录制60秒，点击开始</span>
-        <span class="text" v-if="status === 'recording'">录制中</span>
-        <span class="text" v-if="status === 'finish'">点击试听</span>
-        <span class="text" v-if="status === 'listening'">停止</span>
+        <span class="text" v-show="status === 'default'">最多录制60秒，点击开始</span>
+        <span class="text" v-show="status === 'recording'">录制中</span>
+        <span class="text" v-show="status === 'finish'">点击试听</span>
+        <span class="text" v-show="status === 'listening'">停止</span>
       </button>
       <button type="button" v-if="status === 'finish'" class="publish btn right" @click="handlePublish">
         <i class="icon icon-send"></i>
@@ -35,11 +37,21 @@ export default {
       recorderInterval: null
     }
   },
+  computed: {
+    btnClass () {
+      if (this.status === 'default' || this.status === 'finish') {
+        return 'icon-record'
+      } else if (this.status === 'recording') {
+        return 'icon-btn_stop'
+      } else {
+        return 'icon-btn_pause'
+      }
+    }
+  },
   methods: {
     init () {
       this.manager.onStartRecord = () => {
         this.status = 'recording'
-        console.log(this.status, 11111111111)
         this.startInterval()
         this.$emit('recording')
       }
@@ -49,7 +61,6 @@ export default {
         this.duration = this.progress
         this.progress = 0
         this.stopInterval()
-        alert(res.localId)
         this.$emit('finish', res)
       }
       this.manager.onRecordEnded = res => {
@@ -110,13 +121,10 @@ export default {
      * 上传文件到微信服务器
      */
     async upload () {
-      try {
-        this.$emit('uploading')
-        const res = await this.wechatUploadVoice(this.localId)
-        this.uploadWechatSuccess(res)
-      } catch (error) {
-        this.$vux.toast.text(error.message, 'bottom')
-      }
+      this.$emit('uploading')
+      const res = await this.wechatUploadVoice(this.localId)
+      console.log(res, 12121)
+      this.uploadWechatSuccess(res)
     },
     /**
      * 文件成功上传到微信服务器
@@ -126,8 +134,9 @@ export default {
         mediaId: serverId,
         type: 'audio'
       }
-      const { files } = await this.wxUploadFile(data)
-      this.$emit('upload-success', files)
+      const res = await this.wxUploadFile(data)
+      console.log(res, 3333333)
+      this.$emit('upload-success', res.data)
     },
     /**
      * 清除
@@ -141,18 +150,30 @@ export default {
       this.progress = 0
       this.stopInterval()
     },
+    touchstartFun () {
+      if (this.status === 'default') {
+        this.handleStart()
+      } else if (this.status === 'finish') {
+        this.handlePlay()
+      } else {
+        this.handleStop()
+      }
+    },
+    touchendFun () {
+      if (this.status === 'recording') {
+        this.handleFinish()
+      }
+    },
     /**
      * 开始录音
      */
     handleStart () {
-      console.log(111111)
       this.manager && this.manager.startRecord()
     },
     /**
      * 完成录音
      */
     handleFinish () {
-      console.log(22222222)
       this.manager && this.manager.stopRecord()
     },
     /**
@@ -186,10 +207,11 @@ export default {
      */
     handlePublish () {
       const self = this
-      this.$vux.confirm.show({
-        content: this.publishConfirmContent,
-        onConfirm () {
-          // self.upload()
+      this.$confirm({
+        title: '发布语音',
+        content: '确定要该发布语音',
+        confirmBack: () => {
+          this.upload()
         }
       })
     },
@@ -204,13 +226,14 @@ export default {
   },
   mounted () {
     this.manager = this.getWechatRecorder()
+    this.init()
   }
 }
 </script>
 
 <style lang="less">
 .m-recorder {
-  padding: 35px 0 20px;
+  padding: 25px 0 20px;
   background: #fff;
   -webkit-user-select:none;
   -webkit-user-drag:none;
@@ -231,7 +254,6 @@ export default {
   .controls {
     position: relative;
     text-align: center;
-
     .btn {
       background: none;
       line-height: 1;
@@ -264,22 +286,27 @@ export default {
       }
 
       &.control {
-        .operBtn {
-          width: 74px;
-          height: 74px;
-          margin: 0 auto;
-          background-color: #FFE266;
-          border-radius: 50%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin-bottom: 15px;
-          .icon-record {
-            font-size: 60px; /*px*/
-            color: rgb(102, 102, 102);
-          }
-          &.playing {
-            animation: twinkle 3s linear infinite;
+        .btnShadow {
+          padding: 10px;
+          overflow: hidden;
+          overflow: hidden;
+          .operBtn {
+            width: 74px;
+            height: 74px;
+            margin: 0 auto;
+            background-color: #FFE266;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            .icon {
+              font-size: 60px; /*px*/
+              color: rgb(102, 102, 102);
+            }
+            &.playing {
+              animation: twinkle 2s linear infinite;
+            }
           }
         }
         .text {

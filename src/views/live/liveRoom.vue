@@ -78,7 +78,7 @@
             <upLoadFile
              class="upLoadImg"
              attach_type="img"
-             :multiple="true"
+             count='1'
              @upLoadResult="upLoadResult"
             >
             </upLoadFile>
@@ -92,7 +92,7 @@
             <botInput @sendMsg="sendMsg"></botInput>
           </div>
           <div class="audioType" v-if="curOperType === 'audio'">
-            <recorder></recorder>
+            <recorder @upload-success="upLoadResult"></recorder>
           </div>
         </div>
       </div>
@@ -172,6 +172,7 @@ export default {
       'updata_onlineNum'
     ]),
     upLoadResult (e) {
+      console.log(e, '上传后获取的文件')
       this.fileId = e[0].id
       this.sendMsg()
     },
@@ -188,8 +189,11 @@ export default {
       if (this.curOperType === 'text') {
         this.option.type = 'text'
         this.option.content = tutorTxt
-      } else {
+      } else if (this.curOperType === 'img') {
         this.option.type = 'img'
+        this.option.fileId = this.fileId
+      } else {
+        this.option.type = 'audio'
         this.option.fileId = this.fileId
       }
       sendLiveMsgApi(this.option).then(res => {
