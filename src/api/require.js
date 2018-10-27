@@ -51,7 +51,7 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
       case 401: // 未登录或登录过期
         if (browser.isWechat()) {
           location.href = `${settings.host}/wechat/oauth?redirect_uri=${encodeURIComponent(location.href)}`
-        }   
+        }
         // router.push('/login')
         break
     }
