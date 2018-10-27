@@ -197,10 +197,10 @@ export default {
     },
     /*  点赞  */
     async praise () {
-      if (this.isCourse && this.$route.path !== '/punchDetail') {
+      if (this.item.postType !== 'jobcircleSection' && this.$route.path !== '/punchDetail') {
         this.$router.push({path: '/punchDetail', query: {id: this.item.courseSectionCardId}})
         return
-      } else if (!this.isCourse && this.$route.path !== '/postDetail') {
+      } else if (this.item.postType === 'jobcircleSection' && this.$route.path !== '/postDetail') {
         this.$router.push({path: '/postDetail', query: {id: this.item.id}})
         return
       }
@@ -209,7 +209,6 @@ export default {
         sourceType: 'course_section_card',
         circleSourceType: 'job_circle_post'
       }
-      console.log(this.isfavor)
       /* 点赞或取消点赞 */
       if (!this.isfavor) {
         // 点赞
@@ -233,9 +232,9 @@ export default {
     },
     /*  评论  */
     comment () {
-      if (this.isCourse && this.$route.path !== '/punchDetail') {
+      if (this.item.postType !== 'jobcircleSection' && this.$route.path !== '/punchDetail') {
         this.$router.push({path: '/punchDetail', query: {id: this.item.courseSectionCardId}})
-      } else if (!this.isCourse && this.$route.path !== '/postDetail') {
+      } else if (this.item.postType === 'jobcircleSection' && this.$route.path !== '/postDetail') {
         this.$router.push({path: '/postDetail', query: {id: this.item.id}})
         return
       }
