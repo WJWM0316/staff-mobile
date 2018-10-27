@@ -22,7 +22,10 @@
           <div class="hot-area" v-if="index === hotCommentNum">
             <i class="hot-icon"><img src="../../assets/icon/tab-massage-3@3x.png" alt=""></i><span>全部评论</span>
           </div>
-          <discuss-item :index="index" :item="commentItem" :isShowBorder="index === commentList.length-1 || index === hotCommentNum-1? false : true" @delComment="delComment"></discuss-item>
+          <discuss-item :index="index"
+            :item="commentItem"
+            :isShowBorder="index === commentList.length-1 || index === hotCommentNum-1? false : true"
+            @delComment="delComment"></discuss-item>
         </div>
         <!--没有任何评论时-->
         <div v-if="item.commentTotal === 0">
@@ -182,7 +185,8 @@ export default {
     },
     /* 删除评论 */
     delComment (index) {
-      this.commentList.splice(index, 1)
+      console.log(index)
+      this.commentList.splice(index.index, 1)
     }
   },
   created () {
