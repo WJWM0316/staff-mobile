@@ -49,10 +49,10 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
         Vue.$vux.toast.text('服务器异常', 'bottom')
         break
       case 401: // 未登录或登录过期
-        if (browser.isWechat()) {
-          location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(location.href)}`
-        }
-        // router.push('/login')
+        // if (browser.isWechat()) {
+        //   location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(location.href)}`
+        // }
+        router.push('/login')
         break
     }
     Vue.$vux.toast.text(err.response.data.msg, 'bottom')
