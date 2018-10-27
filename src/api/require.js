@@ -5,6 +5,7 @@ import settings from '@/config'
 import store from '../store/index.js'
 import router from '../router/index.js'
 import localstorage from '@u/localstorage'
+import browser from '@u/browser'
 Vue.use(VueAxios, axios)
 let company = location.href.split('/')[3]
 // 动态设置本地和线上接口域名
@@ -14,21 +15,11 @@ if (process.env.NODE_ENV !== 'production') {
   Vue.axios.defaults.baseURL = `${settings.host}/${company}`
 }
 Vue.axios.defaults.timeout = 20000
-// 请求拦截器
-Vue.axios.interceptors.request.use(
-  config => {
-    config.headers.common['Authorization'] = localstorage.get('token')
-    return config
-  },
-  error => {
-    return Promise.error(error)
-  }
-)
 
 let num = 0
 let token = localstorage.get('token')
 export const request = ({type = 'post', url, data = {}, needLoading = true, config = {}} = {}) => {
-  // 开发环境写死账号
+  // 开发环境token通过header传递
   if (process.env.NODE_ENV !== 'production' && token) {
     if (token) {
       Vue.axios.defaults.headers.common['Authorization'] = token
@@ -58,7 +49,10 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
         Vue.$vux.toast.text('服务器异常', 'bottom')
         break
       case 401: // 未登录或登录过期
-        router.push('/login')
+        if (browser.isWechat()) {
+          location.href = `${settings.host}/wechat/oauth?redirect_uri=${encodeURIComponent(location.href)}`
+        }   
+        // router.push('/login')
         break
     }
     Vue.$vux.toast.text(err.response.data.msg, 'bottom')
