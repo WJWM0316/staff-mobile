@@ -88,10 +88,10 @@
           </span>
         </div>
         <div class="typeBox">
-          <div class="textType" v-if="curOperType === 'text'">
-            <botInput @sendMsg="sendMsg"></botInput>
+          <div class="textType" v-show="curOperType === 'text'">
+            <botInput @sendMsg="sendMsg" ref="botInput"></botInput>
           </div>
-          <div class="audioType" v-if="curOperType === 'audio'">
+          <div class="audioType" v-show="curOperType === 'audio'">
             <recorder @upload-success="upLoadResult"></recorder>
           </div>
         </div>
@@ -181,6 +181,17 @@ export default {
     },
     tutorOper (type) {
       this.curOperType = type
+      console.log(type)
+      if (type === 'text') {
+        console.log(this.$refs.botInput.$refs.input)
+        this.$nextTick(() => {
+          this.$refs.botInput.$refs.input.focus()
+          console.log(this.$refs.botInput.$refs.input)
+        })
+        setTimeout(() => {
+          document.body.scrollTop = document.body.scrollHeight
+        }, 300)
+      }
       if (type === 'answer') {
         this.openArea = true
       }
