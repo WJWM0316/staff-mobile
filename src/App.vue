@@ -173,7 +173,7 @@ export default {
     }
   },
   created () {
-    // this.creatWs()
+    this.creatWs()
     // if (!this.userInfo) {
     //   this.getUserInfo()
     // }
