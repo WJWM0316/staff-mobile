@@ -16,7 +16,11 @@ export default {
   methods: {
     sendMsg () {
       this.$emit('sendMsg', this.tutorTxt)
+      this.tutorTxt = null
     }
+  },
+  mounted () {
+    this.$refs.input.focus()
   }
 }
 </script>

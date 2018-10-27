@@ -78,7 +78,7 @@
             <upLoadFile
              class="upLoadImg"
              attach_type="img"
-             count='1'
+             :count='1'
              @upLoadResult="upLoadResult"
             >
             </upLoadFile>

@@ -6,7 +6,7 @@ Vue.directive('focus', {
       // 自动获取焦点
       setTimeout(() => {
         el.focus()
-      }, 100)
+      }, 300)
     }
     el.addEventListener('click', () => {
       // 强制输入框顶起
