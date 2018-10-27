@@ -11,8 +11,8 @@
         :messageData="messageData"
         :audioList="audioList"
         :key="messageData.messageId"
-        isNeedRead
-        isNeedEnd
+        :isNeedRead='true'
+        :isNeedEnd='true'
         @removeRed="removeRed"
         @nextMusic='nextMusic'
         @endAudio='endAudio'

@@ -181,16 +181,11 @@ export default {
     },
     tutorOper (type) {
       this.curOperType = type
-      console.log(type)
       if (type === 'text') {
-        console.log(this.$refs.botInput.$refs.input)
-        this.$nextTick(() => {
-          this.$refs.botInput.$refs.input.focus()
-          console.log(this.$refs.botInput.$refs.input)
-        })
         setTimeout(() => {
           console.log(this.$refs.botInput)
           console.log(this.$refs.botInput.$refs.input)
+          this.$refs.botInput.$refs.input.focus()
           document.body.scrollTop = document.body.scrollHeight
         }, 500)
       }

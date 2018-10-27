@@ -1,5 +1,5 @@
 <template>
-  <div class="aduio" :class="{'isRead': !isReaded && isNeedRead, 'isReadEnd': !isReadEnded && isNeedEnd}"  @click.stop="play">
+  <div class="aduio" :class="{'isRead': !isReaded && isNeedRead, 'isReadEnd': isReadEnded && isNeedEnd}"  @click.stop="play">
     <div class="playBtn" :class="{'lessonPlayBtn': isLesson}">
       <img src="@a/icon/playing.png" v-show="status === 0">
       <img src="@a/icon/music_loading.png" class="load" v-show="status === 1">
