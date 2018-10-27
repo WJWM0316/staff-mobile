@@ -6,7 +6,7 @@
           <img class="pull-icon" src="../../assets/icon/loading.png" v-if="downType === 'refresh'">
           <img class="loadmore" src="../../assets/icon/loadMore.gif" v-else>
         </div>
-        <div class="content" :style="{minHeight: minHeight}" :class="{'pulldownUi': pulldownUi && pulldown}">
+        <div class="content" :style="{minHeight: scrollerHeight || minHeight}" :class="{'pulldownUi': pulldownUi && pulldown}">
           <slot></slot>
         </div>
         <div class="loading-pos" ref="loadingPos" v-if="pullup && pullupUi">
@@ -31,6 +31,10 @@ export default {
     probeType: {
       type: Number,
       default: 2
+    },
+    scrollerHeight: {
+      type: String,
+      default: null
     },
     /**
      * 下拉的类型

@@ -22,7 +22,7 @@
       <div class='txt'>连接服务器失败，点击重新连接</div>
       <i class='icon iconfont icon-list_live_icon_more'></i>
     </div>
-    <div class='main'>
+    <div class='main' ref="main" :class="{'text': curOperType === 'text', 'audio': curOperType === 'audio'}">
       <scroller class='scroll'
         ref='scroll'
         :pulldown='isPulldown'
@@ -30,6 +30,7 @@
         :listenScroll=true
         :freeScroll=true
         :list='list'
+        :scrollerHeight="scrollerHeight"
         downType='loadMore'
         bgColor = '#F9F9F9'
         @pullingDown='loadPrev'
@@ -146,7 +147,8 @@ export default {
       isPullup: true, // 是否开启上拉
       audioList: [], // 音频列表
       curOperType: null, // 导师选择发布的类型
-      fileId: null // 导师发布的附件id
+      fileId: null, // 导师发布的附件id
+      scrollerHeight: null // 用于计算scroller的高度
     }
   },
   computed: {
@@ -181,13 +183,18 @@ export default {
     },
     tutorOper (type) {
       this.curOperType = type
+      setTimeout(() => {
+        this.scrollerHeight = this.$refs.main.childNodes[0].clientHeight + 'px'
+      }, 300)
       if (type === 'text') {
         setTimeout(() => {
-          console.log(this.$refs.botInput)
-          console.log(this.$refs.botInput.$refs.input)
           this.$refs.botInput.$refs.input.focus()
+        }, 100)
+        setTimeout(() => {
           document.body.scrollTop = document.body.scrollHeight
-        }, 500)
+        }, 300)
+      }
+      if (type === 'audio') {
       }
       if (type === 'answer') {
         this.openArea = true
@@ -531,7 +538,7 @@ export default {
         float: left;
       }
       .icon-list_live_icon_more {
-        font-size: 24px; /*px*/
+        font-size: 48px; /*px*/
         float: right;
       }
     }
@@ -541,6 +548,12 @@ export default {
       padding: 52px 0;
       box-sizing: border-box;
       margin-top: -52px;
+      &.text {
+        padding-bottom: 100px;
+      }
+      &.audio {
+        padding-bottom: 220px;
+      }
       .scroll {
         height: 100%;
         width: 100%;
