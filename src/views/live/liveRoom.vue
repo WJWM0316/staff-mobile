@@ -189,8 +189,10 @@ export default {
           console.log(this.$refs.botInput.$refs.input)
         })
         setTimeout(() => {
+          console.log(this.$refs.botInput)
+          console.log(this.$refs.botInput.$refs.input)
           document.body.scrollTop = document.body.scrollHeight
-        }, 300)
+        }, 500)
       }
       if (type === 'answer') {
         this.openArea = true
