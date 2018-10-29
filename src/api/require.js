@@ -8,11 +8,7 @@ import localstorage from '@u/localstorage'
 Vue.use(VueAxios, axios)
 let company = location.href.split('/')[3]
 // 动态设置本地和线上接口域名
-if (process.env.NODE_ENV !== 'production') {
-  Vue.axios.defaults.baseURL = settings.host
-} else {
-  Vue.axios.defaults.baseURL = `${settings.host}/${company}`
-}
+Vue.axios.defaults.baseURL = `${settings.host}/${company}`
 Vue.axios.defaults.timeout = 20000
 // 请求拦截器
 Vue.axios.interceptors.request.use(

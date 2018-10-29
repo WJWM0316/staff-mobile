@@ -24,6 +24,7 @@ import { userInfoApi } from '@/api/pages/center'
 import { loginApi } from '@/api/pages/login'
 import localstorage from '@u/localstorage'
 import ws from '@u/websocket'
+import settings from '@/config'
 export default {
   data () {
     return {
@@ -46,11 +47,13 @@ export default {
         password: this.password
       }
       loginApi(data).then(res => {
-        localstorage.set('token', res.data.token)
-        localstorage.set('account', {account: this.account, password: this.password})
+        localstorage.set('token', res.data.token) // 储存token值
+        localstorage.set('account', {account: this.account, password: this.password}) // 保存账号密码
         let company = location.href.split('/')[3] || 'tiger'
-        localstorage.set('XPLUSCompany', company)
-        ws.create(`ws://work-api.xplus.xiaodengta.com/${company}`)
+        localstorage.set('XPLUSCompany', company) // 储存公司名
+        let websocketUrl = settings.websocketUrl
+        // 重新启动ws
+        ws.create(`${websocketUrl}/${company}`)
         userInfoApi().then(res0 => {
           this.$store.dispatch('updata_userInfo', res0.data)
           this.$toast({

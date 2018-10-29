@@ -292,6 +292,7 @@ export default {
             font-size: 30px; /*px*/
             line-height: 20px;
             font-weight: 300;
+            .setEllipsis();
           }
           .name {
             color: #929292;
