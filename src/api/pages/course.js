@@ -98,7 +98,7 @@ export const attachesApi = (data, config, changText) => {
     url: `/attaches`,
     type: 'post',
     config,
-    changText,
+    changText, // 修改loading文案
     data
   })
 }

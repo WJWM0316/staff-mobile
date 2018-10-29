@@ -2,7 +2,7 @@ const routers = [
   {
     path: '/workCircle',
     name: 'workCircle',
-    meta: { title: '工作圈', needBottomTab: true },
+    meta: { title: '工作圈', needBottomTab: true, keepAlive: true },
     component: resolve => require(['@/views/workCircle/index'], resolve)
   },
   /* 工作圈详情页 */

@@ -231,6 +231,7 @@ export default {
       this.nowChoosePunch = item
     },
     async handleAddActoinItem (key, item) {
+      if (!item) return
       let { id } = this.$route.query
       console.log(this.nowChoosePunch.isExcellentCard === 0, this.nowChoosePunch.isExcellentCard)
       let param = {
