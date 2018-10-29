@@ -358,7 +358,10 @@ export default {
             liveId: this.id,
             status: 3
           }
-          putUpdataLiveApi(data)
+          putUpdataLiveApi(data).then(res => {
+            this.liveDetail.status = 3
+            this.liveDetail.endTime = new Date().getTime()
+          })
         }
       })
     },
@@ -370,10 +373,11 @@ export default {
           if (!this.liveDetail.isTutor) return
           let data = {
             liveId: this.id,
-            status: 3
+            status: 2
           }
           putUpdataLiveApi(data).then(res => {
             this.liveDetail.status = 2
+            this.liveDetail.expectedStartTime = new Date().getTime()
             setTimeout(() => {
               this.addLive()
             }, 1000)

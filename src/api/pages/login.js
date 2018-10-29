@@ -30,7 +30,16 @@ export const resetPwdApi = (data, needLoading) => {
 export const bindWxLogin = (data, needLoading) => {
   return request({
     type: 'post',
-    url: `/bind/wechat`,
+    url: `/sso_login/bind/wechat`,
+    data,
+    needLoading: false
+  })
+}
+// sso token登录
+export const tokenLogin = (data, needLoading) => {
+  return request({
+    type: 'post',
+    url: `/auth/token`,
     data,
     needLoading: false
   })

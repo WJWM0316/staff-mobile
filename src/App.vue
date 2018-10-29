@@ -105,12 +105,21 @@ export default {
         case 'center' : this.tabIndex = 3; break
       }
       // 微信授权回来需要绑定
-      if (this.$route.query.is_bind) {
-        let data = {
-          bind_code: this.$route.query.bind_code,
-          is_bind: this.$route.query.is_bind
+      let data = null
+      if (route.query.bind_code) {
+        if (route.query.is_bind === '1') {
+          data = {
+            bind_code: this.$route.query.bind_code,
+            is_bind: this.$route.query.is_bind
+          }
+          bindWxLogin(data).then(res => {})
+        } else {
+          data = {
+            bind_code: this.$route.query.bind_code,
+            is_bind: this.$route.query.is_bind
+          }
+          this.$router.push(`/login?bind_code=${data.bind_code}&is_bind=${data.is_bind}`)
         }
-        bindWxLogin(data).then(res => {})
       }
     },
     tabIndex (index) {
@@ -291,7 +300,7 @@ export default {
 }
 @media screen and (min-width: 1024px) {
   .weui-dialog {
-    width: auto;
+    width: 80%;
   }
 }
 .vux-confirm, .vux-alert {

@@ -39,6 +39,8 @@ export default {
         confirmBack: () => {
           outLoginApi().then(res => {
             localstorage.remove('XPLUSCompany')
+            localstorage.remove('token')
+            localstorage.remove('ssoToken')
             this.$toast({
               text: '退出成功',
               type: 'success',

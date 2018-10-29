@@ -21,7 +21,7 @@
 </template>
 <script>
 import { userInfoApi } from '@/api/pages/center'
-import { loginApi } from '@/api/pages/login'
+import { loginApi, bindWxLogin, tokenLogin } from '@/api/pages/login'
 import localstorage from '@u/localstorage'
 import ws from '@u/websocket'
 import settings from '@/config'
@@ -46,10 +46,10 @@ export default {
         email: this.account,
         password: this.password
       }
-      loginApi(data).then(res => {
+      let loginCallBack = (res) => {
         localstorage.set('token', res.data.token) // 储存token值
         localstorage.set('account', {account: this.account, password: this.password}) // 保存账号密码
-        let company = location.href.split('/')[3] || 'tiger'
+        let company = location.href.split('/')[3]
         localstorage.set('XPLUSCompany', company) // 储存公司名
         let websocketUrl = settings.websocketUrl
         // 重新启动ws
@@ -64,7 +64,25 @@ export default {
             }
           })
         })
-      })
+      }
+      if (!this.$route.query.bind_code) {
+        loginApi(data).then(res => {
+          loginCallBack(res)
+        })
+      } else {
+        data.is_bind = this.$route.query.is_bind
+        data.bind_code = this.$route.query.bind_code
+        bindWxLogin(data).then(res => {
+          if (res.httpStatus === 200) {
+            localstorage.set('XPLUSCompany', res.data.companies[0].code) // 储存公司名
+            localstorage.set('ssoToken', res.data.ssoToken) // 储存ssoToken值
+            tokenLogin({sso_token: res.data.ssoToken}).then(res0 => {
+              localstorage.set('token', res0.data.token) // 储存token值
+              location.href = `${location.host}/${res.data.companies[0].code}/home` // 登录成功跳转到相应的公司
+            })
+          }
+        })
+      }
     },
     userInfo () {
       return userInfoApi('', false).then(res => {

@@ -168,8 +168,8 @@ export default {
     .headBox {
       width: 100%;
       height: 145px;
-      background: #F2F2F2;
       position: relative;
+      background: #f2f2f2;
     }
     .head {
       width: 345px;
