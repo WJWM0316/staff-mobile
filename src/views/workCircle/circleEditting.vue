@@ -86,7 +86,7 @@
     <!--链接输入弹窗-->
     <div class="Mask" v-if="showMask" @click.stop="closeTask">
       <div class="inpLeft"><img src="@/assets/icon/btn_link@3x.png" /></div>
-      <input @click.stop="inp" type="text" v-model="inpLink" placeholder="请在此处复制或者输入链接"/>
+      <input @click.stop="inp" type="text" v-focus v-model="inpLink" placeholder="请在此处复制或者输入链接"/>
       <div class="linkBtn" @click.stop="done">确认</div>
     </div>
   </div>
