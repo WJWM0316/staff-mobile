@@ -241,7 +241,7 @@ export default {
       // 直播已开始才要获取历史消息记录
       if (this.liveDetail.status !== 1) {
         this.getMessage({page: 1, action: 1})
-      } 
+      }
     },
     getMessage ({msgId, action, needLoading = true}) {
       let data = {
