@@ -36,6 +36,7 @@
 import { userInfoApi } from '@/api/pages/center'
 import { Tabbar, TabbarItem } from 'vux'
 import { mapState, mapActions } from 'vuex'
+import { bindWxLogin } from '@/api/pages/login'
 import WechatMixin from '@/mixins/wechat'
 import settings from '@/config'
 import ws from '@u/websocket'
@@ -102,6 +103,14 @@ export default {
         case 'course' : this.tabIndex = 1; break
         case 'workCircle' : this.tabIndex = 2; break
         case 'center' : this.tabIndex = 3; break
+      }
+      // 微信授权回来需要绑定
+      if (this.$route.query.is_bind) {
+        let data = {
+          bind_code: this.$route.query.bind_code,
+          is_bind: this.$route.query.is_bind
+        }
+        bindWxLogin(data).then(res => {})
       }
     },
     tabIndex (index) {
@@ -174,9 +183,9 @@ export default {
   },
   created () {
     this.creatWs()
-    // if (!this.userInfo) {
-    //   this.getUserInfo()
-    // }
+    if (!this.userInfo) {
+      this.getUserInfo()
+    }
   },
   mounted () {
   }

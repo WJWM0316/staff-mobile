@@ -172,6 +172,8 @@ export default {
       display: flex;
       justify-content: flex-end;
       align-items: center;
+      color: #354048;
+      font-weight: 300;
       .photo {
         width: 60px;
         height: 60px;

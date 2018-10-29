@@ -135,7 +135,6 @@ export default {
         type: 'audio'
       }
       const res = await this.wxUploadFile(data)
-      console.log(res, 3333333)
       this.$emit('upload-success', res.data)
     },
     /**

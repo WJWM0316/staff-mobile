@@ -9,7 +9,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/xplus_wap': {
-        target: `http://wap.xplus.ziwork.com/test`,
+        target: `http://wap.xplus.ziwork.com`,
         changeOrigin: true,
         pathRewrite: {
           '^/xplus_wap': '/'

@@ -37,7 +37,8 @@ export const uploadFileApi = (data, config, needLoading) => request({
 /**
  * 微信上传
  * @param {*} data
- */export const wxUploadFileApi = (data, needLoading) => request({
+ */
+export const wxUploadFileApi = (data, needLoading) => request({
   type: 'post',
   url: '/wx/attaches',
   data,

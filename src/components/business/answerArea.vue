@@ -92,10 +92,10 @@
                 <i @click.stop="sendType = 'audio'" class="icon2 iconfont icon-btn_record" :class="{'curOperType': sendType === 'audio'}"></i>
               </div>
             </div>
-            <div class="textType" v-if="sendType === 'text'">
-              <botInput @sendMsg="sendMsg"></botInput>
+            <div class="textType" v-show="sendType === 'text'">
+              <botInput @sendMsg="sendMsg" ref="botInput"></botInput>
             </div>
-            <div class="audioType" v-if="sendType === 'audio'">
+            <div class="audioType" v-show="sendType === 'audio'">
               <recorder></recorder>
             </div>
           </div>
@@ -231,6 +231,10 @@ export default {
     openFun (item) {
       this.openArea = true
       this.choseMessage = item
+      this.$refs.botInput.$refs.input.focus()
+      setTimeout(() => {
+        document.body.scrollTop = document.body.scrollHeight
+      }, 300)
     },
     closeArea () {
       this.$emit('closeArea')

@@ -22,7 +22,7 @@
       <div class='txt'>连接服务器失败，点击重新连接</div>
       <i class='icon iconfont icon-list_live_icon_more'></i>
     </div>
-    <div class='main'>
+    <div class='main' ref="main" :class="{'text': curOperType === 'text', 'audio': curOperType === 'audio'}">
       <scroller class='scroll'
         ref='scroll'
         :pulldown='isPulldown'
@@ -30,6 +30,7 @@
         :listenScroll=true
         :freeScroll=true
         :list='list'
+        :scrollerHeight="scrollerHeight"
         downType='loadMore'
         bgColor = '#F9F9F9'
         @pullingDown='loadPrev'
@@ -59,16 +60,16 @@
     </div>
     <!-- 普通学员操作权限 -->
     <template v-if="!liveDetail.isTutor">
-    <div class='footer'>
-      <div class='txtBar'>
-        <input class='bar' v-focus type='text' v-model='problemTxt' placeholder='请输入你的问题'>
+      <div class='footer'>
+        <div class='txtBar'>
+          <input class='bar' v-focus type='text' v-model='problemTxt' placeholder='请输入你的问题'>
+        </div>
+        <div class='submit' @click.stop='putQuestions'>提问</div>
+        <div class="area icon iconfont icon-live_btn_answers" @click.stop="openArea = true"></div>
       </div>
-      <div class='submit' @click.stop='putQuestions'>提问</div>
-      <div class="area icon iconfont icon-live_btn_answers" @click.stop="openArea = true"></div>
-    </div>
     </template>
     <!-- 导师操作权限 -->
-    <template v-else>
+    <template v-if="liveDetail.isTutor && liveDetail.status !== 1">
       <div class="sendArea">
         <div class="operArea">
           <span @click.stop="tutorOper('text')"><i class="icon1 iconfont icon-icon_writing" :class="{'curOperType': curOperType === 'text'}"></i></span>
@@ -78,7 +79,7 @@
             <upLoadFile
              class="upLoadImg"
              attach_type="img"
-             count='1'
+             :count='1'
              @upLoadResult="upLoadResult"
             >
             </upLoadFile>
@@ -88,14 +89,17 @@
           </span>
         </div>
         <div class="typeBox">
-          <div class="textType" v-if="curOperType === 'text'">
-            <botInput @sendMsg="sendMsg"></botInput>
+          <div class="textType" v-show="curOperType === 'text'">
+            <botInput @sendMsg="sendMsg" ref="botInput"></botInput>
           </div>
-          <div class="audioType" v-if="curOperType === 'audio'">
+          <div class="audioType" v-show="curOperType === 'audio'">
             <recorder @upload-success="upLoadResult"></recorder>
           </div>
         </div>
       </div>
+    </template>
+    <template v-if="liveDetail.isTutor && liveDetail.status === 1">
+      <xButton class="startLiveBtn" @click.stop.native="startLive">点击开始直播</xButton>
     </template>
     <!-- 问答区 -->
     <questionArea :show="openArea" @closeArea="_closeArea" v-if="!liveDetail.isTutor"></questionArea>
@@ -146,7 +150,8 @@ export default {
       isPullup: true, // 是否开启上拉
       audioList: [], // 音频列表
       curOperType: null, // 导师选择发布的类型
-      fileId: null // 导师发布的附件id
+      fileId: null, // 导师发布的附件id
+      scrollerHeight: null // 用于计算scroller的高度
     }
   },
   computed: {
@@ -181,6 +186,19 @@ export default {
     },
     tutorOper (type) {
       this.curOperType = type
+      setTimeout(() => {
+        this.scrollerHeight = this.$refs.main.childNodes[0].clientHeight + 'px'
+      }, 300)
+      if (type === 'text') {
+        setTimeout(() => {
+          this.$refs.botInput.$refs.input.focus()
+        }, 100)
+        setTimeout(() => {
+          document.body.scrollTop = document.body.scrollHeight
+        }, 300)
+      }
+      if (type === 'audio') {
+      }
       if (type === 'answer') {
         this.openArea = true
       }
@@ -216,10 +234,14 @@ export default {
       let res = await getLiveDetailApi({id: this.option.liveId})
       this.liveDetail = res.data
       this.option.teacherId = res.data.masterUid
-      // 直播未结束都可以加入直播
-      if (this.liveDetail.status !== 3) {
+      // 直播已开始且未结束都可以加入直播
+      if (this.liveDetail.status !== 3 && this.liveDetail.status !== 1) {
         this.addLive()
       }
+      // 直播已开始才要获取历史消息记录
+      if (this.liveDetail.status !== 1) {
+        this.getMessage({page: 1, action: 1})
+      } 
     },
     getMessage ({msgId, action, needLoading = true}) {
       let data = {
@@ -348,9 +370,14 @@ export default {
           if (!this.liveDetail.isTutor) return
           let data = {
             liveId: this.id,
-            status: 2
+            status: 3
           }
-          putUpdataLiveApi(data)
+          putUpdataLiveApi(data).then(res => {
+            this.liveDetail.status = 2
+            setTimeout(() => {
+              this.addLive()
+            }, 1000)
+          })
         }
       })
     }
@@ -360,7 +387,6 @@ export default {
     this.id = id
     if (openArea) this.openArea = true
     this.getDetail()
-    this.getMessage({page: 1, action: 1})
   },
   mounted () {
     let that = this
@@ -523,7 +549,7 @@ export default {
         float: left;
       }
       .icon-list_live_icon_more {
-        font-size: 24px; /*px*/
+        font-size: 48px; /*px*/
         float: right;
       }
     }
@@ -533,6 +559,12 @@ export default {
       padding: 52px 0;
       box-sizing: border-box;
       margin-top: -52px;
+      &.text {
+        padding-bottom: 100px;
+      }
+      &.audio {
+        padding-bottom: 220px;
+      }
       .scroll {
         height: 100%;
         width: 100%;
@@ -683,6 +715,13 @@ export default {
       .typeBox {
         box-shadow: 0px -1px 0px 0px rgba(0,0,0,0.05);
       }
+    }
+    .startLiveBtn {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 49px;
     }
   }
 </style>

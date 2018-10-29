@@ -299,7 +299,7 @@ export default {
           }
           getMyPostListApi(data, needLoading).then(res => {
             this.postData.list = this.postData.list.concat(res.data)
-            if (res.meta.currentPage === res.meta.lastPage) {
+            if (res.meta && res.meta.currentPage === res.meta.lastPage) {
               this.postData.noData = true
             }
             resolve(this.postList)
@@ -311,7 +311,7 @@ export default {
           }
           getUserPostListApi(data, needLoading).then(res => {
             this.postData.list = this.postData.list.concat(res.data)
-            if (res.meta.currentPage === res.meta.lastPage) {
+            if (res.meta && res.meta.currentPage === res.meta.lastPage) {
               this.postData.noData = true
             }
             resolve(this.postList)
@@ -339,7 +339,7 @@ export default {
         }
         getTaCourseApi(data, needLoading).then(res => {
           this.courseData.list = this.courseData.list.concat(res.data)
-          if (res.meta.currentPage === res.meta.lastPage) {
+          if (res.meta && res.meta.currentPage === res.meta.lastPage) {
             this.courseData.noData = true
           }
           resolve(res)
@@ -355,7 +355,7 @@ export default {
         }
         getTaLiveApi(data, needLoading).then(res => {
           this.liveData.list = this.liveData.list.concat(res.data)
-          if (res.meta.currentPage === res.meta.lastPage) {
+          if (res.meta && res.meta.currentPage === res.meta.lastPage) {
             this.liveData.noData = true
           }
           resolve(res)
@@ -384,7 +384,6 @@ export default {
     },
     init () {
       this.getUserInfo().then(res => {
-        console.log(res)
         if (!res.base.isExternalTutor) {
           this.getJoinList()
         } else {

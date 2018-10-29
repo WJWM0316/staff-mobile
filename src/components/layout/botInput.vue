@@ -1,7 +1,7 @@
 <template>
   <div class="botInput">
     <div class="inputBox">
-      <input type="text" v-focus="'autoFocus'" v-model="tutorTxt" placeholder="请输入内容" ref="input">
+      <input type="text" v-focus v-model="tutorTxt" placeholder="请输入内容" ref="input">
     </div>
     <span class="btn" @click.stop="sendMsg">发送</span>
   </div>
@@ -16,7 +16,15 @@ export default {
   methods: {
     sendMsg () {
       this.$emit('sendMsg', this.tutorTxt)
+      this.tutorTxt = null
+    },
+    _autofocus () {
+      this.$nextTick(() => {
+        this.$refs.input.focus()
+      })
     }
+  },
+  mounted () {
   }
 }
 </script>

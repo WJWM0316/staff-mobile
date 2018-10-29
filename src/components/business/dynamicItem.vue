@@ -23,13 +23,13 @@
       <!--工作圈图片-->
       <div class="content-images" v-if="item.type === '图片'" v-preview="openPreview">
         <div class="item-image one" v-if="item.accessory.length === 1">
-          <img :src="item.accessory[0].url || '../../assets/icon/img_head_default.png'" v-preview='true' @click.stop="preview"/>
+          <img :src="item.accessory[0].url || '../../assets/icon/img_head_default.png'" @click.stop="preview"/>
         </div>
         <div class="item-image four" v-for="(item,index) in item.accessory" :key="index" v-else-if="item.accessory.length === 4">
-          <img :src="item.url || '../../assets/icon/img_head_default.png'" v-preview='true' @click.stop="preview"/>
+          <img :src="item.url || '../../assets/icon/img_head_default.png'"/>
         </div>
         <div class="item-image" v-for="(item,index) in item.accessory" :key="index" v-else>
-          <img :src="item.url || '../../assets/icon/img_head_default.png'" @click.stop="preview"/>
+          <img :src="item.url || '../../assets/icon/img_head_default.png'"/>
         </div>
       </div>
       <!--视频-->
@@ -186,7 +186,7 @@ export default {
       })
     },
     toDetail () {
-      if (this.isCourse) {
+      if (this.item.postType !== 'jobcircleSection') {
         this.$router.push({path: '/punchDetail', query: {id: this.item.courseSectionCardId}})
       } else {
         this.$router.push({path: '/postDetail', query: {id: this.item.id}})
@@ -197,10 +197,10 @@ export default {
     },
     /*  点赞  */
     async praise () {
-      if (this.isCourse && this.$route.path !== '/punchDetail') {
+      if (this.item.postType !== 'jobcircleSection' && this.$route.path !== '/punchDetail') {
         this.$router.push({path: '/punchDetail', query: {id: this.item.courseSectionCardId}})
         return
-      } else if (!this.isCourse && this.$route.path !== '/postDetail') {
+      } else if (this.item.postType === 'jobcircleSection' && this.$route.path !== '/postDetail') {
         this.$router.push({path: '/postDetail', query: {id: this.item.id}})
         return
       }
@@ -209,7 +209,6 @@ export default {
         sourceType: 'course_section_card',
         circleSourceType: 'job_circle_post'
       }
-      console.log(this.isfavor)
       /* 点赞或取消点赞 */
       if (!this.isfavor) {
         // 点赞
@@ -233,9 +232,9 @@ export default {
     },
     /*  评论  */
     comment () {
-      if (this.isCourse && this.$route.path !== '/punchDetail') {
+      if (this.item.postType !== 'jobcircleSection' && this.$route.path !== '/punchDetail') {
         this.$router.push({path: '/punchDetail', query: {id: this.item.courseSectionCardId}})
-      } else if (!this.isCourse && this.$route.path !== '/postDetail') {
+      } else if (this.item.postType === 'jobcircleSection' && this.$route.path !== '/postDetail') {
         this.$router.push({path: '/postDetail', query: {id: this.item.id}})
         return
       }
@@ -268,8 +267,7 @@ export default {
       } else {
         this.$emit('setPostTop', this.item)
       }
-    },
-    preview () {}
+    }
   },
   mounted () {}
 }

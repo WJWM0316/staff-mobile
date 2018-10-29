@@ -57,7 +57,7 @@ class WS {
             } else if (data.code === 401) { // 登录失败重新登录
               this.isLogin = false
               store.dispatch('updata_wsLogin', false)
-              router.push('/login')
+              // router.push('/login')
             } else {
               if (this.isAgained) return
               this.isAgained = true

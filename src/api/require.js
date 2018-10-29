@@ -5,14 +5,11 @@ import settings from '@/config'
 import store from '../store/index.js'
 import router from '../router/index.js'
 import localstorage from '@u/localstorage'
+import browser from '@u/browser'
 Vue.use(VueAxios, axios)
 let company = location.href.split('/')[3]
 // 动态设置本地和线上接口域名
-if (process.env.NODE_ENV !== 'production') {
-  Vue.axios.defaults.baseURL = settings.host
-} else {
-  Vue.axios.defaults.baseURL = `${settings.host}/${company}`
-}
+Vue.axios.defaults.baseURL = `${settings.host}/${company}`
 Vue.axios.defaults.timeout = 20000
 // 请求拦截器
 Vue.axios.interceptors.request.use(
@@ -28,6 +25,10 @@ Vue.axios.interceptors.request.use(
 let num = 0
 let token = localstorage.get('token')
 export const request = ({type = 'post', url, data = {}, needLoading = true, config = {}} = {}) => {
+  // 微信授权接口host不一样
+  if (url === '/bind/wechat') {
+    Vue.axios.defaults.baseURL = `${settings.oauthUrl}/${company}`
+  }
   // 开发环境写死账号
   if (process.env.NODE_ENV !== 'production' && token) {
     if (token) {
@@ -58,6 +59,12 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
         Vue.$vux.toast.text('服务器异常', 'bottom')
         break
       case 401: // 未登录或登录过期
+        // alert(router.history.current.query)
+        // if (browser.isWechat && router.history.current.query.is_bind !== 1) {
+        //   location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(location.href)}`
+        // } else {
+        //   // router.push('/login')
+        // }
         router.push('/login')
         break
     }
