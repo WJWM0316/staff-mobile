@@ -1,5 +1,5 @@
 <template>
-  <div id="app-box" v-cloak  :class="{'hasTab' : $route.meta.needBottomTab}" v-if="userInfo">
+  <div id="app-box" v-cloak  :class="{'hasTab' : $route.meta.needBottomTab}">
     <div id="page" ref="page" @touchmove="touchMove" @touchstart="touchStart" @touchend="touchEnd" :style="scrollY">
       <div class="pulldown-tip" ref="pulldownTip" v-show="$route.meta.pullDown">
         <img class="pull-icon" src="@/assets/icon/loading.png" alt="">

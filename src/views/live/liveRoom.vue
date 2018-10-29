@@ -374,7 +374,9 @@ export default {
           }
           putUpdataLiveApi(data).then(res => {
             this.liveDetail.status = 2
-            this.addLive()
+            setTimeout(() => {
+              this.addLive()
+            }, 1000)
           })
         }
       })
