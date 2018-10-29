@@ -45,7 +45,7 @@ export default {
     },
     count: { // 用于微信图片选择的数量
       type: Number,
-      default: 1
+      default: 9
     },
     multiple: {
       type: Boolean,
