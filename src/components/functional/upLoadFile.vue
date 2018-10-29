@@ -111,7 +111,6 @@ export default {
         let formData = new FormData()
         formData.append('attach_type', this.attach_type)
         this.fileUrl.forEach((e, index) => {
-          console.log(e)
           formData.append(`file${index}`, e)
         })
         uploadApi(formData).then(res => {
@@ -128,16 +127,15 @@ export default {
         count: this.count
       }
       this.wechatChooseImage(option).then(res => {
+        this.$emit('choseResult', res) // 选择图片的结果
         res.forEach(item => {
           this.wechatUploadImage(item).then(res0 => {
             let data = {
               mediaId: res0.serverId,
               type: 'img'
             }
-            console.log(res0, 11111111)
             this.wxUploadFile(data).then(res1 => {
-              console.log(res1, 11111111)
-              this.$emit('upLoadResult', res1.data)
+              this.$emit('upLoadResult', res1.data) // 上传图片的结果
             })
           })
         })

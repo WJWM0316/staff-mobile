@@ -23,10 +23,10 @@
         <div class="name">{{userInfo.base.realname}}</div>
         <div class="company">{{userInfo.base.realname}}</div>
         <ul class="funtional">
-          <li><i class="icon iconfont icon-icon_notice"></i>消息通知</li>
-          <li><i class="icon iconfont icon-icon_list_change1"></i>企业切换</li>
-          <li><i class="icon iconfont icon-icon_password1"></i>密码修改</li>
-          <li><i class="icon iconfont icon-icon_loginout"></i>登出登录</li>
+          <li @click.stop="jump('message')"><i class="icon iconfont icon-icon_notice"></i>消息通知</li>
+          <li @click.stop="jump('enterprise')"><i class="icon iconfont icon-icon_list_change1"></i>企业切换</li>
+          <li @click.stop="jump('change')"><i class="icon iconfont icon-icon_password1"></i>密码修改</li>
+          <li @click.stop="jump('outLogin')"><i class="icon iconfont icon-icon_loginout"></i>退出登录</li>
         </ul>
         <div class="logo"><img src="@a/icon/toturBg.png" alt=""></div>
       </div>
@@ -38,7 +38,9 @@ import { Popup } from 'vux'
 import { getTutorInfoApi } from '@/api/pages/center'
 import { getCourseTcApi } from '@/api/pages/course'
 import { getTutorLiveApi } from '@/api/pages/live'
+import { outLoginApi } from '@/api/pages/login'
 import infoCard from '@c/business/infoCard'
+import localstorage from '@u/localstorage'
 import { mapState } from 'vuex'
 export default {
   components: {
@@ -70,6 +72,35 @@ export default {
     }
   },
   methods: {
+    jump (type) {
+      switch (type) {
+        case 'message':
+          this.$router.push('/message')
+          break
+        case 'enterprise':
+          this.$router.push('/message')
+          break
+        case 'change':
+          this.$router.push('/resetPassword')
+          break
+        case 'outLogin':
+          this.$confirm({
+            content: '确定退出账号？',
+            confirmBack: () => {
+              outLoginApi().then(res => {
+                localstorage.remove('XPLUSCompany')
+                this.$toast({
+                  text: '退出成功',
+                  type: 'success',
+                  callBack: () => {
+                    this.$router.replace('/login')
+                  }
+                })
+              })
+            }
+          })
+      }
+    },
     choseTab (index) {
       this.tabIndex = index
       if (index === 1) {
