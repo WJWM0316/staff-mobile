@@ -24,7 +24,7 @@ Vue.axios.interceptors.request.use(
 
 let num = 0
 let token = localstorage.get('token')
-export const request = ({type = 'post', url, data = {}, needLoading = true, config = {}} = {}) => {
+export const request = ({type = 'post', url, data = {}, needLoading = true, changText = false, config = {}} = {}) => {
   // 微信授权接口host不一样
   if (url === '/bind/wechat') {
     Vue.axios.defaults.baseURL = `${settings.oauthUrl}/${company}`
@@ -36,6 +36,11 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
     }
   }
   let datas = type === 'get' ? {params: {...data}} : (data instanceof FormData ? data : {...data})
+  if (changText) {
+    store.dispatch('updata_loadingTxt', '正在上传中...')
+  } else {
+    store.dispatch('updata_loadingTxt', '努力加载中…')
+  }
   if (needLoading) {
     num++
     if (!store.getters.loadingStatus) {

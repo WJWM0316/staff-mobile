@@ -54,11 +54,7 @@
     <div class="file" v-if="fileType === 2">
       <div class="delBtn" @click="del"><i class="icon iconfont icon-live_btn_close"></i></div>
       <div class="content-file" @click.stop="fileOpen(fileData.url)">
-        <img v-show="fileData.extension === 'pdf'" class="file-logo" src="./../../assets/suffix/pdf.png" />
-        <img v-show="fileData.extension === 'xls' || fileData.extension === 'xlsx'" class="file-logo" src="../../assets/suffix/xls.png" />
-        <img v-show="fileData.extension === 'word'" class="file-logo" src="../../assets/suffix/word.png" />
-        <img v-show="fileData.extension === 'ppt'" class="file-logo" src="../../assets/suffix/ppt.png" />
-        <img v-show="fileData.extension === 'doc'" class="file-logo" src="@/assets/suffix/word.png" />
+        <img class="file-logo" :src="fileData.extension | fileCover" />
         <div class="file-desc">
           <p class="text">{{fileData.fileName}}</p>
           <p class="text">{{fileData.sizeM}}</p>
@@ -203,7 +199,7 @@ export default {
       let formData = new FormData()
       formData.append('attach_type', this.attachType)
       formData.append(this.fileName, nowImg)
-      return attachesApi(formData, config)
+      return attachesApi(formData, config, true)
     },
     /**
      * 删除图片
@@ -418,12 +414,16 @@ export default {
         }
         .close {
           position: absolute;
-          right: 3px;
-          top: 3px;
-          width: 20px;
-          height: 20px;
+          right: 0px;
+          top: 0px;
+          width: 26px;
+          height: 26px;
+          background: rgba(0,0,0,0.2);
+          display: flex;
+          align-items: center;
+          justify-content: center;
           >i{
-            font-size: 30px;/*px*/
+            font-size: 40px;/*px*/
            color: #FFFFFF;
           }
         }
@@ -446,7 +446,7 @@ export default {
         height: 102px;
         box-sizing: border-box;
         background: #FFFFFF;
-        border: 1px dashed #EDEDED;
+        border: 1px solid #EDEDED;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -496,7 +496,7 @@ export default {
         background: #CCCCCC;
         position: absolute;
         right: -7px;
-        top: -10px;
+        top: -7px;
         z-index: 7;
         line-height: 16px;
         text-align: center;
