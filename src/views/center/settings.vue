@@ -8,7 +8,7 @@
       <i class="icon2"><img src="@a/icon/btn_enter@2x.png" alt=""></i>
     </div>
     <div class="item">
-      <div>
+      <div @click.stop="jump('tutor')">
         <i class="icon3"><img src="@a/icon/icon_list_change@3x.png" alt=""></i>
         <span>切换身份</span>
       </div>
@@ -28,6 +28,9 @@ export default {
       switch (type) {
         case 'resetPdw':
           this.$router.push('/resetPassword')
+          break
+        case 'tutor':
+          this.$router.push('/homeTc')
       }
     },
     outLogin () {
