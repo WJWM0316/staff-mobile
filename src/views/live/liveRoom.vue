@@ -60,16 +60,16 @@
     </div>
     <!-- 普通学员操作权限 -->
     <template v-if="!liveDetail.isTutor">
-    <div class='footer'>
-      <div class='txtBar'>
-        <input class='bar' v-focus type='text' v-model='problemTxt' placeholder='请输入你的问题'>
+      <div class='footer'>
+        <div class='txtBar'>
+          <input class='bar' v-focus type='text' v-model='problemTxt' placeholder='请输入你的问题'>
+        </div>
+        <div class='submit' @click.stop='putQuestions'>提问</div>
+        <div class="area icon iconfont icon-live_btn_answers" @click.stop="openArea = true"></div>
       </div>
-      <div class='submit' @click.stop='putQuestions'>提问</div>
-      <div class="area icon iconfont icon-live_btn_answers" @click.stop="openArea = true"></div>
-    </div>
     </template>
     <!-- 导师操作权限 -->
-    <template v-else>
+    <template v-if="liveDetail.isTutor && liveDetail.status !== 1">
       <div class="sendArea">
         <div class="operArea">
           <span @click.stop="tutorOper('text')"><i class="icon1 iconfont icon-icon_writing" :class="{'curOperType': curOperType === 'text'}"></i></span>
@@ -97,6 +97,9 @@
           </div>
         </div>
       </div>
+    </template>
+    <template v-if="liveDetail.isTutor && liveDetail.status === 1">
+      <xButton class="startLiveBtn" @click.stop.native="startLive">点击开始直播</xButton>
     </template>
     <!-- 问答区 -->
     <questionArea :show="openArea" @closeArea="_closeArea" v-if="!liveDetail.isTutor"></questionArea>
@@ -231,10 +234,14 @@ export default {
       let res = await getLiveDetailApi({id: this.option.liveId})
       this.liveDetail = res.data
       this.option.teacherId = res.data.masterUid
-      // 直播未结束都可以加入直播
-      if (this.liveDetail.status !== 3) {
+      // 直播已开始且未结束都可以加入直播
+      if (this.liveDetail.status !== 3 && this.liveDetail.status !== 1) {
         this.addLive()
       }
+      // 直播已开始才要获取历史消息记录
+      if (this.liveDetail.status !== 1) {
+        this.getMessage({page: 1, action: 1})
+      } 
     },
     getMessage ({msgId, action, needLoading = true}) {
       let data = {
@@ -363,9 +370,12 @@ export default {
           if (!this.liveDetail.isTutor) return
           let data = {
             liveId: this.id,
-            status: 2
+            status: 3
           }
-          putUpdataLiveApi(data)
+          putUpdataLiveApi(data).then(res => {
+            this.liveDetail.status = 2
+            this.addLive()
+          })
         }
       })
     }
@@ -375,7 +385,6 @@ export default {
     this.id = id
     if (openArea) this.openArea = true
     this.getDetail()
-    this.getMessage({page: 1, action: 1})
   },
   mounted () {
     let that = this
@@ -704,6 +713,13 @@ export default {
       .typeBox {
         box-shadow: 0px -1px 0px 0px rgba(0,0,0,0.05);
       }
+    }
+    .startLiveBtn {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 49px;
     }
   }
 </style>

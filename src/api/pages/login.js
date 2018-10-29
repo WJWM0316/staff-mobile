@@ -26,3 +26,12 @@ export const resetPwdApi = (data, needLoading) => {
     needLoading: needLoading
   })
 }
+// 微信绑定登录
+export const bindWxLogin = (data, needLoading) => {
+  return request({
+    type: 'post',
+    url: `/bind/wechat`,
+    data,
+    needLoading: false
+  })
+}

@@ -30,9 +30,6 @@ const router = new Router({
 
 router.beforeEach(async (to, from, next) => {
   document.title = to.meta.title // 设置页面title
-  if (!to.matched.length) {
-    router.push('/404')
-  }
   next()
 })
 //
