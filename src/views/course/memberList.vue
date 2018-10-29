@@ -98,8 +98,11 @@ export default {
     }
     .icon {
       font-size: 40px; /*px*/
-      color: #929292;
+      color: #BCBCBC;
       padding-right: 10px;
+    }
+    .icon-btn_inf_outstanding{
+      color: #DCDCDC;
     }
     .txt {
       padding-right: 6px;
