@@ -11,7 +11,7 @@
     </template>
     <!--链接-->
     <div class="postLink" v-if="!isFile">
-      <a @click.stop="" class="content-file" :href="item.url">
+      <a @click.stop="toLink" class="content-file" :href="item.url">
         <img v-show="true" class="file-logo" src="@/assets/icon/postLink.png" />
         <div class="file-desc">
           <p class="text">{{item.title || '链接'}}</p>
@@ -44,8 +44,10 @@ export default{
   },
   methods: {
     fileOpen (url) {
+      console.log(11111111111111)
       window.location.href = url
-    }
+    },
+    toLink () {}
   }
 }
 </script>

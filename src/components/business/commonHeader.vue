@@ -89,7 +89,7 @@ export default {
       } else if (this.type === '3') {
         this.$router.push({path: '/liveMemberList', query: {id: this.pageInfo.liveId}})
       } else {
-        if (!this.pageInfo.isJoin) return
+        if (!this.pageInfo.isJoin && !this.pageInfo.isMaster) return
         this.$router.push({path: '/memberList', query: {id: this.pageInfo.id}})
       }
     }

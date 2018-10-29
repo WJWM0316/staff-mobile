@@ -68,7 +68,7 @@
     <!--链接-->
     <div class="postLink" v-if="fileType === 3">
       <div class="delBtn" @click="del"><i class="icon iconfont icon-live_btn_close"></i></div>
-      <div class="content-file" @click.stop="fileOpen('https://cdnstatic.ziwork.com/test/file/2018-05-29/4475f3474790d39f9e051b46480fea02.xlsx')">
+      <div class="content-file" @click.stop="tolink">
         <img v-show="true" class="file-logo" src="@/assets/icon/postLink.png" />
         <div class="file-desc">
           <p class="text">{{inpLink}}</p>
@@ -311,6 +311,10 @@ export default {
     },
     fileOpen (url) {
       window.location.href = url
+    },
+    /* 跳转链接 */
+    tolink () {
+      // window.location.href = this.inpLink
     }
   },
   created () {
