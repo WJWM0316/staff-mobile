@@ -289,6 +289,11 @@ export default {
 .weui-dialog {
   border-radius: 6px;
 }
+@media screen and (min-width: 1024px) {
+  .weui-dialog {
+    width: auto;
+  }
+}
 .vux-confirm, .vux-alert {
   .weui-dialog__ft:after {
     display: none;
