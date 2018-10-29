@@ -210,7 +210,6 @@ export default {
       this.nowChoosePunch = item
     },
     async handleAddActoinItem (key, item) {
-      console.log(key, item)
       if (!item) return
       console.log(this.nowChoosePunch.isExcellentCard === 0, this.nowChoosePunch.isExcellentCard)
       let param = {
