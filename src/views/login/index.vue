@@ -21,7 +21,8 @@
 </template>
 <script>
 import { userInfoApi } from '@/api/pages/center'
-import { loginApi, bindWxLogin, tokenLogin } from '@/api/pages/login'
+import { loginApi } from '@/api/pages/login'
+import { wxLogin } from '@/api/require'
 import localstorage from '@u/localstorage'
 import ws from '@u/websocket'
 import settings from '@/config'
@@ -72,16 +73,7 @@ export default {
       } else {
         data.is_bind = this.$route.query.is_bind
         data.bind_code = this.$route.query.bind_code
-        bindWxLogin(data).then(res => {
-          if (res.httpStatus === 200) {
-            localstorage.set('XPLUSCompany', res.data.companies[0].code) // 储存公司名
-            localstorage.set('ssoToken', res.data.ssoToken) // 储存ssoToken值
-            tokenLogin({sso_token: res.data.ssoToken}).then(res0 => {
-              localstorage.set('token', res0.data.token) // 储存token值
-              location.href = `${location.host}/${res.data.companies[0].code}/home` // 登录成功跳转到相应的公司
-            })
-          }
-        })
+        wxLogin(data)
       }
     },
     userInfo () {

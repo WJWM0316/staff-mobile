@@ -6,6 +6,7 @@ import store from '../store/index.js'
 import router from '../router/index.js'
 import localstorage from '@u/localstorage'
 import browser from '@u/browser'
+import { bindWxLogin, tokenLogin } from '@/api/pages/login'
 Vue.use(VueAxios, axios)
 let company = location.href.split('/')[3]
 // 动态设置本地和线上接口域名
@@ -62,5 +63,21 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
     }
     Vue.$vux.toast.text(err.response.data.msg, 'bottom')
     return Promise.reject(err.response.data.msg)
+  })
+}
+
+export const wxLogin = ({is_bind, bind_code, email, password}) => {
+  return new Promise((resolve, reject) => {
+    bindWxLogin(data).then(res => {
+      if (res.httpStatus === 200) {
+        localstorage.set('XPLUSCompany', res.data.companies[0].code) // 储存公司名
+        localstorage.set('ssoToken', res.data.ssoToken) // 储存ssoToken值
+        tokenLogin({sso_token: res.data.ssoToken}).then(res0 => {
+          localstorage.set('token', res0.data.token) // 储存token值
+          location.href = `${location.href.split('/')[0]}//${location.host}/${res.data.companies[0].code}/home` // 登录成功跳转到相应的公司
+          resolve(res0)
+        })
+      }
+    })
   })
 }

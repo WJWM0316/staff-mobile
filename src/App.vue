@@ -37,6 +37,7 @@ import { userInfoApi } from '@/api/pages/center'
 import { Tabbar, TabbarItem } from 'vux'
 import { mapState, mapActions } from 'vuex'
 import { bindWxLogin, tokenLogin } from '@/api/pages/login'
+import { wxLogin } from '@/api/require'
 import WechatMixin from '@/mixins/wechat'
 import settings from '@/config'
 import ws from '@u/websocket'
@@ -195,16 +196,16 @@ export default {
       })
     },
     creatWs () { // 开启websocket
-      let company = location.href.split('/')[3] || 'tiger'
+      let company = location.href.split('/')[3]
       let websocketUrl = settings.websocketUrl
       ws.create(`${websocketUrl}/${company}`)
     }
   },
   created () {
     this.creatWs()
-    if (!this.userInfo) {
-      this.getUserInfo()
-    }
+    // if (!this.userInfo) {
+    //   this.getUserInfo()
+    // }
   },
   mounted () {
   }
