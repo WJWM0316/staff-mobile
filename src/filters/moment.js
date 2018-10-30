@@ -10,7 +10,7 @@ moment.locale('zh-cn')
  * 日期过滤
  */
 Vue.filter('date', (value, format = 'YYYY-MM-DD HH:mm:ss') => moment(value).format(format))
-// MMMDo hh:mm  x月x日 xx:xx
+// MMMDo HH:mm  x月x日 xx:xx
 // moment().format('L');    // 2018-09-26
 // moment().format('LL');   // 2018年9月26日
 

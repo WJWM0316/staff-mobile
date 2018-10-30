@@ -4,7 +4,7 @@
       <div class="msg">
         <p class="name">{{pageInfo.realname}}</p>
         <p class="desrc" v-if="pageInfo.flag">{{pageInfo.flag}}</p>
-        <p class="desrc"><span v-if="pageInfo.groupName">{{pageInfo.groupName}} | </span>{{pageInfo.occupation}}</p>
+        <p class="desrc" v-else><span v-if="pageInfo.groupName">{{pageInfo.groupName}} | </span>{{pageInfo.occupation}}</p>
         <p class="editBtn" @click.stop="jump('edit')">点击编辑资料</p>
       </div>
       <div class="photo defaultImg">

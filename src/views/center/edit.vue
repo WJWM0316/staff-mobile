@@ -114,10 +114,10 @@ export default {
         wechat: this.pageInfo.wechat
       }
       let text = ''
-      if (!PHONE.test(data.mobile)) {
+      if (data.mobile && !PHONE.test(data.mobile)) {
         text = '手机号格式不正确'
       }
-      if (!WECHAT.test(data.wechat)) {
+      if (data.wechat && !WECHAT.test(data.wechat)) {
         text = '微信号格式不正确'
       }
       if (text !== '') {

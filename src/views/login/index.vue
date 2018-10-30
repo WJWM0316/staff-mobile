@@ -14,7 +14,7 @@
       <button class="btn" @click.stop="login">登录</button>
     </div>
     <div class="btnBox">
-      <span @click.stop="wxlogin">微信登陆</span>
+      <span @click.stop="wxlogin" v-if="$route.query.is_bind">微信登陆</span>
       <span @click.stop="toggle">切换导师版</span>
       <span @click.stop="forget">忘记密码</span>
     </div>
@@ -53,18 +53,14 @@ export default {
         // localstorage.set('account', {account: this.account, password: this.password}) // 保存账号密码
         let company = location.href.split('/')[3]
         localstorage.set('XPLUSCompany', company) // 储存公司名
-        let websocketUrl = settings.websocketUrl
-        // 重新启动ws
-        ws.create(`${websocketUrl}/${company}`)
-        userInfoApi().then(res0 => {
-          this.$store.dispatch('updata_userInfo', res0.data)
-          this.$toast({
-            text: '登录成功',
-            type: 'success',
-            callBack: () => {
-              history.back()
+        this.$toast({
+          text: '登录成功',
+          type: 'success',
+          callBack: () => {
+            if (this.$route.query.redirect_url) {
+              location.href = decodeURIComponent(this.$route.query.redirect_url)
             }
-          })
+          }
         })
       }
       if (!this.$route.query.bind_code) {
@@ -83,6 +79,8 @@ export default {
         is_bind: 1
       }
       wxLogin(data)
+    },
+    toggle () {
     }
   },
   created () {

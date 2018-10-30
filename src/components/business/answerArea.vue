@@ -267,7 +267,6 @@ export default {
             this.option.answerInfo.avatar = this.option.answerInfo.masterAvatar
             data.answerInfo = this.option.answerInfo
             data.status = 1
-            console.log(data)
             this.openArea = false
             this.scrollAll.list.splice(index, 1, data)
           }

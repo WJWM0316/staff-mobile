@@ -108,9 +108,9 @@ export default {
         data.status = '直播预告'
         // 超过一天
         if (this.homeInfo.lives[0].expectedStartTime * 1000 - new Date().getTime() > 24 * 3600 * 1000) {
-          data.date = 'MMMDo hh:mm'
+          data.date = 'MMMDo HH:mm'
         } else {
-          data.date = 'hh:mm'
+          data.date = 'HH:mm'
         }
       } else {
         data.status = '直播进行中'

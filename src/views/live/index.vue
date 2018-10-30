@@ -24,14 +24,14 @@
               <i class="icon"></i>
               <span class="txt">近期直播</span>
             </div>
-            <infoCard type="3" v-for="item in all.list1" :key='item.liveId+22' :item="item"></infoCard>
+            <infoCard type="3" v-for="item in all.list1" :key='item.liveId' :item="item"></infoCard>
           </template>
           <template v-if="all.list2.length > 0">
             <div class="head">
               <i class="icon"></i>
               <span class="txt">回顾直播</span>
             </div>
-            <infoCard type="3" v-for="item in all.list2" :key='item.liveId+33' :item="item"></infoCard>
+            <infoCard type="3" v-for="item in all.list2" :key='item.liveId' :item="item"></infoCard>
           </template>
         </div>
         <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
@@ -73,12 +73,12 @@ export default {
       this.tabIndex = index
       if (this.tabIndex === 1) {
         this.$router.push('/live?type=all')
-        if (!this.all.isLoad) {
+        if (!this.all.isLoad && !this.all.noData) {
           this.getRecentList({page: 1}, true)
         }
       } else {
         this.$router.push('/live')
-        if (this.joined.list.length === 0) {
+        if (this.joined.list.length === 0 && !this.joined.noData) {
           this.getJoinList({page: 1}, true)
         }
       }

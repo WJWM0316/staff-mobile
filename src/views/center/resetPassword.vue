@@ -10,7 +10,7 @@
       <input type="password" v-model="newPassword" placeholder="请输入新密码">
     </div>
     <div class="item border-bottom-1px">
-      <span class="txt">确认密码</span>
+      <span class="txt">新密码</span>
       <input type="password" v-model="confirmPassword" placeholder="请再次输入新密码">
     </div>
     <xButton class="btn" @click.native="reset" :disabled="disabled">确定修改密码</xButton>
