@@ -61,7 +61,7 @@
           <div class="reply" v-for="(reply,index) in item.replyCommentList" :key="index">
             <div v-if="reply.ancestorCommentId !== reply.parentCommentId">
               <p>
-                <span class="favor-name" @click.stop="toUserInfo(reply.uid)">{{reply.userName}}</span> 回复 <span class="favor-name" @click.stop="toUserInfo(reply.uid)">{{reply.toUserName}}</span>：{{reply.content}}
+                <span class="favor-name" @click.stop="toUserInfo(reply.uid)">{{reply.userName}}</span> 回复 <span class="favor-name" @click.stop="toUserInfo(reply.toUid)">{{reply.toUserName}}</span>：{{reply.content}}
               </p>
             </div>
             <div v-else>
