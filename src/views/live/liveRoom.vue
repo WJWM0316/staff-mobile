@@ -74,7 +74,7 @@
         <div class="operArea">
           <span @click.stop="tutorOper('text')"><i class="icon1 iconfont icon-icon_writing" :class="{'curOperType': curOperType === 'text'}"></i></span>
           <span @click.stop="tutorOper('audio')"><i class="icon2 iconfont icon-btn_record" :class="{'curOperType': curOperType === 'audio'}"></i></span>
-          <span @click.stop="tutorOper('img')">
+          <span @click="tutorOper('img')">
             <i class="icon3 iconfont icon-btn_photo"></i>
             <upLoadFile
              class="upLoadImg"
@@ -186,6 +186,7 @@ export default {
     },
     tutorOper (type) {
       this.curOperType = type
+      console.log(this.curOperType)
       setTimeout(() => {
         this.scrollerHeight = this.$refs.main.childNodes[0].clientHeight + 'px'
       }, 300)
@@ -204,14 +205,10 @@ export default {
       }
     },
     sendMsg (tutorTxt) {
+      this.option.type = this.curOperType
       if (this.curOperType === 'text') {
-        this.option.type = 'text'
         this.option.content = tutorTxt
-      } else if (this.curOperType === 'img') {
-        this.option.type = 'img'
-        this.option.fileId = this.fileId
       } else {
-        this.option.type = 'audio'
         this.option.fileId = this.fileId
       }
       sendLiveMsgApi(this.option).then(res => {

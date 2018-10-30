@@ -2,7 +2,9 @@
   <div class="m-community">
     <!--灯塔头部-->
     <div class="cover-container" :class="{circle: type === '2'}">
-      <div class="cover"></div>
+      <div class="cover">
+        <img src="@/assets/icon/headerbg.png"/>
+      </div>
       <span class="header-photo"  v-if="pageInfo.coverImg">
         <img :src="pageInfo.coverImg.middleUrl"/>
       </span>
@@ -106,6 +108,10 @@ export default {
       /*background: #F2F2F2;*/
       width: 100%;
       height: 90px;
+      img{
+        width: 100%;
+        height: 100%;
+      }
     }
     /*头部改变新增属性*/
     position: relative;
@@ -132,7 +138,6 @@ export default {
   .circle{
     height: 101px;
     .cover{
-      background-image: url(../../assets/icon/headerbg.png);
       background-repeat: no-repeat;
       background-size: 100% 100%;
       height: 101px;

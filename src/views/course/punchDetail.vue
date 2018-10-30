@@ -1,7 +1,7 @@
 <template>
   <div class="postDetail" v-if="item">
     <div class="header">
-      <contentheader :showCommunicate="false" :showBorder="false" :item="item" @disableOperationEvents="operation"></contentheader>
+      <contentheader :showCommunicate="false" :showBorder="false" :item="item" @disableOperationEvents="operation" @setPostTop="setPostTop"></contentheader>
     </div>
     <div class="container">
       <div class="fixed-box" ref="ceiling-box">
@@ -52,6 +52,7 @@
                       @send="sendComment"
                       ref="input"
       ></suspension-input>
+      <actionsheet v-model="addActionsConfig.show" :menus="nowChoosePunch.isExcellentCard === 1?addActionsConfig.menus2:addActionsConfig.menus" show-cancel @on-click-menu="handleAddActoinItem" />
   </div>
 </template>
 
@@ -59,13 +60,15 @@
 import classmateItem from '@c/business/classmateItem'
 import contentheader from '@c/business/dynamicItem'
 import discussItem from '@c/business/discussItem'
+import { Actionsheet } from 'vux'
 import suspensionInput from '@c/functional/suspensionInput'
-import { getPunchCardDetailsApi, courseCardCommentApi, getFavorListApi, getCommentListApi, getHotCommentListApi } from '@/api/pages/course'
+import { getPunchCardDetailsApi, courseCardCommentApi, getFavorListApi, getCommentListApi, getHotCommentListApi, setExcellentCourseCardApi } from '@/api/pages/course'
 export default {
   components: {
     contentheader,
     classmateItem,
     discussItem,
+    Actionsheet,
     suspensionInput
   },
   data () {
@@ -80,7 +83,19 @@ export default {
       page: 1, // 评论列表当前页数
       favorList: [], // 点赞列表
       commentList: [], // 评论列表
-      hotCommentNum: '' // 热门评论条数
+      hotCommentNum: '', // 热门评论条数
+      nowChoosePunch: '', // 当前选择的要评选或取消评选优秀打卡的打卡
+      addActionsConfig: {
+        show: false,
+        menus: [{
+          label: ' 选为优秀打卡 ',
+          value: ' selected '
+        }],
+        menus2: [{
+          label: ' 取消优秀打卡 ',
+          value: ' disSelect '
+        }]
+      }
     }
   },
   methods: {
@@ -187,6 +202,27 @@ export default {
     delComment (index) {
       console.log(index)
       this.commentList.splice(index.index, 1)
+    },
+    /* 评选优秀打卡 */
+    async setPostTop (item) {
+      console.log(item)
+      this.addActionsConfig.show = true
+      this.nowChoosePunch = item
+    },
+    async handleAddActoinItem (key, item) {
+      if (!item) return
+      console.log(this.nowChoosePunch.isExcellentCard === 0, this.nowChoosePunch.isExcellentCard)
+      let param = {
+        course_section_card_id: this.nowChoosePunch.courseSectionCardId,
+        is_set_excellent_card: this.nowChoosePunch.isExcellentCard === 0 ? 1 : 0
+      }
+      await setExcellentCourseCardApi(param)
+      await this.getPunchCardDetails()
+      if (this.nowChoosePunch.isExcellentCard) {
+        this.$toast({text: '已取消优秀打卡'})
+      } else {
+        this.$toast({text: '设置优秀打卡成功', type: 'success'})
+      }
     }
   },
   created () {

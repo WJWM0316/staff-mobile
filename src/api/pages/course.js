@@ -93,11 +93,12 @@ export const getPunchCardDetailsApi = (data) => {
   })
 }
 // 上传图片
-export const attachesApi = (data, config) => {
+export const attachesApi = (data, config, changText) => {
   return request({
     url: `/attaches`,
     type: 'post',
     config,
+    changText, // 修改loading文案
     data
   })
 }

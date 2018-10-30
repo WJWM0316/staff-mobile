@@ -391,9 +391,15 @@ export default {
           height: 136px;
         }
         .item-image.four {
-          width: 136px;
-          height: 136px;
+          width: 108px;
+          height: 108px;
           margin-left: 5px;
+          &:nth-of-type(2n+1){
+            margin-left: 0;
+          }
+          &:nth-of-type(2n){
+            margin-right: 108px;
+          }
         }
       }
       /*  视频部分  */
