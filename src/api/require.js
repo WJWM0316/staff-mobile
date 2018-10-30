@@ -19,15 +19,17 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
   // 微信授权接口host不一样
   if (url === '/sso_login/bind/wechat') {
     Vue.axios.defaults.baseURL = `${settings.oauthUrl}/`
-  }
-  if (url === '/auth/token') {
+  } else if (url === '/auth/token') {
     Vue.axios.defaults.baseURL = `${settings.workUrl}/${company}`
+  } else {
+    if (Vue.axios.defaults.baseURL !== `${settings.host}/${company}`) Vue.axios.defaults.baseURL = `${settings.host}/${company}`
   }
-  
   // 开发环境写死账号
   if (process.env.NODE_ENV !== 'production' && token) {
     if (token) {
       Vue.axios.defaults.headers.common['Authorization'] = token
+    }
+    if (ssoToken) {
       Vue.axios.defaults.headers.common['Authorization-Sso'] = ssoToken
     }
   }

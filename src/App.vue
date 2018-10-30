@@ -36,11 +36,12 @@
 import { userInfoApi } from '@/api/pages/center'
 import { Tabbar, TabbarItem } from 'vux'
 import { mapState, mapActions } from 'vuex'
-import { bindWxLogin } from '@/api/pages/login'
+import { bindWxLogin, tokenLogin } from '@/api/pages/login'
 import WechatMixin from '@/mixins/wechat'
 import settings from '@/config'
 import ws from '@u/websocket'
 import Vue from 'vue'
+import localstorage from '@u/localstorage'
 export default {
   mixins: [WechatMixin],
   components: {
@@ -112,7 +113,16 @@ export default {
             bind_code: this.$route.query.bind_code,
             is_bind: this.$route.query.is_bind
           }
-          bindWxLogin(data).then(res => {})
+          bindWxLogin(data).then(res => {
+            if (res.httpStatus === 200) {
+              localstorage.set('XPLUSCompany', res.data.companies[0].code) // 储存公司名
+              localstorage.set('ssoToken', res.data.ssoToken) // 储存ssoToken值
+              tokenLogin({sso_token: res.data.ssoToken}).then(res0 => {
+                localstorage.set('token', res0.data.token) // 储存token值
+                location.href = `${location.host}/${res.data.companies[0].code}/home` // 登录成功跳转到相应的公司
+              })
+            }
+          })
         } else {
           data = {
             bind_code: this.$route.query.bind_code,
