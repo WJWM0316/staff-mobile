@@ -25,13 +25,11 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
     if (Vue.axios.defaults.baseURL !== `${settings.host}/${company}`) Vue.axios.defaults.baseURL = `${settings.host}/${company}`
   }
   // 开发环境写死账号
-  if (process.env.NODE_ENV !== 'production' && token) {
-    if (token) {
-      Vue.axios.defaults.headers.common['Authorization'] = token
-    }
-    if (ssoToken) {
-      Vue.axios.defaults.headers.common['Authorization-Sso'] = ssoToken
-    }
+  if (token) {
+    Vue.axios.defaults.headers.common['Authorization'] = token
+  }
+  if (ssoToken) {
+    Vue.axios.defaults.headers.common['Authorization-Sso'] = ssoToken
   }
   let datas = type === 'get' ? {params: {...data}} : (data instanceof FormData ? data : {...data})
   if (needLoading) {
