@@ -109,21 +109,13 @@ export default {
       // 微信授权回来需要绑定
       let data = null
       if (route.query.bind_code) {
+        localstorage.set('bind_code', route.query.bind_code)
         if (route.query.is_bind === '1') {
           data = {
             bind_code: this.$route.query.bind_code,
             is_bind: this.$route.query.is_bind
           }
-          bindWxLogin(data).then(res => {
-            if (res.httpStatus === 200) {
-              localstorage.set('XPLUSCompany', res.data.companies[0].code) // 储存公司名
-              localstorage.set('ssoToken', res.data.ssoToken) // 储存ssoToken值
-              tokenLogin({sso_token: res.data.ssoToken}).then(res0 => {
-                localstorage.set('token', res0.data.token) // 储存token值
-                location.href = `${location.href.split('/')[0]}//${location.host}/${res.data.companies[0].code}/home` // 登录成功跳转到相应的公司
-              })
-            }
-          })
+          wxLogin(data)
         } else {
           data = {
             bind_code: this.$route.query.bind_code,

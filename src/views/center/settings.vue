@@ -45,7 +45,7 @@ export default {
               text: '退出成功',
               type: 'success',
               callBack: () => {
-                this.$router.replace('/login')
+                this.$router.replace('/login?is_bind=1')
               }
             })
           })

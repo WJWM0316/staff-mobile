@@ -13,7 +13,7 @@
         <span>更多介绍</span>
         <i class='icon iconfont icon-list_live_icon_more'></i>
       </div>
-      <div class="end" v-else @click.stop="endLive">
+      <div class="end" v-if="liveDetail.isTutor && liveDetail.status !== 3" @click.stop="endLive">
         <i class='icon iconfont icon-close'></i>
       </div>
     </div>
@@ -68,8 +68,12 @@
         <div class="area icon iconfont icon-live_btn_answers" @click.stop="openArea = true"></div>
       </div>
     </template>
-    <!-- 导师操作权限 -->
-    <template v-if="liveDetail.isTutor && liveDetail.status !== 1">
+    <!-- 导师操作权限 直播未开始-->
+    <template v-if="liveDetail.isTutor && liveDetail.status === 1">
+      <xButton class="startLiveBtn" @click.stop.native="startLive">点击开始直播</xButton>
+    </template>
+    <!-- 导师操作权限 直播进行中-->
+    <template v-if="liveDetail.isTutor && liveDetail.status === 2">
       <div class="sendArea">
         <div class="operArea">
           <span @click.stop="tutorOper('text')"><i class="icon1 iconfont icon-icon_writing" :class="{'curOperType': curOperType === 'text'}"></i></span>
@@ -98,8 +102,12 @@
         </div>
       </div>
     </template>
-    <template v-if="liveDetail.isTutor && liveDetail.status === 1">
-      <xButton class="startLiveBtn" @click.stop.native="startLive">点击开始直播</xButton>
+    <!-- 导师操作权限 直播已结束-->
+    <template v-if="liveDetail.isTutor && liveDetail.status === 3">
+      <xButton class="startLiveBtn" @click.stop.native="openArea = true">
+        <p class="enter"><span>进入问答区</span></p>
+        <p class="number"><span>直播共收到100条提问</span></p>
+      </xButton>
     </template>
     <!-- 问答区 -->
     <questionArea :show="openArea" @closeArea="_closeArea" v-if="!liveDetail.isTutor"></questionArea>
@@ -723,6 +731,15 @@ export default {
       left: 0;
       width: 100%;
       height: 49px;
+      .enter, .number {
+        color: #354048;
+        font-size: 30px; /*px*/
+        line-height: 19px;
+        &.number {
+          font-size: 24px; /*px*/
+        }
+        > span {}
+      }
     }
   }
 </style>

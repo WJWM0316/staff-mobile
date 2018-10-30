@@ -69,6 +69,7 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
 export const wxLogin = (data) => {
   return new Promise((resolve, reject) => {
     bindWxLogin(data).then(res => {
+      // 绑定微信号成功
       if (res.httpStatus === 200) {
         localstorage.set('XPLUSCompany', res.data.companies[0].code) // 储存公司名
         localstorage.set('ssoToken', res.data.ssoToken) // 储存ssoToken值
@@ -77,6 +78,11 @@ export const wxLogin = (data) => {
           location.href = `${location.href.split('/')[0]}//${location.host}/${res.data.companies[0].code}/home` // 登录成功跳转到相应的公司
           resolve(res0)
         })
+      }
+      if (res.httpStatus === 400) {
+        if (browser.isWechat && !router.history.current.query.bind_code) {
+          location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(location.href)}`
+        }
       }
     })
   })
