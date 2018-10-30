@@ -108,7 +108,7 @@ export default {
   .wrap {
     box-sizing: border-box;
     padding: 44px 40px;
-    background: #000 url('https://xplus-uploads-test.oss-cn-shenzhen.aliyuncs.com/default/loginBg2%403x.png') no-repeat center center;
+    background: #000 url('https://xplus-uploads-test.oss-cn-shenzhen.aliyuncs.com/default/loginBg2.png') no-repeat center center;
     background-size: 100% 100%;
     position: relative;
     .title {
