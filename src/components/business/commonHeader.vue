@@ -240,7 +240,7 @@ export default {
       font-weight: 700;
       border-radius: 15px;
       >i{
-        font-size: 25px;/*px*/
+        font-size: 30px;/*px*/
       }
     }
   }
