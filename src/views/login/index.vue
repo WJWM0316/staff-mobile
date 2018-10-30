@@ -14,6 +14,7 @@
       <button class="btn" @click.stop="login">登录</button>
     </div>
     <div class="btnBox">
+      <span @click.stop="wxlogin">微信登陆</span>
       <span @click.stop="toggle">切换导师版</span>
       <span @click.stop="forget">忘记密码</span>
     </div>
@@ -22,6 +23,7 @@
 <script>
 import { userInfoApi } from '@/api/pages/center'
 import { loginApi } from '@/api/pages/login'
+import { wxLogin } from '@/api/require'
 import localstorage from '@u/localstorage'
 import ws from '@u/websocket'
 import settings from '@/config'
@@ -46,10 +48,10 @@ export default {
         email: this.account,
         password: this.password
       }
-      loginApi(data).then(res => {
+      let loginCallBack = (res) => {
         localstorage.set('token', res.data.token) // 储存token值
-        localstorage.set('account', {account: this.account, password: this.password}) // 保存账号密码
-        let company = location.href.split('/')[3] || 'tiger'
+        // localstorage.set('account', {account: this.account, password: this.password}) // 保存账号密码
+        let company = location.href.split('/')[3]
         localstorage.set('XPLUSCompany', company) // 储存公司名
         let websocketUrl = settings.websocketUrl
         // 重新启动ws
@@ -64,22 +66,26 @@ export default {
             }
           })
         })
-      })
+      }
+      if (!this.$route.query.bind_code) {
+        loginApi(data).then(res => {
+          loginCallBack(res)
+        })
+      } else {
+        data.is_bind = this.$route.query.is_bind
+        data.bind_code = this.$route.query.bind_code
+        wxLogin(data)
+      }
     },
-    userInfo () {
-      return userInfoApi('', false).then(res => {
-        return res
-      })
-    },
-    init () {
-      return Promise.all([this.userInfo()])
+    wxlogin () {
+      let data = {
+        bind_code: localstorage.get('bind_code'),
+        is_bind: 1
+      }
+      wxLogin(data)
     }
   },
   created () {
-    let data = localstorage.get('account')
-    if (!data) return
-    this.account = data.account
-    this.password = data.password
   },
   mounted () {
     this.winHeight = window.innerHeight + 'px'
@@ -90,7 +96,7 @@ export default {
   .wrap {
     box-sizing: border-box;
     padding: 44px 40px;
-    background: #000 url('https://xplus-uploads-test.oss-cn-shenzhen.aliyuncs.com/default/loginBg2%403x.png') no-repeat center center;
+    background: #000 url('https://xplus-uploads-test.oss-cn-shenzhen.aliyuncs.com/default/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20181030153705.jpg') no-repeat center center;
     background-size: 100% 100%;
     position: relative;
     .title {
@@ -168,7 +174,7 @@ export default {
     }
     .btnBox {
       width: 100%;
-      padding: 0 80px;
+      padding: 0 70px;
       position: absolute;
       bottom: 54px;
       font-weight: 300;

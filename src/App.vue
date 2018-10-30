@@ -36,11 +36,13 @@
 import { userInfoApi } from '@/api/pages/center'
 import { Tabbar, TabbarItem } from 'vux'
 import { mapState, mapActions } from 'vuex'
-import { bindWxLogin } from '@/api/pages/login'
+import { bindWxLogin, tokenLogin } from '@/api/pages/login'
+import { wxLogin } from '@/api/require'
 import WechatMixin from '@/mixins/wechat'
 import settings from '@/config'
 import ws from '@u/websocket'
 import Vue from 'vue'
+import localstorage from '@u/localstorage'
 export default {
   mixins: [WechatMixin],
   components: {
@@ -105,12 +107,22 @@ export default {
         case 'center' : this.tabIndex = 3; break
       }
       // 微信授权回来需要绑定
-      if (this.$route.query.is_bind) {
-        let data = {
-          bind_code: this.$route.query.bind_code,
-          is_bind: this.$route.query.is_bind
+      let data = null
+      if (route.query.bind_code) {
+        localstorage.set('bind_code', route.query.bind_code)
+        if (route.query.is_bind === '1') {
+          data = {
+            bind_code: this.$route.query.bind_code,
+            is_bind: this.$route.query.is_bind
+          }
+          wxLogin(data)
+        } else {
+          data = {
+            bind_code: this.$route.query.bind_code,
+            is_bind: this.$route.query.is_bind
+          }
+          this.$router.push(`/login?bind_code=${data.bind_code}&is_bind=${data.is_bind}`)
         }
-        bindWxLogin(data).then(res => {})
       }
     },
     tabIndex (index) {
@@ -176,16 +188,16 @@ export default {
       })
     },
     creatWs () { // 开启websocket
-      let company = location.href.split('/')[3] || 'tiger'
+      let company = location.href.split('/')[3]
       let websocketUrl = settings.websocketUrl
       ws.create(`${websocketUrl}/${company}`)
     }
   },
   created () {
     this.creatWs()
-    if (!this.userInfo) {
-      this.getUserInfo()
-    }
+    // if (!this.userInfo) {
+    //   this.getUserInfo()
+    // }
   },
   mounted () {
   }
@@ -291,7 +303,7 @@ export default {
 }
 @media screen and (min-width: 1024px) {
   .weui-dialog {
-    width: auto;
+    width: 80%;
   }
 }
 .vux-confirm, .vux-alert {

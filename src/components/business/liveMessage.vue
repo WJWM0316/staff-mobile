@@ -19,6 +19,7 @@
       ></audio-message>
       <img
         class="imgPriview"
+        v-preview
         v-if="messageData.type === 'img'"
         :src="messageData.file.middleUrl" :data-src="messageData.file.url">
     </div>

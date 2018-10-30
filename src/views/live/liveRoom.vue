@@ -13,7 +13,7 @@
         <span>更多介绍</span>
         <i class='icon iconfont icon-list_live_icon_more'></i>
       </div>
-      <div class="end" v-else @click.stop="endLive">
+      <div class="end" v-if="liveDetail.isTutor && liveDetail.status !== 3" @click.stop="endLive">
         <i class='icon iconfont icon-close'></i>
       </div>
     </div>
@@ -68,13 +68,17 @@
         <div class="area icon iconfont icon-live_btn_answers" @click.stop="openArea = true"></div>
       </div>
     </template>
-    <!-- 导师操作权限 -->
-    <template v-if="liveDetail.isTutor && liveDetail.status !== 1">
+    <!-- 导师操作权限 直播未开始-->
+    <template v-if="liveDetail.isTutor && liveDetail.status === 1">
+      <xButton class="startLiveBtn" @click.stop.native="startLive">点击开始直播</xButton>
+    </template>
+    <!-- 导师操作权限 直播进行中-->
+    <template v-if="liveDetail.isTutor && liveDetail.status === 2">
       <div class="sendArea">
         <div class="operArea">
           <span @click.stop="tutorOper('text')"><i class="icon1 iconfont icon-icon_writing" :class="{'curOperType': curOperType === 'text'}"></i></span>
           <span @click.stop="tutorOper('audio')"><i class="icon2 iconfont icon-btn_record" :class="{'curOperType': curOperType === 'audio'}"></i></span>
-          <span @click.stop="tutorOper('img')">
+          <span @click="tutorOper('img')">
             <i class="icon3 iconfont icon-btn_photo"></i>
             <upLoadFile
              class="upLoadImg"
@@ -98,8 +102,12 @@
         </div>
       </div>
     </template>
-    <template v-if="liveDetail.isTutor && liveDetail.status === 1">
-      <xButton class="startLiveBtn" @click.stop.native="startLive">点击开始直播</xButton>
+    <!-- 导师操作权限 直播已结束-->
+    <template v-if="liveDetail.isTutor && liveDetail.status === 3">
+      <xButton class="startLiveBtn" @click.stop.native="openArea = true">
+        <p class="enter"><span>进入问答区</span></p>
+        <p class="number"><span>直播共收到100条提问</span></p>
+      </xButton>
     </template>
     <!-- 问答区 -->
     <questionArea :show="openArea" @closeArea="_closeArea" v-if="!liveDetail.isTutor"></questionArea>
@@ -186,6 +194,7 @@ export default {
     },
     tutorOper (type) {
       this.curOperType = type
+      console.log(this.curOperType)
       setTimeout(() => {
         this.scrollerHeight = this.$refs.main.childNodes[0].clientHeight + 'px'
       }, 300)
@@ -204,14 +213,10 @@ export default {
       }
     },
     sendMsg (tutorTxt) {
+      this.option.type = this.curOperType
       if (this.curOperType === 'text') {
-        this.option.type = 'text'
         this.option.content = tutorTxt
-      } else if (this.curOperType === 'img') {
-        this.option.type = 'img'
-        this.option.fileId = this.fileId
       } else {
-        this.option.type = 'audio'
         this.option.fileId = this.fileId
       }
       sendLiveMsgApi(this.option).then(res => {
@@ -358,7 +363,10 @@ export default {
             liveId: this.id,
             status: 3
           }
-          putUpdataLiveApi(data)
+          putUpdataLiveApi(data).then(res => {
+            this.liveDetail.status = 3
+            this.liveDetail.endTime = new Date().getTime()
+          })
         }
       })
     },
@@ -370,10 +378,11 @@ export default {
           if (!this.liveDetail.isTutor) return
           let data = {
             liveId: this.id,
-            status: 3
+            status: 2
           }
           putUpdataLiveApi(data).then(res => {
             this.liveDetail.status = 2
+            this.liveDetail.expectedStartTime = new Date().getTime()
             setTimeout(() => {
               this.addLive()
             }, 1000)
@@ -722,6 +731,15 @@ export default {
       left: 0;
       width: 100%;
       height: 49px;
+      .enter, .number {
+        color: #354048;
+        font-size: 30px; /*px*/
+        line-height: 19px;
+        &.number {
+          font-size: 24px; /*px*/
+        }
+        > span {}
+      }
     }
   }
 </style>

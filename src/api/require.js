@@ -6,41 +6,33 @@ import store from '../store/index.js'
 import router from '../router/index.js'
 import localstorage from '@u/localstorage'
 import browser from '@u/browser'
+import { bindWxLogin, tokenLogin } from '@/api/pages/login'
 Vue.use(VueAxios, axios)
 let company = location.href.split('/')[3]
 // 动态设置本地和线上接口域名
 Vue.axios.defaults.baseURL = `${settings.host}/${company}`
 Vue.axios.defaults.timeout = 20000
-// 请求拦截器
-Vue.axios.interceptors.request.use(
-  config => {
-    config.headers.common['Authorization'] = localstorage.get('token')
-    return config
-  },
-  error => {
-    return Promise.error(error)
-  }
-)
 
 let num = 0
 let token = localstorage.get('token')
-export const request = ({type = 'post', url, data = {}, needLoading = true, changText = false, config = {}} = {}) => {
+let ssoToken = localstorage.get('ssoToken')
+export const request = ({type = 'post', url, data = {}, needLoading = true, config = {}} = {}) => {
   // 微信授权接口host不一样
-  if (url === '/bind/wechat') {
-    Vue.axios.defaults.baseURL = `${settings.oauthUrl}/${company}`
+  if (url === '/sso_login/bind/wechat') {
+    Vue.axios.defaults.baseURL = `${settings.oauthUrl}/`
+  } else if (url === '/auth/token') {
+    Vue.axios.defaults.baseURL = `${settings.workUrl}/${company}`
+  } else {
+    if (Vue.axios.defaults.baseURL !== `${settings.host}/${company}`) Vue.axios.defaults.baseURL = `${settings.host}/${company}`
   }
   // 开发环境写死账号
-  if (process.env.NODE_ENV !== 'production' && token) {
-    if (token) {
-      Vue.axios.defaults.headers.common['Authorization'] = token
-    }
+  if (token) {
+    Vue.axios.defaults.headers.common['Authorization'] = token
+  }
+  if (ssoToken) {
+    Vue.axios.defaults.headers.common['Authorization-Sso'] = ssoToken
   }
   let datas = type === 'get' ? {params: {...data}} : (data instanceof FormData ? data : {...data})
-  if (changText) {
-    store.dispatch('updata_loadingTxt', '正在上传中...')
-  } else {
-    store.dispatch('updata_loadingTxt', '努力加载中…')
-  }
   if (needLoading) {
     num++
     if (!store.getters.loadingStatus) {
@@ -64,16 +56,34 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, chan
         Vue.$vux.toast.text('服务器异常', 'bottom')
         break
       case 401: // 未登录或登录过期
-        // alert(router.history.current.query)
-        // if (browser.isWechat && router.history.current.query.is_bind !== 1) {
-        //   location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(location.href)}`
-        // } else {
-        //   // router.push('/login')
-        // }
-        router.push('/login')
+        if (browser.isWechat && !router.history.current.query.bind_code) {
+          location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(location.href)}`
+        }
         break
     }
     Vue.$vux.toast.text(err.response.data.msg, 'bottom')
     return Promise.reject(err.response.data.msg)
+  })
+}
+
+export const wxLogin = (data) => {
+  return new Promise((resolve, reject) => {
+    bindWxLogin(data).then(res => {
+      // 绑定微信号成功
+      if (res.httpStatus === 200) {
+        localstorage.set('XPLUSCompany', res.data.companies[0].code) // 储存公司名
+        localstorage.set('ssoToken', res.data.ssoToken) // 储存ssoToken值
+        tokenLogin({sso_token: res.data.ssoToken}).then(res0 => {
+          localstorage.set('token', res0.data.token) // 储存token值
+          location.href = `${location.href.split('/')[0]}//${location.host}/${res.data.companies[0].code}/home` // 登录成功跳转到相应的公司
+          resolve(res0)
+        })
+      }
+      if (res.httpStatus === 400) {
+        if (browser.isWechat && !router.history.current.query.bind_code) {
+          location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(location.href)}`
+        }
+      }
+    })
   })
 }

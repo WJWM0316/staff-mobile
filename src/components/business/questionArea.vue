@@ -27,7 +27,7 @@
             @pullingDown='loadPrev'
             @pullingUp='loadNext'
           >
-            <div class='mine' v-if="scrollPart.list.length > 0">
+            <div class='mine' v-if="scrollPart.myListLength > 0">
               <div class="title">我的提问</div>
               <div class="block border-bottom-1px" v-for='(item, index) in scrollPart.list' :key="index" v-if="scrollPart.myListLength > index">
                 <div class="time">
@@ -49,7 +49,7 @@
             </div>
             <div class="other" v-if="scrollPart.list.length > scrollPart.myListLength">
               <div class="title">其他已回答提问</div>
-              <div class="block border-bottom-1px" v-for='(item, index) in scrollPart.list' :key="index" v-if="scrollPart.myListLength < index">
+              <div class="block border-bottom-1px" v-for='(item, index) in scrollPart.list' :key="index" v-if="scrollPart.myListLength - 1 < index">
                 <div class="time"><span v-if="item.answerInfo">{{item.answerInfo.createdAt * 1000 | activeTime}}</span><span v-else>{{item.problemInfo.createdAt * 1000 | activeTime}}</span></div>
                 <liveMessage
                   class="msg"

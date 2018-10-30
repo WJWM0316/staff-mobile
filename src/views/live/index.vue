@@ -12,7 +12,7 @@
     <div class="main">
       <div class="joined" v-show="tabIndex === 0">
         <div class="list">
-          <infoCard type="3" v-for="(item, index) in joined.list" :key='index+1' :item="item"></infoCard>
+          <infoCard type="3" v-for="item in joined.list" :key='item.liveId+11' :item="item"></infoCard>
         </div>
         <pullUpUi :noData="joined.noData" :pullUpStatus="joined.pullUpStatus" @pullUp="pullUp"></pullUpUi>
         <noDataShow v-if="joined.list.length === 0"></noDataShow>
@@ -24,14 +24,14 @@
               <i class="icon"></i>
               <span class="txt">近期直播</span>
             </div>
-            <infoCard type="3" v-for="(item, index) in all.list1" :key='index+2' :item="item"></infoCard>
+            <infoCard type="3" v-for="item in all.list1" :key='item.liveId+22' :item="item"></infoCard>
           </template>
           <template v-if="all.list2.length > 0">
             <div class="head">
               <i class="icon"></i>
               <span class="txt">回顾直播</span>
             </div>
-            <infoCard type="3" v-for="(item, index) in all.list2" :key='index+3' :item="item"></infoCard>
+            <infoCard type="3" v-for="item in all.list2" :key='item.liveId+33' :item="item"></infoCard>
           </template>
         </div>
         <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
