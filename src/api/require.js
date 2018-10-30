@@ -66,7 +66,7 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
   })
 }
 
-export const wxLogin = ({is_bind, bind_code, email, password}) => {
+export const wxLogin = (data) => {
   return new Promise((resolve, reject) => {
     bindWxLogin(data).then(res => {
       if (res.httpStatus === 200) {
