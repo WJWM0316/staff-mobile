@@ -119,7 +119,7 @@ export default {
               localstorage.set('ssoToken', res.data.ssoToken) // 储存ssoToken值
               tokenLogin({sso_token: res.data.ssoToken}).then(res0 => {
                 localstorage.set('token', res0.data.token) // 储存token值
-                location.href = `${location.host}/${res.data.companies[0].code}/home` // 登录成功跳转到相应的公司
+                // location.href = `${location.host}/${res.data.companies[0].code}/home` // 登录成功跳转到相应的公司
               })
             }
           })
