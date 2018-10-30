@@ -9,7 +9,7 @@ import browser from '@u/browser'
 Vue.use(VueAxios, axios)
 let company = location.href.split('/')[3]
 // 动态设置本地和线上接口域名
-// Vue.axios.defaults.baseURL = `${settings.host}/${company}`
+Vue.axios.defaults.baseURL = `${settings.host}/${company}`
 Vue.axios.defaults.timeout = 20000
 
 let num = 0
@@ -19,14 +19,11 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
   // 微信授权接口host不一样
   if (url === '/sso_login/bind/wechat') {
     Vue.axios.defaults.baseURL = `${settings.oauthUrl}/`
-  } else {
-    Vue.axios.defaults.baseURL = `${settings.host}/${company}`
   }
   if (url === '/auth/token') {
     Vue.axios.defaults.baseURL = `${settings.workUrl}/${company}`
-  } else {
-    Vue.axios.defaults.baseURL = `${settings.host}/${company}`
   }
+  
   // 开发环境写死账号
   if (process.env.NODE_ENV !== 'production' && token) {
     if (token) {
