@@ -270,12 +270,13 @@ export default {
         this.scrollAll.list.forEach((item, index) => {
           if (item.problemInfo.messageId === this.option.problem_id) {
             this.option.answerInfo.createdAt = new Date().getTime()
-            if (this.option.answerInfo.type = 'text') {
+            if (this.option.answerInfo.type === 'text') {
               this.option.answerInfo.content = tutorTxt
             }
             let data = this.scrollAll.list[index]
             this.option.answerInfo.avatar = this.option.answerInfo.masterAvatar
             data.answerInfo = this.option.answerInfo
+            console.log(data.answerInfo)
             data.status = 1
             this.openArea = false
             this.scrollAll.list.splice(index, 1, data)
