@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="duration lessonDuration" v-if="isLesson">{{messageData.duration | conversion}}</div>
-    <div class="duration" v-else>{{messageData.file.duration}}</div>
+    <div class="duration" v-else>{{messageData.file.duration}}s</div>
   </div>
 </template>
 <script>
