@@ -242,7 +242,11 @@ export default {
       let cardList = await this.getCourseCardListApi(id)
       this.peopleCourseCardList = cardList.data.peopleCourseCardList
       this.excellentPunchList = cardList.data.excellentPeopleCourseCardList
-      this.$toast({text: '设置优秀打卡成功', type: 'success'})
+      if (this.nowChoosePunch.isExcellentCard === 0) {
+        this.$toast({text: '设置优秀打卡成功', type: 'success'})
+      } else {
+        this.$toast({text: '已取消优秀打卡'})
+      }
     },
     /* 去打卡列表 */
     toPunchList (to) {
