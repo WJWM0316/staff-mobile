@@ -1,7 +1,7 @@
 <template>
   <div class='wrap' v-if="liveDetail.title">
     <div class='header'>
-      <p class='title'>{{liveDetail.title}}</p>
+      <p class='title'>{{liveDetail.title}}<i class="icon" v-if="liveDetail.isTutor"></i></p>
       <p class='msg'>
         <span class='status green' v-show='liveDetail.status === 2 && wsStatus === 1'>直播进行中</span>
         <span class='status red' v-show='liveDetail.status === 2 && wsStatus === 0'>直播连接中</span>
@@ -39,7 +39,7 @@
         <div class='startTime'>
           <span class='txt'>{{liveDetail.expectedStartTime * 1000 | date('MMMDo hh:mm')}} 直播开始</span>
         </div>
-        <div class='message' ref="message">
+        <div class='message' ref="message" v-preview="true">
           <live-message
             v-for='(item, index) in list'
             :key='index'
@@ -245,10 +245,10 @@ export default {
       }
       // 直播已开始才要获取历史消息记录
       if (this.liveDetail.status !== 1) {
-        this.getMessage({page: 1, action: 1})
+        this.getMessage({isFirst: true})
       }
     },
-    getMessage ({msgId, action, needLoading = true}) {
+    getMessage ({msgId, action, needLoading = true, isFirst = false}) {
       let data = {
         id: this.id,
         action: action || 1,
@@ -273,13 +273,15 @@ export default {
             }
           })
         }
-        this.$nextTick(() => {
-          if (this.liveDetail.status === 2) {
-            setTimeout(() => {
-              this.$refs.scroll.scrollBottom()
-            }, 500)
-          }
-        })
+        if (isFirst) {
+          this.$nextTick(() => {
+            if (this.liveDetail.status === 2) {
+              setTimeout(() => {
+                this.$refs.scroll.scrollBottom()
+              }, 300)
+            }
+          })
+        }
         return res
       })
     },
@@ -356,7 +358,7 @@ export default {
     endLive () {
       this.$confirm({
         title: '结束直播',
-        content: '1.直播结束后，不可以继续更新内容 \n2.直播结束3天后，不会再收到学员的提问，但可以回答学员的问题',
+        content: '<p class="left">1.直播结束后，不可以继续更新内容 </p><p class="left">2.直播结束3天后，不会再收到学员的提问，但可以回答学员的问题</p>',
         confirmBack: () => {
           if (!this.liveDetail.isTutor) return
           let data = {
@@ -373,7 +375,7 @@ export default {
     startLive () {
       this.$confirm({
         title: '开始直播',
-        content: '1.开始直播后，可发送语音、文字、图片内容 \n2.开始直播后，所有学员都可进入直播间 \n3.在顶部栏右上角，点击结束按钮可结束直播',
+        content: '<p class="left">1.开始直播后，可发送语音、文字、图片内容</p><p class="left">2.开始直播后，所有学员都可进入直播间</p><p class="left">3.在顶部栏右上角，点击结束按钮可结束直播</p>',
         confirmBack: () => {
           if (!this.liveDetail.isTutor) return
           let data = {
@@ -471,9 +473,17 @@ export default {
         color: #22292C;
         line-height: 20px;
         .setEllipsis(50%);
+        .icon {
+          width: 7px;
+          height: 11px;
+          display: inline-block;
+          background: url('../../assets/icon/me_icon_edit_chevron@2x.png') no-repeat;
+          background-size: 100% 100%;
+          margin-left: 7px;
+        }
       }
       .msg {
-        font-size:24px; /*px*/
+        font-size: 24px; /*px*/
         font-weight: 300;
         line-height: 16px;
         color: #929292;

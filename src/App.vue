@@ -108,7 +108,7 @@ export default {
       }
       // 微信授权回来需要绑定
       let data = null
-      if (route.query.bind_code) {
+      if (route.query.bind_code && !route.query.redirect) {
         localstorage.set('bind_code', route.query.bind_code)
         if (route.query.is_bind === '1') {
           data = {
@@ -121,7 +121,9 @@ export default {
             bind_code: this.$route.query.bind_code,
             is_bind: this.$route.query.is_bind
           }
-          this.$router.push(`/login?bind_code=${data.bind_code}&is_bind=${data.is_bind}`)
+          if (route.name && !route.query.routePath) {
+            this.$router.push(`/login?bind_code=${data.bind_code}&is_bind=${data.is_bind}&routePath=${encodeURIComponent(route.fullPath)}`)
+          }
         }
       }
     },
@@ -318,6 +320,10 @@ export default {
     font-weight: 300;
     font-size: 30px; /*px*/
     color: #666;
+    .left {
+      text-align: left;
+      line-height: 22px;
+    }
   }
   .weui-dialog__hd {
     .weui-dialog__title {

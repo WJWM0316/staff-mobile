@@ -14,16 +14,16 @@
       <!--课程图片-->
       <div class="content-images" v-if="item.cardContentFile && item.cardContentFile.length > 0">
         <div class="item-image one" v-if="item.cardContentFile.length === 1">
-          <img :src="item.cardContentFile[0].url || '../../assets/icon/img_head_default.png'" v-preview="true" @click.stop="preview"/>
+          <img :src="item.cardContentFile[0].url || '../../assets/icon/img_head_default.png'" v-preview="true"/>
         </div>
         <div class="item-image" v-for="(item,index) in item.cardContentFile" :key="index" v-else>
-          <img :src="item.url || '../../assets/icon/img_head_default.png'" v-preview="true" @click.stop="preview"/>
+          <img :src="item.url || '../../assets/icon/img_head_default.png'" v-preview="true"/>
         </div>
       </div>
       <!--工作圈图片-->
       <div class="content-images" v-if="item.type === '图片'" v-preview="openPreview">
         <div class="item-image one" v-if="item.accessory.length === 1">
-          <img :src="item.accessory[0].url || '../../assets/icon/img_head_default.png'" @click.stop="preview"/>
+          <img :src="item.accessory[0].url || '../../assets/icon/img_head_default.png'"/>
         </div>
         <div class="item-image four" v-for="(item,index) in item.accessory" :key="index" v-else-if="item.accessory.length === 4">
           <img :src="item.url || '../../assets/icon/img_head_default.png'"/>

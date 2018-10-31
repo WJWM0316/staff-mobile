@@ -180,9 +180,10 @@ export default {
      */
     handleRestart () {
       const self = this
-      this.$vux.confirm.show({
-        content: '确定要重录？',
-        onConfirm () {
+      this.$confirm({
+        title: '重新开始录音',
+        content: '重新录音，原有录音将会丢失',
+        confirmBack: () => {
           self.progress = 0
           self.status = 'default'
           self.clear()
