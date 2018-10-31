@@ -21,7 +21,9 @@
         />
       </template>
       <template v-else>
-        <div class="upLoadBtn" @click="wxChoseImg"></div>
+        <div class="upLoadBtn" @click.stop="wxChoseImg">
+          <img class="icon" src="@/assets/icon/icon_plus.png" />
+        </div>
       </template>
     </div>
   </div>
@@ -225,6 +227,14 @@ export default {
       top: 0;
       left: 0;
       opacity: 0;
+      .icon{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        width: 25px;
+        height: 25px;
+      }
     }
   }
   .cropper-container {

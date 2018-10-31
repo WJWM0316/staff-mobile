@@ -18,6 +18,12 @@ const routers = [
     component: resolve => require(['@/views/course/detail'], resolve)
   },
   {
+    path: '/courseIntroduction',
+    name: 'courseIntroduction',
+    meta: { title: '课程介绍页' },
+    component: resolve => require(['@/views/course/detail'], resolve)
+  },
+  {
     path: '/courseLesson',
     name: 'lesson',
     meta: { title: '课节详情' },

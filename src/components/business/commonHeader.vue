@@ -36,7 +36,7 @@
       </div>
       <!--右边入口按钮-->
       <div class="right" v-if="type === '1'">
-        <div v-if="pageInfo.isJoin || pageInfo.isMaster" @click.stop="toIntroduction">
+        <div v-if="courseIntroduction && (pageInfo.isJoin || pageInfo.isMaster)" @click.stop="toIntroduction">
           课程介绍<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
         </div>
       </div>
@@ -69,6 +69,11 @@ export default {
       type: Object
     }
   },
+  data () {
+    return {
+      courseIntroduction: true
+    }
+  },
   methods: {
     toSetting () {
       this.$router.push({path: '/setting', query: {id: this.pageInfo.id}})
@@ -82,6 +87,7 @@ export default {
     // 去课程介绍页
     toIntroduction () {
       this.$router.push({path: '/courseDetail', query: {id: this.pageInfo.id, isCourseIntroduce: true}})
+      this.courseIntroduction = false
       this.$emit('toCourseIntroduce')
     },
     /* 去成员列表 */

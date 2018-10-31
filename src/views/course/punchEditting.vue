@@ -7,10 +7,13 @@
     <!--微信图片上传-->
     <div class="wx-images" v-if="false">
       <div class="item" v-for="(item, index) in images" :key="index">
-        <image-item class="image" mode="auto" :src="item.base64Url || item.fileUrl" />
-        <button type="button" class="close u-btn" @click="handleDeleteImage(index, item)"><i class="icon iconfont icon-live_btn_close"></i></button>
+        <img class="image" mode="auto" :src="item" />
+        <button type="button" class="close" @click="handleDeleteImage(index, item)"><i class="icon iconfont icon-live_btn_close"></i></button>
       </div>
-      <a href="#" class="add item" v-if="images.length < lengths.imageMax" @click.prevent.stop="handleAdd"><i class="u-icon-plus"></i></a>
+      <div class="takePhoto" @click.stop="wxPhoto" v-if="images.length < 9">
+        <img class="icon" src="@/assets/icon/icon_plus.png" />
+      </div>
+      <!--<a href="#" class="add item" v-if="images.length < lengths.imageMax" @click.prevent.stop="handleAdd"><i class="u-icon-plus"></i></a>-->
     </div>
     <!--选择图片-->
     <div class="chooseImg">
@@ -18,12 +21,12 @@
         <img class="image" mode="auto" :src="item" />
         <button type="button" class="close" @click="handleDeleteImage(index, item)"><i class="icon iconfont icon-live_btn_close"></i></button>
       </div>
-      <div class="takePhoto" @click.stop="photo" v-if="images.length < 9">
-        <!--<input id="photo" type="file" accept="image/*" capture="camera" multiple>-->
+      <upload-img class="wxChooseImg" :attach_type="'img'" @choseResult="choseResult" @upLoadResult="upLoadResult"></upload-img>
+      <!--<div class="takePhoto" @click.stop="photo" v-if="images.length < 9">
         <input v-if="!isiOS" id="photo" type="file" accept="image/*" capture="camera" multiple>
         <input v-else id="photo" type="file" multiple="9">
         <img class="icon" src="@/assets/icon/icon_plus.png" />
-      </div>
+      </div>-->
     </div>
     <!--发表按钮-->
     <div class="btn-container">
@@ -58,8 +61,13 @@
 
 <script>
 import { postPunchCardApi, getPunchCardDetailsApi, attachesApi } from '@/api/pages/course'
+import uploadImg from '@c/functional/upLoadFile'
 import localstorage from '@u/localstorage'
+import WechatMixin from '@/mixins/wechat'
 export default {
+  components: {
+    uploadImg
+  },
   data () {
     return {
       form: {
@@ -86,6 +94,18 @@ export default {
     }
   },
   methods: {
+    /* 微信选择图片返回 */
+    choseResult (res) {
+      res.forEach(item => {
+        this.images.push(item)
+      })
+    },
+    /* 上传后返回 */
+    upLoadResult (res) {
+      res.forEach(item => {
+        this.uploadImgList.push(item)
+      })
+    },
     /* 选择图片 */
     photo () {
       let that = this
@@ -284,7 +304,12 @@ export default {
         }
       }
     }
-    .chooseImg{
+    .wxChooseImg{
+      border: 1px solid #EDEDED;
+      width: 108px;
+      height: 108px;
+    }
+    .chooseImg, .wx-images{
       display: flex;
       flex-wrap: wrap;
       .item {
