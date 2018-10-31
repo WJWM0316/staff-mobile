@@ -244,8 +244,8 @@ export default {
       console.log(e, '上传后获取的文件')
       this.fileId = e[0].id
       this.option.answerInfo.file = {
-        url: e.url,
-        duration: e.duration
+        url: e[0].url,
+        duration: e[0].duration
       }
       this.sendMsg()
     },
