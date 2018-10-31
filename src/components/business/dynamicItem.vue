@@ -1,5 +1,5 @@
 <template>
-  <div class="dynamicItem" :class="{bottomBorder : showBorder}" @click="toDetail">
+  <div class="dynamicItem" :class="{bottomBorder : showBorder}" @click.stop="toDetail">
     <div class="header">
       <img class="headerPhoto" v-if="item.releaseUser" :src="item.releaseUser.avatarInfo.smallUrl" />
       <div class="appellation" v-if="item.releaseUser" @click.stop="toUserInfo(item.releaseUser.id)">{{item.releaseUser.realname}}</div>
@@ -12,27 +12,27 @@
         <p class="full-text-btn">{{isFullText('circle-content')}}</p>
       </div>
       <!--课程图片-->
-      <div @click.stop="imgView" class="content-images" v-if="item.cardContentFile && item.cardContentFile.length > 0" v-preview="true">
+      <div class="content-images" v-if="item.cardContentFile && item.cardContentFile.length > 0" v-preview="true">
         <div class="item-image one" v-if="item.cardContentFile.length === 1">
-          <img :src="item.cardContentFile[0].middleUrl || '../../assets/icon/img_head_default.png'" data-src="item.cardContentFile[0].url"/>
+          <img :src="item.cardContentFile[0].middleUrl || '../../assets/icon/img_head_default.png'" :data-src="item.cardContentFile[0].url"/>
         </div>
         <div class="item-image four" v-for="(item,index) in item.cardContentFile" :key="index" v-else-if="item.cardContentFile.length === 4">
-          <img :src="item.middleUrl || '../../assets/icon/img_head_default.png'" data-src="item.url"/>
+          <img :src="item.middleUrl || '../../assets/icon/img_head_default.png'" :data-src="item.url"/>
         </div>
         <div class="item-image" v-for="(item,index) in item.cardContentFile" :key="index" v-else>
-          <img :src="item.middleUrl || '../../assets/icon/img_head_default.png'" data-src="item.url"/>
+          <img :src="item.middleUrl || '../../assets/icon/img_head_default.png'" :data-src="item.url"/>
         </div>
       </div>
       <!--工作圈图片-->
-      <div  @click.stop="imgView" class="content-images" v-if="item.type === '图片'" v-preview="openPreview">
+      <div class="content-images" v-if="item.type === '图片'" v-preview="openPreview">
         <div class="item-image one" v-if="item.accessory.length === 1">
-          <img :src="item.accessory[0].middleUrl || '../../assets/icon/img_head_default.png'" data-src="item.accessory[0].url"/>
+          <img :src="item.accessory[0].middleUrl || '../../assets/icon/img_head_default.png'" :data-src="item.accessory[0].url"/>
         </div>
         <div class="item-image four" v-for="(item,index) in item.accessory" :key="index" v-else-if="item.accessory.length === 4">
-          <img :src="item.middleUrl || '../../assets/icon/img_head_default.png'" data-src="item.url"/>
+          <img :src="item.middleUrl || '../../assets/icon/img_head_default.png'" :data-src="item.url"/>
         </div>
         <div class="item-image" v-for="(item,index) in item.accessory" :key="index" v-else>
-          <img :src="item.middleUrl || '../../assets/icon/img_head_default.png'" data-src="item.url"/>
+          <img :src="item.middleUrl || '../../assets/icon/img_head_default.png'" :data-src="item.url"/>
         </div>
       </div>
       <!--视频-->
@@ -270,8 +270,7 @@ export default {
       } else {
         this.$emit('setPostTop', this.item)
       }
-    },
-    imgView () {}
+    }
   },
   mounted () {}
 }
