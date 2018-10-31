@@ -6,14 +6,15 @@
         <span class='status green' v-show='liveDetail.status === 2 && wsStatus === 1'>直播进行中</span>
         <span class='status red' v-show='liveDetail.status === 2 && wsStatus === 0'>直播连接中</span>
         <span class='status red' v-show='liveDetail.status === 2 && wsStatus === 2'>直播断开，连接中…</span>
-         <span class='status red' v-show='liveDetail.status === 3'>直播已结束</span>
+        <span class='status red' v-if='liveDetail.status === 3'>直播已结束</span>
+        <span class='status red' v-if='liveDetail.status === 1'>直播未开始</span>
         <span class='num' v-if="liveDetail.status !== 3">{{onlineNum}}人参与</span>
       </p>
       <div class='more' @click.stop="jumpMore" v-if="!liveDetail.isTutor">
         <span>更多介绍</span>
         <i class='icon iconfont icon-list_live_icon_more'></i>
       </div>
-      <div class="end" v-if="liveDetail.isTutor && liveDetail.status !== 3" @click.stop="endLive">
+      <div class="end" v-if="liveDetail.isTutor && liveDetail.status === 2" @click.stop="endLive">
         <i class='icon iconfont icon-close'></i>
       </div>
     </div>
@@ -447,6 +448,7 @@ export default {
       }
       msgPositionApi(data)
     }
+    this.leaveLive() // 退出直播间
     window.removeEventListener('wsOnMessage', onMessage)
   }
 }
@@ -524,8 +526,9 @@ export default {
         top: 18px;
         right: 12px;
         .icon-list_live_icon_more {
-          font-size: 22px; /*px*/
+          font-size: 48px; /*px*/
           color: rgba(220, 220, 220, 1);
+          vertical-align: -4px;
         }
       }
       .end {
