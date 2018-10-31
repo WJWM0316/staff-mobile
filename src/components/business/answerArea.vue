@@ -3,7 +3,7 @@
     <div class='questionArea'>
       <div class='areaWrap'>
         <div class='tab border-bottom-1px'>
-          <div class="close icon iconfont icon-live_btn_close" @click.stop="closeArea"></div>
+          <div class="icon iconfont icon-me_icon_edit_chevron" @click.stop="closeArea"></div>
           <span
             class='tabItem'
             v-for='(item, index) in tabList'
@@ -275,6 +275,7 @@ export default {
             }
             let data = this.scrollAll.list[index]
             this.option.answerInfo.avatar = this.option.answerInfo.masterAvatar
+            this.option.answerInfo.messageId = res.data.messageId
             data.answerInfo = this.option.answerInfo
             console.log(data.answerInfo)
             data.status = 1
@@ -323,12 +324,13 @@ export default {
         left: 0;
         height: 44px;
         text-align: center;
-        .icon-live_btn_close {
+        .icon-me_icon_edit_chevron {
           position: absolute;
-          font-size: 26px; /*px*/
+          font-size: 30px; /*px*/
           color: #BCBCBC;
-          top: 15px;
-          right: 15px;
+          top: 50%;
+          left: 17px;
+          transform: translateY(-50%) rotate(180deg);
         }
         .tabItem {
           line-height: 44px;
