@@ -141,6 +141,11 @@ export default {
     },
     /* 发布 */
     async readyPublish () {
+      let content = this.form.content.trim()
+      if (content.length === 0) {
+        this.$toast({text: ' 内容不能为空 '})
+        return
+      }
       let param = {
         community_id: this.$route.query.id,
         content: this.form.content,
