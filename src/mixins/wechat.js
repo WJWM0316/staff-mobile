@@ -40,7 +40,8 @@ export default {
           url: location.href.split('#')[0]
         }
         const res = await getWechatSignApi(params)
-        this.wechatConfig = Object.assign({}, this.wechatConfig, res.data)
+        let { appId, timestamp, nonceStr, signature } = res.data
+        this.wechatConfig = Object.assign({}, this.wechatConfig, appId, timestamp, nonceStr, signature)
         this.$store.dispatch('updata_wxConfig', this.wechatConfig)
         this.setWechatConfig()
       } catch (error) {
