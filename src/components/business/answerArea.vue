@@ -96,7 +96,7 @@
               <botInput @sendMsg="sendMsg" ref="botInput"></botInput>
             </div>
             <div class="audioType" v-show="sendType === 'audio'">
-              <recorder></recorder>
+              <recorder @upload-success="upLoadResult"></recorder>
             </div>
           </div>
         </div>
@@ -147,6 +147,7 @@ export default {
         live_id: this.$route.query.id,
         answerInfo: this.tutorInfo // 导师信息用来前端展示
       },
+      fileId: null, // 音频id
       isScrollY: true, // 回答问题时禁止滚动
       choseMessage: null, // 当前选择的消息
       scrollPart: {
@@ -239,6 +240,11 @@ export default {
     closeArea () {
       this.$emit('closeArea')
     },
+    upLoadResult (e) {
+      console.log(e, '上传后获取的文件')
+      this.fileId = e[0].id
+      this.sendMsg()
+    },
     sendMsg (tutorTxt) {
       this.option.problem_id = this.choseMessage.messageId
       if (this.sendType === 'text') {
@@ -248,7 +254,7 @@ export default {
       } else {
         this.option.type = 2
         this.option.answerInfo.type = 'audio'
-        this.option.content = tutorTxt
+        this.option.content = this.fileId
       }
       putAnswerApi(this.option, false).then(res => {
         this.scrollPart.list.forEach((item, index) => {

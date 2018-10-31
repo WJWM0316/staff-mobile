@@ -8,7 +8,7 @@
         <span class='status red' v-show='liveDetail.status === 2 && wsStatus === 2'>直播断开，连接中…</span>
         <span class='status red' v-if='liveDetail.status === 3'>直播已结束</span>
         <span class='status red' v-if='liveDetail.status === 1'>直播未开始</span>
-        <span class='num' v-if="liveDetail.status !== 3">{{onlineNum}}人参与</span>
+        <span class='num' v-if="liveDetail.status === 2">{{onlineNum}}人参与</span>
       </p>
       <div class='more' @click.stop="jumpMore" v-if="!liveDetail.isTutor">
         <span>更多介绍</span>
@@ -342,10 +342,14 @@ export default {
     send (data) {
       ws.send(data)
     },
-    creatWs () { // 开启websocket
-      let company = location.href.split('/')[3] || 'tiger'
+    creatWs () {
+      // 断线重连 还要重新加入直播间
+      let company = location.href.split('/')[3]
       let websocketUrl = settings.websocketUrl
       ws.create(`${websocketUrl}/${company}`)
+      setTimeout(() => {
+        this.addLive()
+      }, 1000)
     },
     closeWs () {
       ws.close()

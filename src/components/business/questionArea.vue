@@ -146,6 +146,13 @@ export default {
       }
     }
   },
+  watch: {
+    show (val) {
+      if (val && this.scrollPart.list.length === 0) {
+        this.getList({page: 1, type: 'my'})
+      }
+    }
+  },
   methods: {
     loadPrev () {
       if (this.tabIndex === 0) {
@@ -225,9 +232,6 @@ export default {
         this.getList({page: 1, type: 'all'})
       }
     }
-  },
-  created () {
-    this.getList({page: 1, type: 'my'})
   }
 }
 </script>
