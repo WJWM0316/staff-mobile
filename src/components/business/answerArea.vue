@@ -243,6 +243,10 @@ export default {
     upLoadResult (e) {
       console.log(e, '上传后获取的文件')
       this.fileId = e[0].id
+      this.option.answerInfo.file = {
+        url: e.url,
+        duration: e.duration
+      }
       this.sendMsg()
     },
     sendMsg (tutorTxt) {
@@ -259,8 +263,6 @@ export default {
       putAnswerApi(this.option, false).then(res => {
         this.scrollPart.list.forEach((item, index) => {
           if (item.problemInfo.messageId === this.option.problem_id) {
-            this.option.answerInfo.createdAt = new Date().getTime()
-            this.scrollPart.list[index].status = 1
             this.openArea = false
             this.scrollPart.list.splice(index, 1)
           }
@@ -268,7 +270,9 @@ export default {
         this.scrollAll.list.forEach((item, index) => {
           if (item.problemInfo.messageId === this.option.problem_id) {
             this.option.answerInfo.createdAt = new Date().getTime()
-            this.option.answerInfo.content = tutorTxt
+            if (this.option.answerInfo.type = 'text') {
+              this.option.answerInfo.content = tutorTxt
+            }
             let data = this.scrollAll.list[index]
             this.option.answerInfo.avatar = this.option.answerInfo.masterAvatar
             data.answerInfo = this.option.answerInfo
