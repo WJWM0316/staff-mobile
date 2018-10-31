@@ -416,6 +416,8 @@ export default {
           width: 102px;
           height: 102px;
           line-height: 100px;
+          object-fit: cover;
+          vertical-align: middle;
         }
         .close {
           position: absolute;

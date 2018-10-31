@@ -125,10 +125,12 @@ export default {
       }
     },
     wxChoseImg () {
+      this.getWechatSign()
       let option = {
         count: this.count
       }
       this.wechatChooseImage(option).then(res => {
+        
         this.$emit('choseResult', res) // 选择图片的结果
         res.forEach(item => {
           this.wechatUploadImage(item).then(res0 => {
@@ -141,6 +143,8 @@ export default {
             })
           })
         })
+      }).catch(res => {
+        alert(JSON.stringify(res))
       })
     },
     // dataUrl 转 file
