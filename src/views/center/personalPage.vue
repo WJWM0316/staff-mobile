@@ -10,8 +10,8 @@
           <img v-if="userInfo.base" :src="userInfo.base.avatar.middleUrl">
         </div>
         <p class="name">{{userInfo.base.realname}}</p>
-        <p class="position" v-if="userInfo.base.flag">{{userInfo.base.flag}}</p>
-        <p class="position" v-if="userInfo.base.groupName">{{userInfo.base.groupName}} | {{userInfo.base.occupation}}</p>
+        <p class="position" v-if="!userInfo.base.isExternalTutor">{{userInfo.base.groupName}} | {{userInfo.base.occupation}}</p>
+        <p class="position" v-else>{{userInfo.base.title}}</p>
       </div>
       <div class="studyMsg">
         <div class="item">
@@ -443,13 +443,18 @@ export default {
         }
       }
       .name {
+        width: 70%;
+        margin: 0 auto;
         font-size: 36px; /*px*/
         color: #354048;
         line-height: 22px;
         font-weight: 700;
         margin-top: 10px;
+        .setEllipsis();
       }
       .position {
+        width: 70%;
+        margin: 0 auto;
         font-size: 28px; /*px*/
         color: #666666;
         line-height: 18px;
