@@ -5,7 +5,6 @@ class WS {
   ws = null
   url = ''
   isLogin = false
-  liveId = '' // 直播间id
   keepAliveTimer = null // 心跳定时器
   reconnectMark = false // 是否重连过
   receiveMessageTimer = null // 接收定时器
@@ -13,7 +12,7 @@ class WS {
   lastTealthTime = 0 // 上一次心跳发送的时间
   event = null // 自定义事件
   // 创建一个websocket
-  create = (url, liveId) => {
+  create = (url) => {
     // 判断浏览器是否支持webSocket, 不支持直接alert提示
     if ('WebSocket' in window) {
       // 重新初始化
@@ -22,7 +21,6 @@ class WS {
       this.lastTealthTime = 0
       this.ws = new WebSocket(url)
       this.url = url
-      this.liveId = liveId
       let ws = this.ws
       // 握手
       ws.onopen = () => {
@@ -61,7 +59,7 @@ class WS {
             } else {
               if (this.isAgained) return
               this.isAgained = true
-              this.create(this.url, this.liveId) // 如果失败了重启一下
+              this.create(this.url) // 如果失败了重启一下
             }
             break
           case 'live.add':
@@ -180,13 +178,13 @@ class WS {
       this.closeTime = new Date().getTime()
       this.reconnectMark = true
     }
-    if (new Date().getTime() - this.closeTime >= 10000) { // 10秒中重连，连不上就不连了
+    if (new Date().getTime() - this.closeTime >= 60000) { // 10秒中重连，连不上就不连了
       console.log('======websocket重连不上，自动关闭')
       store.dispatch('updata_wsStatus', 2)
       this.close()
     } else {
       store.dispatch('updata_wsStatus', 0)
-      this.create(this.url, this.liveId) // 断线重连
+      this.create(this.url) // 断线重连
     }
   }
 }

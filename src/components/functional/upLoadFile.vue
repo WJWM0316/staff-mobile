@@ -21,7 +21,7 @@
         />
       </template>
       <template v-else>
-        <div class="upLoadBtn" @click.stop="wxChoseImg">
+        <div class="upLoadBtn" @click="wxChoseImg">
           <img class="icon" src="@/assets/icon/icon_plus.png" />
         </div>
       </template>

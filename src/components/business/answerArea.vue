@@ -3,7 +3,7 @@
     <div class='questionArea'>
       <div class='areaWrap'>
         <div class='tab border-bottom-1px'>
-          <div class="close icon iconfont icon-live_btn_close" @click.stop="closeArea"></div>
+          <div class="icon iconfont icon-me_icon_edit_chevron" @click.stop="closeArea"></div>
           <span
             class='tabItem'
             v-for='(item, index) in tabList'
@@ -96,7 +96,7 @@
               <botInput @sendMsg="sendMsg" ref="botInput"></botInput>
             </div>
             <div class="audioType" v-show="sendType === 'audio'">
-              <recorder></recorder>
+              <recorder @upload-success="upLoadResult"></recorder>
             </div>
           </div>
         </div>
@@ -147,6 +147,7 @@ export default {
         live_id: this.$route.query.id,
         answerInfo: this.tutorInfo // 导师信息用来前端展示
       },
+      fileId: null, // 音频id
       isScrollY: true, // 回答问题时禁止滚动
       choseMessage: null, // 当前选择的消息
       scrollPart: {
@@ -239,6 +240,15 @@ export default {
     closeArea () {
       this.$emit('closeArea')
     },
+    upLoadResult (e) {
+      console.log(e, '上传后获取的文件')
+      this.fileId = e[0].id
+      this.option.answerInfo.file = {
+        url: e[0].url,
+        duration: e[0].duration
+      }
+      this.sendMsg()
+    },
     sendMsg (tutorTxt) {
       this.option.problem_id = this.choseMessage.messageId
       if (this.sendType === 'text') {
@@ -248,13 +258,11 @@ export default {
       } else {
         this.option.type = 2
         this.option.answerInfo.type = 'audio'
-        this.option.content = tutorTxt
+        this.option.content = this.fileId
       }
       putAnswerApi(this.option, false).then(res => {
         this.scrollPart.list.forEach((item, index) => {
           if (item.problemInfo.messageId === this.option.problem_id) {
-            this.option.answerInfo.createdAt = new Date().getTime()
-            this.scrollPart.list[index].status = 1
             this.openArea = false
             this.scrollPart.list.splice(index, 1)
           }
@@ -262,10 +270,14 @@ export default {
         this.scrollAll.list.forEach((item, index) => {
           if (item.problemInfo.messageId === this.option.problem_id) {
             this.option.answerInfo.createdAt = new Date().getTime()
-            this.option.answerInfo.content = tutorTxt
+            if (this.option.answerInfo.type === 'text') {
+              this.option.answerInfo.content = tutorTxt
+            }
             let data = this.scrollAll.list[index]
             this.option.answerInfo.avatar = this.option.answerInfo.masterAvatar
+            this.option.answerInfo.messageId = res.data.messageId
             data.answerInfo = this.option.answerInfo
+            console.log(data.answerInfo)
             data.status = 1
             this.openArea = false
             this.scrollAll.list.splice(index, 1, data)
@@ -312,12 +324,13 @@ export default {
         left: 0;
         height: 44px;
         text-align: center;
-        .icon-live_btn_close {
+        .icon-me_icon_edit_chevron {
           position: absolute;
-          font-size: 26px; /*px*/
+          font-size: 30px; /*px*/
           color: #BCBCBC;
-          top: 15px;
-          right: 15px;
+          top: 50%;
+          left: 17px;
+          transform: translateY(-50%) rotate(180deg);
         }
         .tabItem {
           line-height: 44px;

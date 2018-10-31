@@ -177,7 +177,8 @@ export default {
       background: #fff;
       position: absolute;
       top: 15px;
-      left: 15px;
+      left: 50%;
+      margin-left: -172px;
       box-shadow: 0px 4px 12px 0px rgba(69,46,16,0.08);
       border-radius: 3px;
       padding: 25px 20px 22px;

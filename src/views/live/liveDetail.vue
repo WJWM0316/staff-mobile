@@ -55,7 +55,7 @@ export default {
       })
     },
     jumpLive () {
-      if (this.pageInfo.status === 1) {
+      if (this.pageInfo.status === 1 && !this.pageInfo.isTutor) {
         this.$toast({
           text: '直播尚未开始，敬请期待！',
           width: '14em'

@@ -31,7 +31,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import { userInfoApi } from '@/api/pages/center'
 import { Tabbar, TabbarItem } from 'vux'
