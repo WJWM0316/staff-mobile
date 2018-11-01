@@ -141,7 +141,9 @@ export default {
       }
       this.wechatChooseImage(option).then(res => {
         this.$emit('choseResult', res) // 选择图片的结果
+        alert(JSON.stringify(res))
         res.forEach(item => {
+          alert(JSON.stringify(item))
           this.wechatUploadImage(item).then(res0 => {
             let data = {
               mediaId: res0.serverId,
