@@ -200,17 +200,21 @@ export default {
         font-size: 24px; /*px*/
         font-weight: 300px;
         color: #929292;
-        line-height: 32px;
+        line-height: 16px;
+        margin: 14px 0 4px;
         .num {
           color: #D7AB70;
+          font-weight: 700;
         }
       }
       .progressBar {
         width: 100%;
         height: 4px;
-        background: #EDEDED;
+        background: #f8f8f8;
         border-radius: 3px;
         overflow: hidden;
+        border: 1px solid #ededed;
+        box-sizing: border-box;
         .inner {
           height: 4px;
           background: #FFEB98;
