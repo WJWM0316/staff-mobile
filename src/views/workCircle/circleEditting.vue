@@ -143,19 +143,23 @@ export default {
       inpLink: '', // 输入的链接
       showMask: false, // 展示链接输入框
       isCircleSelf: false, // 是否仅限圈内可见
-      isiOS: ''
+      isiOS: '',
+      nowWeiXinImgNum: '' , // 微信上传图片选中多少张
     }
   },
   methods: {
     /* 微信选择图片返回 */
-    choseResult (res) {},
+    choseResult (res) {
+      this.nowWeiXinImgNum = res.length
+    },
     /* 上传后返回 */
     upLoadResult (res) {
-      alert(res)
-      this.isChoose = false
-      this.fileType = 0
       this.images.push(res.url)
       this.uploadImgList.push(res.id)
+      if (this.images.length === this.nowWeiXinImgNum) {
+        this.isChoose = false
+        this.fileType = 0
+      }
     },
     /**
      * 提交表单
