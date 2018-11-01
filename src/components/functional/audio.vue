@@ -126,7 +126,7 @@ export default {
           }
         }
         // 消除红点
-        if (!this.isReaded) {
+        if (!this.isReaded && this.isNeedRead) {
           this.isReaded = true
           this.$emit('removeRed')
         }
@@ -200,7 +200,7 @@ export default {
         this.$emit('nextMusic', this.audioList[this.curIndex + 1].index)
       }
       // 播放完毕
-      if (!this.isReadEnded) {
+      if (!this.isReadEnded && this.isNeedEnd) {
         this.$emit('endAudio')
         this.isReadEnded = true
       }
@@ -214,10 +214,9 @@ export default {
     height: 40px;
     padding: 0 15px 0 10px;
     white-space: nowrap;
-    background: #FFFBEC;
-    border: 1px solid #FFE266;
+    background: #FFF5CA;
     box-sizing: border-box;
-    border-radius:0px 20px 20px 19px;
+    border-radius: 0px 20px 20px 19px;
     display: flex;
     align-items: center;
     font-size: 0;
@@ -290,6 +289,7 @@ export default {
           margin-top: -6px;
           right: 0;
           margin-right: -6px;
+          box-sizing: border-box;
           &.start {
             margin-right: -12px;
           }
@@ -320,7 +320,7 @@ export default {
     }
     .duration {
       float: right;
-      font-size: 24px; /*px*/
+      font-size: 28px; /*px*/
       color: #354048;
       font-weight: 300;
       display: inline-block;
