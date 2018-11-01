@@ -100,10 +100,8 @@ export default {
     choseResult (res) {},
     /* 上传后返回 */
     upLoadResult (res) {
-      res.forEach(item => {
-        this.images.push(item.url)
-        this.uploadImgList.push(item.id)
-      })
+      this.images.push(res.url)
+      this.uploadImgList.push(res.id)
     },
     /* 选择图片 */
     photo () {

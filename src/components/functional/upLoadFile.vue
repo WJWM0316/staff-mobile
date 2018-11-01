@@ -148,7 +148,7 @@ export default {
             type: 'img'
           }
           let res1 = await this.wxUploadFile(data)
-          this.$emit('upLoadResult', res1.data) // 上传图片的结果
+          this.$emit('upLoadResult', res1.data[0]) // 上传图片的结果
         }
       }).catch(res => {
         alert(JSON.stringify(res))

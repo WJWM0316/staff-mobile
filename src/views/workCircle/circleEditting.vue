@@ -151,12 +151,11 @@ export default {
     choseResult (res) {},
     /* 上传后返回 */
     upLoadResult (res) {
+      alert(res)
       this.isChoose = false
       this.fileType = 0
-      res.forEach(item => {
-        this.images.push(item.url)
-        this.uploadImgList.push(item.id)
-      })
+      this.images.push(res.url)
+      this.uploadImgList.push(res.id)
     },
     /**
      * 提交表单
