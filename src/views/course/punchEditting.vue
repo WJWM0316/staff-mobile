@@ -100,13 +100,13 @@ export default {
     choseResult (res) {
       alert(JSON.stringify(res))
       res.forEach(item => {
-        this.images.push(item.serverId)
+        this.images.push(item)
       })
     },
     /* 上传后返回 */
     upLoadResult (res) {
       res.forEach(item => {
-        this.uploadImgList.push(item.id)
+        this.uploadImgList.push(item)
       })
     },
     /* 选择图片 */
