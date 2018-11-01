@@ -97,16 +97,12 @@ export default {
   },
   methods: {
     /* 微信选择图片返回 */
-    choseResult (res) {
-      alert(JSON.stringify(res))
-      res.forEach(item => {
-        this.images.push(item)
-      })
-    },
+    choseResult (res) {},
     /* 上传后返回 */
     upLoadResult (res) {
       res.forEach(item => {
-        this.uploadImgList.push(item)
+        this.images.push(item.url)
+        this.uploadImgList.push(item.id)
       })
     },
     /* 选择图片 */

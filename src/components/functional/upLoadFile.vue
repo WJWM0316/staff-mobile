@@ -135,7 +135,6 @@ export default {
       }
     },
     wxChoseImg () {
-      console.log(this.count, 99999999999)
       this.getWechatSign()
       let option = {
         count: this.count
@@ -145,7 +144,7 @@ export default {
         res.forEach(item => {
           this.wechatUploadImage(item).then(res0 => {
             let data = {
-              mediaId: res0.serverId,
+              mediaId: res0,
               type: 'img'
             }
             this.wxUploadFile(data).then(res1 => {
