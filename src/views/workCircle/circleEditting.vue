@@ -40,6 +40,7 @@
         :attach_type="'img'"
         @choseResult="choseResult"
         @upLoadResult="upLoadResult"
+        :count="count"
         v-if="images.length < 20">
         <img slot="img" class="icon" src="@/assets/icon/icon_plus.png" />
       </upload-img>
@@ -109,6 +110,15 @@ export default {
       get: function () {
         return this.form.content.length > 0
       }
+    },
+    count: {
+      get: function () {
+        if (this.images.length < 18) {
+          return 9
+        } else {
+          return 20 - this.images.length
+        }
+      }
     }
   },
   data () {
@@ -143,10 +153,8 @@ export default {
     upLoadResult (res) {
       this.isChoose = false
       this.fileType = 0
-      res.forEach(item => {
-        this.images.push(item.url)
-        this.uploadImgList.push(item.id)
-      })
+      this.images.push(res.url)
+      this.uploadImgList.push(res.id)
     },
     /**
      * 提交表单
