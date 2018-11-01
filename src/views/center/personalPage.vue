@@ -91,6 +91,8 @@
           v-for="(item, index) in postData.list"
           :key="index"
           :item="item"
+          :showCommunicate="false"
+          :personal="true"
         ></dynamicItem>
         <pullUpUi :noData="postData.noData" :pullUpStatus="postData.pullUpStatus" @pullUp="pullUp"></pullUpUi>
         <noDataShow v-if="postData.list.length === 0"></noDataShow>

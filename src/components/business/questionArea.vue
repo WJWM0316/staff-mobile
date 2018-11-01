@@ -261,9 +261,11 @@ export default {
         text-align: center;
         .icon-live_btn_close {
           position: absolute;
-          font-size: 26px; /*px*/
+          font-size: 40px; /*px*/
+          line-height: 40px; /*px*/
           color: #BCBCBC;
-          top: 15px;
+          top: 50%;
+          margin-top: -10px;
           right: 15px;
         }
         .tabItem {

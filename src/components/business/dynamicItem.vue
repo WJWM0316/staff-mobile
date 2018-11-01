@@ -49,28 +49,36 @@
         <file-box :item="item" :isFile="isFile" :fileType='fileType'></file-box>
       </div>
     </div>
-      <div class="info-area">
-        <div class="time-and-del">
-          <span class="time">{{item.createdAt || item.punchCardTime}}</span>
-          <span v-if="item.isSelf && isCourse" class="del-btn" @click.stop="edit">编辑</span>
-          <span v-if="item.isSelf && !isCourse" class="del-btn" @click.stop="edit">删除</span>
+    <div class="info-area" v-if="!personal">
+      <div class="time-and-del">
+        <span class="time">{{item.createdAt || item.punchCardTime}}</span>
+        <span v-if="item.isSelf && isCourse" class="del-btn" @click.stop="edit">编辑</span>
+        <span v-if="item.isSelf && !isCourse" class="del-btn" @click.stop="edit">删除</span>
+      </div>
+      <div class="operation">
+        <!--点赞-->
+        <div class="praise" @click.stop="praise">
+          <img v-if="isfavor" class="icon-zan" src="@/assets/icon/bnt_zan_pre@3x.png" />
+          <img v-else class="icon-zan" src="@/assets/icon/bnt_zan@3x.png" />
+          <span>{{item.favorTotal>0 ? item.favorTotal : '' }}</span>
         </div>
-        <div class="operation">
-          <!--点赞-->
-          <div class="praise" @click.stop="praise">
-            <img v-if="isfavor" class="icon-zan" src="@/assets/icon/bnt_zan_pre@3x.png" />
-            <img v-else class="icon-zan" src="@/assets/icon/bnt_zan@3x.png" />
-            <span>{{item.favorTotal>0 ? item.favorTotal : '' }}</span>
-          </div>
-          <!--评论-->
-          <div class="comment" @click.stop="comment">
-            <span class="icon-pinglun">
-              <img src="@/assets/icon/bnt_comment@3x.png" />
-            </span>
-            <span>{{item.commentTotal>0? item.commentTotal : ''}}</span>
-          </div>
+        <!--评论-->
+        <div class="comment" @click.stop="comment">
+          <span class="icon-pinglun">
+            <img src="@/assets/icon/bnt_comment@3x.png" />
+          </span>
+          <span>{{item.commentTotal>0? item.commentTotal : ''}}</span>
         </div>
       </div>
+    </div>
+    <div class="personalType" v-else>
+      <div class="left">
+        <span class="time">{{item.currencyUser.createdAt}}</span>
+      </div>
+      <div class="right">
+        <span v-if="item.postType === 'jobcircleSection'">[圈]</span><span>{{item.jobCircleName}}</span>
+      </div>
+    </div>
     <template v-if="showCommunicate">
       <div class="comment-area" v-if="item.favorTotal > 0 || item.hotComments.length > 0">
         <div class="praise-block" :class="{'praise-block-marBot': item.hotComments.length > 0}" v-if="item.favorList.length > 0">
@@ -122,6 +130,10 @@ export default {
     openPreview: { // 是否开启图片预览
       type: Boolean,
       default: true
+    },
+    personal: { // 是否为个人中心的帖子
+      type: Boolean,
+      default: false
     }
   },
   watch: {
@@ -472,7 +484,20 @@ export default {
         }
       }
     }
-    .comment-area{
+    .personalType {
+      margin-top: 15px;
+      overflow: hidden;
+      font-size: 24px; /*px*/
+      font-weight: 300;
+      color: #666666;
+      .left {
+        float: left;
+      }
+      .right {
+        float: right;
+      }
+    }
+    .comment-area {
       background: #F8F8F8;
       margin-top: 15px;
       padding: 8px 10px;
