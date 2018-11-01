@@ -9,7 +9,8 @@
       </div>
     </div>
     <div class="upLoadFileBox">
-      <template v-if="attach_type !== 'img'">
+      <template v-if="attach_type !== 'img' || !isWeiXin">
+        <img class="imgIcon" v-if="!isWeiXin && attach_type === 'img'" src="@/assets/icon/icon_plus.png" />
         <img v-if="fileUrl[fileUrl.length - 1]" :src="fileUrl[fileUrl.length - 1]" alt="" id="image">
         <img v-else :src="imgUrl" alt="" id="image">
         <input class="upLoadBtn"
@@ -21,8 +22,8 @@
         />
       </template>
       <template v-else>
-        <div class="upLoadBtn" @click="wxChoseImg">
-          <img class="icon" src="@/assets/icon/icon_plus.png" />
+        <div class="upLoadBtn wxUpLoadBtn" @click="wxChoseImg">
+          <slot name="img"></slot>
         </div>
       </template>
     </div>
@@ -76,6 +77,15 @@ export default {
           return 'aplication/zip'
         case 'doc':
           return 'text/*, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.openxmlformats-officedocument.spreadsheetml.template, application/vnd.openxmlformats-officedocument.presentationml.template, application/vnd.openxmlformats-officedocument.presentationml.slideshow, application/vnd.openxmlformats-officedocument.presentationml.presentation, application/vnd.openxmlformats-officedocument.presentationml.slide, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.wordprocessingml.template, application/vnd.ms-excel.addin.macroEnabled.12, application/vnd.ms-excel.sheet.binary.macroEnabled.12, text/xml, application/xml, application/vnd.ms-excel, application/vnd.ms-works, application/vnd.ms-powerpoint, application/vnd.ms-powerpoint, application/vnd.ms-powerpoint, application/msword, application/vnd.ms-excel'
+      }
+    },
+    /* 是否微信环境 */
+    isWeiXin () {
+      let ua = window.navigator.userAgent.toLowerCase()
+      if (ua.match(/MicroMessenger/i) === 'micromessenger') {
+        return true
+      } else {
+        return false
       }
     }
   },
@@ -238,6 +248,17 @@ export default {
         width: 25px;
         height: 25px;
       }
+    }
+    .wxUpLoadBtn{
+      opacity: 1;
+    }
+    .imgIcon{
+      width: 25px;
+      height: 25px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
     }
   }
   .cropper-container {

@@ -21,7 +21,9 @@
         <img class="image" mode="auto" :src="item" />
         <button type="button" class="close" @click="handleDeleteImage(index, item)"><i class="icon iconfont icon-live_btn_close"></i></button>
       </div>
-      <upload-img class="wxChooseImg" :attach_type="'img'" @choseResult="choseResult" @upLoadResult="upLoadResult"></upload-img>
+      <upload-img class="wxChooseImg" :attach_type="'img'" @choseResult="choseResult" @upLoadResult="upLoadResult">
+        <img slot="img" class="icon" src="@/assets/icon/icon_plus.png" />
+      </upload-img>
       <!--<div class="takePhoto" @click.stop="photo" v-if="images.length < 9">
         <input v-if="!isiOS" id="photo" type="file" accept="image/*" capture="camera" multiple>
         <input v-else id="photo" type="file" multiple="9">
