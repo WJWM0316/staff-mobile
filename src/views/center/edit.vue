@@ -1,6 +1,6 @@
 <template>
   <div class="edit" v-if="pageInfo">
-    <div class="item border-bottom-1px">
+    <div class="item avatar border-bottom-1px">
       <span class="txt">头像</span>
       <span class="editBox">
         <upLoadFile class="photo defaultImg"
@@ -159,6 +159,9 @@ export default {
   .item {
     padding: 20px 0;
     display: flex;
+    &.avatar {
+      padding: 15px 0;
+    }
     .txt {
       flex: 1;
       display: flex;

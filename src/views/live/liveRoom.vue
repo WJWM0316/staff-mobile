@@ -1,14 +1,14 @@
 <template>
   <div class='wrap' v-if="liveDetail.title">
     <div class='header'>
-      <p class='title'>{{liveDetail.title}}<i class="icon" v-if="liveDetail.isTutor" @click.stop="jumpMore"></i></p>
+      <p class='title'>{{liveDetail.title}}<i class="icon iconfont icon-me_icon_edit_chevron" v-if="liveDetail.isTutor" @click.stop="jumpMore"></i></p>
       <p class='msg'>
         <span class='status green' v-show='liveDetail.status === 2 && wsStatus === 1'>直播进行中</span>
         <span class='status red' v-show='liveDetail.status === 2 && wsStatus === 0'>直播连接中</span>
         <span class='status red' v-show='liveDetail.status === 2 && wsStatus === 2'>直播断开，连接中…</span>
         <span class='status red' v-if='liveDetail.status === 3'>直播已结束</span>
         <span class='status red' v-if='liveDetail.status === 1'>直播未开始</span>
-        <span class='num' v-if="liveDetail.status === 2">{{onlineNum}}人参与</span>
+        <span class='num' v-if="liveDetail.status === 2 || wsStatus === 2">{{onlineNum}}人参与</span>
       </p>
       <div class='more' @click.stop="jumpMore" v-if="!liveDetail.isTutor">
         <span>更多介绍</span>
@@ -21,7 +21,7 @@
     <div class='failShow' v-show='wsStatus === 2' @click.stop='creatWs'>
       <i class='icon iconfont icon-live_icon_question'></i>
       <div class='txt'>连接服务器失败，点击重新连接</div>
-      <i class='icon iconfont icon-list_live_icon_more'></i>
+      <i class='icon iconfont icon-me_icon_edit_chevron'></i>
     </div>
     <div class='main' ref="main" :class="{'text': curOperType === 'text', 'audio': curOperType === 'audio'}">
       <scroller class='scroll'
@@ -79,10 +79,10 @@
     <template v-if="liveDetail.isTutor && liveDetail.status === 2">
       <div class="sendArea">
         <div class="operArea">
-          <span @click.stop="tutorOper('text')"><i class="icon1 iconfont icon-icon_writing" :class="{'curOperType': curOperType === 'text'}"></i></span>
-          <span @click.stop="tutorOper('audio')"><i class="icon2 iconfont icon-btn_record" :class="{'curOperType': curOperType === 'audio'}"></i></span>
+          <span @click.stop="tutorOper('text')"><i class="icon iconfont icon-icon_writing" :class="{'curOperType': curOperType === 'text'}"></i></span>
+          <span @click.stop="tutorOper('audio')"><i class="icon iconfont icon-btn_record" :class="{'curOperType': curOperType === 'audio'}"></i></span>
           <span @click="tutorOper('img')">
-            <i class="icon3 iconfont icon-btn_photo"></i>
+            <i class="icon iconfont icon-btn_photo"></i>
             <upLoadFile
              class="upLoadImg"
              attach_type="img"
@@ -92,7 +92,7 @@
             </upLoadFile>
           </span>
           <span @click.stop="tutorOper('answer')">
-            <i class="icon4 iconfont icon-icon_mymeaasage" :data-num="1"></i>
+            <i class="icon icon4 iconfont icon-icon_mymeaasage" :data-num="1"></i>
           </span>
         </div>
         <div class="typeBox">
@@ -248,14 +248,14 @@ export default {
       }
       // 直播已开始才要获取历史消息记录
       if (this.liveDetail.status !== 1) {
-        this.getMessage({isFirst: true})
+        this.getMessage({isFirst: true, action: 1})
       }
     },
     getMessage ({msgId, action, needLoading = true, isFirst = false}) {
       let data = {
         id: this.id,
-        action: action || 1,
-        msgId: msgId || 0,
+        action: action,
+        msgId: msgId,
         count: 20
       }
       return getLiveRoomMsgApi(data, needLoading).then(res => {
@@ -289,6 +289,7 @@ export default {
       })
     },
     nextMusic (index) {
+      console.log(index, 1111111)
       this.$refs.scroll.scrollToElement(this.$refs.message.getElementsByClassName('live-message')[index])
       this.$refs.messageItem[index].$children[0].play()
     },
@@ -477,9 +478,8 @@ export default {
         margin: 0 auto;
         margin: 0 auto;
         font-size: 30px; /*px*/
-        font-weight: 700;
         color: #22292C;
-        line-height: 20px;
+        line-height: 19px;
         .setEllipsis(50%);
         .icon {
           width: 7px;
@@ -495,10 +495,12 @@ export default {
         font-weight: 300;
         line-height: 16px;
         color: #929292;
+        margin-top: 2px;
         .status {
           margin-right: 10px;
           margin-bottom: 2px;
           position: relative;
+          display: inline-block;
           &.green::before {
             width: 5px;
             height: 5px;
@@ -507,7 +509,7 @@ export default {
             content: '';
             position: absolute;
             top: 50%;
-            margin-top: -1px;
+            margin-top: -1.5px;
             left: -10px;
           }
           &.red::before {
@@ -543,7 +545,8 @@ export default {
         background: #F8F8F8;
         border: 1px solid rgba(220,220,220,1);
         position: absolute;
-        top: 11px;
+        top: 50%;
+        margin-top: -14.5px;
         right: 12px;
         box-sizing: border-box;
         border-radius: 50%;
@@ -576,9 +579,10 @@ export default {
         margin-right: 14px;
         float: left;
       }
-      .icon-list_live_icon_more {
-        font-size: 48px; /*px*/
+      .icon-me_icon_edit_chevron {
+        font-size: 23px; /*px*/
         float: right;
+        color: #ff6666;
       }
     }
     .main {
@@ -688,7 +692,7 @@ export default {
       box-shadow:0px -1px 0px 0px rgba(0,0,0,0.05);
       .operArea {
         width: 100%;
-        height: 49px;
+        height: 52px;
         box-sizing: border-box;
         display: flex;
         > span {
@@ -697,20 +701,11 @@ export default {
           justify-content: center;
           align-items: center;
           position: relative;
-          .icon1 {
-            font-size: 38px; /*px*/
-            color: rgb(53, 64, 72);
-          }
-          .icon2 {
-            font-size: 42px; /*px*/
-            color: rgb(53, 64, 72);
-          }
-          .icon3 {
-            font-size: 33px; /*px*/
+          .icon {
+            font-size: 44px; /*px*/
             color: rgb(53, 64, 72);
           }
           .icon4 {
-            font-size: 38px; /*px*/
             color: rgb(53, 64, 72);
             position: relative;
             &::after {
