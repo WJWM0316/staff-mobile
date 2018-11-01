@@ -153,8 +153,10 @@ export default {
     upLoadResult (res) {
       this.isChoose = false
       this.fileType = 0
-      this.images.push(res.url)
-      this.uploadImgList.push(res.id)
+      res.forEach(item => {
+        this.images.push(item.url)
+        this.uploadImgList.push(item.id)
+      })
     },
     /**
      * 提交表单
