@@ -139,19 +139,17 @@ export default {
       let option = {
         count: this.count
       }
-      this.wechatChooseImage(option).then(res => {
+      this.wechatChooseImage(option).then(async res => {
         this.$emit('choseResult', res) // 选择图片的结果
-        res.forEach(item => {
-          this.wechatUploadImage(item).then(res0 => {
-            let data = {
-              mediaId: res0.serverId,
-              type: 'img'
-            }
-            this.wxUploadFile(data).then(res1 => {
-              this.$emit('upLoadResult', res1.data) // 上传图片的结果
-            })
-          })
-        })
+        for (let i = 0; i < res.length; i++) {
+          let res0 = await this.wechatUploadImage(res[i])
+          let data = {
+            mediaId: res0.serverId,
+            type: 'img'
+          }
+          let res1 = await this.wxUploadFile(data)
+          this.$emit('upLoadResult', res1.data[0]) // 上传图片的结果
+        }
       }).catch(res => {
         alert(JSON.stringify(res))
       })
