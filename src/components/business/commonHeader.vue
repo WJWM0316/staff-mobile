@@ -1,16 +1,15 @@
 <template>
   <div class="m-community">
     <!--灯塔头部-->
-    <div class="cover-container" :class="{circle: type === '2'}">
+    <div class="cover-container" :class="{'circle': type === '2', 'live': type === '3'}">
       <div class="cover">
-        <img src="@/assets/icon/headerbg.png"/>
+        <img v-if="type !== '3'" src="@/assets/icon/headerbg.png"/>
       </div>
       <span class="header-photo"  v-if="pageInfo.coverImg">
         <img :src="pageInfo.coverImg.middleUrl"/>
       </span>
       <backHome :type="type"></backHome>
     </div>
-
     <div class="info" v-if="type !== '2'">
       <h3 class="title">{{pageInfo.title}}</h3>
       <p class="desc" v-if="pageInfo.userTitle && pageInfo.userTitle.length > 0"><span v-for="(n, index) in pageInfo.userTitle" :key="index">{{n.title}} |</span> {{pageInfo.realname}}</p>
@@ -48,10 +47,12 @@
           <i class="icon iconfont icon-add"></i> 关注
         </div>
       </div>
+      <div v-if="type === '3'">
+        <div class="right live" @click.stop="jumpLive">直播间</div>
+      </div>
     </div>
   </div>
 </template>
-
 <script>
 import { putFocusApi } from '@/api/pages/workCircle'
 import backHome from '@c/layout/backHome'
@@ -77,6 +78,16 @@ export default {
   methods: {
     toSetting () {
       this.$router.push({path: '/setting', query: {id: this.pageInfo.id}})
+    },
+    jumpLive () {
+      if (this.pageInfo.status === 1 && !this.pageInfo.isTutor) {
+        this.$toast({
+          text: '直播尚未开始，敬请期待！',
+          width: '14em'
+        })
+      } else {
+        this.$router.push(`/liveRoom?id=${this.pageInfo.liveId}`)
+      }
     },
     focus () {
       putFocusApi(this.pageInfo.id).then(res => {
@@ -111,7 +122,6 @@ export default {
   display: block;
   .cover-container {
     .cover {
-      /*background: #F2F2F2;*/
       width: 100%;
       height: 90px;
       img{
@@ -119,7 +129,6 @@ export default {
         height: 100%;
       }
     }
-    /*头部改变新增属性*/
     position: relative;
     height: 90px;
     .header-photo{
@@ -133,30 +142,36 @@ export default {
         transform:translateX(-50%);
         margin-bottom:3.75px;
         >img{
-          border-radius: 6px;
+          border-radius: 3px;
           width: 100%;
           height: 100%;
           box-sizing: border-box;
           border: 0.5px solid #ffffff;
         }
     }
-  }
-  .circle{
-    height: 101px;
-    .cover{
-      background-repeat: no-repeat;
-      background-size: 100% 100%;
+    &.circle{
       height: 101px;
-    }
-    .header-photo{
-      box-shadow: none;
-      width: 80px;
-      height: 80px;
-      top: 42px;
-      >img{
+      .cover{
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        height: 101px;
+      }
+      .header-photo{
+        box-shadow: none;
         width: 80px;
         height: 80px;
-        border-radius: 50%;
+        top: 42px;
+        >img{
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+        }
+      }
+    }
+    &.live {
+      .cover {
+        height: 100px;
+        background:linear-gradient(180deg,rgba(255,255,255,1) 0%,rgba(248,248,248,1) 100%);
       }
     }
   }
@@ -179,7 +194,6 @@ export default {
       font-weight: 700;
       color: #354048;
     }
-
     .desc {
       padding: 0 20px;
       font-weight: 300;
@@ -233,6 +247,12 @@ export default {
       .to_img{
         width: 12px;
         height: 12px;
+      }
+      &.live {
+        color: #4080AD;
+        font-size: 26px;/*px*/
+        line-height: 18px;
+        font-weight: 300;
       }
     }
     .focus{

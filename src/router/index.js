@@ -8,10 +8,10 @@ import center from './center'
 import live from './live'
 import bookHouse from './bookHouse'
 import login from './login'
+import localstorage from '@u/localstorage'
 
 Vue.use(Router)
-let company = location.href.split('/')[3] || 'tiger'
-
+let company = localstorage.get('XPLUSCompany') || 'laohu'
 const routes = [
   ...home,
   ...course,

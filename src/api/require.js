@@ -6,19 +6,18 @@ import store from '../store/index.js'
 import router from '../router/index.js'
 import localstorage from '@u/localstorage'
 import browser from '@u/browser'
-import { bindWxLogin, tokenLogin } from '@/api/pages/login'
+import { bindWxLogin, tokenLogin, ssoLoginApi, loginApi } from '@/api/pages/login'
 Vue.use(VueAxios, axios)
-let company = location.href.split('/')[3]
+let token = localstorage.get('token')
+let company = localstorage.get('XPLUSCompany') || 'laohu'
+let ssoToken = localstorage.get('ssoToken')
 // 动态设置本地和线上接口域名
 Vue.axios.defaults.baseURL = `${settings.host}/${company}`
 Vue.axios.defaults.timeout = 20000
-
-let num = 0
-let token = localstorage.get('token')
-let ssoToken = localstorage.get('ssoToken')
+let num = 0 // 处理loading的显示逻辑
 export const request = ({type = 'post', url, data = {}, needLoading = true, config = {}} = {}) => {
   // 微信授权接口host不一样
-  if (url === '/sso_login/bind/wechat') {
+  if (url === '/sso_login/bind/wechat' || url === '/unifyauth/login' || url === '/unifyauth/captcha') {
     Vue.axios.defaults.baseURL = `${settings.oauthUrl}/`
   } else if (url === '/auth/token') {
     Vue.axios.defaults.baseURL = `${settings.workUrl}/${company}`
@@ -52,9 +51,6 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
       store.dispatch('updata_loadingStatus', false)
     }
     switch (err.response.status) {
-      case 500: // 服务器异常
-        Vue.$vux.toast.text('服务器异常', 'bottom')
-        break
       case 401: // 未登录或登录过期
         if (browser.isWechat() && !router.history.current.query.bind_code) {
           location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(location.href)}`
@@ -64,11 +60,16 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
         }
         break
     }
-    Vue.$vux.toast.text(err.response.data.msg, 'bottom')
-    return Promise.reject(err.response.data.msg)
+    Vue.toast({
+      text: err.response.data.msg,
+      position: 'bottom',
+      width: '10em'
+    })
+    return Promise.reject(err.response.data)
   })
 }
 
+// 微信授权登录
 export const wxLogin = (data, redirect) => {
   return new Promise((resolve, reject) => {
     bindWxLogin(data).then(res => {
@@ -78,7 +79,6 @@ export const wxLogin = (data, redirect) => {
         localstorage.set('ssoToken', res.data.ssoToken) // 储存ssoToken值
         tokenLogin({sso_token: res.data.ssoToken}).then(res0 => {
           let redirectUrl = router.history.current.fullPath
-          console.log(redirectUrl, router)
           localstorage.set('token', res0.data.token) // 储存token值
           location.href = `${location.href.split('/')[0]}//${location.host}/${res.data.companies[0].code}/${redirectUrl}&redirect=true` // 登录成功跳转到相应的公司
           resolve(res0)
@@ -90,5 +90,48 @@ export const wxLogin = (data, redirect) => {
         }
       }
     })
+  })
+}
+
+// 登录
+export const login = (data, version) => {
+  return new Promise((resolve, reject) => {
+    if (!router.history.current.query.bind_code) {
+      ssoLoginApi(data).then(res => {
+        localstorage.set('ssoToken', res.data.ssoToken) // 储存ssoToken值
+        localstorage.set('XPLUSCompany', res.data.companies[0].code) // 储存公司名
+        company = localstorage.get('XPLUSCompany') || 'laohu'
+        loginApi(data).then(res0 => {
+          localstorage.set('token', res0.data.token) // 储存token值
+          Vue.toast({
+            text: '登录成功',
+            type: 'success',
+            callBack: () => {
+              // version 为0 即没有特意去切换导师端还是员工端，就返回上一步， 没有上一步默认去到员工端首页
+              if (!version) {
+                if (router.history.current.query.redirect_url) {
+                  location.href = decodeURIComponent(router.history.current.query.redirect_url)
+                } else {
+                  location.href = `${location.href.split('/')[0]}//${location.host}/${res.data.companies[0].code}/home`
+                }
+              } else {
+                // 为2 即切换了员工端， 为1 即切换到了导师端
+                if (version === 2) {
+                  location.href = `${location.href.split('/')[0]}//${location.host}/${res.data.companies[0].code}/home`
+                } else {
+                  location.href = `${location.href.split('/')[0]}//${location.host}/${res.data.companies[0].code}/homeTc`
+                }
+              }
+            }
+          })
+        })
+      }).catch(e => {
+        reject(e)
+      })
+    } else {
+      data.is_bind = router.history.current.query.query.is_bind
+      data.bind_code = router.history.current.query.query.bind_code
+      wxLogin(data)
+    }
   })
 }

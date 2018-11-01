@@ -11,8 +11,8 @@
         :messageData="messageData"
         :audioList="audioList"
         :key="messageData.messageId"
-        :isNeedRead='true'
-        :isNeedEnd='true'
+        :isNeedRead='isNeedRead'
+        :isNeedEnd='isNeedEnd'
         @removeRed="removeRed"
         @nextMusic='nextMusic'
         @endAudio='endAudio'
@@ -32,6 +32,14 @@ export default {
     audioMessage
   },
   props: {
+    isNeedRead: { // 是否需要红点标识
+      type: Boolean,
+      default: false
+    },
+    isNeedEnd: { // 是否需要已结束标识
+      type: Boolean,
+      default: false
+    },
     bgColor: {
       defaultImg: String,
       default: '#ffffff'

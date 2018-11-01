@@ -8,6 +8,22 @@ export const loginApi = (data) => {
     data
   })
 }
+// 全局聚合登录
+export const ssoLoginApi = (data) => {
+  return request({
+    type: 'post',
+    url: '/unifyauth/login',
+    data
+  })
+}
+// 更新图片验证码
+export const undataCodeApi = (data) => {
+  return request({
+    type: 'get',
+    url: '/unifyauth/captcha',
+    data
+  })
+}
 // 退出登录
 export const outLoginApi = (data, needLoading) => {
   return request({

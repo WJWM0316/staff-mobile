@@ -8,7 +8,7 @@
         <p class="editBtn" @click.stop="jump('edit')">点击编辑资料</p>
       </div>
       <div class="photo defaultImg">
-        <img :src="pageInfo.avatar.middleUrl" alt="" v-preview  v-if="pageInfo.avatar">
+        <img :src="pageInfo.avatar.middleUrl" alt="" v-preview="true"  v-if="pageInfo.avatar" :data-src="pageInfo.avatar.url">
       </div>
     </div>
     <div class="main">
@@ -179,7 +179,7 @@ export default {
           color: #354048;
         }
         .icon1 {
-          font-size: 36px; /*px*/
+          font-size: 40px; /*px*/
           color: rgb(188, 188, 188);
           margin-right: 12px;
         }
