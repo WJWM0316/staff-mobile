@@ -346,7 +346,7 @@ export default {
     },
     creatWs () {
       // 断线重连 还要重新加入直播间
-      let company = location.href.split('/')[3]
+      let company = localstorage.get('XPLUSCompany') || 'laohu'
       let websocketUrl = settings.websocketUrl
       ws.create(`${websocketUrl}/${company}`)
       setTimeout(() => {

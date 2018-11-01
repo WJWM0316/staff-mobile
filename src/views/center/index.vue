@@ -179,7 +179,7 @@ export default {
           color: #354048;
         }
         .icon1 {
-          font-size: 36px; /*px*/
+          font-size: 40px; /*px*/
           color: rgb(188, 188, 188);
           margin-right: 12px;
         }

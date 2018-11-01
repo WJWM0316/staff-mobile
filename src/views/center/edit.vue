@@ -11,14 +11,14 @@
       </span>
     </div>
     <div class="item border-bottom-1px">
-      <span class="txt">姓名</span>
+      <span class="txt must">姓名</span>
       <span class="editBox">
         {{pageInfo.realname}}
         <!-- <input type="text" placeholder="请输入姓名" v-model="pageInfo.realname" disabled> -->
       </span>
     </div>
     <div class="item border-bottom-1px">
-      <span class="txt">性别</span>
+      <span class="txt must">性别</span>
       <span class="editBox">
         <!-- 暂时不做编辑， 需要开启即可 -->
         <!-- <span class="placeholder" v-if="pageInfo.gender !== 0 && pageInfo.gender !== 1"  @click.stop="sexShow = true">请选择性别</span> -->
@@ -32,14 +32,14 @@
       </span>
     </div>
     <div class="item border-bottom-1px">
-      <span class="txt">岗位</span>
+      <span class="txt must">岗位</span>
       <span class="editBox">
         {{pageInfo.occupation}}
         <!-- <input type="text" placeholder="请输入岗位" v-model="pageInfo.occupation" disabled> -->
       </span>
     </div>
     <div class="item border-bottom-1px">
-      <span class="txt">邮箱</span>
+      <span class="txt must">邮箱</span>
       <span class="editBox">
         {{pageInfo.email}}
         <!-- <input type="text" placeholder="请输入邮箱" v-model="pageInfo.email" disabled> -->
@@ -151,7 +151,7 @@ export default {
 </script>
 <style lang="less">
 .edit {
-  padding: 0 20px;
+  padding: 15px 20px;
   .file {
     width: 100px;
     height: 20px;
@@ -165,13 +165,24 @@ export default {
       align-items: center;
       padding-left: 17px;
       position: relative;
+      color: #666;
+      font-weight: 300;
+      &.must::before {
+        content: '*';
+        color: #D7AB70;
+        font-size: 32px; /*px*/
+        position: absolute;
+        top: 50%;
+        margin-top: -8px;
+        left: 0;
+      }
     }
     .editBox {
       flex: 2;
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      color: #354048;
+      color: #929292;
       font-weight: 300;
       .photo {
         width: 60px;
@@ -190,6 +201,7 @@ export default {
         text-align: right;
         font-weight: 300;
         color: #354048;
+        font-weight: 500;
         font-size: 30px; /*px*/
       }
       .operResult {

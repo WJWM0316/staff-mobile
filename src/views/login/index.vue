@@ -15,7 +15,7 @@
         <input class="vcode" type="text" v-model="vcode" placeholder="请输入图片验证码">
         <img class="vcodeImg" :src="verification.img" @click.stop="undataCode">
       </div>
-      <button class="btn" @click.stop="login">登录</button>
+      <xButton class="btn" @click.stop.native="login">登录</xButton>
     </div>
     <div class="btnBox">
       <span @click.stop="wxlogin" v-if="$route.query.is_bind && isWechat">微信登陆</span>
@@ -95,6 +95,7 @@ export default {
       })
     },
     login () {
+      console.log(111)
       let data = {
         email: this.account,
         password: this.password,
