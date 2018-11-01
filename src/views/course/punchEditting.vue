@@ -98,14 +98,14 @@ export default {
   methods: {
     /* 微信选择图片返回 */
     choseResult (res) {
-      res.forEach(item => {
-        this.images.push(item)
-      })
+      console.log(res)
     },
     /* 上传后返回 */
     upLoadResult (res) {
+      console.log(res, 6666666666)
       res.forEach(item => {
-        this.uploadImgList.push(item)
+        this.images.push(item.url)
+        this.uploadImgList.push(item.id)
       })
     },
     /* 选择图片 */
