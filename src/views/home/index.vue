@@ -70,7 +70,7 @@
               ></infoCard>
             </div>
           </div>
-          <div class="btnBox"><div class="btn" @click.stop="jump('course')">发现更多课程</div></div>
+          <div class="btnBox btn1"><div class="btn" @click.stop="jump('course')">发现更多课程</div></div>
           <div class="title"><i class="icon"></i>更多学习</div>
         </template>
         <div class="enter" @click.stop="jump('liveList')">
@@ -181,12 +181,13 @@ export default {
       margin-left: -172px;
       box-shadow: 0px 4px 12px 0px rgba(69,46,16,0.08);
       border-radius: 3px;
-      padding: 25px 20px 22px;
+      padding: 25px 0 22px;
       box-sizing: border-box;
       .welcome {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        padding: 0 20px;
         .text {
           font-size: 48px; /*px*/
           color: #D7AB70;
@@ -251,6 +252,7 @@ export default {
           padding: 0 10px 0 20px;
           background: #fff;
           position: relative;
+          font-weight: 300px;
           &.notBegin::after {
             content: '';
             display: block;
@@ -281,7 +283,7 @@ export default {
         margin-top: 12px;
         padding: 0 27px 0 70px;
         position: relative;
-        height: 56px;
+        height: 48px;
         display: flex;
         align-items: center;
         box-sizing: border-box;
@@ -300,11 +302,12 @@ export default {
             font-size: 24px; /*px*/
             line-height: 16px;
             font-weight: 300;
+            margin-top: 2px;
           }
         }
         .icon1 {
-          width: 56px;
-          height: 56px;
+          width: 48px;
+          height: 48px;
           position: absolute;
           top: 0;
           left: 0;
@@ -315,7 +318,7 @@ export default {
           position: absolute;
           top: 50%;
           margin-top: -4px;
-          right: 0;
+          right: 5px;
         }
       }
     }
@@ -354,6 +357,10 @@ export default {
       }
       .btnBox {
         padding: 0 20px;
+        margin-top: 15px;
+        &.btn1 {
+          margin-top: 0px;
+        }
         .btn {
           width: 100%;
           height: 44px;
@@ -372,14 +379,14 @@ export default {
         overflow-y: hidden;
         white-space: nowrap;
         font-size: 0;
-        margin-bottom: 20px;
-        padding: 10px 15px;
+        margin-bottom: 10px;
+        padding: 0 15px 10px;
         box-sizing: border-box;
         .courseItem {
           width: 284px;
           display: inline-block;
           background: #fff;
-          box-shadow: 0px 6px 20px 0px rgba(0,0,0,0.07);
+          box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.07);
           border-radius: 3px;
           margin-right: 10px;
           vertical-align: top;
@@ -390,7 +397,7 @@ export default {
       }
       .enter {
         width: 100%;
-        padding: 7px 20px 20px 20px;
+        padding: 0px 20px 20px 25px;
         box-sizing: border-box;
         img {
           width: 100%;

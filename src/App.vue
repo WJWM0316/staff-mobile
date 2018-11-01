@@ -336,6 +336,6 @@ export default {
   }
 }
 .weui-tabbar:before {
-  border-color: #DCDCDC;
+  border-top: 1px solid #DCDCDC !important;
 }
 </style>

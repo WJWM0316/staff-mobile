@@ -56,7 +56,7 @@
           <span class='txt'>{{liveDetail.endTime * 1000 | date('MMMDo HH:mm')}} 直播结束</span>
         </div>
       </scroller>
-      <div class="scrollBtn">
+      <div class="scrollBtn" v-if="liveDetail.status !== 1">
         <i class="btn" @click.stop="scrollTo('top')"><img src="@a/icon/live_btn_gotop@3x.png" alt=""></i>
         <i class="btn" @click.stop="scrollTo('bottom')"><img src="@a/icon/live_btn_gobase@3x.png" alt=""></i>
       </div>
@@ -657,13 +657,13 @@ export default {
         overflow: hidden;
         border: 1px solid #EDEDED;
         box-sizing: border-box;
+        padding: 0 15px;
         .bar {
           width: 100%;
           height: 100%;
           display: block;
           color: #354048;
           font-size: 30px; /*px*/
-          padding: 0 14px;
           border: none;
           ::-webkit-input-placeholder {
             color: #000;
@@ -678,9 +678,9 @@ export default {
         padding: 0 0 0 16px;
       }
       .icon-live_btn_answers {
-        font-size: 30px; /*px*/
+        font-size: 40px; /*px*/
         color: #D7AB70;
-        padding: 0 20px 0 22px;
+        padding: 0 20px 0 19px;
       }
     }
     .sendArea {
