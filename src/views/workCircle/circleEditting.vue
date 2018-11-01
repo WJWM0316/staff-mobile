@@ -9,12 +9,9 @@
     <div class="select-box" v-show="isChoose" v-if="isChoose">
       <!--选择图片-->
       <div class="takePhoto">
-        <upload-img class="wxChooseImg" :attach_type="'img'" @choseResult="choseResult" @upLoadResult="upLoadResult" :count="20-uploadImgList.length">
+        <upload-img class="wxChooseImg" :attach_type="'img'" @choseResult="choseResult" @upLoadResult="upLoadResult">
           <img slot="img" class="icon" src="@/assets/icon/btn_pic@3x.png" />
         </upload-img>
-        <!--<input v-if="!isiOS" id="photo" type="file" accept="image/*" capture="camera" multiple>
-        <input v-else id="photo" type="file" multiple>
-        <img class="icon" src="@/assets/icon/btn_pic@3x.png" alt="" />-->
       </div>
       <!--选择视频-->
       <div class="audio" @click.stop="video">
@@ -43,7 +40,6 @@
         :attach_type="'img'"
         @choseResult="choseResult"
         @upLoadResult="upLoadResult"
-        :count="20-uploadImgList.length"
         v-if="images.length < 20">
         <img slot="img" class="icon" src="@/assets/icon/icon_plus.png" />
       </upload-img>
@@ -487,6 +483,7 @@ export default {
         }
       }
       .wxChooseImg{
+        margin-left: 3px;
         box-sizing: border-box;
         position: relative;
         border: 1px solid #EDEDED;

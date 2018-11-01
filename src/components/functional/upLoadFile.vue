@@ -135,6 +135,7 @@ export default {
       }
     },
     wxChoseImg () {
+      console.log(this.count, 99999999999)
       this.getWechatSign()
       let option = {
         count: this.count
