@@ -8,10 +8,13 @@
     <!--四项选择框-->
     <div class="select-box" v-show="isChoose" v-if="isChoose">
       <!--选择图片-->
-      <div class="takePhoto" @click.stop="photo">
-        <input v-if="!isiOS" id="photo" type="file" accept="image/*" capture="camera" multiple>
+      <div class="takePhoto">
+        <upload-img class="wxChooseImg" :attach_type="'img'" @choseResult="choseResult" @upLoadResult="upLoadResult" :count="20-uploadImgList.length">
+          <img slot="img" class="icon" src="@/assets/icon/btn_pic@3x.png" />
+        </upload-img>
+        <!--<input v-if="!isiOS" id="photo" type="file" accept="image/*" capture="camera" multiple>
         <input v-else id="photo" type="file" multiple>
-        <img class="icon" src="@/assets/icon/btn_pic@3x.png" alt="" />
+        <img class="icon" src="@/assets/icon/btn_pic@3x.png" alt="" />-->
       </div>
       <!--选择视频-->
       <div class="audio" @click.stop="video">
@@ -36,11 +39,19 @@
         <img class="image" :src="item" />
         <div class="close" @click="handleDeleteImage(index, item)"><i class="icon iconfont icon-live_btn_close"></i></div>
       </div>
-      <div class="takePhoto" @click.stop="photo" v-if="images.length < 20">
+      <upload-img class="wxChooseImg"
+        :attach_type="'img'"
+        @choseResult="choseResult"
+        @upLoadResult="upLoadResult"
+        :count="20-uploadImgList.length"
+        v-if="images.length < 20">
+        <img slot="img" class="icon" src="@/assets/icon/icon_plus.png" />
+      </upload-img>
+      <!--<div class="takePhoto" @click.stop="photo" v-if="images.length < 20">
         <input v-if="!isiOS" id="photo" type="file" accept="image/*" capture="camera" multiple>
         <input v-else id="photo" type="file" multiple>
         <img class="icon" src="@/assets/icon/icon_plus.png" />
-      </div>
+      </div>-->
     </div>
     <!--视频-->
     <div class="video" v-if="fileType === 1">
@@ -91,8 +102,12 @@
 <script>
 import { attachesApi } from '@/api/pages/course'
 import { jobcirclePostApi } from '@/api/pages/workCircle'
+import uploadImg from '@c/functional/upLoadFile'
 export default {
   name: 'circleEdit',
+  components: {
+    uploadImg
+  },
   computed: {
     canPublish: {
       get: function () {
@@ -126,6 +141,17 @@ export default {
     }
   },
   methods: {
+    /* 微信选择图片返回 */
+    choseResult (res) {},
+    /* 上传后返回 */
+    upLoadResult (res) {
+      this.isChoose = false
+      this.fileType = 0
+      res.forEach(item => {
+        this.images.push(item.url)
+        this.uploadImgList.push(item.id)
+      })
+    },
     /**
      * 提交表单
      */
@@ -341,6 +367,7 @@ export default {
     /*padding-bottom: 20px;*/
     position: relative;
     padding: 25px;
+    /* 四项选择盒子样子 */
     .select-box{
       display: flex;
       .takePhoto, .audio, .file, .link{
@@ -370,6 +397,18 @@ export default {
       .link{
         margin-right: 0;
       }
+      .wxChooseImg{
+        width: 100%;
+        height: 100%;
+        .icon{
+          width: 25px;
+          height: 25px;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translateX(-50%) translateY(-50%);
+        }
+      }
     }
     .form-group {
       position: relative;
@@ -396,6 +435,7 @@ export default {
         }
       }
     }
+    /* 图片展示区样式 */
     .images {
       display: flex;
       margin: 0 -3px -6px;
@@ -415,7 +455,6 @@ export default {
           background: #f1f1f1;
           width: 102px;
           height: 102px;
-          line-height: 100px;
           object-fit: cover;
           vertical-align: middle;
         }
@@ -447,29 +486,19 @@ export default {
           /* no */
         }
       }
-      .takePhoto{
+      .wxChooseImg{
+        box-sizing: border-box;
         position: relative;
+        border: 1px solid #EDEDED;
         width: 102px;
         height: 102px;
-        box-sizing: border-box;
-        background: #FFFFFF;
-        border: 1px solid #EDEDED;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        >input{
-          color: #FFFFFF;
-          width: 100%;
-          height: 100%;
-          position: absolute;
-          top: 0;
-          left: 0;
-          opacity: 0;
-          z-index: 5;
-        }
         .icon{
           width: 25px;
           height: 25px;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translateX(-50%) translateY(-50%);
         }
       }
     }

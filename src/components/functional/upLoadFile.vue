@@ -10,7 +10,7 @@
     </div>
     <div class="upLoadFileBox">
       <template v-if="attach_type !== 'img' || !isWeiXin">
-        <img class="imgIcon" v-if="!isWeiXin && attach_type === 'img'" src="@/assets/icon/icon_plus.png" />
+        <slot name="img"></slot>
         <img v-if="fileUrl[fileUrl.length - 1]" :src="fileUrl[fileUrl.length - 1]" alt="" id="image">
         <img v-else :src="imgUrl" alt="" id="image">
         <input class="upLoadBtn"

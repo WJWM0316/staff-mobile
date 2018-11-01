@@ -21,7 +21,7 @@
         <img class="image" mode="auto" :src="item" />
         <button type="button" class="close" @click="handleDeleteImage(index, item)"><i class="icon iconfont icon-live_btn_close"></i></button>
       </div>
-      <upload-img class="wxChooseImg" :attach_type="'img'" @choseResult="choseResult" @upLoadResult="upLoadResult">
+      <upload-img class="wxChooseImg" :attach_type="'img'" @choseResult="choseResult" @upLoadResult="upLoadResult" :count="9-uploadImgList.length">
         <img slot="img" class="icon" src="@/assets/icon/icon_plus.png" />
       </upload-img>
       <!--<div class="takePhoto" @click.stop="photo" v-if="images.length < 9">
@@ -97,12 +97,9 @@ export default {
   },
   methods: {
     /* 微信选择图片返回 */
-    choseResult (res) {
-      console.log(res)
-    },
+    choseResult (res) {},
     /* 上传后返回 */
     upLoadResult (res) {
-      console.log(res, 6666666666)
       res.forEach(item => {
         this.images.push(item.url)
         this.uploadImgList.push(item.id)
@@ -310,6 +307,14 @@ export default {
       border: 1px solid #EDEDED;
       width: 108px;
       height: 108px;
+      .icon{
+        width: 25px;
+        height: 25px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+      }
     }
     .chooseImg, .wx-images{
       display: flex;
@@ -329,6 +334,8 @@ export default {
           width: 108px;
           height: 108px;
           line-height: 100px;
+          object-fit: cover;
+          vertical-align: middle;
         }
         .close {
           position: absolute;
