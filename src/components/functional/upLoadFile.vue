@@ -82,7 +82,7 @@ export default {
     /* 是否微信环境 */
     isWeiXin () {
       let ua = window.navigator.userAgent.toLowerCase()
-      if (ua.match(/MicroMessenger/i) === 'micromessenger') {
+      if (ua.match(/MicroMessenger/i)[0] === 'micromessenger') {
         return true
       } else {
         return false
