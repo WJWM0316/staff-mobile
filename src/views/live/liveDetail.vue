@@ -11,7 +11,7 @@
       </div>
       <div class="h5Area" v-html="pageInfo.intro"></div>
     </div>
-    <div class="footerBtn">
+    <div class="footerBtn" v-if="!isIntroduce">
       <div class="timestatus">
         <p class="txt" v-if="pageInfo.status === 1">直播于{{pageInfo.expectedStartTime * 1000 | date('MMMDo hh:mm')}}开始</p>
         <p class="txt" v-if="pageInfo.status === 2">直播进行中</p>
@@ -35,6 +35,15 @@ export default {
     return {
       pageInfo: {},
       id: ''
+    }
+  },
+  computed: {
+    isIntroduce () {
+      if (this.$route.query.isIntroduce) {
+        return true
+      } else {
+        return false
+      }
     }
   },
   methods: {

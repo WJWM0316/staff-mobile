@@ -16,7 +16,7 @@ Vue.use(ToastPlugin)
 Vue.use(WechatPlugin)
 Vue.use(ConfirmPlugin)
 
-Vue.prototype.$toast = function ({text, position = 'middle', type = 'text', width = '7.6em', callBack}) {
+Vue.toast = Vue.prototype.$toast = function ({text, position = 'middle', type = 'text', width = '7.6em', callBack}) {
   this.$vux.toast.show({
     isShowMask: true,
     text: text,
@@ -32,7 +32,7 @@ Vue.prototype.$toast = function ({text, position = 'middle', type = 'text', widt
 }
 
 // confirm
-Vue.prototype.$confirm = function ({title, content, confirmBack, cancelBack = function () {}, confirmText = '确定', cancelText = '取消'}) {
+Vue.confirm = Vue.prototype.$confirm = function ({title, content, confirmBack, cancelBack = function () {}, confirmText = '确定', cancelText = '取消'}) {
   this.$vux.confirm.show({
     title: title,
     content: content,
@@ -48,7 +48,7 @@ Vue.prototype.$confirm = function ({title, content, confirmBack, cancelBack = fu
 }
 
 // alert
-Vue.prototype.$alert = function ({title, content, confirmBack, confirmText = '确定'}) {
+Vue.alert = Vue.prototype.$alert = function ({title, content, confirmBack, confirmText = '确定'}) {
   this.$vux.alert.show({
     title: title,
     content: content,

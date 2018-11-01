@@ -6,25 +6,32 @@
     </div>
     <div class="form">
       <div class="inputBox border-bottom-1px" :class="{'err': accountErr}">
-        <input class="account" type="text" v-model="account" placeholder="请输入邮箱账号">
+        <input class="account" type="text" v-model="account" placeholder="请输入您的账号">
       </div>
-      <div class="inputBox border-bottom-1px">
-        <input class="password" type="password" v-model="password" placeholder="请输入登录密码">
+      <div class="inputBox border-bottom-1px" :class="{'err': passwordErr}">
+        <input class="password" type="password" v-model="password" placeholder="请输入您的密码">
+      </div>
+      <div class="inputBox border-bottom-1px" :class="{'err': codeErr}" v-if="verification.img">
+        <input class="vcode" type="text" v-model="vcode" placeholder="请输入图片验证码">
+        <img class="vcodeImg" :src="verification.img" @click.stop="undataCode">
       </div>
       <button class="btn" @click.stop="login">登录</button>
     </div>
     <div class="btnBox">
-      <span @click.stop="wxlogin" v-if="$route.query.is_bind">微信登陆</span>
-      <span @click.stop="toggle">切换导师版</span>
+      <span @click.stop="wxlogin" v-if="$route.query.is_bind && isWechat">微信登陆</span>
+      <span @click.stop="toggle(1)" v-if="!isTutor">切换导师版</span>
+      <span @click.stop="toggle(2)" v-else>切换成员版</span>
       <span @click.stop="forget">忘记密码</span>
     </div>
   </div>
 </template>
 <script>
 import { userInfoApi } from '@/api/pages/center'
-import { loginApi } from '@/api/pages/login'
-import { wxLogin } from '@/api/require'
+import { loginApi, undataCodeApi } from '@/api/pages/login'
+import { wxLogin, login } from '@/api/require'
 import localstorage from '@u/localstorage'
+import browser from '@u/browser'
+import { PHONE, EMAIL } from '@u/regular'
 import ws from '@u/websocket'
 import settings from '@/config'
 export default {
@@ -32,11 +39,55 @@ export default {
     return {
       account: '',
       password: '',
+      vcode: '',
       winHeight: 0,
-      accountErr: false // 邮箱格式输入错误
+      isTutor: false,
+      verification: {
+        key: null,
+        img: null
+      },
+      version: 0, // 2 学员版 1 导师版
+      accountErr: false, // 账号格式输入错误
+      passwordErr: false, // 密码格式输入错误
+      codeErr: false // 验证码输入错误
+    }
+  },
+  watch: {
+    account (val) {
+      if (val !== '' && (!PHONE.test(val) && !EMAIL.test(val))) {
+        this.accountErr = true
+      } else {
+        this.accountErr = false
+      }
+    },
+    password (val) {
+      if (val !== '' && (val.length < 6 || val.length > 20)) {
+        this.passwordErr = true
+      } else {
+        this.passwordErr = false
+      }
+    },
+    vcode (val) {
+      if (val !== '' && val.length !== 5) {
+        this.codeErr = true
+      } else {
+        this.codeErr = false
+      }
+    },
+    version () {},
+    verification () {}
+  },
+  computed: {
+    isWechat () {
+      return browser.isWechat()
     }
   },
   methods: {
+    undataCode () {
+      undataCodeApi().then(res => {
+        this.verification = res.data
+      })
+    },
     forget () {
       this.$alert({
         title: '忘记密码',
@@ -46,32 +97,50 @@ export default {
     login () {
       let data = {
         email: this.account,
-        password: this.password
+        password: this.password,
+        captchaKey: this.verification.key,
+        captchaValue: this.vcode
       }
-      let loginCallBack = (res) => {
-        localstorage.set('token', res.data.token) // 储存token值
-        // localstorage.set('account', {account: this.account, password: this.password}) // 保存账号密码
-        let company = location.href.split('/')[3]
-        localstorage.set('XPLUSCompany', company) // 储存公司名
+      let text = ''
+      if (data.email === '') {
+        text = '请输入您的账号'
+      } else if (!PHONE.test(data.email) && !EMAIL.test(data.email)) {
+        text = '账号格式错误'
+      } else if (data.password === '') {
+        text = '请输入您的密码'
+      } else if (data.password.length < 6 || data.password.length > 20) {
+        text = '密码为6~20个字符'
+      } else if (data.captchaValue === '' && this.verification.key) {
+        text = '请输入图片验证码'
+      }
+      if (text !== '') {
         this.$toast({
-          text: '登录成功',
-          type: 'success',
-          callBack: () => {
-            if (this.$route.query.redirect_url) {
-              location.href = decodeURIComponent(this.$route.query.redirect_url)
-            }
-          }
+          text: text,
+          width: '9em'
         })
+        return false
       }
-      if (!this.$route.query.bind_code) {
-        loginApi(data).then(res => {
-          loginCallBack(res)
-        })
-      } else {
-        data.is_bind = this.$route.query.is_bind
-        data.bind_code = this.$route.query.bind_code
-        wxLogin(data)
-      }
+      login(data, this.version).catch(e => {
+        // 错误三次就要输入验证码
+        if (e.code === 410) {
+          this.verification = e.data
+        }
+        // 密码错误
+        if (e.code === 0) {
+          this.passwordErr = true
+          this.password = ''
+        }
+        // 账号错误
+        if (e.code === 400) {
+          this.accountErr = true
+          this.account = ''
+        }
+        // 验证码错误
+        if (e.code === 411) {
+          this.vcode = ''
+          this.codeErr = true
+        }
+      })
     },
     wxlogin () {
       let data = {
@@ -80,10 +149,18 @@ export default {
       }
       wxLogin(data)
     },
-    toggle () {
+    toggle (type) {
+      if (type === 1) {
+        this.isTutor = true
+      } else {
+        this.isTutor = false
+      }
+      this.version = type
+      this.$toast({
+        text: '切换成功',
+        type: 'success'
+      })
     }
-  },
-  created () {
   },
   mounted () {
     this.winHeight = window.innerHeight + 'px'
@@ -142,7 +219,11 @@ export default {
       .inputBox {
         padding-bottom: 14px;
         margin-bottom: 26px;
-        .account, .password {
+        position: relative;
+        &.err:after {
+          background-color: #D85151;
+        }
+        .account, .password, .vcode {
           display: block;
           border: none;
           color: #fff;
@@ -152,9 +233,21 @@ export default {
           padding-left: 38px;
           background: url('../../assets/icon/icon_account@3x.png') no-repeat left center;
           background-size: auto 20px;
+          width: 100%;
+          box-sizing: border-box;
         }
         .password {
           background-image: url('../../assets/icon/icon_password@3x.png');
+        }
+        .vcode {
+          background-image: url('../../assets/icon/icon_authcode@2x.png');
+        }
+        .vcodeImg {
+          height: 30px;
+          position: absolute;
+          top: 50%;
+          margin-top: -24px;
+          right: 0;
         }
       }
       .btn {

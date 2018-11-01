@@ -5,7 +5,7 @@
       <div class="welcome">
         <div class="text">
           <span class="name">{{headInfo.base.realname | ellipsis(8)}}</span>，欢迎回来～
-          <p class="msg">你的学习时长已超越<span class="num">{{headInfo.study.surpass}}%</span>的同事啦</p>
+          <p class="msg">你的学习时长已超越 <span class="num">{{headInfo.study.surpass}}%</span> 的同事啦！</p>
         </div>
         <div class="photo" v-if="headInfo.base.avatar"><img :src="headInfo.base.avatar.middleUrl" alt=""></div>
       </div>
@@ -31,7 +31,7 @@
           <img class="icon1" src="@a/icon/list_icon_live@3x.png" alt="">
           <div class="msg">
             <p class="liveTitle">{{homeInfo.lives[0].title}}</p>
-            <p class="name">{{homeInfo.lives[0].groupName}} | {{homeInfo.lives[0].realname}}</p>
+            <p class="name"><span v-if="homeInfo.lives[0].groupName">{{homeInfo.lives[0].groupName}} | </span>{{homeInfo.lives[0].realname}}</p>
           </div>
           <img class="icon2" src="@a/icon/83714243584516615.png" alt="">
         </div>

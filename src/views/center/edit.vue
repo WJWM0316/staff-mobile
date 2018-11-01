@@ -63,7 +63,7 @@
 <script>
 import { mapState } from 'vuex'
 import upLoadFile from '@c/functional/upLoadFile'
-import { PHONE, WECHAT } from '@u/regular/regular'
+import { PHONE, WECHAT } from '@u/regular'
 import { userInfoApi, editUserInfoApi } from '@/api/pages/center'
 export default {
   components: {
@@ -105,7 +105,6 @@ export default {
     },
     upLoadResult (result) {
       this.avatarId = result[0].id
-      console.log(result, this.avatarId)
     },
     saveInfo () {
       let data = {

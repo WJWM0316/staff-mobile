@@ -47,7 +47,8 @@ export default {
       box-shadow: 0px 1px 6px 0px rgba(0,0,0,0.12);
       .homeIcon {
         color: #354048;
-        font-size: 40px;/*px*/
+        font-size: 42px;/*px*/
+        line-height: 42px;/*px*/
       }
     }
     .homeSearch{
