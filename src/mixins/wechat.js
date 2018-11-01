@@ -34,13 +34,15 @@ export default {
      * 获取微信签名
      */
     async getWechatSign () {
-      if (this.$store.getters.wxConfig) return
+    // if (this.$store.getters.wxConfig) return
       try {
         const params = {
-          url: location.href.split('#')[0]
+          url: location.href.split('#')[0],
+          jsApiList: this.wechatConfig.jsApiList
         }
         const res = await getWechatSignApi(params)
-        this.wechatConfig = Object.assign({}, this.wechatConfig, res.data)
+        delete res.data.beta
+        this.wechatConfig = Object.assign({}, res.data)
         this.$store.dispatch('updata_wxConfig', this.wechatConfig)
         this.setWechatConfig()
       } catch (error) {
@@ -51,6 +53,7 @@ export default {
      * 配置微信sdk
      */
     setWechatConfig () {
+      // alert(JSON.stringify(this.wechatConfig))
       Vue.wx.config(this.wechatConfig)
     },
 
