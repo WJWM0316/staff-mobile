@@ -9,6 +9,7 @@ import live from './live'
 import bookHouse from './bookHouse'
 import login from './login'
 import localstorage from '@u/localstorage'
+import other from './other'
 
 Vue.use(Router)
 let company = localstorage.get('XPLUSCompany') || 'laohu'
@@ -19,7 +20,8 @@ const routes = [
   ...center,
   ...live,
   ...bookHouse,
-  ...login
+  ...login,
+  ...other
 ]
 
 const router = new Router({

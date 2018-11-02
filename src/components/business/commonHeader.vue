@@ -2,8 +2,8 @@
   <div class="m-community">
     <!--灯塔头部-->
     <div class="cover-container" :class="{'circle': type === '2', 'live': type === '3'}">
-      <div class="cover">
-        <img v-if="type !== '3'" src="@/assets/icon/headerbg.png"/>
+      <div class="cover" :class="{bgColor : type === '1'}">
+        <img v-if="type === '2'" src="@/assets/icon/headerbg.png"/>
       </div>
       <span class="header-photo"  v-if="pageInfo.coverImg">
         <img :src="pageInfo.coverImg.middleUrl"/>
@@ -37,6 +37,9 @@
       <div class="right" v-if="type === '1'">
         <div v-if="courseIntroduction && (pageInfo.isJoin || pageInfo.isMaster)" @click.stop="toIntroduction">
           课程介绍<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
+        </div>
+        <div v-else @click.stop="toCourseDetail">
+          返回课程主页<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
         </div>
       </div>
       <div v-if="type === '2'">
@@ -101,6 +104,11 @@ export default {
       this.courseIntroduction = false
       this.$emit('toCourseIntroduce')
     },
+    toCourseDetail () {
+      this.$router.push({path: '/courseDetail', query: {id: this.pageInfo.id, isCourseIntroduce: false}})
+      this.courseIntroduction = true
+      this.$emit('toCourseDetail')
+    },
     /* 去成员列表 */
     toMemberList () {
       if (this.type === '2') {
@@ -129,25 +137,29 @@ export default {
         height: 100%;
       }
     }
+    .bgColor{
+      background: #F2F2F2;
+    }
     position: relative;
     height: 90px;
     .header-photo{
-        display:block;
-        width:110px;
-        height: 110px;
-        box-shadow:0px 4px 19px 0px rgba(75,65,50,0.17);
-        position: absolute;
-        top: 15px;
-        left:50%;
-        transform:translateX(-50%);
-        margin-bottom:3.75px;
-        >img{
-          border-radius: 3px;
-          width: 100%;
-          height: 100%;
-          box-sizing: border-box;
-          border: 0.5px solid #ffffff;
-        }
+      border-radius: 3px;
+      display:block;
+      width:110px;
+      height: 110px;
+      box-shadow:0px 4px 19px 0px rgba(75,65,50,0.17);
+      position: absolute;
+      top: 15px;
+      left:50%;
+      transform:translateX(-50%);
+      margin-bottom:3.75px;
+      >img{
+        border-radius: 3px;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        border: 0.5px solid #ffffff;
+      }
     }
     &.circle{
       height: 101px;

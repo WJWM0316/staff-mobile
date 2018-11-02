@@ -3,9 +3,19 @@
     <div class="photo">
       <img src="@a/icon/error_404@3x.png" alt="">
     </div>
-    <p class="txt">暂时还没有内容哦～</p>
+    <p class="txt">{{content}}</p>
   </div>
 </template>
+<script>
+export default {
+  props: {
+    content: {
+      type: String,
+      default: '暂时还没有内容哦～'
+    }
+  }
+}
+</script>
 <style lang="less" scoped>
   .noDataShow {
     padding: 50px 0;

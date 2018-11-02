@@ -32,14 +32,15 @@ export default {
 <style lang="less" scoped>
   .backHome {
     .home {
+      text-align: center;
       position: absolute;
       top: 35px;
       right: 0;
       background: #fff;
       border-radius: 50px 0 0 50px;
       overflow: hidden;
-      width: 45px;
-      height: 32px;
+      width: 52px;
+      height: 34px;
       display: flex;
       padding: 0 12px 0 15px;
       box-sizing: border-box;

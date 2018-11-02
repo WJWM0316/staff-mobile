@@ -8,7 +8,11 @@
     <!--图片-->
     <div class="picBox" v-for="(picItem, index) in nowFileList" :key="index" v-if="type === 1" @click.stop="isSelect(picItem)">
       <div class="chooseImg" v-if="showSelect" :class="{'isChoose': picItem.chooseIndex}"><img v-if="picItem.chooseIndex" src="@/assets/icon/photo_selected@3x.png" /></div>
-      <img class="picItem" v-lazyload :src="picItem.fileInfo.middleUrl" v-preview="true" data-src="picItem.fileInfo.url"/>
+      <img class="picItem" v-lazyload :src="picItem.fileInfo.middleUrl" v-preview="true" data-src="picItem.fileInfo.url" v-if="picItem.type === '图片'"/>
+      <video class="video" :poster="picItem.fileInfo.coverImg.url" controls ref="video" v-else>
+        <source :src="picItem.fileInfo.url" type="video/mp4">
+           您的浏览器不支持 HTML5 video 标签，请升级浏览器或者更换浏览器。
+      </video>
     </div>
     <!--文件和链接-->
     <template v-if="type === 2 || type === 3">
@@ -227,6 +231,12 @@ export default {
       background: #FFE266;
       font-size: 28px;/*px*/
       color: #354048;
+    }
+    .video{
+      width: 90px;
+      height: 90px;
+      margin-left: 3px;
+      margin-bottom: 3px;
     }
   }
   .fileItemBox{
