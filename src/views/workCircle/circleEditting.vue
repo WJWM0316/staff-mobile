@@ -150,9 +150,7 @@ export default {
   },
   methods: {
     /* 微信选择图片返回 */
-    choseResult (res) {
-      this.nowWeiXinImgNum = res.length
-    },
+    choseResult (res) {},
     /* 上传后返回 */
     upLoadResult (res) {
       res.forEach(item => {
