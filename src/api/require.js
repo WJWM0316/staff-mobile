@@ -20,10 +20,10 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
   if (url === '/sso_login/bind/wechat' || url === '/unifyauth/login' || url === '/unifyauth/captcha') {
     Vue.axios.defaults.baseURL = `${settings.oauthUrl}/`
   } else if (url === '/auth/token') {
+    company = localstorage.get('XPLUSCompany') || 'laohu'
     Vue.axios.defaults.baseURL = `${settings.workUrl}/${company}`
   } else {
     if (Vue.axios.defaults.baseURL !== `${settings.host}/${company}`) {
-      let company = localstorage.get('XPLUSCompany') || 'laohu'
       Vue.axios.defaults.baseURL = `${settings.host}/${company}`
     }
   }
@@ -79,6 +79,7 @@ export const wxLogin = (data, redirect) => {
       // 绑定微信号成功
       if (res.httpStatus === 200) {
         localstorage.set('XPLUSCompany', res.data.companies[0].code) // 储存公司名
+        console.log(res.data.companies[0].code)
         localstorage.set('ssoToken', res.data.ssoToken) // 储存ssoToken值
         tokenLogin({sso_token: res.data.ssoToken}).then(res0 => {
           let redirectUrl = router.history.current.fullPath
@@ -99,7 +100,8 @@ export const wxLogin = (data, redirect) => {
 // 登录
 export const login = (data, version) => {
   return new Promise((resolve, reject) => {
-    if (!router.history.current.query.bind_code) {
+    // 没有微信授权或者微信授权后没有绑定的走正常登陆流程
+    if (!router.history.current.query.bind_code || (router.history.current.query.is_bind && router.history.current.query.is_bind === '0')) {
       ssoLoginApi(data).then(res => {
         localstorage.set('ssoToken', res.data.ssoToken) // 储存ssoToken值
         localstorage.set('XPLUSCompany', res.data.companies[0].code) // 储存公司名
@@ -131,7 +133,9 @@ export const login = (data, version) => {
       }).catch(e => {
         reject(e)
       })
-    } else {
+    }
+    // 微信授权后有绑定的直接微信登陆
+    if (router.history.current.query.bind_code && router.history.current.query.is_bind === '1') {
       data.is_bind = router.history.current.query.query.is_bind
       data.bind_code = router.history.current.query.query.bind_code
       wxLogin(data)
