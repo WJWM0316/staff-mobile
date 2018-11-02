@@ -189,7 +189,7 @@ export default {
       })
     },
     creatWs () { // 开启websocket
-      let company = localstorage.get('XPLUSCompany') || 'laohu'
+      let company = localstorage.get('XPLUSCompany')
       let websocketUrl = settings.websocketUrl
       ws.create(`${websocketUrl}/${company}`)
     }
