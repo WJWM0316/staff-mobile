@@ -151,6 +151,7 @@ export default {
           let res1 = await this.wxUploadFile(data)
           this.uploadList.push(res1.data)
         }
+        alert(this.uploadList)
         this.$emit('upLoadResult', this.uploadList) // 上传图片的结果
       }).catch(res => {
         alert(JSON.stringify(res))
