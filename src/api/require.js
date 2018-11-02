@@ -47,13 +47,16 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
     if (num <= 0) {
       store.dispatch('updata_loadingStatus', false)
     }
-    return Promise.resolve(res.data)
+    return process(res)
   }).catch(err => {
     num--
     if (num <= 0) {
       store.dispatch('updata_loadingStatus', false)
     }
     switch (err.response.status) {
+      case 400:
+        router.replace(`/404`)
+        break
       case 401: // 未登录或登录过期
         if (browser.isWechat() && !router.history.current.query.bind_code) {
           location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(location.href)}`
@@ -141,4 +144,9 @@ export const login = (data, version) => {
       wxLogin(data)
     }
   })
+}
+
+/* 状态码处理 */
+async function process (res) {
+  return Promise.resolve(res.data)
 }
