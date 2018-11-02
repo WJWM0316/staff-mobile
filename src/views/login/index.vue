@@ -15,7 +15,7 @@
         <input class="vcode" type="text" v-model="vcode" placeholder="请输入图片验证码">
         <img class="vcodeImg" :src="verification.img" @click.stop="undataCode">
       </div>
-      <xButton class="btn" @click.stop.native="login">登录</xButton>
+      <xButton class="btn" @click.native="login">登录</xButton>
     </div>
     <div class="btnBox">
       <span @click.stop="wxlogin" v-if="$route.query.is_bind && isWechat">微信登陆</span>
@@ -95,7 +95,6 @@ export default {
       })
     },
     login () {
-      console.log(111)
       let data = {
         email: this.account,
         password: this.password,
@@ -121,6 +120,7 @@ export default {
         })
         return false
       }
+      console.log(333)
       login(data, this.version).catch(e => {
         // 错误三次就要输入验证码
         if (e.code === 410) {
