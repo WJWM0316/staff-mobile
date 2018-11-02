@@ -9,7 +9,7 @@
     </div>
     <div class="content">
       <template v-for="(item, index) in circleList">
-        <info-card type="2" :item="item" :showIntroduction="false" :origin="false" :key="index"></info-card>
+        <info-card type="2" :item="item" :isList="true" :showIntroduction="false" :origin="false" :key="index"></info-card>
       </template>
     </div>
     <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>

@@ -3,16 +3,16 @@
     <img v-if="item.isTop" class="setTop" src="@/assets/icon/settop.png" />
     <img class="infoPhoto" v-if="item.coverImg" v-lazyload :src="item.coverImg.smallUrl"/>
     <img class="infoPhoto" v-if="item.courseCoverImg" v-lazyload :src="item.courseCoverImg.smallUrl"/>
-    <div class="right">
+    <div class="right" :class="{'special-right' : isList}">
       <div class="title"
         :class="{'ellipsis1' : type === '3' || (type === '1' && !ellipsis2), 'ellipsis2' : type === '2' || (type === '1' && ellipsis2)}">
         {{item.name || item.title}}
       </div>
       <template v-if="!item.userTitle || item.userTitle.length === 0">
-        <div class="label"><span class="department" v-if="item.groupName">{{item.groupName | ellipsis(10)}}</span><span class="name" v-if="item.realname">{{item.realname}}</span></div>
+        <div class="label" :class="{'special' : isList}"><span class="department" v-if="item.groupName">{{item.groupName | ellipsis(10)}}</span><span class="name" v-if="item.realname">{{item.realname}}</span></div>
       </template>
       <template v-else>
-        <div class="label userTitle" v-if="item.userTitle.length > 0">{{item.realname}} | {{item.userTitle[0].title}}</div>
+        <div class="label userTitle" v-if="item.userTitle.length > 0" :class="{'special-userTitle' : isList}">{{item.realname}} | {{item.userTitle[0].title}}</div>
       </template>
       <!-- <div class="label" v-if="item.isRole === 5"></div> -->
       <div class="progress" v-if="type === '1' && item.isJoin && needProgress">
@@ -51,6 +51,10 @@ export default {
       default: false
     },
     recommend: { // 是否是首页的推荐
+      type: Boolean,
+      default: false
+    },
+    isList: {
       type: Boolean,
       default: false
     }
@@ -195,6 +199,12 @@ export default {
         color: #D7AB70;
       }
     }
+    .special-userTitle{
+      margin-top: 11px;
+    }
+    .special{
+      margin-top: 10px;
+    }
     .progress {
       .txt {
         font-size: 24px; /*px*/
@@ -243,6 +253,9 @@ export default {
         }
       }
     }
+  }
+  .special-right{
+    padding-top: 3px;
   }
   &.recommend {
     padding-left: 108px;
