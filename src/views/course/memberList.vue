@@ -97,7 +97,7 @@ export default {
         padding-top: 50px;
     }
     .icon {
-      font-size: 40px; /*px*/
+      font-size: 50px; /*px*/
       color: #BCBCBC;
       padding-right: 10px;
     }
