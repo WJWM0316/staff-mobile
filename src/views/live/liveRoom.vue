@@ -197,7 +197,7 @@ export default {
     },
     tutorOper (type) {
       this.curOperType = type
-      console.log(this.curOperType)
+      // 计算scroll的高度方便重新渲染高度和操作栏的显示
       setTimeout(() => {
         this.scrollerHeight = this.$refs.main.childNodes[0].clientHeight + 'px'
       }, 300)
@@ -248,7 +248,12 @@ export default {
       }
       // 直播已开始才要获取历史消息记录
       if (this.liveDetail.status !== 1) {
-        this.getMessage({isFirst: true, action: 1})
+        this.getMessage({isFirst: true, action: 1}).then(res => {
+          // 没有数据的时候关闭下拉加载
+          if (res.data.length === 0) {
+            this.isPulldown = false
+          }
+        })
       }
     },
     getMessage ({msgId, action, needLoading = true, isFirst = false}) {
@@ -289,12 +294,11 @@ export default {
       })
     },
     nextMusic (index) {
-      console.log(index, 1111111)
       this.$refs.scroll.scrollToElement(this.$refs.message.getElementsByClassName('live-message')[index])
       this.$refs.messageItem[index].$children[0].play()
     },
     loadPrev () {
-      if (this.isPulldown && this.list[0].messageId) {
+      if (this.isPulldown && this.list.length > 0 && this.list[0].messageId) {
         this.getMessage({msgId: this.list[0].messageId, action: 2, needLoading: false}).then(res => {
           this.$refs.scroll.pulldownUi = false
           // 等scroll重新渲染完毕后定位到上次的位置
@@ -308,7 +312,7 @@ export default {
       }
     },
     loadNext () {
-      if (this.isPullup && this.list[this.list.length - 1].messageId) {
+      if (this.isPullup && this.list.length > 0 && this.list[this.list.length - 1].messageId) {
         this.getMessage({msgId: this.list[this.list.length - 1].messageId, action: 1, needLoading: false}).then(res => {
           this.$refs.scroll.pullupUi = false
           if (res.data.length === 0) {
@@ -329,7 +333,10 @@ export default {
             this.problemTxt = ''
             this.$toast({
               text: '提交成功',
-              type: 'success'
+              type: 'success',
+              callBack: () => {
+                this.openArea = true
+              }
             })
             resolve(res)
           })

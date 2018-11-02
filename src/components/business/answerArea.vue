@@ -1,6 +1,6 @@
 <template>
-  <div v-if="show">
-    <div class='questionArea'>
+  <transition name="leftEnter" mode="out-in" appear>
+    <div class='answerArea' v-show="show">
       <div class='areaWrap'>
         <div class='tab border-bottom-1px'>
           <div class="icon iconfont icon-me_icon_edit_chevron" @click.stop="closeArea"></div>
@@ -102,7 +102,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 <script>
 import scroller from '@c/layout/scroller'
@@ -298,8 +298,8 @@ export default {
   }
 }
 </script>
-<style lang='less' scoped>
-  .questionArea {
+<style lang='less'>
+  .answerArea {
     width: 100%;
     height: 100%;
     box-sizing: border-box;
@@ -307,7 +307,6 @@ export default {
     z-index: 3;
     position: fixed;
     top: 0;
-    left: 0;
     .areaWrap {
       width: 100%;
       height: 100%;

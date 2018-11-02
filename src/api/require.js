@@ -22,7 +22,10 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
   } else if (url === '/auth/token') {
     Vue.axios.defaults.baseURL = `${settings.workUrl}/${company}`
   } else {
-    if (Vue.axios.defaults.baseURL !== `${settings.host}/${company}`) Vue.axios.defaults.baseURL = `${settings.host}/${company}`
+    if (Vue.axios.defaults.baseURL !== `${settings.host}/${company}`) {
+      let company = localstorage.get('XPLUSCompany') || 'laohu'
+      Vue.axios.defaults.baseURL = `${settings.host}/${company}`
+    }
   }
   // 开发环境写死账号
   if (token) {

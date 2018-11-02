@@ -134,8 +134,7 @@ export default {
             text: '保存成功',
             type: 'success',
             callBack: () => {
-              this.$router.replace('/infoEdit')
-              // history.back()
+              this.$router.replace('/center')
             }
           })
         })

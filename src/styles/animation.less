@@ -8,3 +8,17 @@
   50% { box-shadow: 0 0 5px 10px rgba(255,226,102,0.5); }
   100% { box-shadow: 0 0 5px 0px rgba(255,226,102,0.5); }
 }
+
+@keyframes leftEnter {
+  0 { left: 0%; }
+  100% { left: 100%; }
+}
+
+.leftEnter-enter-active, .leftEnter-leave-active {
+  transition: all .5s;
+  left: 0;
+}
+.leftEnter-enter, .leftEnter-leave-to {
+  opacity: 0;
+  left: 100%;
+}
