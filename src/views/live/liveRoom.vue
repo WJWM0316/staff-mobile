@@ -92,7 +92,7 @@
             </upLoadFile>
           </span>
           <span @click.stop="tutorOper('answer')">
-            <i class="icon icon4 iconfont icon-icon_mymeaasage" :data-num="1"></i>
+            <i class="icon icon4 iconfont icon-icon_mymeaasage"></i> <!-- red:data-num="1" -->
           </span>
         </div>
         <div class="typeBox">
@@ -203,7 +203,7 @@ export default {
     },
     upLoadResult (e) {
       console.log(e, '上传后获取的文件')
-      this.fileId = e[0].id
+      this.fileId = e[e.length - 1].id
       this.sendMsg()
     },
     jumpMore () {
@@ -735,7 +735,7 @@ export default {
             font-size: 44px; /*px*/
             color: rgb(53, 64, 72);
           }
-          .icon4 {
+          .red {
             color: rgb(53, 64, 72);
             position: relative;
             &::after {
