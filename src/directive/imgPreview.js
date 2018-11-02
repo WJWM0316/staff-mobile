@@ -7,7 +7,6 @@ const preview = (el, binding, vnode) => {
   // 绑定图片点击事件
   const bindClick = (element, img, urls) => {
     element.addEventListener('click', (e) => {
-      console.log(binding.value, '点击啦')
       let data = {
         img,
         urls

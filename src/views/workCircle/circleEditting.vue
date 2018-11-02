@@ -144,7 +144,7 @@ export default {
       showMask: false, // 展示链接输入框
       isCircleSelf: false, // 是否仅限圈内可见
       isiOS: '',
-      nowWeiXinImgNum: '' , // 微信上传图片选中多少张
+      nowWeiXinImgNum: '' // 微信上传图片选中多少张
     }
   },
   methods: {

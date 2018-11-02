@@ -169,8 +169,6 @@ export default {
       userInfo: null,
       tabIndex: 0,
       tabExtIndex: 0,
-      tabList: ['Ta加入的', 'Ta的帖子'],
-      extTabList: ['Ta的课程', 'Ta的直播'],
       joinList: null, // Ta加入的列表
       postData: { // Ta参与的帖子
         list: [],
@@ -195,6 +193,22 @@ export default {
         showSheet: false,
         copyMessage: '',
         menus: {}
+      }
+    }
+  },
+  computed: {
+    tabList () {
+      if (this.$route.query.uid) {
+        return ['Ta加入的', 'Ta的帖子']
+      } else {
+        return ['我加入的', '我的帖子']
+      }
+    },
+    extTabList () {
+      if (this.$route.query.uid) {
+        return ['Ta的课程', 'Ta的课程']
+      } else {
+        return ['我的课程', '我的直播']
       }
     }
   },
