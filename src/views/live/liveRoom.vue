@@ -113,7 +113,7 @@
       </xButton>
     </template>
     <!-- 问答区 -->
-    <questionArea :show="openArea" :questionData="questionData" @closeArea="_closeArea" v-if="!liveDetail.isTutor"></questionArea>
+    <questionArea :show="openArea" :questionData="problemInfo"  @closeArea="_closeArea" v-if="!liveDetail.isTutor"></questionArea>
     <answerArea :show="openArea" @closeArea="_closeArea" :tutorInfo="liveDetail" v-else></answerArea>
   </div>
 </template>
@@ -130,6 +130,7 @@ import botInput from '@c/layout/botInput'
 import { mapState, mapActions } from 'vuex'
 import settings from '@/config'
 import { getLiveRoomMsgApi, putQuestionsApi, sendLiveMsgApi, msgPositionApi, getLiveDetailApi, putUpdataLiveApi } from '@/api/pages/live'
+import { userInfoApi } from '@/api/pages/center'
 let onMessage = null
 export default {
   components: {
@@ -156,11 +157,8 @@ export default {
       id: '',
       list: [],
       problemTxt: '', // 提交的问题
-      questionData: { // 自己造的提问message, 用于列表展示
-        answerInfo: null,
-        problemInfo: null,
-        status: 0
-      },
+      problemInfo: null, // 自己造的提问message, 用于列表展示
+      userInfoBase: null, // 用户基础信息
       openArea: false,
       isPulldown: true, // 是否开启下拉
       isPullup: true, // 是否开启上拉
@@ -191,8 +189,18 @@ export default {
   methods: {
     ...mapActions([
       'updata_sendData',
-      'updata_onlineNum'
+      'updata_onlineNum',
+      'updata_userInfo'
     ]),
+    async getUserInfo () {
+      if (!this.userInfo) {
+        let res = await userInfoApi()
+        this.userInfoBase = res.data.base
+        this.updata_userInfo(res.data)
+      } else {
+        this.userInfoBase = this.userInfo.base
+      }
+    },
     upLoadResult (e) {
       console.log(e, '上传后获取的文件')
       this.fileId = e[0].id
@@ -336,18 +344,19 @@ export default {
             content: this.problemTxt
           }
           putQuestionsApi(data).then(res => {
-            this.problemTxt = ''
             this.$toast({
               text: '提交成功',
               type: 'success',
               callBack: () => {
-                this.questionData.problemInfo = {
+                let data = {
                   avatar: this.userInfo.base.avatar,
-                  createdAt: new Date().getTime(),
+                  createdAt: parseInt(new Date().getTime() / 1000),
                   realname: this.userInfo.base.realname,
                   messageId: new Date().getTime(),
-                  content: this.problemTxt
+                  content: this.problemTxt,
+                  type: 'text'
                 }
+                this.problemInfo = data
                 this.openArea = true
               }
             })
@@ -426,6 +435,7 @@ export default {
     this.id = id
     if (openArea) this.openArea = true
     this.getDetail()
+    this.getUserInfo()
   },
   mounted () {
     let that = this

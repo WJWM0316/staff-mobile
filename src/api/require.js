@@ -85,8 +85,14 @@ export const wxLogin = (data, redirect) => {
         tokenLogin({sso_token: res.data.ssoToken}).then(res0 => {
           let redirectUrl = router.history.current.fullPath
           localstorage.set('token', res0.data.token) // 储存token值
-          location.href = `${location.href.split('/')[0]}//${location.host}/${res.data.companies[0].code}/${redirectUrl}&redirect=true` // 登录成功跳转到相应的公司
           resolve(res0)
+          Vue.toast({
+            text: '登录成功',
+            type: 'success',
+            callBack: () => {
+              location.href = `${location.href.split('/')[0]}//${location.host}/${res.data.companies[0].code}/${redirectUrl}&redirect=true` // 登录成功跳转到相应的公司
+            }
+          })
         })
       }
       if (res.httpStatus === 400) {

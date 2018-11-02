@@ -16,8 +16,8 @@
           <scroller
             class='scroll'
             ref='scrollPart'
-            :pulldown=true
-            :pullup="pullup"
+            :pulldown='true'
+            :pullup="true"
             :listenScroll=true
             :freeScroll=true
             :noData="scrollPart.noData"
@@ -31,8 +31,8 @@
               <div class="title">我的提问</div>
               <div class="block border-bottom-1px" v-for='(item, index) in scrollPart.list' :key="index" v-if="scrollPart.myListLength > index">
                 <div class="time">
-                  <span v-if="item.answerInfo">{{item.answerInfo.createdAt * 1000 | activeTime}}</span>
-                  <span v-else>{{item.problemInfo.createdAt * 1000 | activeTime}}</span></div>
+                  <span v-if="item.answerInfo">{{item.answerInfo.createdAt | activeTime}}</span>
+                  <span v-else>{{item.problemInfo.createdAt | activeTime}}</span></div>
                 <liveMessage
                   class="msg"
                   :messageData='item.problemInfo'
@@ -50,7 +50,7 @@
             <div class="other" v-if="scrollPart.list.length > scrollPart.myListLength">
               <div class="title">其他已回答提问</div>
               <div class="block border-bottom-1px" v-for='(item, index) in scrollPart.list' :key="index" v-if="scrollPart.myListLength - 1 < index">
-                <div class="time"><span v-if="item.answerInfo">{{item.answerInfo.createdAt * 1000 | activeTime}}</span><span v-else>{{item.problemInfo.createdAt * 1000 | activeTime}}</span></div>
+                <div class="time"><span v-if="item.answerInfo">{{item.answerInfo.createdAt | activeTime}}</span><span v-else>{{item.problemInfo.createdAt | activeTime}}</span></div>
                 <liveMessage
                   class="msg"
                   :messageData='item.problemInfo'
@@ -72,8 +72,8 @@
           <scroller
             class='scroll'
             ref='scrollAll'
-            :pulldown=true
-            :pullup=true
+            :pulldown='true'
+            :pullup='true'
             :listenScroll=true
             :freeScroll=true
             :list='scrollAll.list'
@@ -138,7 +138,6 @@ export default {
   },
   data () {
     return {
-      pullup: true,
       tabIndex: 0,
       tabList: ['已回答', '全部提问'],
       scrollPart: {
@@ -147,22 +146,20 @@ export default {
         myPage: 1,
         otherPage: 1,
         noData: false,
+        isRequire: false,
         myComplete: false // 我的是否都加载完毕
       },
       scrollAll: {
         list: [],
         page: 1,
+        isRequire: false,
         noData: false
       }
     }
   },
   watch: {
     questionData (val) {
-      console.log(val, 111111111)
-      if (this.scrollPart.list.length > 0) {
-        this.scrollPart.list.unshift(val)
-        this.scrollAll.list.unshift(val)
-      }
+      this.appendProblem()
     },
     show (val) {
       if (val && this.scrollPart.list.length === 0) {
@@ -171,6 +168,20 @@ export default {
     }
   },
   methods: {
+    // 问答内容插入列表
+    appendProblem () {
+      let data = [{
+        answerInfo: null,
+        problemInfo: this.questionData,
+        status: 0
+      }]
+      if (this.tabIndex === 0 && (this.scrollPart.list.length > 0 || (this.scrollPart.noData && this.scrollPart.list.length === 0))) {
+        this.scrollPart.list = data.concat(this.scrollPart.list)
+      }
+      if (this.tabIndex === 1 && (this.scrollAll.list.length > 0 || (this.scrollAll.noData && this.scrollAll.list.length === 0))) {
+        this.scrollAll.list = data.concat(this.scrollAll.list)
+      }
+    },
     loadPrev () {
       if (this.tabIndex === 0) {
         this.scrollPart.list = []
@@ -248,6 +259,7 @@ export default {
       if (index === 1 && this.scrollAll.list.length === 0) {
         this.getList({page: 1, type: 'all'})
       }
+      this.appendProblem()
     }
   }
 }
