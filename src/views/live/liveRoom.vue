@@ -113,7 +113,7 @@
       </xButton>
     </template>
     <!-- 问答区 -->
-    <questionArea :show="openArea" @closeArea="_closeArea" v-if="!liveDetail.isTutor"></questionArea>
+    <questionArea :show="openArea" :questionData="questionData" @closeArea="_closeArea" v-if="!liveDetail.isTutor"></questionArea>
     <answerArea :show="openArea" @closeArea="_closeArea" :tutorInfo="liveDetail" v-else></answerArea>
   </div>
 </template>
@@ -156,6 +156,11 @@ export default {
       id: '',
       list: [],
       problemTxt: '', // 提交的问题
+      questionData: { // 自己造的提问message, 用于列表展示
+        answerInfo: null,
+        problemInfo: null,
+        status: 0
+      },
       openArea: false,
       isPulldown: true, // 是否开启下拉
       isPullup: true, // 是否开启上拉
@@ -167,6 +172,7 @@ export default {
   },
   computed: {
     ...mapState({
+      userInfo: state => state.global.userInfo,
       wsStatus: state => state.websocket.wsStatus,
       sendData: state => state.websocket.sendData,
       onlineNum: state => state.websocket.onlineNum
@@ -335,6 +341,13 @@ export default {
               text: '提交成功',
               type: 'success',
               callBack: () => {
+                this.questionData.problemInfo = {
+                  avatar: this.userInfo.base.avatar,
+                  createdAt: new Date().getTime(),
+                  realname: this.userInfo.base.realname,
+                  messageId: new Date().getTime(),
+                  content: this.problemTxt
+                }
                 this.openArea = true
               }
             })

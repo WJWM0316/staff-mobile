@@ -54,6 +54,7 @@ export default {
   },
   watch: {
     account (val) {
+      val = val.trim()
       if (val !== '' && (!PHONE.test(val) && !EMAIL.test(val))) {
         this.accountErr = true
       } else {
@@ -61,13 +62,15 @@ export default {
       }
     },
     password (val) {
-      if (val !== '' && (val.length < 6 || val.length > 20)) {
+      val = val.trim()
+      if (val.trim() !== '' && (val.trim().length < 6 || val.trim().length > 20)) {
         this.passwordErr = true
       } else {
         this.passwordErr = false
       }
     },
     vcode (val) {
+      val = val.trim()
       if (val !== '' && val.length !== 5) {
         this.codeErr = true
       } else {
@@ -96,8 +99,8 @@ export default {
     },
     login () {
       let data = {
-        email: this.account,
-        password: this.password,
+        email: this.account.trim(),
+        password: this.password.trim(),
         captchaKey: this.verification.key,
         captchaValue: this.vcode
       }
@@ -221,6 +224,9 @@ export default {
         padding-bottom: 14px;
         margin-bottom: 26px;
         position: relative;
+        &::after {
+          background-color: #DCDCDC;
+        }
         &.err:after {
           background-color: #D85151;
         }

@@ -23,7 +23,7 @@
       </div>
       <div class="item" @click.stop="jump('message')" :class="{'red' : userInfo.noteCount > 0}">
         <div>
-          <i class="icon1 iconfont icon-btn_comment"></i>
+          <i class="icon1 iconfont icon-icon_mymeaasage"></i>
           <span class="txt">我的消息</span>
         </div>
         <i class="icon2">
@@ -180,6 +180,7 @@ export default {
         }
         .icon1 {
           font-size: 40px; /*px*/
+          line-height: 40px; /*px*/
           color: rgb(188, 188, 188);
           margin-right: 12px;
         }

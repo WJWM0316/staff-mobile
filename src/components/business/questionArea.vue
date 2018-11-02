@@ -1,5 +1,5 @@
 <template>
-  <Popup v-model="show" position='bottom' height="100%" is-transparent>
+  <Popup v-model="show" position='bottom' height="100%">
     <div class='questionArea'>
       <div class='areaWrap'>
         <div class='tab border-bottom-1px'>
@@ -124,6 +124,16 @@ export default {
     show: {
       type: Boolean,
       default: false
+    },
+    questionData: {
+      type: Object,
+      default: () => {
+        return {
+          answerInfo: null,
+          problemInfo: null,
+          status: 0
+        }
+      }
     }
   },
   data () {
@@ -147,6 +157,13 @@ export default {
     }
   },
   watch: {
+    questionData (val) {
+      console.log(val, 111111111)
+      if (this.scrollPart.list.length > 0) {
+        this.scrollPart.list.unshift(val)
+        this.scrollAll.list.unshift(val)
+      }
+    },
     show (val) {
       if (val && this.scrollPart.list.length === 0) {
         this.getList({page: 1, type: 'my'})
