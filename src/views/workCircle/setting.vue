@@ -138,6 +138,7 @@ export default {
   }
   /*工作圈名字*/
   .circleName{
+    font-weight: 300;
     height: 60px;
     width: 100%;
     display: flex;
@@ -151,6 +152,7 @@ export default {
   }
   /*成员管理*/
   .member{
+    font-weight: 300;
     height: 60px;
     width: 100%;
     display: flex;
@@ -162,15 +164,22 @@ export default {
       font-size: 26px;/*px*/
       font-weight: 300;
     }
+    .weui-switch{
+      background: #FFE266;
+    }
   }
   /*置顶*/
   .top{
+    font-weight: 300;
     width: 100%;
     height: 60px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #EDEDED;/*px*/
+   .weui-switch{
+     background: #FFE266;
+   }
   }
   /*保存*/
   .saveBtn{

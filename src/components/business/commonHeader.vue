@@ -43,7 +43,7 @@
         </div>
       </div>
       <div v-if="type === '2'">
-        <div class="right" @click.stop="toSetting" v-if="type === '2' && ((pageInfo.isMember || pageInfo.isOwner) || (!pageInfo.isMember && pageInfo.isAttention))">
+        <div class="right workCircleRight" @click.stop="toSetting" v-if="type === '2' && ((pageInfo.isMember || pageInfo.isOwner) || (!pageInfo.isMember && pageInfo.isAttention))">
             设置<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
         </div>
         <div class="focus" @click.stop="focus" v-else>
@@ -253,12 +253,15 @@ export default {
     .right{
       display: flex;
       align-items: center;
-      color: #666666;
+      color: #4080AD;
       font-size: 24px;/*px*/
       font-weight: 300;
       .to_img{
         width: 12px;
         height: 12px;
+      }
+      &.workCircleRight{
+        color: #666666;
       }
       &.live {
         color: #4080AD;

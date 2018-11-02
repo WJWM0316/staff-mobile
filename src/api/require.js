@@ -66,7 +66,7 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
         }
         break
     }
-    if (err.response.status !== 401) {
+    if (err.response.status !== 401 && err.response.status !== 400) {
       Vue.toast({
         text: err.response.data.msg,
         position: 'bottom',
@@ -151,7 +151,7 @@ export const login = (data, version) => {
   })
 }
 
-/* 状态码处理 */
+/* code状态码处理 */
 async function process (res) {
   return Promise.resolve(res.data)
 }
