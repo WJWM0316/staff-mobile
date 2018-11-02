@@ -151,10 +151,10 @@ export default {
           let res1 = await this.wxUploadFile(data)
           this.uploadList.push(res1.data)
         }
-        alert(this.uploadList)
+        alert(JSON.stringify(this.uploadList))
         this.$emit('upLoadResult', this.uploadList) // 上传图片的结果
       }).catch(res => {
-        alert(JSON.stringify(res))
+        console.log(JSON.stringify(res))
       })
     },
     // dataUrl 转 file
