@@ -100,6 +100,7 @@
 import { attachesApi } from '@/api/pages/course'
 import { jobcirclePostApi } from '@/api/pages/workCircle'
 import uploadImg from '@c/functional/upLoadFile'
+import store from '@/store/index.js'
 export default {
   name: 'circleEdit',
   components: {
@@ -149,17 +150,15 @@ export default {
   },
   methods: {
     /* 微信选择图片返回 */
-    choseResult (res) {
-      this.nowWeiXinImgNum = res.length
-    },
+    choseResult (res) {},
     /* 上传后返回 */
     upLoadResult (res) {
-      this.images.push(res.url)
-      this.uploadImgList.push(res.id)
-      if (this.images.length === this.nowWeiXinImgNum) {
-        this.isChoose = false
-        this.fileType = 0
-      }
+      res.forEach(item => {
+        this.images.push(item.url)
+        this.uploadImgList.push(item.id)
+      })
+      this.isChoose = false
+      this.fileType = 0
     },
     /**
      * 提交表单
