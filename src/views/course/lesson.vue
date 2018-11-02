@@ -344,7 +344,7 @@ export default {
     }
     /*课节富文本*/
     .module-content{
-      font-weight: 300;
+      font-weight: 300 !important;
       color: #354048;
       box-sizing: border-box;
       padding: 0 20px;

@@ -2,7 +2,7 @@
   <div class="memberList">
     <div class="title" v-if="teacherList.length > 0">
       <i class="icon iconfont icon-mypage_homepage"></i>
-      <span class="txt">塔主</span>
+      <span class="txt">导师</span>
     </div>
     <classmateItem v-for="(item, index) in teacherList" :key="'teacher'+index" :item="item"></classmateItem>
     <div class="title" v-if="excellentList.length > 0">

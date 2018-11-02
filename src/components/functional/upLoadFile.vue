@@ -153,8 +153,6 @@ export default {
         }
         // alert(JSON.stringify(this.uploadList))
         this.$emit('upLoadResult', this.uploadList) // 上传图片的结果
-      }).catch(res => {
-        console.log(JSON.stringify(res))
       })
     },
     // dataUrl 转 file

@@ -554,7 +554,7 @@ export default {
       }
       /*  文件  */
       .content-file {
-        margin-top: 15px;
+        margin-top: 22px;
         display: flex;
         align-items: center;
         background-color: #F8F8F8;
