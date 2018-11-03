@@ -276,7 +276,7 @@ export default {
         let that = this
         this.$confirm({
           title: '确定删除',
-          content: '',
+          content: '确定删除帖子吗？',
           confirmBack () {
             delCirclePostApi(that.item.id).then(res => {
               that.$emit('delPost', {index: that.index})
