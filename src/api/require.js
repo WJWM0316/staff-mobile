@@ -9,7 +9,7 @@ import browser from '@u/browser'
 import { bindWxLogin, tokenLogin, ssoLoginApi, loginApi } from '@/api/pages/login'
 Vue.use(VueAxios, axios)
 let token = localstorage.get('token')
-let company = localstorage.get('XPLUSCompany') || 'laohu'
+let company = localstorage.get('XPLUSCompany') || (process.type !== 'production' ? 'test' : 'tiger')
 let ssoToken = localstorage.get('ssoToken')
 // 动态设置本地和线上接口域名
 Vue.axios.defaults.baseURL = `${settings.host}/${company}`
@@ -20,7 +20,7 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
   if (url === '/sso_login/bind/wechat' || url === '/unifyauth/login' || url === '/unifyauth/captcha' || url === '/sso/user/companies') {
     Vue.axios.defaults.baseURL = `${settings.oauthUrl}/`
   } else if (url === '/auth/token') {
-    company = localstorage.get('XPLUSCompany') || 'laohu'
+    company = localstorage.get('XPLUSCompany')
     Vue.axios.defaults.baseURL = `${settings.workUrl}/${company}`
   } else {
     if (Vue.axios.defaults.baseURL !== `${settings.host}/${company}`) {
@@ -106,7 +106,7 @@ export const wxLogin = (data, redirect) => {
 export const login = (data, version, companyCode) => {
   return new Promise((resolve, reject) => {
     function loginFun (code) {
-      company = localstorage.get('XPLUSCompany') || 'laohu'
+      company = localstorage.get('XPLUSCompany')
       loginApi(data).then(res0 => {
         localstorage.set('token', res0.data.token) // 储存token值
         Vue.toast({

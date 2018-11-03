@@ -258,8 +258,8 @@ export default {
       this.tabIndex = index
       if (index === 1 && this.scrollAll.list.length === 0) {
         this.getList({page: 1, type: 'all'})
+        this.appendProblem()
       }
-      this.appendProblem()
     }
   }
 }

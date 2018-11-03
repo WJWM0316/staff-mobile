@@ -12,7 +12,7 @@ import localstorage from '@u/localstorage'
 import other from './other'
 
 Vue.use(Router)
-let company = localstorage.get('XPLUSCompany') || 'laohu'
+let company = localstorage.get('XPLUSCompany') || (process.type !== 'production' ? 'test' : 'tiger')
 const routes = [
   ...home,
   ...course,
