@@ -70,7 +70,7 @@ export default {
       } else if (this.type === '2') {
         this.$router.push({path: '/circleDetail', query: {id: id}})
       } else {
-        if (this.item.isJoin || this.item.isTutor) {
+        if (this.item.status !== 1 && (this.item.isJoin || this.item.isTutor)) {
           this.$router.push({path: '/liveRoom', query: {id: id}})
         } else {
           this.$router.push({path: '/liveDetail', query: {id: id}})
