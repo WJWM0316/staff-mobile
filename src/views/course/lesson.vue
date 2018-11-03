@@ -70,7 +70,7 @@
             还没人打卡哦，赶紧点击下方“去打卡”， 成为本节第一个打卡的人吧～
           </div>
           <!--优秀头部标题图片-->
-          <div class="excellentPunchList"  v-if="excellentPeopleCourseCardListCount > 0">
+          <div class="excellentPunchList"  v-if="excellentPunchList.length > 0">
             <div class="excellent-punch">
               <div class="excellent-punch-title">优秀打卡</div>
             </div>

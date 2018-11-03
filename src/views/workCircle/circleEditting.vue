@@ -200,7 +200,6 @@ export default {
         text: '发帖成功',
         type: 'success',
         callBack () {
-          console.log(that.$router)
           that.$router.go(-1)
         }
       })

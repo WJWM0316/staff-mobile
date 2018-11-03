@@ -134,6 +134,9 @@ export default {
     personal: { // 是否为个人中心的帖子
       type: Boolean,
       default: false
+    },
+    index: {
+      type: Number
     }
   },
   watch: {
@@ -270,8 +273,16 @@ export default {
       if (this.isCourse) {
         this.$router.push({path: '/punchEdit', query: {id: this.item.courseSectionId}})
       } else {
-        delCirclePostApi(this.item.id).then(res => {
-          this.$toast({text: '删除帖子成功', type: 'success'})
+        let that = this
+        this.$confirm({
+          title: '确定删除',
+          content: '',
+          confirmBack () {
+            delCirclePostApi(that.item.id).then(res => {
+              that.$emit('delPost', {index: that.index})
+              that.$toast({text: '删除帖子成功', type: 'success'})
+            })
+          }
         })
       }
     },

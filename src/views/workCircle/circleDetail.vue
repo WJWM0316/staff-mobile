@@ -33,7 +33,7 @@
           </div>
         </div>
         <!--帖子-->
-        <dynamic-item v-for="(item,index) in postList" :key="index" :item="item" :index="index" :isCourse="false" @setPostTop="toTop" v-if="!item.isTop"></dynamic-item>
+        <dynamic-item v-for="(item,index) in postList" :key="index" :item="item" :index="index" :isCourse="false" @setPostTop="toTop" @delPost="delPost" v-if="!item.isTop"></dynamic-item>
       </div>
       <nodata-box v-if="postListTotal === 0"></nodata-box>
       <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
@@ -171,13 +171,15 @@ export default {
     /* 去下载页 classfy:1为图片，2为文件，3为链接 */
     toDownLoad (classfy) {
       this.$router.push({path: '/fileDownLoad', query: {id: this.pageInfo.id, type: classfy}})
+    },
+    delPost (index) {
+      this.postList.splice(index.index, 1)
     }
   },
   created () {
     this.init()
   },
   beforeRouteEnter (to, from, next) {
-    console.log(from)
     if (from.name === 'postDetail') {
       next()
     } else {
