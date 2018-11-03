@@ -8,7 +8,7 @@
       </div>
       <div class="header-info">
         <div class="left"><img v-if="communityCourse.tutorUser.avatarInfo" :src="communityCourse.tutorUser.avatarInfo.smallUrl"/><span class="mast-name">{{communityCourse.tutorUser.realname | ellipsis(12)}}</span><span>{{communityCourse.createTime}}</span></div>
-        <div class="backCourse" @click.stop="backCourse">课程主页</div>
+        <span class="backCourse" @click.stop="backCourse">课程主页</span>
       </div>
     </div>
     <!--富文本区-->
@@ -371,6 +371,7 @@ export default {
   .lesson-task{
     padding: 0 20px;
     .content-txt{
+      font-weight: 300;
       display: -webkit-box;
       width: 100%;
     }
