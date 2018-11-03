@@ -17,7 +17,7 @@ Vue.axios.defaults.timeout = 20000
 let num = 0 // 处理loading的显示逻辑
 export const request = ({type = 'post', url, data = {}, needLoading = true, config = {}} = {}) => {
   // 微信授权接口host不一样
-  if (url === '/sso_login/bind/wechat' || url === '/unifyauth/login' || url === '/unifyauth/captcha') {
+  if (url === '/sso_login/bind/wechat' || url === '/unifyauth/login' || url === '/unifyauth/captcha' || url === '/sso/user/companies') {
     Vue.axios.defaults.baseURL = `${settings.oauthUrl}/`
   } else if (url === '/auth/token') {
     company = localstorage.get('XPLUSCompany') || 'laohu'
@@ -103,41 +103,51 @@ export const wxLogin = (data, redirect) => {
 }
 
 // 登录
-export const login = (data, version) => {
+export const login = (data, version, companyCode) => {
   return new Promise((resolve, reject) => {
-    // 没有微信授权或者微信授权后没有绑定的走正常登陆流程
-    if (!router.history.current.query.bind_code) {
-      ssoLoginApi(data).then(res => {
-        localstorage.set('ssoToken', res.data.ssoToken) // 储存ssoToken值
-        localstorage.set('XPLUSCompany', res.data.companies[0].code) // 储存公司名
-        company = localstorage.get('XPLUSCompany') || 'laohu'
-        loginApi(data).then(res0 => {
-          localstorage.set('token', res0.data.token) // 储存token值
-          Vue.toast({
-            text: '登录成功',
-            type: 'success',
-            callBack: () => {
-              // version 为0 即没有特意去切换导师端还是员工端，就返回上一步， 没有上一步默认去到员工端首页
-              if (!version) {
-                if (router.history.current.query.redirect_url) {
-                  location.href = decodeURIComponent(router.history.current.query.redirect_url)
-                } else {
-                  location.href = `${location.href.split('/')[0]}//${location.host}/${res.data.companies[0].code}/home`
-                }
+    function loginFun (code) {
+      company = localstorage.get('XPLUSCompany') || 'laohu'
+      loginApi(data).then(res0 => {
+        localstorage.set('token', res0.data.token) // 储存token值
+        Vue.toast({
+          text: '登录成功',
+          type: 'success',
+          callBack: () => {
+            localstorage.set('account', data) // 储存登录账号
+            // version 为0 即没有特意去切换导师端还是员工端，就返回上一步， 没有上一步默认去到员工端首页
+            if (!version) {
+              if (router.history.current.query.redirect_url) {
+                location.href = decodeURIComponent(router.history.current.query.redirect_url)
               } else {
-                // 为2 即切换了员工端， 为1 即切换到了导师端
-                if (version === 2) {
-                  location.href = `${location.href.split('/')[0]}//${location.host}/${res.data.companies[0].code}/home`
-                } else {
-                  location.href = `${location.href.split('/')[0]}//${location.host}/${res.data.companies[0].code}/homeTc`
-                }
+                location.href = `${location.href.split('/')[0]}//${location.host}/${code}/home`
+              }
+            } else {
+              // 为2 即切换了员工端， 为1 即切换到了导师端
+              if (version === 2) {
+                location.href = `${location.href.split('/')[0]}//${location.host}/${code}/home`
+              } else {
+                location.href = `${location.href.split('/')[0]}//${location.host}/${code}/homeTc`
               }
             }
-          })
+          }
         })
-      }).catch(e => {
-        reject(e)
       })
+    }
+    // 没有微信授权或者微信授权后没有绑定的走正常登陆流程
+    if (!router.history.current.query.bind_code) {
+      // 如果没有公司信息，需要先获取ssoToken, 否则直接去公司登录
+      if (!companyCode) {
+        ssoLoginApi(data).then(res => {
+          localstorage.set('ssoToken', res.data.ssoToken) // 储存ssoToken值
+          localstorage.set('XPLUSCompany', res.data.companies[0].code) // 储存公司code
+          localstorage.set('XPLUSCompanyName', res.data.companies[0].companyName) // 储存公司名
+          loginFun(res.data.companies[0].code)
+        }).catch(e => {
+          reject(e)
+        })
+      } else {
+        loginFun(companyCode)
+      }
     }
     // 微信授权后有绑定的直接微信登陆
     if (router.history.current.query.bind_code) {

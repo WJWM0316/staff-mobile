@@ -143,6 +143,7 @@ export default {
       this.wechatChooseImage(option).then(async res => {
         console.log(res, '选择的本地图片')
         this.$emit('choseResult', res) // 选择图片的结果
+        this.uploadList = []
         for (let i = 0; i < res.length; i++) {
           let res0 = await this.wechatUploadImage(res[i])
           let data = {
