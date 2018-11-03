@@ -12,7 +12,7 @@
         <p class="name">{{userInfo.base.realname}}</p>
         <p class="position" v-if="!userInfo.base.isExternalTutor && (userInfo.base.groupName || userInfo.base.occupation)"><span v-if="userInfo.base.groupName">{{userInfo.base.groupName}} |</span> {{userInfo.base.occupation}}</p>
         <p class="position" v-if="userInfo.base.isExternalTutor && userInfo.base.title">{{userInfo.base.title}}</p>
-        <backHome class="backHome"></backHome>
+        <backHome class="backHome1"></backHome>
       </div>
       <div class="studyMsg">
         <div class="item">
@@ -480,6 +480,11 @@ export default {
         font-weight: 300;
         margin-top: 7px;
         .setEllipsis();
+      }
+      .backHome1 {
+        .home {
+          top: 50px;
+        }
       }
     }
     .studyMsg {
