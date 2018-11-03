@@ -512,12 +512,9 @@ export default {
         line-height: 19px;
         .setEllipsis(50%);
         .icon {
-          width: 7px;
-          height: 11px;
-          display: inline-block;
-          background: url('../../assets/icon/me_icon_edit_chevron@2x.png') no-repeat;
-          background-size: 100% 100%;
-          margin-left: 7px;
+          font-size: 24px; /*px*/
+          color: #dcdcdc;
+          vertical-align: 2px;
         }
       }
       .msg {
