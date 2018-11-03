@@ -112,22 +112,22 @@ export default {
       const { id } = this.$route.query
       let res = await this.getCircleDetail(id)
       this.pageInfo = res.data
-      this.getPostlist(true)
+      let postListData = await this.getPostlist(true)
+      postListData.meta.currentPage >= postListData.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
+      this.postListTotal = postListData.meta.total
+      this.postList = postListData.data
     },
     /* 获取工作圈详情 */
     getCircleDetail (id) {
       return getCircleDetailApi(id)
     },
-    async getPostlist (needLoading) {
+    getPostlist (needLoading) {
       let param = {
         id: this.pageInfo.id,
         page: this.nowPage,
         sort: this.sort
       }
-      let res = await getPostlistApi(param, needLoading)
-      res.meta.currentPage >= res.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
-      this.postListTotal = res.meta.total
-      this.postList.push(...res.data)
+      return getPostlistApi(param, needLoading)
     },
     /* 置顶 */
     toTop (e) {
@@ -157,7 +157,10 @@ export default {
         }
         this.all.pullUpStatus = true
         this.nowPage += 1
-        await this.getPostlist(false)
+        let res = await this.getPostlist(false)
+        res.meta.currentPage >= res.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
+        this.postListTotal = res.meta.total
+        this.postList.push(...res.data)
         this.all.pullUpStatus = false
       }
     },
@@ -172,6 +175,16 @@ export default {
   },
   created () {
     this.init()
+  },
+  beforeRouteEnter (to, from, next) {
+    console.log(from)
+    if (from.name === 'postDetail') {
+      next()
+    } else {
+      next(vm => {
+        vm.init()
+      })
+    }
   }
 }
 </script>
