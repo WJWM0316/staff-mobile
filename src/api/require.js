@@ -9,7 +9,7 @@ import browser from '@u/browser'
 import { bindWxLogin, tokenLogin, ssoLoginApi, loginApi } from '@/api/pages/login'
 Vue.use(VueAxios, axios)
 let token = localstorage.get('token')
-let company = localstorage.get('XPLUSCompany') || (process.type !== 'production' ? 'test' : 'tiger')
+let company = localstorage.get('XPLUSCompany') || settings.defaultCompany
 let ssoToken = localstorage.get('ssoToken')
 // 动态设置本地和线上接口域名
 Vue.axios.defaults.baseURL = `${settings.host}/${company}`
