@@ -12,6 +12,7 @@
         <p class="name">{{userInfo.base.realname}}</p>
         <p class="position" v-if="!userInfo.base.isExternalTutor && (userInfo.base.groupName || userInfo.base.occupation)"><span v-if="userInfo.base.groupName">{{userInfo.base.groupName}} |</span> {{userInfo.base.occupation}}</p>
         <p class="position" v-if="userInfo.base.isExternalTutor && userInfo.base.title">{{userInfo.base.title}}</p>
+        <backHome class="backHome"></backHome>
       </div>
       <div class="studyMsg">
         <div class="item">
@@ -158,11 +159,13 @@ import { userInfoApi, getUserInfoApi, getUserJoinedListApi, getMyJoinedListApi, 
 import infoCard from '@c/business/infoCard.vue'
 import dynamicItem from '@c/business/dynamicItem'
 import noDataShow from '@c/layout/noDataShow'
+import backHome from '@c/layout/backHome'
 export default {
   components: {
     infoCard,
     noDataShow,
-    dynamicItem
+    dynamicItem,
+    backHome
   },
   data () {
     return {

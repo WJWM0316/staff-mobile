@@ -63,7 +63,7 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
         }
         break
     }
-    if (err.response.status !== 401 && err.response.status !== 400) {
+    if (err.response.status !== 401) {
       Vue.toast({
         text: err.response.data.msg,
         position: 'bottom',
@@ -120,13 +120,16 @@ export const login = (data, version, companyCode) => {
                 location.href = decodeURIComponent(router.history.current.query.redirect_url)
               } else {
                 location.href = `${location.href.split('/')[0]}//${location.host}/${code}/home`
+                localstorage.set('isTutor', false) // 是否为导师端
               }
             } else {
               // 为2 即切换了员工端， 为1 即切换到了导师端
               if (version === 2) {
                 location.href = `${location.href.split('/')[0]}//${location.host}/${code}/home`
+                localstorage.set('isTutor', false) // 是否为导师端
               } else {
                 location.href = `${location.href.split('/')[0]}//${location.host}/${code}/homeTc`
+                localstorage.set('isTutor', true) // 是否为导师端
               }
             }
           }

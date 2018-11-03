@@ -19,6 +19,13 @@ export default {
   },
   methods: {
     chose (n) {
+      if (this.company === n.code) {
+        this.$toast({
+          text: '您已在当前公司',
+          width: '9em'
+        })
+        return
+      }
       this.company = n.code
       let data = localstorage.get('account')
       localstorage.set('XPLUSCompany', n.code) // 储存公司code
