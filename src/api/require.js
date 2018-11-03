@@ -9,7 +9,7 @@ import browser from '@u/browser'
 import { bindWxLogin, tokenLogin, ssoLoginApi, loginApi } from '@/api/pages/login'
 Vue.use(VueAxios, axios)
 let token = localstorage.get('token')
-let company = localstorage.get('XPLUSCompany') || (process.type !== 'production' ? 'test' : 'tiger')
+let company = localstorage.get('XPLUSCompany') || settings.defaultCompany
 let ssoToken = localstorage.get('ssoToken')
 // 动态设置本地和线上接口域名
 Vue.axios.defaults.baseURL = `${settings.host}/${company}`
@@ -63,7 +63,7 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
         }
         break
     }
-    if (err.response.status !== 401 && err.response.status !== 400) {
+    if (err.response.status !== 401) {
       Vue.toast({
         text: err.response.data.msg,
         position: 'bottom',
@@ -120,13 +120,16 @@ export const login = (data, version, companyCode) => {
                 location.href = decodeURIComponent(router.history.current.query.redirect_url)
               } else {
                 location.href = `${location.href.split('/')[0]}//${location.host}/${code}/home`
+                localstorage.set('isTutor', false) // 是否为导师端
               }
             } else {
               // 为2 即切换了员工端， 为1 即切换到了导师端
               if (version === 2) {
                 location.href = `${location.href.split('/')[0]}//${location.host}/${code}/home`
+                localstorage.set('isTutor', false) // 是否为导师端
               } else {
                 location.href = `${location.href.split('/')[0]}//${location.host}/${code}/homeTc`
+                localstorage.set('isTutor', true) // 是否为导师端
               }
             }
           }

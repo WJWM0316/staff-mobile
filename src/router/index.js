@@ -10,9 +10,10 @@ import bookHouse from './bookHouse'
 import login from './login'
 import localstorage from '@u/localstorage'
 import other from './other'
+import settings from '@/config'
 
 Vue.use(Router)
-let company = localstorage.get('XPLUSCompany') || (process.type !== 'production' ? 'test' : 'tiger')
+let company = localstorage.get('XPLUSCompany') || settings.defaultCompany
 const routes = [
   ...home,
   ...course,

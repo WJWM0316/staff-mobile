@@ -10,6 +10,7 @@
   </div>
 </template>
 <script>
+import localstorage from '@u/localstorage'
 export default {
   props: {
     type: {
@@ -19,7 +20,11 @@ export default {
   },
   methods: {
     toHome () {
-      this.$router.push({path: '/home'})
+      if (localstorage.get('isTutor')) {
+        this.$router.push({path: '/homeTc'})
+      } else {
+        this.$router.push({path: '/home'})
+      }
     },
     toSearch () {
       this.$router.push({path: '/search', query: {id: this.$route.query.id}})

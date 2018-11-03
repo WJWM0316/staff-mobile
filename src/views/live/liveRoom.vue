@@ -109,7 +109,7 @@
     <template v-if="liveDetail.isTutor && liveDetail.status === 3">
       <xButton class="startLiveBtn" @click.stop.native="openArea = true">
         <p class="enter"><span>进入问答区</span></p>
-        <p class="number"><span>直播共收到100条提问</span></p>
+        <p class="number"><span>直播共收到{{liveDetail.problemCount}}条提问</span></p>
       </xButton>
     </template>
     <!-- 问答区 -->

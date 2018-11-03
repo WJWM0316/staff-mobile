@@ -10,19 +10,19 @@
         ></upLoadFile>
       </span>
     </div>
-    <div class="item border-bottom-1px">
-      <span class="txt must">姓名</span>
+    <div class="item border-bottom-1px" @click.stop="disabledFun">
+      <span class="txt">姓名</span>
       <span class="editBox">
         {{pageInfo.realname}}
         <!-- <input type="text" placeholder="请输入姓名" v-model="pageInfo.realname" disabled> -->
       </span>
     </div>
-    <div class="item border-bottom-1px">
-      <span class="txt must">性别</span>
+    <div class="item border-bottom-1px" @click="disabledFun">
+      <span class="txt">性别</span>
       <span class="editBox">
         <!-- 暂时不做编辑， 需要开启即可 -->
         <!-- <span class="placeholder" v-if="pageInfo.gender !== 0 && pageInfo.gender !== 1"  @click.stop="sexShow = true">请选择性别</span> -->
-        <span class="operResult" @click.stop="sexShow = true">{{pageInfo.gender === 0 ? '女' : '男'}}</span>
+        <span class="operResult" @click="sexShow = true">{{pageInfo.gender === 0 ? '女' : '男'}}</span>
         <actionSheet
           v-if="false"
           :showSheet="sexShow"
@@ -31,15 +31,15 @@
         ></actionSheet>
       </span>
     </div>
-    <div class="item border-bottom-1px">
-      <span class="txt must">岗位</span>
+    <div class="item border-bottom-1px" @click.stop="disabledFun">
+      <span class="txt">岗位</span>
       <span class="editBox">
         {{pageInfo.occupation}}
         <!-- <input type="text" placeholder="请输入岗位" v-model="pageInfo.occupation" disabled> -->
       </span>
     </div>
-    <div class="item border-bottom-1px">
-      <span class="txt must">邮箱</span>
+    <div class="item border-bottom-1px" @click.stop="disabledFun">
+      <span class="txt">邮箱</span>
       <span class="editBox">
         {{pageInfo.email}}
         <!-- <input type="text" placeholder="请输入邮箱" v-model="pageInfo.email" disabled> -->
@@ -94,6 +94,12 @@ export default {
     _choseResult (sexKey, sexItem) {
       this.pageInfo.gender = parseInt(sexKey)
       this.sexShow = false
+    },
+    disabledFun () {
+      this.$toast({
+        text: '该项目仅管理员可编辑',
+        width: '11em'
+      })
     },
     async getUserInfo () {
       if (!this.userInfo) {
@@ -169,15 +175,15 @@ export default {
       position: relative;
       color: #666;
       font-weight: 300;
-      &.must::before {
-        content: '*';
-        color: #D7AB70;
-        font-size: 32px; /*px*/
-        position: absolute;
-        top: 50%;
-        margin-top: -8px;
-        left: 0;
-      }
+      // &::before {
+      //   content: '*';
+      //   color: #D7AB70;
+      //   font-size: 32px; /*px*/
+      //   position: absolute;
+      //   top: 50%;
+      //   margin-top: -8px;
+      //   left: 0;
+      // }
     }
     .editBox {
       flex: 2;
@@ -210,7 +216,7 @@ export default {
         width: 100%;
         display: block;
         font-weight: 300;
-        color: #354048;
+        color: #929292;
         text-align: right;
         font-size: 30px; /*px*/
       }

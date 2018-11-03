@@ -154,6 +154,7 @@ export default {
       fileId: null, // 音频id
       isScrollY: true, // 回答问题时禁止滚动
       choseMessage: null, // 当前选择的消息
+      appendId: null, // 回复的id
       scrollPart: {
         list: [],
         page: 0,
@@ -253,6 +254,32 @@ export default {
       }
       this.sendMsg()
     },
+    appendFun () {
+      if (this.tabIndex === 0) {
+        this.scrollPart.list.forEach((item, index) => {
+          if (item.problemInfo.messageId === this.option.problem_id) {
+            this.openArea = false
+            this.scrollPart.list.splice(index, 1)
+          }
+        })
+      } else {
+        this.scrollAll.list.forEach((item, index) => {
+          if (item.problemInfo.messageId === this.option.problem_id && !item.answerInfo) {
+            this.option.answerInfo.createdAt = new Date().getTime()
+            if (this.option.answerInfo.type === 'text') {
+              this.option.answerInfo.content = this.option.content
+            }
+            let data = this.scrollAll.list[index]
+            this.option.answerInfo.avatar = this.option.answerInfo.masterAvatar
+            this.option.answerInfo.messageId = this.appendId
+            data.answerInfo = this.option.answerInfo
+            data.status = 1
+            this.openArea = false
+            this.scrollAll.list.splice(index, 1, data)
+          }
+        })
+      }
+    },
     sendMsg (tutorTxt) {
       this.option.problem_id = this.choseMessage.messageId
       if (this.sendType === 'text') {
@@ -265,28 +292,8 @@ export default {
         this.option.content = this.fileId
       }
       putAnswerApi(this.option, false).then(res => {
-        this.scrollPart.list.forEach((item, index) => {
-          if (item.problemInfo.messageId === this.option.problem_id) {
-            this.openArea = false
-            this.scrollPart.list.splice(index, 1)
-          }
-        })
-        this.scrollAll.list.forEach((item, index) => {
-          if (item.problemInfo.messageId === this.option.problem_id) {
-            this.option.answerInfo.createdAt = new Date().getTime()
-            if (this.option.answerInfo.type === 'text') {
-              this.option.answerInfo.content = tutorTxt
-            }
-            let data = this.scrollAll.list[index]
-            this.option.answerInfo.avatar = this.option.answerInfo.masterAvatar
-            this.option.answerInfo.messageId = res.data.messageId
-            data.answerInfo = this.option.answerInfo
-            console.log(data.answerInfo)
-            data.status = 1
-            this.openArea = false
-            this.scrollAll.list.splice(index, 1, data)
-          }
-        })
+        this.appendId = res.data.messageId
+        this.appendFun(this.appendId)
       })
     },
     choseTab (index) {
@@ -295,6 +302,7 @@ export default {
       if (index === 1 && this.scrollAll.list.length === 0) {
         this.getList({page: 1, type: 'all'})
       }
+      this.appendFun()
     }
   }
 }
