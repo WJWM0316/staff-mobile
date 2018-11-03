@@ -426,7 +426,7 @@ export default {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .personalPage {
   .head {
     width: 100%;
