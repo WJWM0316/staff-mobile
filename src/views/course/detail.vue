@@ -220,6 +220,10 @@ export default {
             height: 15px;
           }
         }
+        .reverse{
+          display: flex;
+          align-items: center;
+        }
         .study{
           margin-right: 25px;
         }
