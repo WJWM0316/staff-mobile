@@ -249,7 +249,7 @@ export default {
     let that = this
     this.$confirm({
       title: ' 退出编辑 ',
-      content: ' 是否要退出编辑，内容将自动存 为草稿 ',
+      content: ' 退出编辑，内容将自动存为草稿 ',
       confirmBack () {
         localstorage.set('draft', that.form.content)
         localstorage.set('draftImg', that.images)

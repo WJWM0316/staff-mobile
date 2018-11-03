@@ -144,6 +144,7 @@ export default {
   padding-bottom: 49px;
   height: 100vh;
   .richText{
+    padding-bottom: 50px;
     margin-top: 50px;
     .title{
       position: relative;
