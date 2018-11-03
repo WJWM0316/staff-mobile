@@ -54,9 +54,6 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
       store.dispatch('updata_loadingStatus', false)
     }
     switch (err.response.status) {
-      case 400:
-        router.replace(`/404`)
-        break
       case 401: // 未登录或登录过期
         if (browser.isWechat() && !router.history.current.query.bind_code) {
           location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(location.href)}`

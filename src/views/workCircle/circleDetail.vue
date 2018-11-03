@@ -108,7 +108,8 @@ export default {
       this.$router.push({path: `/circleEdit`, query: {id: this.pageInfo.id}})
     },
     /* 初始化方法 */
-    async init (id) {
+    async init () {
+      const { id } = this.$route.query
       let res = await this.getCircleDetail(id)
       this.pageInfo = res.data
       this.getPostlist(true)
@@ -170,8 +171,7 @@ export default {
     }
   },
   created () {
-    const { id } = this.$route.query
-    this.init(id)
+    this.init()
   }
 }
 </script>

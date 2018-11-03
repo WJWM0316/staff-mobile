@@ -14,7 +14,8 @@
     <!--富文本区-->
     <div class="lesson-module">
       <!--视频-->
-      <div class="lesson-video" v-if="communityCourse.av && communityCourse.av.attachType==='video'">
+      <div class="lesson-video" v-if="communityCourse.av && communityCourse.av.attachType==='video'" @click.stop="playVideo">
+        <div class="videoBOx" v-if="videoPlay"><i class="icon iconfont icon-play_vidio"></i></div>
         <video :poster="communityCourse.av.coverImg.url" controls ref="video">
           <source :src="communityCourse.av.url" type="video/mp4">
              您的浏览器不支持 HTML5 video 标签，请升级浏览器或者更换浏览器。
@@ -135,7 +136,7 @@ export default {
   data () {
     return {
       video: '', // 视频
-      videoPlay: false, // 视频是否在播放
+      videoPlay: true, // 视频是否在播放
       showIdentification: true,
       disableOperationArr: ['comment'],
       isPlayList: false,
@@ -251,6 +252,10 @@ export default {
     /* 去打卡列表 */
     toPunchList (to) {
       this.$router.push({path: '/punchList', query: {type: to, id: this.communityCourse.courseSectionId}})
+    },
+    playVideo () {
+      this.videoPlay = false
+      this.$refs['video'].play()
     }
   },
   created () {
@@ -259,6 +264,15 @@ export default {
   beforeDestroy () {
     if (window.audio) {
       window.audio.pause()
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    if (from.name === 'punchDetail') {
+      next()
+    } else {
+      next(vm => {
+        vm.init()
+      })
     }
   }
 }
@@ -317,6 +331,26 @@ export default {
       padding: 0 20px;
       height: 187px;
       position: relative;
+      .videoBOx{
+        box-sizing: border-box;
+        margin: 0 20px;
+        width: 335px;
+        height: 187px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 9998;
+        background-color: #000000;
+        i{
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translateX(-50%) translateY(-50%);
+          font-size: 50px;
+          color: #FFFFFF;
+          z-index: 9999;
+        }
+      }
     & .placeholder {
         position: absolute;
         top: 0;
