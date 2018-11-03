@@ -7,8 +7,8 @@
       </div>
       <i class="icon2"><img src="@a/icon/btn_enter@2x.png" alt=""></i>
     </div>
-    <div class="item">
-      <div @click.stop="jump('tutor')">
+    <div class="item" @click.stop="jump('tutor')">
+      <div>
         <i class="icon3"><img src="@a/icon/icon_list_change@3x.png" alt=""></i>
         <span>切换身份</span>
       </div>

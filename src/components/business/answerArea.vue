@@ -16,10 +16,10 @@
           <scroller
             class='scroll'
             ref='scrollPart'
-            :pulldown=true
-            :pullup="pullup"
-            :listenScroll=true
-            :freeScroll=true
+            :pulldown="true"
+            :pullup="true"
+            :listenScroll="true"
+            :freeScroll="true"
             :noData="scrollPart.noData"
             :scrollY = 'isScrollY'
             :list='scrollPart.list'
@@ -131,11 +131,15 @@ export default {
     scrollPart () {},
     openArea (val) {
       if (val) this.isScrollY = false
+    },
+    show (val) {
+      if (val && this.scrollPart.list.length === 0) {
+        this.getList({page: 1, type: 'my'})
+      }
     }
   },
   data () {
     return {
-      pullup: true,
       tabIndex: 0,
       tabList: ['未回答', '全部提问'],
       sendType: 'text', // 回答类型
@@ -292,9 +296,6 @@ export default {
         this.getList({page: 1, type: 'all'})
       }
     }
-  },
-  created () {
-    this.getList({page: 1, type: 'my'})
   }
 }
 </script>
