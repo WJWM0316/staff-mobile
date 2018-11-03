@@ -34,6 +34,12 @@ const routers = [
     name: 'message',
     meta: { title: '消息通知' },
     component: resolve => require(['@/views/center/message'], resolve)
+  },
+  {
+    path: '/enterpriseList',
+    name: 'enterpriseList',
+    meta: { title: '企业列表' },
+    component: resolve => require(['@/views/center/enterpriseList'], resolve)
   }
 ]
 

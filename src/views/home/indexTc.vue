@@ -1,7 +1,7 @@
 <template>
   <div class="indexTc">
     <div class="tab">
-      <span :class="{'cur': tabIndex === index, 'red': index === 1}" v-for="(item, index) in tabList" :key="index"  @click.stop="choseTab(index)" >{{item}}</span>
+      <span :class="{'cur': tabIndex === index}" v-for="(item, index) in tabList" :key="index"  @click.stop="choseTab(index)" >{{item}}</span>
     </div>
     <i class="icon iconfont icon-read_btn_datalog sidebarBtn" @click.stop="showSide = true"></i>
     <div class="courseList" v-show="tabIndex === 0">
@@ -21,7 +21,7 @@
           <img :src="userInfo.base.avatar.middleUrl" alt="">
         </div>
         <div class="name">{{userInfo.base.realname}}</div>
-        <div class="company">{{userInfo.base.realname}}</div>
+        <div class="company">{{companyName}}</div>
         <ul class="funtional">
           <li @click.stop="jump('message')"><i class="icon iconfont icon-icon_notice"></i>消息通知</li>
           <li @click.stop="jump('enterprise')"><i class="icon iconfont icon-icon_list_change1"></i>企业切换</li>
@@ -50,7 +50,10 @@ export default {
   computed: {
     ...mapState({
       userInfo: state => state.global.userInfo
-    })
+    }),
+    companyName () {
+      return localstorage.get('XPLUSCompanyName')
+    }
   },
   data () {
     return {
@@ -78,7 +81,7 @@ export default {
           this.$router.push('/message')
           break
         case 'enterprise':
-          this.$router.push('/message')
+          this.$router.push('/enterpriseList')
           break
         case 'change':
           this.$router.push('/resetPassword')
@@ -89,11 +92,13 @@ export default {
             confirmBack: () => {
               outLoginApi().then(res => {
                 localstorage.remove('XPLUSCompany')
+                localstorage.remove('token')
+                localstorage.remove('ssoToken')
                 this.$toast({
                   text: '退出成功',
                   type: 'success',
                   callBack: () => {
-                    this.$router.replace('/login')
+                    this.$router.replace('/login?is_bind=1')
                   }
                 })
               })
@@ -266,6 +271,7 @@ export default {
             font-size: 40px; /*px*/
             margin-right: 19px;
             color: rgb(188, 188, 188);
+            vertical-align: middle;
           }
         }
       }

@@ -123,7 +123,10 @@ export default {
         })
         return false
       }
-      console.log(333)
+      // 如果是手机号登录 说明是外部导师
+      if (PHONE.test(data.email)) {
+        this.version = 1
+      }
       login(data, this.version).catch(e => {
         // 错误三次就要输入验证码
         if (e.code === 410) {

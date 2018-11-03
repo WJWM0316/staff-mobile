@@ -111,4 +111,12 @@ export const putRedListApi = (data, needLoading) => {
     needLoading: needLoading
   })
 }
-
+// 获取外部导师企业列表
+export const getEnterpriseListApi = (data, needLoading) => {
+  return request({
+    type: 'get',
+    url: `/sso/user/companies`,
+    data,
+    needLoading: false
+  })
+}
