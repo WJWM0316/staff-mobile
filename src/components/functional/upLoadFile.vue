@@ -175,7 +175,9 @@ export default {
       this.panel = false
       this.$refs.upLoadBtn.value = '' // 清除变化
       this.fileUrl = []
-      this.cropper.reset()
+      setTimeout(() => {
+        this.cropper.reset()
+      }, 300)
     },
     // 截图
     commit () {
@@ -197,7 +199,9 @@ export default {
         this.fileUrl.push(res.data[0].url)
         this.panel = false
         this.$refs.upLoadBtn.value = '' // 清除变化
-        this.cropper.reset()
+        setTimeout(() => {
+          this.cropper.reset()
+        }, 300)
       })
     }
   },

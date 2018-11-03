@@ -181,6 +181,8 @@ export default {
         .icon1 {
           font-size: 40px; /*px*/
           line-height: 40px; /*px*/
+          width: 40px; /*px*/
+          height: 40px; /*px*/
           color: rgb(188, 188, 188);
           margin-right: 12px;
         }
