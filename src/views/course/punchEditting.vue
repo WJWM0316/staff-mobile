@@ -85,7 +85,8 @@ export default {
       showTaskWindow: false,
       taskContent: {}, // 打卡编辑页详情
       isSend: false, // 是否已经发送编辑
-      isiOS: '' // 是否ios
+      isiOS: '', // 是否ios
+      lastPunchImg: [] // 历史打卡图片
     }
   },
   computed: {
@@ -234,6 +235,7 @@ export default {
         this.form.content = res.data.peopleCourseCardInfo.cardContent
         res.data.peopleCourseCardInfo.cardContentFile.forEach((item, index) => {
           this.images.push(item.url)
+          this.lastPunchImg.push(item.url)
           this.uploadImgList.push(item.id)
         })
       }
@@ -243,6 +245,10 @@ export default {
   },
   beforeRouteLeave (to, from, next) {
     if (this.isSend) {
+      next()
+      return
+    }
+    if(JSON.stringify(this.images) === JSON.stringify(this.lastPunchImg) && this.form.content === (this.taskContent.peopleCourseCardInfo?this.taskContent.peopleCourseCardInfo.cardContent:"")){
       next()
       return
     }

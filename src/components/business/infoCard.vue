@@ -145,7 +145,7 @@ export default {
     .title{
       color: #354048;
       font-size: 30px;/*px*/
-      line-height: 20px;
+      line-height: 21px;
       &.ellipsis1 {
         .setEllipsis()
       }

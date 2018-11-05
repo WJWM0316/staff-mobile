@@ -26,7 +26,7 @@ const routers = [
   {
     path: '/courseLesson',
     name: 'lesson',
-    meta: { title: '课节详情', keepAlive: true },
+    meta: { title: '课节详情' },
     component: resolve => require(['@/views/course/lesson'], resolve)
   },
   {
