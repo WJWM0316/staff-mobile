@@ -74,7 +74,7 @@
     </div>
     <div class="personalType" v-else>
       <div class="left">
-        <span class="time">{{item.currencyUser.createdAt}}</span>
+        <span class="time">{{item.createdAt}}</span>
       </div>
       <div class="right">
         <span v-if="item.postType === 'jobcircleSection'">[圈]</span><span>{{item.jobCircleName}}</span>

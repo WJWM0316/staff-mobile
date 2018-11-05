@@ -1,11 +1,12 @@
 <template>
   <div class="m-recorder" :class="`z-${status}`">
     <div class="controls">
-      <button type="button" v-if="status === 'finish'" class="restart btn left" @click="handleRestart">
-        <i class="icon icon-remake"></i>
+      <button type="button" v-show="status === 'finish'" class="restart btn left" @click="handleRestart">
+        <i class="icon iconfont icon-remake"></i>
         <span class="text">重录</span>
       </button>
-      <button type="button" class="control btn" @touchstart.stop="touchstartFun()" @touchend.stop="touchendFun()">
+      <button type="button" class="control btn" @click.stop="touchstartFun()">
+        <p class="duration" v-show="status === 'finish'">{{durationShow}}s</p>
         <div class="btnShadow">
           <div class="operBtn" :class="{'playing': status === 'recording' || status === 'listening'}">
             <i class="icon iconfont" :class="btnClass"></i>
@@ -16,8 +17,8 @@
         <span class="text" v-show="status === 'finish'">点击试听</span>
         <span class="text" v-show="status === 'listening'">停止</span>
       </button>
-      <button type="button" v-if="status === 'finish'" class="publish btn right" @click="handlePublish">
-        <i class="icon icon-send"></i>
+      <button type="button" v-show="status === 'finish'" class="publish btn right" @click="handlePublish">
+        <i class="icon iconfont icon-send"></i>
         <span class="text">发送</span>
       </button>
     </div>
@@ -38,6 +39,9 @@ export default {
     }
   },
   computed: {
+    durationShow () {
+      return Math.ceil(this.duration / 1000)
+    },
     btnClass () {
       if (this.status === 'default' || this.status === 'finish') {
         return 'icon-record'
@@ -123,7 +127,6 @@ export default {
     async upload () {
       this.$emit('uploading')
       const res = await this.wechatUploadVoice(this.localId)
-      console.log(res, 12121)
       this.uploadWechatSuccess(res)
     },
     /**
@@ -135,6 +138,7 @@ export default {
         type: 'audio'
       }
       const res = await this.wxUploadFile(data)
+      this.clear()
       this.$emit('upload-success', res.data)
     },
     /**
@@ -150,17 +154,14 @@ export default {
       this.stopInterval()
     },
     touchstartFun () {
-      if (this.status === 'default') {
+      if (this.status === 'default') { // 开始录音
         this.handleStart()
-      } else if (this.status === 'finish') {
+      } else if (this.status === 'finish') { // 播放录音
         this.handlePlay()
-      } else {
-        this.handleStop()
-      }
-    },
-    touchendFun () {
-      if (this.status === 'recording') {
+      } else if (this.status === 'recording') { // 结束录音
         this.handleFinish()
+      } else { // 停止播放录音
+        this.handleStop()
       }
     },
     /**
@@ -233,7 +234,7 @@ export default {
 
 <style lang="less">
 .m-recorder {
-  padding: 25px 0 20px;
+  padding: 18px 0 10px;
   background: #fff;
   -webkit-user-select:none;
   -webkit-user-drag:none;
@@ -244,12 +245,10 @@ export default {
     }
   }
   .duration {
-    display: none;
-    margin-bottom: 13px;
     text-align: center;
-    line-height: 22px;
-    font-size: 14px;
-    color: #d7ab70;
+    line-height: 30px; /*px*/
+    font-size: 30px; /*px*/
+    color: #354048;
   }
   .controls {
     position: relative;
@@ -275,6 +274,15 @@ export default {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
+        .icon {
+          font-size: 70px; /*px*/
+          line-height: 70px; /*px*/
+          color: #666666;
+        }
+        .text {
+          margin-top: 9px;
+          color: #666666;
+        }
       }
 
       &.left {
@@ -287,7 +295,7 @@ export default {
 
       &.control {
         .btnShadow {
-          padding: 10px;
+          padding: 22px 16px 16px;
           overflow: hidden;
           overflow: hidden;
           .operBtn {
@@ -299,7 +307,6 @@ export default {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 15px;
             .icon {
               font-size: 60px; /*px*/
               color: rgb(102, 102, 102);

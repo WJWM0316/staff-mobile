@@ -85,6 +85,7 @@ import { userInfoApi } from '@/api/pages/center'
 import { getHomeInfoApi } from '@/api/pages/home'
 import { mapState } from 'vuex'
 import infoCard from '@c/business/infoCard.vue'
+import localstorage from '@u/localstorage'
 export default {
   components: {
     infoCard
@@ -159,6 +160,7 @@ export default {
     }
   },
   mounted () {
+    localstorage.set('curHome', 'home') // 当前首页为员工端首页
     this.init()
   }
 }

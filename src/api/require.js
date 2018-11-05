@@ -118,18 +118,16 @@ export const login = (data, version, companyCode) => {
             if (!version) {
               if (router.history.current.query.redirect_url) {
                 location.href = decodeURIComponent(router.history.current.query.redirect_url)
+                localstorage.set('curHome', 'home') // 当前首页为员工端首页
               } else {
                 location.href = `${location.href.split('/')[0]}//${location.host}/${code}/home`
-                localstorage.set('isTutor', false) // 是否为导师端
               }
             } else {
               // 为2 即切换了员工端， 为1 即切换到了导师端
               if (version === 2) {
                 location.href = `${location.href.split('/')[0]}//${location.host}/${code}/home`
-                localstorage.set('isTutor', false) // 是否为导师端
               } else {
                 location.href = `${location.href.split('/')[0]}//${location.host}/${code}/homeTc`
-                localstorage.set('isTutor', true) // 是否为导师端
               }
             }
           }
@@ -144,6 +142,7 @@ export const login = (data, version, companyCode) => {
           localstorage.set('ssoToken', res.data.ssoToken) // 储存ssoToken值
           localstorage.set('XPLUSCompany', res.data.companies[0].code) // 储存公司code
           localstorage.set('XPLUSCompanyName', res.data.companies[0].companyName) // 储存公司名
+          localstorage.set('XPLUSCompanyList', res.data.companies) // 储存公司列表
           loginFun(res.data.companies[0].code)
         }).catch(e => {
           reject(e)

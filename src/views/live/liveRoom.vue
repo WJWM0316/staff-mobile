@@ -46,8 +46,8 @@
             :key='index'
             :audioList='audioList'
             :messageData='item'
-            :isNeedRead='true'
-            :isNeedEnd='true'
+            :isNeedRead='!liveDetail.isTutor'
+            :isNeedEnd='!liveDetail.isTutor'
             ref="messageItem"
             @nextMusic='nextMusic'
           ></live-message>
@@ -376,7 +376,7 @@ export default {
     },
     creatWs () {
       // 断线重连 还要重新加入直播间
-      let company = localstorage.get('XPLUSCompany') || 'laohu'
+      let company = localstorage.get('XPLUSCompany') || settings.defaultCompany
       let websocketUrl = settings.websocketUrl
       ws.create(`${websocketUrl}/${company}`)
       setTimeout(() => {
