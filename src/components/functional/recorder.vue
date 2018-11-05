@@ -291,7 +291,7 @@ export default {
 
       &.control {
         .btnShadow {
-          padding: 22px 0 16px;
+          padding: 22px 16px 16px;
           overflow: hidden;
           overflow: hidden;
           .operBtn {
