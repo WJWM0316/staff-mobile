@@ -155,6 +155,10 @@ export default {
         }
         // alert(JSON.stringify(this.uploadList))
         this.$emit('upLoadResult', this.uploadList) // 上传图片的结果
+      }).catch(err => {
+        this.$toast({
+          text: err.errMsg
+        })
       })
     },
     // dataUrl 转 file
