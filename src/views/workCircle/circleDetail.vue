@@ -184,6 +184,7 @@ export default {
       next()
     } else {
       next(vm => {
+        vm.nowPage = 1
         vm.init()
       })
     }
