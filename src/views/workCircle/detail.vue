@@ -13,28 +13,32 @@
       </div>
       <!--评论-->
       <template v-if="navTabName === 'comment'">
-        <div v-for="(commentItem, index) in commentList" :key="index">
-          <div>
-            <!-- 热门评论 -->
-            <div class="hot-area" v-if="item.hotCommentCount > 0 && index === 0">
-              <i class="hot-icon"><img src="../../assets/icon/icon_hotcomment@3x.png" alt=""></i><span>热门评论</span>
+        <div class="content-praise">
+          <div v-for="(commentItem, index) in commentList" :key="index">
+            <div>
+              <!-- 热门评论 -->
+              <div class="hot-area" v-if="item.hotCommentCount > 0 && index === 0">
+                <i class="hot-icon"><img src="../../assets/icon/icon_hotcomment@3x.png" alt=""></i><span>热门评论</span>
+              </div>
+              <!-- 全部评论 -->
+              <div class="hot-area" v-if="item.commentTotal > 0 && index === item.hotCommentCount">
+                <i class="hot-icon"><img src="../../assets/icon/tab-massage-3@3x.png" alt=""></i><span>全部评论</span>
+              </div>
             </div>
-            <!-- 全部评论 -->
-            <div class="hot-area" v-if="item.commentTotal > 0 && index === item.hotCommentCount">
-              <i class="hot-icon"><img src="../../assets/icon/tab-massage-3@3x.png" alt=""></i><span>全部评论</span>
+            <div v-if="true">
+              <discuss-item
+                 :item="commentItem"
+                 :index="index"
+                 :isShowBorder="index === commentList.length-1 || index === item.hotCommentCount-1? false : true"
+                 :isCourse="false"
+                 @delComment="delComment">
+              </discuss-item>
             </div>
           </div>
-          <div v-if="true">
-            <discuss-item
-               :item="commentItem"
-               :index="index"
-               :isShowBorder="index === commentList.length-1 || index === item.hotCommentCount-1? false : true"
-               :isCourse="false"
-               @delComment="delComment">
-            </discuss-item>
+          <div v-if="item.commentTotal === 0">
+            <p class="community-empty-desc">成为第一个评论的人吧~</p>
           </div>
         </div>
-        <p class="community-empty-desc" v-if="item.commentTotal === 0">成为第一个评论的人吧~</p>
       </template>
       <!-- 点赞 -->
       <template v-else>
@@ -221,7 +225,6 @@ export default {
       align-items: center;
       color: #354048;
       font-size: 30px;/*px*/
-      border-bottom: solid 1px #DCDCDC; /* no */
       span {
         line-height: 21px;
         margin-right: 32px;

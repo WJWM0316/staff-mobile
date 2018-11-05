@@ -165,6 +165,7 @@ export default {
       font-weight: 300;
     }
     .weui-switch{
+      border-color: #DFDFDF;
       background: #FFE266;
     }
   }

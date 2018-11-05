@@ -265,15 +265,6 @@ export default {
     if (window.audio) {
       window.audio.pause()
     }
-  },
-  beforeRouteEnter (to, from, next) {
-    if (from.name === 'punchDetail') {
-      next()
-    } else {
-      next(vm => {
-        vm.init()
-      })
-    }
   }
 }
 </script>
