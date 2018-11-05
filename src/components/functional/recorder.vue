@@ -6,7 +6,7 @@
         <span class="text">重录</span>
       </button>
       <button type="button" class="control btn" @click.stop="touchstartFun()">
-        <p class="duration" v-show="status === 'finish'">{{duration}}s</p>
+        <p class="duration" v-show="status === 'finish'">{{durationShow}}s</p>
         <div class="btnShadow">
           <div class="operBtn" :class="{'playing': status === 'recording' || status === 'listening'}">
             <i class="icon iconfont" :class="btnClass"></i>
@@ -39,6 +39,9 @@ export default {
     }
   },
   computed: {
+    durationShow () {
+      return Math.ceil(this.duration / 1000)
+    },
     btnClass () {
       if (this.status === 'default' || this.status === 'finish') {
         return 'icon-record'
