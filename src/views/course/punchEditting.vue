@@ -248,14 +248,14 @@ export default {
       next()
       return
     }
-    if(JSON.stringify(this.images) === JSON.stringify(this.lastPunchImg) && this.form.content === (this.taskContent.peopleCourseCardInfo?this.taskContent.peopleCourseCardInfo.cardContent:"")){
+    if (JSON.stringify(this.images) === JSON.stringify(this.lastPunchImg) && this.form.content === (this.taskContent.peopleCourseCardInfo ? this.taskContent.peopleCourseCardInfo.cardContent : '')) {
       next()
       return
     }
     let that = this
     this.$confirm({
-      title: ' 退出编辑 ',
-      content: ' 退出编辑，是否将内容存为草稿？ ',
+      title: '退出编辑',
+      content: '退出编辑，是否将内容存为草稿？',
       confirmBack () {
         localstorage.set('draft', that.form.content)
         localstorage.set('draftImg', that.images)
