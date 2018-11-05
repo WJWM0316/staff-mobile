@@ -6,7 +6,7 @@
         @click.stop="contactInformation.showSheet = true">联系方式<img class="icon" src="@a/icon/bnt_more_contact@3x.png">
       </div>
       <div class="msg">
-        <div class="photo">
+        <div class="photo defaultImg">
           <img v-if="userInfo.base" :src="userInfo.base.avatar.middleUrl">
         </div>
         <p class="name">{{userInfo.base.realname}}</p>
@@ -29,8 +29,8 @@
         </div>
       </div>
     </div>
-    <!-- 企业个人 -->
-    <template v-if="!userInfo.base.isExternalTutor">
+    <!-- 企业员工展示 -->
+    <template v-if="!userInfo.base.isExternalTutor && !isTutor">
       <div class="tab" :class="{'floor': needFloor}">
         <span class="tabItem"
           v-for="(item, index) in tabList"
@@ -100,8 +100,8 @@
       </div>
     </template>
 
-    <!-- 外部导师 -->
-    <template v-else>
+    <!-- 导师展示 -->
+    <template v-if="userInfo.base.isExternalTutor || (isSelf && isTutor)">
       <div class="tab" :class="{'floor': needFloor}">
         <span class="tabItem"
           v-for="(item, index) in extTabList"
@@ -160,6 +160,7 @@ import infoCard from '@c/business/infoCard.vue'
 import dynamicItem from '@c/business/dynamicItem'
 import noDataShow from '@c/layout/noDataShow'
 import backHome from '@c/layout/backHome'
+import localstorage from '@u/localstorage'
 export default {
   components: {
     infoCard,
@@ -205,6 +206,13 @@ export default {
         return true
       } else {
         return false
+      }
+    },
+    isTutor () {
+      if (localstorage.get('curHome') === 'home') {
+        return false
+      } else {
+        return true
       }
     },
     tabList () {

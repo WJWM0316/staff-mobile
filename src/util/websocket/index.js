@@ -178,7 +178,7 @@ class WS {
       this.closeTime = new Date().getTime()
       this.reconnectMark = true
     }
-    if (new Date().getTime() - this.closeTime >= 60000) { // 10秒中重连，连不上就不连了
+    if (new Date().getTime() - this.closeTime >= 60000) { // 60秒中重连，连不上就不连了
       console.log('======websocket重连不上，自动关闭')
       store.dispatch('updata_wsStatus', 2)
       this.close()
