@@ -39,7 +39,7 @@
           课程介绍<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
         </div>
         <div v-else @click.stop="toCourseDetail">
-          返回课程主页<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
+          课程主页<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
         </div>
       </div>
       <div v-if="type === '2'">

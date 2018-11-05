@@ -4,6 +4,7 @@
       <img class="headerPhoto" v-if="item.releaseUser" :src="item.releaseUser.avatarInfo.smallUrl" />
       <div class="appellation" v-if="item.releaseUser" @click.stop="toUserInfo(item.releaseUser.id)">{{item.releaseUser.realname}}</div>
       <!--置顶按钮-->
+      <div class="isTopping" v-if="item.isTop"><img src="../../assets/icon/icon_topping@3x.png" /></div>
       <div class="evaluate" @click.stop="toTop" v-if="item.isOwner || item.isTutor">...</div>
     </div>
     <div class="content">
@@ -323,6 +324,11 @@ export default {
         color: #4080AD;
         font-size: 28px;/*px*/
         font-weight: 700;
+      }
+      .isTopping{
+        position:absolute;
+        right: 30px;
+        top: 5px;
       }
       .evaluate{
         width: 30px;
