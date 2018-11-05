@@ -1,6 +1,6 @@
 <template>
   <div class="backHome">
-    <div class="home" v-if="type === '3' || type === '1'" @click.stop="toHome">
+    <div class="home" v-if="type === '3' || type === '1'" @click.stop="toHome" :class="{'personalHome': routeName === 'personalPage'}">
       <i class="homeIcon icon iconfont icon-btn_homepage"></i>
     </div>
     <div class="homeSearch" v-if="type === '2'">
@@ -16,12 +16,17 @@ export default {
     type: {
       type: String,
       default: '1' // 1只有首页按钮 2首页+搜索
+    },
+    routeName: {
+      type: String,
+      default: ''
     }
   },
   methods: {
     toHome () {
-      if (localstorage.get('isTutor')) {
-        this.$router.push({path: '/homeTc'})
+      let curHome = localstorage.get('curHome')
+      if (curHome) {
+        this.$router.push({path: `/${curHome}`})
       } else {
         this.$router.push({path: '/home'})
       }
@@ -55,6 +60,9 @@ export default {
         color: #354048;
         font-size: 42px;/*px*/
         line-height: 42px;/*px*/
+      }
+      &.personalHome {
+        top: 50px;
       }
     }
     .homeSearch{

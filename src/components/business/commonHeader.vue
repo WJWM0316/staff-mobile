@@ -5,7 +5,7 @@
       <div class="cover" :class="{bgColor : type === '1'}">
         <img v-if="type === '2'" src="@/assets/icon/headerbg.png"/>
       </div>
-      <span class="header-photo"  v-if="pageInfo.coverImg">
+      <span class="header-photo defaultImg"  v-if="pageInfo.coverImg">
         <img :src="pageInfo.coverImg.middleUrl"/>
       </span>
       <backHome :type="type"></backHome>

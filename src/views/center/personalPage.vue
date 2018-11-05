@@ -2,7 +2,7 @@
   <div class="personalPage" ref="personalPage"  v-if="userInfo">
     <div class="head">
       <div class="information"
-        v-if="!userInfo.base.mobile || !userInfo.base.wechat || !userInfo.base.email"
+        v-if="userInfo.base.mobile || userInfo.base.wechat || userInfo.base.email"
         @click.stop="contactInformation.showSheet = true">联系方式<img class="icon" src="@a/icon/bnt_more_contact@3x.png">
       </div>
       <div class="msg">
@@ -12,7 +12,7 @@
         <p class="name">{{userInfo.base.realname}}</p>
         <p class="position" v-if="!userInfo.base.isExternalTutor && (userInfo.base.groupName || userInfo.base.occupation)"><span v-if="userInfo.base.groupName">{{userInfo.base.groupName}} |</span> {{userInfo.base.occupation}}</p>
         <p class="position" v-if="userInfo.base.isExternalTutor && userInfo.base.title">{{userInfo.base.title}}</p>
-        <backHome class="backHome1"></backHome>
+        <backHome class="backHome1" routeName="personalPage"></backHome>
       </div>
       <div class="studyMsg">
         <div class="item">
@@ -200,15 +200,22 @@ export default {
     }
   },
   computed: {
+    isSelf () {
+      if (!this.$route.query.uid || (this.$store.getters.userInfo.base.uid === this.$route.query.uid)) {
+        return true
+      } else {
+        return false
+      }
+    },
     tabList () {
-      if (this.$route.query.uid) {
+      if (!this.isSelf) {
         return ['Ta加入的', 'Ta的帖子']
       } else {
         return ['我加入的', '我的帖子']
       }
     },
     extTabList () {
-      if (this.$route.query.uid) {
+      if (!this.isSelf) {
         return ['Ta的课程', 'Ta的课程']
       } else {
         return ['我的课程', '我的直播']
@@ -480,11 +487,6 @@ export default {
         font-weight: 300;
         margin-top: 7px;
         .setEllipsis();
-      }
-      .backHome1 {
-        .home {
-          top: 50px;
-        }
       }
     }
     .studyMsg {

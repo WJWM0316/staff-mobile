@@ -15,7 +15,7 @@
       <noDataShow v-if="liveList.list.length === 0"></noDataShow>
     </div>
     <!-- 侧边栏 -->
-    <Popup v-model="showSide" position="left" class="sidebar">
+    <Popup v-model="showSide" position="left" class="sidebar" @touchmove.native="prohibit">
       <div class="inner"  v-if="userInfo">
         <div class="head">
           <img :src="userInfo.base.avatar.middleUrl" alt="">
@@ -24,7 +24,7 @@
         <div class="company">{{companyName}}</div>
         <ul class="funtional">
           <li @click.stop="jump('message')"><i class="icon iconfont icon-icon_notice"></i>消息通知</li>
-          <li @click.stop="jump('enterprise')"><i class="icon iconfont icon-icon_list_change1"></i>企业切换</li>
+          <li @click.stop="jump('enterprise')" v-if="(companyList && companyList.length > 1) && userInfo.base.isExternalTutor"><i class="icon iconfont icon-icon_list_change1"></i>企业切换</li>
           <li @click.stop="jump('change')"><i class="icon iconfont icon-icon_password1"></i>密码修改</li>
           <li @click.stop="jump('outLogin')"><i class="icon iconfont icon-icon_loginout"></i>退出登录</li>
         </ul>
@@ -53,6 +53,9 @@ export default {
     }),
     companyName () {
       return localstorage.get('XPLUSCompanyName')
+    },
+    companyList () {
+      return localstorage.get('XPLUSCompanyList')
     }
   },
   data () {
@@ -115,6 +118,11 @@ export default {
       }
       this.init()
     },
+    prohibit (e) {
+      // 阻止下拉刷新
+      e.preventDefault()
+      e.stopPropagation()
+    },
     getUserInfo () {
       if (!this.userInfo) {
         getTutorInfoApi().then(res => {
@@ -170,6 +178,7 @@ export default {
     }
   },
   created () {
+    localstorage.set('curHome', 'homeTc') // 当前首页为导师端首页
     this.getUserInfo()
     this.init()
   }
