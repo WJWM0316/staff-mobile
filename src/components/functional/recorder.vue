@@ -6,7 +6,7 @@
         <span class="text">重录</span>
       </button>
       <button type="button" class="control btn" @click.stop="touchstartFun()">
-        <p class="duration" v-show="status === 'recording' || status === 'listening'">{{duration}}s</p>
+        <p class="duration" v-show="status === 'finish'">{{duration}}s</p>
         <div class="btnShadow">
           <div class="operBtn" :class="{'playing': status === 'recording' || status === 'listening'}">
             <i class="icon iconfont" :class="btnClass"></i>
@@ -124,7 +124,6 @@ export default {
     async upload () {
       this.$emit('uploading')
       const res = await this.wechatUploadVoice(this.localId)
-      console.log(res, 12121)
       this.uploadWechatSuccess(res)
     },
     /**
