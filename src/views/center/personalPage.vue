@@ -216,7 +216,7 @@ export default {
     },
     extTabList () {
       if (!this.isSelf) {
-        return ['Ta的课程', 'Ta的课程']
+        return ['Ta的课程', 'Ta的直播']
       } else {
         return ['我的课程', '我的直播']
       }

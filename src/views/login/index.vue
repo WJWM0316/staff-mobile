@@ -170,6 +170,12 @@ export default {
     }
   },
   mounted () {
+    let data = localstorage.get('xplus_account')
+    if (data) {
+      let {email, password} = data
+      this.account = email
+      this.password = password
+    }
     this.winHeight = window.innerHeight + 'px'
   }
 }
