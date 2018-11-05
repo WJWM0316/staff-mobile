@@ -63,13 +63,11 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
         }
         break
     }
-    if (err.response.status !== 401) {
-      Vue.toast({
-        text: err.response.data.msg,
-        position: 'bottom',
-        width: '10em'
-      })
-    }
+    Vue.toast({
+      text: err.response.data.msg,
+      position: 'bottom',
+      width: '10em'
+    })
     return Promise.reject(err.response.data)
   })
 }
