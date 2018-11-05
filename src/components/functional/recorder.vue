@@ -152,11 +152,13 @@ export default {
       this.stopInterval()
     },
     touchstartFun () {
-      if (this.status === 'default') {
+      if (this.status === 'default') { // 开始录音
         this.handleStart()
-      } else if (this.status === 'finish') {
+      } else if (this.status === 'finish') { // 播放录音
         this.handlePlay()
-      } else {
+      } else if (this.status === 'recording') { // 结束录音
+        this.handleFinish()
+      } else { // 停止播放录音
         this.handleStop()
       }
     },
