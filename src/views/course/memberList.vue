@@ -102,6 +102,7 @@ export default {
       padding-right: 10px;
     }
     .icon-btn_inf_outstanding{
+      font-size: 40px !important;/*px*/
       color: #DCDCDC;
     }
     .txt {
