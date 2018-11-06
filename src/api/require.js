@@ -167,7 +167,7 @@ async function UnProcess (res) {
     router.replace(`/404`)
   } else {
     Vue.toast({
-      text: err.response.data.msg,
+      text: res.response.data.msg,
       position: 'bottom',
       width: '10em'
     })
