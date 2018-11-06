@@ -65,9 +65,7 @@
 import { postPunchCardApi, getPunchCardDetailsApi, attachesApi } from '@/api/pages/course'
 import uploadImg from '@c/functional/upLoadFile'
 import localstorage from '@u/localstorage'
-import WechatMixin from '@/mixins/wechat'
 export default {
-  mixins: [WechatMixin],
   components: {
     uploadImg
   },
