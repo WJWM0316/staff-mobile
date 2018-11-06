@@ -236,3 +236,10 @@ export const getCircleCommentListlApi = (data) => {
     type: 'get'
   })
 }
+/* 删除工作圈帖子 */
+export const delPostApi = (id) => {
+  return request({
+    url: `/jobcircle/post/${id}`,
+    type: 'delete'
+  })
+}
