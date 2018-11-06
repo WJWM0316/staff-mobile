@@ -34,7 +34,6 @@ export default {
      * 获取微信签名
      */
     async getWechatSign () {
-    // if (this.$store.getters.wxConfig) return
       try {
         const params = {
           url: location.href.split('#')[0],

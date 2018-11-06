@@ -136,8 +136,8 @@ export default {
         })
       }
     },
-    wxChoseImg () {
-      this.getWechatSign()
+    async wxChoseImg () {
+      await this.getWechatSign()
       let option = {
         count: this.count
       }
