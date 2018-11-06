@@ -358,6 +358,7 @@ export default {
                 }
                 this.problemInfo = data
                 this.openArea = true
+                this.problemTxt = ''
               }
             })
             resolve(res)

@@ -2,7 +2,7 @@
   <div class="personalPage" ref="personalPage"  v-if="userInfo">
     <div class="head">
       <div class="information"
-        v-if="userInfo.base.mobile || userInfo.base.wechat || userInfo.base.email"
+        v-if="(userInfo.base.mobile || userInfo.base.wechat || userInfo.base.email) && !isSelf"
         @click.stop="contactInformation.showSheet = true">联系方式<img class="icon" src="@a/icon/bnt_more_contact@3x.png">
       </div>
       <div class="msg">
@@ -247,7 +247,7 @@ export default {
         }
         setTimeout(() => {
           this.$refs.copyBtn.click()
-        }, 100)
+        }, 300)
       }
     },
     clickMask () {
@@ -303,10 +303,11 @@ export default {
           if (!this.userInfo) {
             userInfoApi().then(res => {
               this.userInfo = res.data
-              resolve(res.data)
               conType()
+              resolve(res.data)
             })
           } else {
+            conType()
             resolve(this.userInfo)
           }
         } else {

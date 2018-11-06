@@ -14,7 +14,7 @@
         <div class="list">
           <infoCard type="3" v-for="item in joined.list" :key='item.liveId+11' :item="item"></infoCard>
         </div>
-        <pullUpUi :noData="joined.noData" :pullUpStatus="joined.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+        <pullUpUi v-if="tabIndex === 0" :noData="joined.noData" :pullUpStatus="joined.pullUpStatus" @pullUp="pullUp" :key='1'></pullUpUi>
         <noDataShow v-if="joined.list.length === 0"></noDataShow>
       </div>
       <div class="all" v-show="tabIndex === 1">
@@ -34,7 +34,7 @@
             <infoCard type="3" v-for="item in all.list2" :key='item.liveId' :item="item"></infoCard>
           </template>
         </div>
-        <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+        <pullUpUi v-if="tabIndex === 1" :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :key='2'></pullUpUi>
         <noDataShow v-if="all.list1.length === 0 && all.list2.length === 0"></noDataShow>
       </div>
     </div>
@@ -153,16 +153,6 @@ export default {
       })
     },
     init () {
-      if (this.$route.query.type) {
-        this.tabIndex = 1
-        this.getRecentList({page: 1}, true)
-      } else {
-        this.getJoinList({page: 1}, true)
-      }
-    }
-  },
-  watch: {
-    '$route' (val) {
       let index = 0
       this.$route.query.type ? index = 1 : index = 0
       this.choseTab(index)
