@@ -154,6 +154,7 @@ export default {
       this.stopInterval()
     },
     touchstartFun () {
+      console.log('点击了')
       if (this.status === 'default') { // 开始录音
         this.handleStart()
       } else if (this.status === 'finish') { // 播放录音
@@ -168,6 +169,7 @@ export default {
      * 开始录音
      */
     handleStart () {
+      console.log('startRecord')
       this.manager && this.manager.startRecord()
     },
     /**
