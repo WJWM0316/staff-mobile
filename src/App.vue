@@ -335,6 +335,9 @@ export default {
     font-size: 34px; /*px*/
   }
 }
+.vux-popup-dialog {
+  background: none !important;
+}
 .weui-tabbar:before {
   border-top: 1px solid #DCDCDC !important;
 }
