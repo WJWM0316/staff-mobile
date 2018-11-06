@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { getCircleDetailApi, getPostlistApi, circlePostToTopApi } from '@/api/pages/workCircle'
+import { getCircleDetailApi, getPostlistApi, circlePostToTopApi, delPostApi } from '@/api/pages/workCircle'
 import circleHeader from '@c/business/commonHeader'
 import dynamicItem from '@c/business/dynamicItem'
 import nodataBox from '@c/business/nodataBox'
@@ -75,10 +75,18 @@ export default {
         menus: [{
           label: '帖子置顶',
           value: 'selected'
+        },
+        {
+          label: '删除帖子',
+          value: 'del'
         }],
         menus2: [{
           label: '取消帖子置顶',
           value: 'disSelect'
+        },
+        {
+          label: '删除帖子',
+          value: 'del'
         }]
       },
       nowChoosePost: '', // 当前选中的要置顶或取消的帖子
@@ -133,13 +141,19 @@ export default {
     toTop (e) {
       this.nowChoosePost = e
       this.addActionsConfig.show = true
-      console.log(e)
     },
     async handleAddActoinItem (key, item) {
-      circlePostToTopApi({id: this.nowChoosePost.id}).then(res => {
-        this.reverse(this.sort)
-        this.$toast({text: '帖子置顶成功', type: 'success'})
-      })
+      if (key === 'selected ') {
+        circlePostToTopApi({id: this.nowChoosePost.id}).then(res => {
+          this.reverse(this.sort)
+          this.$toast({text: '帖子置顶成功', type: 'success'})
+        })
+      } else {
+        delPostApi(this.nowChoosePost.id).then(res => {
+          this.reverse(this.sort)
+          this.$toast({text: '删除成功'})
+        })
+      }
     },
     /* 去帖子详情 */
     toDetail (postItem) {
