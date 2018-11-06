@@ -142,6 +142,7 @@ export default {
         count: this.count
       }
       this.wechatChooseImage(option).then(async res => {
+        store.dispatch('updata_loadingTxt', '努力上传中...')
         this.$emit('choseResult', res) // 选择图片的结果
         this.uploadList = []
         for (let i = 0; i < res.length; i++) {
@@ -157,9 +158,10 @@ export default {
         store.dispatch('updata_loadingStatus', false)
         // alert(JSON.stringify(this.uploadList))
         this.$emit('upLoadResult', this.uploadList) // 上传图片的结果
-      }).catch(err => {
+        store.dispatch('updata_loadingTxt', '努力加载中...')
+      }).catch(() => {
         this.$toast({
-          text: err.errMsg
+          text: '调起失败，请刷新重试'
         })
       })
     },
