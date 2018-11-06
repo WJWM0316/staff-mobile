@@ -34,7 +34,7 @@ export default {
      * 获取微信签名
      */
     async getWechatSign () {
-    // if (this.$store.getters.wxConfig) return
+    if (this.$store.getters.wxConfig) return
       try {
         const params = {
           url: location.href.split('#')[0],
@@ -160,6 +160,7 @@ export default {
     getWechatRecorder () {
       const self = this
       let _localId = ''
+      console.log('测试能不能进来')
       return {
         /**
          * 触发回调
@@ -176,6 +177,7 @@ export default {
          * @return {Promise}
          */
         startRecord () {
+          console.log('开始录音startRecord')
           Vue.wx.startRecord({
             success: (res) => {
               this.triggerCallback('onStartRecord', res)
