@@ -155,13 +155,13 @@ export const login = (data, version, companyCode) => {
 
 /* 200status下的code状态码处理 */
 async function process (res) {
-  console.log(res.data.code)
+  // console.log(res.data.code)
   return Promise.resolve(res.data)
 }
 
 /* 非200status下的code状态码处理 */
 async function UnProcess (res) {
-  console.log(res.response.data.code)
+  // console.log(res.response.data.code)
   if (res.response.status === 400 && res.response.data.code === 404) {
     /* 数据丢失拦截 */
     router.replace(`/404`)
