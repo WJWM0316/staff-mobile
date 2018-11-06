@@ -123,7 +123,7 @@ export default {
     }
     .h5 {
       margin-top: 10px;
-      font-size: 16px; /*px*/
+      font-size: 15px;
       line-height: 22px;
       font-weight: 300;
     }

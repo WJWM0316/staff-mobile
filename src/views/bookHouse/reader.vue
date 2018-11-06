@@ -18,8 +18,11 @@ export default {
   methods: {
     getCatalog () {
       getCatalogueApi({bookId: this.bookId}).then(res => {
-        this.catalog = res.data
+        this.catalog = res.data.catalogues
         this.catalog.forEach((item, index) => {
+          if (this.sectionId === item.chapterId) {
+            this.sectionIndex = index
+          }
         })
       })
     },

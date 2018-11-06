@@ -179,6 +179,7 @@ export default {
           Vue.wx.startRecord({
             success: (res) => {
               this.triggerCallback('onStartRecord', res)
+              console.log('开始录音')
               Vue.wx.onVoiceRecordEnd({
                 // 录音时间超过一分钟没有停止的时候会执行 complete 回调
                 complete: res => {
