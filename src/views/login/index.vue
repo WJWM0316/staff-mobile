@@ -170,7 +170,7 @@ export default {
     }
   },
   mounted () {
-    let data = localstorage.get('xplus_account')
+    let data = localstorage.get('account')
     if (data) {
       let {email, password} = data
       this.account = email
