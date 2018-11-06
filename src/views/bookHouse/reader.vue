@@ -22,6 +22,8 @@ export default {
         this.catalog.forEach((item, index) => {
           if (this.sectionId === item.chapterId) {
             this.sectionIndex = index
+            this.sectionId = item.chapterId
+            this.getDetail()
           }
         })
       })
