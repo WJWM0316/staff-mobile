@@ -1,6 +1,6 @@
 <template>
   <div class="reader">
-    <div class="content"></div>
+    <div class="content" v-html="pageInfo.content"></div>
   </div>
 </template>
 <script>
@@ -8,7 +8,7 @@ import {getContentApi, getCatalogueApi} from '@/api/pages/bookHouse'
 export default {
   data () {
     return {
-      content: null,
+      pageInfo: null,
       bookId: this.$route.query.id,
       sectionId: this.$route.query.sectionId,
       sectionIndex: 0, // 章节序号
@@ -19,13 +19,17 @@ export default {
     getCatalog () {
       getCatalogueApi({bookId: this.bookId}).then(res => {
         this.catalog = res.data.catalogues
-        this.catalog.forEach((item, index) => {
-          if (this.sectionId === item.chapterId) {
-            this.sectionIndex = index
-            this.sectionId = item.chapterId
-            this.getDetail()
-          }
-        })
+        if (this.sectionId) {
+          this.getDetail()
+          this.catalog.forEach((item, index) => {
+            if (this.sectionId === item.chapterId) {
+              this.sectionIndex = index
+            }
+          })
+        } else {
+          this.sectionId = this.catalog[0].chapterId
+          this.getDetail()
+        }
       })
     },
     getDetail () {
@@ -45,4 +49,18 @@ export default {
 }
 </script>
 <style lang="less">
+.reader {
+  .content {
+    padding: 18px 20px;
+    font-size: 16px; /*px*/
+    font-weight: 300;
+    color: #354048;
+    line-height: 2;
+    h1 {
+      font-size: 18px; /*px*/
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+  }
+}
 </style>
