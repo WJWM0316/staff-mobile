@@ -41,7 +41,6 @@ export default {
           jsApiList: this.wechatConfig.jsApiList
         }
         const res = await getWechatSignApi(params)
-        delete res.data.beta
         this.wechatConfig = Object.assign({}, res.data)
         this.$store.dispatch('updata_wxConfig', this.wechatConfig)
         this.setWechatConfig()
