@@ -33,6 +33,7 @@
 import { uploadApi, uploadFileApi } from '@/api/common'
 import WechatMixin from '@/mixins/wechat'
 import Cropper from 'cropperjs'
+import store from '@/store/index'
 export default {
   mixins: [WechatMixin],
   components: {
@@ -141,7 +142,6 @@ export default {
         count: this.count
       }
       this.wechatChooseImage(option).then(async res => {
-        console.log(res, '选择的本地图片')
         this.$emit('choseResult', res) // 选择图片的结果
         this.uploadList = []
         for (let i = 0; i < res.length; i++) {
@@ -151,8 +151,10 @@ export default {
             type: 'img'
           }
           let res1 = await this.wxUploadFile(data)
+          store.dispatch('updata_loadingStatus', true)
           this.uploadList.push(res1.data[0])
         }
+        store.dispatch('updata_loadingStatus', false)
         // alert(JSON.stringify(this.uploadList))
         this.$emit('upLoadResult', this.uploadList) // 上传图片的结果
       }).catch(err => {
