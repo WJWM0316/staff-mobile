@@ -97,11 +97,12 @@ export default {
         padding-top: 50px;
     }
     .icon {
-      font-size: 50px; /*px*/
+      font-size: 40px;/*px*/
       color: #BCBCBC;
       padding-right: 10px;
     }
     .icon-btn_inf_outstanding{
+      font-size: 36px !important;/*px*/
       color: #DCDCDC;
     }
     .txt {

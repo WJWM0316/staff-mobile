@@ -4,8 +4,10 @@
       <img class="headerPhoto" v-if="item.releaseUser" :src="item.releaseUser.avatarInfo.smallUrl" />
       <div class="appellation" v-if="item.releaseUser" @click.stop="toUserInfo(item.releaseUser.id)">{{item.releaseUser.realname}}</div>
       <!--置顶按钮-->
-      <div class="isTopping" v-if="item.isTop"><img src="../../assets/icon/icon_topping@3x.png" /></div>
-      <div class="evaluate" @click.stop="toTop" v-if="item.isOwner || item.isTutor">...</div>
+      <div class="topBox">
+        <div class="isTopping" v-if="item.isTop"><img src="../../assets/icon/icon_topping@3x.png" /></div>
+        <div class="evaluate" @click.stop="toTop" v-if="item.isOwner || item.isTutor">...</div>
+      </div>
     </div>
     <div class="content">
       <div ref="circle-content">
@@ -311,6 +313,15 @@ export default {
     .header {
       position: relative;
       display: flex;
+      align-items: center;
+      .topBox{
+        position: absolute;
+        right: 0px;
+        top: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
       .headerPhoto {
         width: 32px;
         height: 32px;
@@ -325,22 +336,22 @@ export default {
         font-size: 28px;/*px*/
         font-weight: 700;
       }
-      .isTopping{
+      /*.isTopping{
         position:absolute;
         right: 30px;
         top: 5px;
-      }
+      }*/
       .evaluate{
         width: 30px;
-        height: 30px;
         font-size: 30px;
-        line-height: 30px;
+        line-height: 10px;
         color: #DBDBDB;
         writing-mode: tb-rl;
         white-space: nowrap;
-        position:absolute;
+        margin-left: 5px;
+        /*position:absolute;
         right: -10px;
-        top: 5px;
+        top: 5px;*/
         .evaluateWindow{
           background-color: #FFFFFF;
           writing-mode: lr-tb;

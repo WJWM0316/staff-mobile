@@ -193,7 +193,7 @@ export default {
           }
         })
       } catch (e) {
-        this.$toast(e)
+        this.$toast({text: e.msg})
       }
     },
     /* 删除图片 */
