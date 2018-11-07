@@ -173,9 +173,11 @@ export default {
         width: 80px;
         height: 80px;
         top: 42px;
+        border-radius: 50%;
         >img{
           width: 80px;
           height: 80px;
+          border-radius: 50%;
         }
       }
     }
@@ -280,6 +282,7 @@ export default {
       font-weight: 700;
       border-radius: 15px;
       >i{
+        font-weight: 300;
         font-size: 30px;/*px*/
       }
     }
