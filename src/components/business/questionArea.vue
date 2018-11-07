@@ -1,5 +1,5 @@
 <template>
-  <Popup v-model="show" position='bottom' height="100%">
+  <Popup v-model="show" position='bottom' height="100%" class="popup">
     <div class='questionArea'>
       <div class='areaWrap'>
         <div class='tab border-bottom-1px'>
@@ -167,6 +167,11 @@ export default {
       }
     }
   },
+  created () {
+    if (this.show && this.scrollPart.list.length === 0) {
+      this.getList({page: 1, type: 'my'})
+    }
+  },
   methods: {
     // 问答内容插入列表
     appendProblem () {
@@ -265,6 +270,8 @@ export default {
 }
 </script>
 <style lang='less' scoped>
+.popup {
+  background: none !important;
   .questionArea {
     width: 100%;
     height: 100%;
@@ -354,4 +361,6 @@ export default {
       }
     }
   }
+}
+  
 </style>
