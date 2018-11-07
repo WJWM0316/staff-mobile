@@ -37,9 +37,10 @@ export default {
       this.$store.dispatch('updata_wxConfig', this.wechatConfig)
       try {
         const params = {
-          url: location.href.split('#')[0],
+          url: location.href.split('?')[0],
           jsApiList: this.wechatConfig.jsApiList
         }
+        console.log(location.href.split('?')[0], 111111111111)
         const res = await getWechatSignApi(params)
         this.wechatConfig = Object.assign({}, res.data)
         this.setWechatConfig()
