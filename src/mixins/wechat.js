@@ -334,8 +334,9 @@ export default {
     }
   },
   created () {
+    this.getWechatSign()
     Vue.wx.ready(() => {
-      this.getWechatSign()
+      console.log(11111111)
     })
     Vue.wx.checkJsApi({
       jsApiList: this.wechatConfig.jsApiList, // 需要检测的JS接口列表，所有JS接口列表见附录2,
