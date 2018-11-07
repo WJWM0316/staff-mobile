@@ -169,6 +169,9 @@ export default {
     }
     .content{
       padding: 15px 20px;
+      font-size: 15px;
+      line-height: 22px;
+      font-weight: 300;
     }
   }
   .bottomBtn{

@@ -68,7 +68,7 @@
           <input class='bar' v-focus type='text' v-model='problemTxt' placeholder='请输入你的问题'>
         </div>
         <div class='submit' @click.stop='putQuestions'>提问</div>
-        <div class="area icon iconfont icon-live_btn_answers" @click.stop="openArea = true"></div>
+        <div class="area icon iconfont icon-btn_comment" @click.stop="openArea = true"></div>
       </div>
     </template>
     <!-- 导师操作权限 直播未开始-->
@@ -705,7 +705,7 @@ export default {
         color: #D7AB70;
         padding: 0 0 0 16px;
       }
-      .icon-live_btn_answers {
+      .area {
         font-size: 40px; /*px*/
         color: #D7AB70;
         padding: 0 20px 0 19px;
