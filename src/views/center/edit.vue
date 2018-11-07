@@ -209,7 +209,6 @@ export default {
         text-align: right;
         font-weight: 300;
         color: #354048;
-        font-weight: 500;
         font-size: 30px; /*px*/
       }
       .operResult {
