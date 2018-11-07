@@ -85,8 +85,7 @@ export default {
       }
     },
     backBtn () {
-      console.log(1)
-      this.$router.go(-1)
+      this.$router.push('/home')
     },
     pullUp () {
       if (this.tabIndex === 0) {
