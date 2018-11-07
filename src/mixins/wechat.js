@@ -52,8 +52,9 @@ export default {
      * 配置微信sdk
      */
     setWechatConfig () {
-      // alert(JSON.stringify(this.wechatConfig))
-      Vue.wx.config(this.wechatConfig)
+      let wx = Vue.wx
+      console.log(JSON.stringify(this.wechatConfig))
+      wx.config(this.wechatConfig)
       wx.ready(() => {
         console.log('ready')
       })
