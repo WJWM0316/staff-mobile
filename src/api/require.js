@@ -47,7 +47,7 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
     if (num <= 0) {
       store.dispatch('updata_loadingStatus', false)
     }
-    return process(res)
+    return Promise.resolve(res.data)
   }).catch(err => {
     num--
     if (num <= 0) {
@@ -63,7 +63,12 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
         }
         break
     }
-    return UnProcess(err)
+    Vue.toast({
+      text: err.response.data.msg,
+      position: 'bottom',
+      width: '10em'
+    })
+    return Promise.reject(err.response.data)
   })
 }
 
@@ -151,26 +156,4 @@ export const login = (data, version, companyCode) => {
       wxLogin(data)
     }
   })
-}
-
-/* 200status下的code状态码处理 */
-async function process (res) {
-  // console.log(res.data.code)
-  return Promise.resolve(res.data)
-}
-
-/* 非200status下的code状态码处理 */
-async function UnProcess (res) {
-  // console.log(res.response.data.code)
-  if (res.response.status === 400 && res.response.data.code === 404) {
-    /* 数据丢失拦截 */
-    router.replace(`/404`)
-  } else {
-    Vue.toast({
-      text: res.response.data.msg,
-      position: 'bottom',
-      width: '10em'
-    })
-    return Promise.reject(res.response.data)
-  }
 }
