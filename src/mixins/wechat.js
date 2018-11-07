@@ -34,9 +34,6 @@ export default {
      * 获取微信签名
      */
     async getWechatSign () {
-      if (browser.isIos()) {
-        if (this.$store.getters.wxConfig) return
-      }
       this.$store.dispatch('updata_wxConfig', this.wechatConfig)
       try {
         const params = {
