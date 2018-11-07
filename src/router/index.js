@@ -33,6 +33,7 @@ const router = new Router({
 
 router.beforeEach(async (to, from, next) => {
   document.title = to.meta.title // 设置页面title
+  next()
 })
 //
 router.afterEach(function (to, from) {
