@@ -159,9 +159,9 @@ export default {
         // alert(JSON.stringify(this.uploadList))
         this.$emit('upLoadResult', this.uploadList) // 上传图片的结果
         store.dispatch('updata_loadingTxt', '努力加载中...')
-      }).catch(() => {
+      }).catch((e) => {
         this.$toast({
-          text: '调起失败，请刷新重试'
+          text: e
         })
       })
     },
