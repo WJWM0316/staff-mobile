@@ -196,9 +196,9 @@ export default {
   },
   created () {
     this.creatWs()
-    if (!this.userInfo) {
-      this.getUserInfo()
-    }
+    // if (!this.userInfo) {
+    //   this.getUserInfo()
+    // }
   },
   mounted () {
   }
