@@ -15,8 +15,22 @@ let ssoToken = localstorage.get('ssoToken')
 Vue.axios.defaults.baseURL = `${settings.host}/${company}`
 Vue.axios.defaults.timeout = 20000
 let num = 0 // 处理loading的显示逻辑
+const showLoading = (needLoading) => {
+  if (needLoading) {
+    num++
+    if (!store.getters.loadingStatus) {
+      store.dispatch('updata_loadingStatus', true)
+    }
+  }
+}
+const hideLoading = () => {
+  num--
+  if (num <= 0) {
+    store.dispatch('updata_loadingStatus', false)
+  }
+}
 export const request = ({type = 'post', url, data = {}, needLoading = true, config = {}} = {}) => {
-  // 微信授权接口host不一样
+  // 部分接口api域名不一样 需要重新定义host
   if (url === '/sso_login/bind/wechat' || url === '/unifyauth/login' || url === '/unifyauth/captcha' || url === '/sso/user/companies') {
     Vue.axios.defaults.baseURL = `${settings.oauthUrl}/`
   } else if (url === '/auth/token') {
@@ -27,34 +41,28 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
       Vue.axios.defaults.baseURL = `${settings.host}/${company}`
     }
   }
-  // 开发环境写死账号
+  // 将token, ssoToken加到header传给后端
   if (token) {
     Vue.axios.defaults.headers.common['Authorization'] = token
   }
   if (ssoToken) {
     Vue.axios.defaults.headers.common['Authorization-Sso'] = ssoToken
   }
+
   let datas = type === 'get' ? {params: {...data}} : (data instanceof FormData ? data : {...data})
-  if (needLoading) {
-    num++
-    if (!store.getters.loadingStatus) {
-      store.dispatch('updata_loadingStatus', true)
-    }
-  }
+
+  // 开启loading
+  showLoading(needLoading)
   // 请求
   return Vue.axios[type](url, datas, config, needLoading).then(res => {
-    num--
-    if (num <= 0) {
-      store.dispatch('updata_loadingStatus', false)
-    }
+    hideLoading()
     return Promise.resolve(res.data)
   }).catch(err => {
-    num--
-    if (num <= 0) {
-      store.dispatch('updata_loadingStatus', false)
-    }
+    hideLoading()
+    // 错误拦截
     switch (err.response.status) {
       case 401: // 未登录或登录过期
+        // 如果是微信环境直接先走微信授权，非微信环境直接正常登陆
         if (browser.isWechat() && !router.history.current.query.bind_code) {
           location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(location.href)}`
         }
@@ -62,13 +70,20 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
           router.push(`/login?redirect_url=${encodeURIComponent(location.href)}`)
         }
         break
+      case 400: // 正常错误
+        if (err.response.data.code === 404) { // 数据丢失或屏蔽跳去404页面
+          router.replace(`/404`)
+        }
     }
-    Vue.toast({
-      text: err.response.data.msg,
-      position: 'bottom',
-      width: '10em'
-    })
-    return Promise.reject(err.response.data)
+    // 未登录或者跳去404页面不需要提示
+    if (!((err.response.status === 400 && err.response.data.code === 404) || err.response.status === 401)) {
+      Vue.toast({
+        text: err.response.data.msg,
+        position: 'bottom',
+        width: '10em'
+      })
+    }
+    return Promise.reject(err.response)
   })
 }
 

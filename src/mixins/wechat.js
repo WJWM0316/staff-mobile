@@ -34,7 +34,6 @@ export default {
      * 获取微信签名
      */
     async getWechatSign () {
-      if (this.$store.getters.wxConfig) return
       this.$store.dispatch('updata_wxConfig', this.wechatConfig)
       try {
         const params = {
@@ -52,8 +51,17 @@ export default {
      * 配置微信sdk
      */
     setWechatConfig () {
-      // alert(JSON.stringify(this.wechatConfig))
-      Vue.wx.config(this.wechatConfig)
+      let wx = Vue.wx
+      console.log(JSON.stringify(this.wechatConfig))
+      wx.config(this.wechatConfig)
+      wx.ready(() => {
+        console.log('ready')
+      })
+      wx.error((res) => {
+        this.getWechatSign()
+        console.log(res, '错误')
+        // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+      })
     },
 
     /**
@@ -334,10 +342,9 @@ export default {
     }
   },
   created () {
+    let wx = Vue.wx
     this.getWechatSign()
-    Vue.wx.ready(() => {
-    })
-    Vue.wx.checkJsApi({
+    wx.checkJsApi({
       jsApiList: this.wechatConfig.jsApiList, // 需要检测的JS接口列表，所有JS接口列表见附录2,
       success: function (res) {
         console.log('客户端允许', res)
