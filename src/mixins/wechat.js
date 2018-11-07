@@ -53,6 +53,7 @@ export default {
      */
     setWechatConfig () {
       // alert(JSON.stringify(this.wechatConfig))
+      console.log(this.wechatConfig)
       Vue.wx.config(this.wechatConfig)
     },
 
