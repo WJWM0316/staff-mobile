@@ -8,7 +8,7 @@ const routers = [
   {
     path: '/liveRoom',
     name: 'liveRoom',
-    meta: { title: '直播间' },
+    meta: { title: '直播间', reload: true },
     component: resolve => require(['@/views/live/liveRoom'], resolve)
   },
   {
