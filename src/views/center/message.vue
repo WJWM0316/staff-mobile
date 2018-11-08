@@ -8,7 +8,7 @@
         :item="item"
       ></messageItem>
     </div>
-    <pullUpUi :noData="noData" :pullUpStatus="pullUpStatus" @pullUp="pullUp"></pullUpUi>
+    <pullUpUi v-if="list.length > 0" :noData="noData" :pullUpStatus="pullUpStatus" @pullUp="pullUp"></pullUpUi>
     <noDataShow v-if="list.length === 0"></noDataShow>
   </div>
 </template>
@@ -36,7 +36,7 @@ export default {
         }
         getMessageListApi(data, needLoding).then(res => {
           this.list = this.list.concat(res.data)
-          if (res.meta && res.meta.currentPage === res.meta.lastPage) {
+          if (!res.meta && res.meta.currentPage === res.meta.lastPage) {
             this.noData = true
           }
           if (res.data.length > 0) this.removeRed()

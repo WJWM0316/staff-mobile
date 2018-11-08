@@ -196,9 +196,9 @@ export default {
   },
   created () {
     this.creatWs()
-    // if (!this.userInfo) {
-    //   this.getUserInfo()
-    // }
+    if (!this.userInfo) {
+      this.getUserInfo()
+    }
   },
   mounted () {
   }
@@ -335,9 +335,6 @@ export default {
     font-size: 34px; /*px*/
   }
 }
-// .vux-popup-dialog {
-//   background: none !important;
-// }
 .weui-tabbar:before {
   border-top: 1px solid #DCDCDC !important;
 }

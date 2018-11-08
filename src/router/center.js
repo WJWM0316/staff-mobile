@@ -32,7 +32,7 @@ const routers = [
   {
     path: '/message',
     name: 'message',
-    meta: { title: '消息通知' },
+    meta: { title: '消息通知', pullDown: true },
     component: resolve => require(['@/views/center/message'], resolve)
   },
   {

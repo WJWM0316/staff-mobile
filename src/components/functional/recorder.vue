@@ -260,7 +260,6 @@ export default {
       line-height: 1;
       border: none;
       font-size: 0;
-
       &:focus {
         outline: none;
       }
@@ -298,7 +297,6 @@ export default {
       &.control {
         .btnShadow {
           padding: 22px 16px 16px;
-          overflow: hidden;
           overflow: hidden;
           .operBtn {
             width: 74px;

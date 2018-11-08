@@ -2,7 +2,7 @@ const routers = [
   {
     path: '/workCircle',
     name: 'workCircle',
-    meta: { title: '工作圈', needBottomTab: true, keepAlive: true },
+    meta: { title: '工作圈', needBottomTab: true, keepAlive: true, pullDown: true },
     component: resolve => require(['@/views/workCircle/index'], resolve)
   },
   /* 工作圈详情页 */
@@ -16,7 +16,7 @@ const routers = [
   {
     path: '/circleEdit',
     name: 'circleEdit',
-    meta: { title: 'X PLUS' },
+    meta: { title: 'XPLUS', reload: true },
     component: resolve => require(['@/views/workCircle/circleEditting'], resolve)
   },
   /* 设置  */

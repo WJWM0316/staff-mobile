@@ -1,5 +1,5 @@
 <template>
-  <Popup v-model="show" position='bottom' height="100%">
+  <Popup v-model="show" position='bottom' height="100%" class="popup">
     <div class='questionArea'>
       <div class='areaWrap'>
         <div class='tab border-bottom-1px'>
@@ -167,19 +167,27 @@ export default {
       }
     }
   },
+  created () {
+    if (this.show && this.scrollPart.list.length === 0) {
+      this.getList({page: 1, type: 'my'})
+    }
+  },
   methods: {
     // 问答内容插入列表
     appendProblem () {
-      let data = [{
-        answerInfo: null,
-        problemInfo: this.questionData,
-        status: 0
-      }]
-      if (this.tabIndex === 0 && (this.scrollPart.list.length > 0 || (this.scrollPart.noData && this.scrollPart.list.length === 0))) {
-        this.scrollPart.list = data.concat(this.scrollPart.list)
-      }
-      if (this.tabIndex === 1 && (this.scrollAll.list.length > 0 || (this.scrollAll.noData && this.scrollAll.list.length === 0))) {
-        this.scrollAll.list = data.concat(this.scrollAll.list)
+      if (this.questionData) {
+        let data = [{
+          answerInfo: null,
+          problemInfo: this.questionData,
+          status: 0
+        }]
+        if (this.tabIndex === 0 && (this.scrollPart.list.length > 0 || (this.scrollPart.noData && this.scrollPart.list.length === 0))) {
+          this.scrollPart.myListLength++
+          this.scrollPart.list = data.concat(this.scrollPart.list)
+        }
+        if (this.tabIndex === 1 && (this.scrollAll.list.length > 0 || (this.scrollAll.noData && this.scrollAll.list.length === 0))) {
+          this.scrollAll.list = data.concat(this.scrollAll.list)
+        }
       }
     },
     loadPrev () {
@@ -229,9 +237,9 @@ export default {
           resolve(res)
           if (type === 'my') {
             this.scrollPart.list = this.scrollPart.list.concat(res.data)
+            this.scrollPart.myListLength = this.scrollPart.list.length
             // 没有下一页数据的话加载下一部分的数据
             if (res.meta.currentPage === res.meta.lastPage) {
-              this.scrollPart.myListLength = this.scrollPart.list.length
               this.scrollPart.myComplete = true
               this.getList({page: 1, type: 'other'})
             }
@@ -256,7 +264,7 @@ export default {
     },
     choseTab (index) {
       this.tabIndex = index
-      if (index === 1 && this.scrollAll.list.length === 0) {
+      if (index === 1 && this.scrollAll.list.length === 0 && !this.scrollAll.noData) {
         this.getList({page: 1, type: 'all'})
         this.appendProblem()
       }
@@ -265,6 +273,8 @@ export default {
 }
 </script>
 <style lang='less' scoped>
+.popup {
+  background: none !important;
   .questionArea {
     width: 100%;
     height: 100%;
@@ -354,4 +364,5 @@ export default {
       }
     }
   }
+}
 </style>

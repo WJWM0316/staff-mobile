@@ -26,6 +26,7 @@
           <li @click.stop="jump('message')"><i class="icon iconfont icon-icon_notice"></i>消息通知</li>
           <li @click.stop="jump('enterprise')" v-if="(companyList && companyList.length > 1) && userInfo.base.isExternalTutor"><i class="icon iconfont icon-icon_list_change1"></i>企业切换</li>
           <li @click.stop="jump('change')"><i class="icon iconfont icon-icon_password1"></i>密码修改</li>
+          <li @click.stop="jump('toggle')"><i class="icon iconfont icon-icon_list_change1"></i>身份切换</li>
           <li @click.stop="jump('outLogin')"><i class="icon iconfont icon-icon_loginout"></i>退出登录</li>
         </ul>
         <div class="logo"><img src="@a/icon/toturBg.png" alt=""></div>
@@ -88,6 +89,9 @@ export default {
           break
         case 'change':
           this.$router.push('/resetPassword')
+          break
+        case 'toggle':
+          this.$router.push('/home')
           break
         case 'outLogin':
           this.$confirm({

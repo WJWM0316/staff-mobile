@@ -2,7 +2,7 @@ const routers = [
   {
     path: '/course',
     name: 'course',
-    meta: { title: '选课', needBottomTab: true, keepAlive: true },
+    meta: { title: '选课', needBottomTab: true, keepAlive: true, pullDown: true },
     component: resolve => require(['@/views/course/index'], resolve)
   },
   {
@@ -38,7 +38,7 @@ const routers = [
   {
     path: '/punchEdit',
     name: 'cardEdit',
-    meta: { title: '打卡' },
+    meta: { title: '打卡', reload: true },
     component: resolve => require(['@/views/course/punchEditting'], resolve)
   },
   {

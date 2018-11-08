@@ -160,9 +160,7 @@ export default {
         this.$emit('upLoadResult', this.uploadList) // 上传图片的结果
         store.dispatch('updata_loadingTxt', '努力加载中...')
       }).catch((e) => {
-        this.$toast({
-          text: e
-        })
+        console.log(e)
       })
     },
     // dataUrl 转 file

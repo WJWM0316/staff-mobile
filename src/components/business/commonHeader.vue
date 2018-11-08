@@ -50,7 +50,7 @@
           <i class="icon iconfont icon-add"></i> 关注
         </div>
       </div>
-      <div v-if="type === '3' && pageInfo.status !== 1">
+      <div v-if="type === '3' && pageInfo.status !== 1 && !pageInfo.isJoin">
         <div class="right live" @click.stop="jumpLive">直播间</div>
       </div>
     </div>

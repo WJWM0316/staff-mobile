@@ -142,7 +142,7 @@ export default {
 <style lang="less" scoped>
 .introduce{
   padding-bottom: 49px;
-  height: 100vh;
+  height: 51vh;
   .richText{
     padding-bottom: 50px;
     margin-top: 50px;
@@ -169,6 +169,10 @@ export default {
     }
     .content{
       padding: 15px 20px;
+      font-size: 30px; /*px*/
+      line-height: 1.4;
+      font-weight: 300;
+      color: #354048;
     }
   }
   .bottomBtn{

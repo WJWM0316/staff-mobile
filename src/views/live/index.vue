@@ -1,6 +1,7 @@
 <template>
   <div class="live">
     <div class='tab border-bottom-1px'>
+      <i @click.stop="backBtn" class="backBtn iconfont icon-me_icon_edit_chevron"></i>
       <span
         class='tabItem'
         v-for='(item, index) in tabList'
@@ -82,6 +83,9 @@ export default {
           this.getJoinList({page: 1}, true)
         }
       }
+    },
+    backBtn () {
+      this.$router.push('/home')
     },
     pullUp () {
       if (this.tabIndex === 0) {
@@ -176,6 +180,13 @@ export default {
       background: #fff;
       box-shadow:0px 3px 5px 0px rgba(248,248,248,1);
       z-index: 1;
+      .backBtn {
+        font-size: 30px; /*px*/
+        position: absolute;
+        top: 50%;
+        left: 17px;
+        transform: translateY(-50%) rotate(180deg);
+      }
       .tabItem {
         line-height: 44px;
         font-size: 32px; /*px*/

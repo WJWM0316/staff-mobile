@@ -40,7 +40,7 @@
         <div class='startTime'>
           <span class='txt'>{{liveDetail.expectedStartTime * 1000 | date('MMMDo HH:mm')}} 直播开始</span>
         </div>
-        <div class='message' ref="message" v-preview="true">
+        <div class='message' ref="message">
           <live-message
             v-for='(item, index) in list'
             :key='index'
@@ -68,7 +68,7 @@
           <input class='bar' v-focus type='text' v-model='problemTxt' placeholder='请输入你的问题'>
         </div>
         <div class='submit' @click.stop='putQuestions'>提问</div>
-        <div class="area icon iconfont icon-live_btn_answers" @click.stop="openArea = true"></div>
+        <div class="area icon iconfont icon-btn_comment" @click.stop="openArea = true"></div>
       </div>
     </template>
     <!-- 导师操作权限 直播未开始-->
@@ -525,10 +525,11 @@ export default {
         color: #929292;
         margin-top: 2px;
         .status {
-          margin-right: 10px;
+          margin-right: 9px;
           margin-bottom: 2px;
           position: relative;
           display: inline-block;
+          line-height: 12px;
           &.green::before {
             width: 5px;
             height: 5px;
@@ -537,7 +538,7 @@ export default {
             content: '';
             position: absolute;
             top: 50%;
-            margin-top: -1.5px;
+            transform: translateY(-50%);
             left: -10px;
           }
           &.red::before {
@@ -548,7 +549,7 @@ export default {
             content: '';
             position: absolute;
             top: 50%;
-            margin-top: -1px;
+            transform: translateY(-50%);
             left: -10px;
           }
         }
@@ -705,7 +706,7 @@ export default {
         color: #D7AB70;
         padding: 0 0 0 16px;
       }
-      .icon-live_btn_answers {
+      .area {
         font-size: 40px; /*px*/
         color: #D7AB70;
         padding: 0 20px 0 19px;
