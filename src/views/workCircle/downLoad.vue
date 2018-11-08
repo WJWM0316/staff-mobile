@@ -214,6 +214,8 @@ export default {
       height: 90px;
       margin-left: 3px;
       margin-bottom: 3px;
+      object-fit: cover;
+      vertical-align: middle;
     }
     .chooseImg{
       position: absolute;

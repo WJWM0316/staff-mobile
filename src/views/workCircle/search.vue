@@ -5,6 +5,7 @@
       position="absolute"
       auto-scroll-to-top
       @on-cancel="onCancel"
+      placeholder="请输入帖子内容或关键字"
       ref="search">
       <div class="list">
           <div class="item border-bottom-1px" :class="{'hasFile': item.type !== '无文件'}" v-for="(item, index) in results" :key="index" @click.stop="resultClick(item.id)">

@@ -17,11 +17,11 @@
           <div v-for="(commentItem, index) in commentList" :key="index">
             <div>
               <!-- 热门评论 -->
-              <div class="hot-area" v-if="item.hotCommentCount > 0 && index === 0">
+              <div class="hot-area" v-if="item.hotComments.length > 0 && index === 0">
                 <i class="hot-icon"><img src="../../assets/icon/icon_hotcomment@3x.png" alt=""></i><span>热门评论</span>
               </div>
               <!-- 全部评论 -->
-              <div class="hot-area" v-if="item.commentTotal > 0 && index === item.hotCommentCount">
+              <div class="hot-area" v-if="item.commentTotal > 0 && index === item.hotComments.length">
                 <i class="hot-icon"><img src="../../assets/icon/tab-massage-3@3x.png" alt=""></i><span>全部评论</span>
               </div>
             </div>

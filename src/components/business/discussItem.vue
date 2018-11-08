@@ -265,6 +265,7 @@ export default {
     font-size: 30px;/*px*/
     width: 280px;
     .content-text{
+      word-wrap: break-word;
       font-size: 30px;/*px*/
     }
     .content-head{

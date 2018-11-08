@@ -202,6 +202,18 @@ export default {
         vm.init()
       })
     }
+  },
+  beforeRouteLeave  (to, from, next) {
+    if (to.name === 'fileDownLoad') {
+      if (to.query.type === 2) {
+        to.meta.title = '下载文件'
+      } else {
+        to.meta.title = '链接'
+      }
+      next()
+    } else {
+      next()
+    }
   }
 }
 </script>
