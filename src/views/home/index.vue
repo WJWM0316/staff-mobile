@@ -283,7 +283,7 @@ export default {
       }
       .content {
         margin-top: 12px;
-        padding: 0 27px 0 70px;
+        padding: 0 27px 0 60px;
         position: relative;
         height: 48px;
         display: flex;
@@ -399,7 +399,7 @@ export default {
       }
       .enter {
         width: 100%;
-        padding: 0px 20px 20px 25px;
+        padding: 0px 20px 25px 20px;
         box-sizing: border-box;
         img {
           width: 100%;
