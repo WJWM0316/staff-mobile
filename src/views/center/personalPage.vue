@@ -1,5 +1,5 @@
 <template>
-  <div class="personalPage" ref="personalPage"  v-if="userInfo">
+  <div class="personalPage" ref="personalPage" v-if="userInfo">
     <div class="head">
       <div class="information"
         v-if="(userInfo.base.mobile || userInfo.base.wechat || userInfo.base.email) && !isSelf"
@@ -202,7 +202,7 @@ export default {
   },
   computed: {
     isSelf () {
-      if (!this.$route.query.uid || (this.$store.getters.userInfo.base.uid === this.$route.query.uid)) {
+      if (!this.$route.query.uid || (this.$store.getters.userInfo && this.$store.getters.userInfo.base.uid === this.$route.query.uid)) {
         return true
       } else {
         return false
@@ -316,6 +316,7 @@ export default {
           }
           getUserInfoApi(data).then(res => {
             this.userInfo = res.data
+            console.log(this.userInfo)
             conType()
             resolve(res.data)
           }).catch(res => {
@@ -419,7 +420,7 @@ export default {
     },
     init () {
       this.getUserInfo().then(res => {
-        if (!res.base.isExternalTutor) {
+        if (!this.isTutor) {
           this.getJoinList()
         } else {
           this.getTaCourse()

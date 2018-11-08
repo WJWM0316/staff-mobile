@@ -525,10 +525,11 @@ export default {
         color: #929292;
         margin-top: 2px;
         .status {
-          margin-right: 10px;
+          margin-right: 9px;
           margin-bottom: 2px;
           position: relative;
           display: inline-block;
+          line-height: 12px;
           &.green::before {
             width: 5px;
             height: 5px;
@@ -537,7 +538,7 @@ export default {
             content: '';
             position: absolute;
             top: 50%;
-            margin-top: -1.5px;
+            transform: translateY(-50%);
             left: -10px;
           }
           &.red::before {
@@ -548,7 +549,7 @@ export default {
             content: '';
             position: absolute;
             top: 50%;
-            margin-top: -1px;
+            transform: translateY(-50%);
             left: -10px;
           }
         }

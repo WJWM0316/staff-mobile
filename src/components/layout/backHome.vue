@@ -62,7 +62,7 @@ export default {
         line-height: 42px;/*px*/
       }
       &.personalHome {
-        top: 50px;
+        top: 68px;
       }
     }
     .homeSearch{
