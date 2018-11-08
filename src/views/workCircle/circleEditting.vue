@@ -200,7 +200,6 @@ export default {
         text: '发帖成功',
         type: 'success',
         callBack () {
-          debugger
           that.$router.go(-1)
         }
       })
