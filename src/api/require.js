@@ -82,7 +82,7 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
         }
     }
     // 未登录或者跳去404页面不需要提示
-    if (!((err.response.status === 400 && err.response.data.code === 404) || err.response.status === 401)) {
+    if (!((err.response.status === 400 && err.response.data.code === 404) || err.response.status === 401) && (err && err.response && err.response.data.msg)) {
       Vue.toast({
         text: err.response.data.msg,
         position: 'bottom',
