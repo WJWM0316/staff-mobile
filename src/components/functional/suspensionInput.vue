@@ -6,7 +6,6 @@
         <input type="text"
                :placeholder="placeholder"
                v-model="suspensionInputContent"
-               v-focus
                @blur="hide()"
                @focus="handleFocus"
                ref="suspension-input"
