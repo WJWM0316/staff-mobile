@@ -90,7 +90,7 @@
     <!--链接输入弹窗-->
     <div class="Mask" v-if="showMask" @click.stop="closeTask">
       <div class="inpLeft"><img src="@/assets/icon/btn_link@3x.png" /></div>
-      <input @click.stop="inp" type="text" v-focus v-model="inpLink" placeholder="请在此处复制或者输入链接"/>
+      <input @click.stop="inp" type="text" v-model="inpLink" placeholder="请在此处复制或者输入链接"/>
       <div class="linkBtn" @click.stop="done">确认</div>
     </div>
   </div>
@@ -145,7 +145,7 @@ export default {
       showMask: false, // 展示链接输入框
       isCircleSelf: false, // 是否仅限圈内可见
       isiOS: '',
-      nowWeiXinImgNum: '' // 微信上传图片选中多少张
+      nowWeiXinImgNum: '', // 微信上传图片选中多少张
     }
   },
   methods: {
@@ -697,11 +697,11 @@ export default {
       }
     }
     .Mask{
-      position: fixed;
+      position: absolute;
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%;
+      height: 100vh;
       background-color: rgba(0,0,0,0.5);
       z-index: 8888;
       .inpLeft{
@@ -716,6 +716,9 @@ export default {
           left: 32px;
           width: 20px;
           display: block;
+        }
+        .z-focused {
+          padding-bottom: 33px;
         }
       }
       >input{
