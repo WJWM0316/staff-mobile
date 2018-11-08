@@ -3,14 +3,22 @@
   <div class="suspension-input" :class="{ 'z-focused': isFocused }" v-show="isShow">
     <div class="ask-box">
       <div class="user-input">
-        <input type="text"
+        <!--<input type="text"
                :placeholder="placeholder"
                v-model="suspensionInputContent"
                @blur="hide()"
                @focus="handleFocus"
                ref="suspension-input"
                maxlength="1999"
-                />
+                />-->
+        <textarea :rows="rows"
+          cols="40"
+          v-model="suspensionInputContent"
+          maxlength="1999"
+          ref="suspension-input"
+          @focus="handleFocus"
+          @blur="hide()"
+          :placeholder="placeholder"></textarea>
       </div>
       <span class="ask-btn" @click="send">{{sendText}}</span>
     </div>
@@ -24,22 +32,24 @@
     left: 0;
     right: 0;
     z-index: 99;
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
     -webkit-overflow-scrolling: touch;
     background-color: #f8f8f8;
     &.z-focused {
       padding-bottom: 33px;
     }
     .ask-box {
-      height: 54px;
-      padding: 0 10px;
+      max-height: 174px;
+      min-height: 54px;
+      padding: 7px 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       & .user-input {
         margin-top: 0;
         width: 315px;
-        height: 39px;
+        min-height: 40px;
+        max-height: 160px;
         border-radius: 20px;
         background-color: #fff;
         font-size: 14px;
@@ -48,6 +58,13 @@
           line-height: 39px;
           width: 100%;
           height: 100%;
+          border-style: none;
+          outline: none;
+        }
+        textarea{
+          line-height: 39px;
+          width: 100%;
+          height: 200%;
           border-style: none;
           outline: none;
         }
@@ -89,10 +106,22 @@ export default {
     return {
       suspensionInputContent: '',
       suspensionInput: '',
-      isFocused: false
+      isFocused: false,
+      rows: 1
     }
   },
   watch: {
+    suspensionInputContent (val) {
+      if (val.length > 17 && val.length < 34) {
+        this.rows = 2
+      } else if (val.length > 34 && val.length < 51) {
+        this.rows = 3
+      } else if (val.length > 51) {
+        this.rows = 4
+      } else {
+        this.rows = 1
+      }
+    },
     isShow (val) {},
     value (val) {
       if (val && this.suspensionInput) {
