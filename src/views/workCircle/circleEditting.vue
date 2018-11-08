@@ -183,7 +183,7 @@ export default {
       let param = {
         community_id: this.$route.query.id,
         content: this.form.content,
-        visible: this.isCircleSelf ? 1 : 0
+        visible: this.isCircleSelf ? 0 : 1
       }
       if (this.fileType === 0) {
         param.pictures = this.uploadImgList
@@ -200,6 +200,7 @@ export default {
         text: '发帖成功',
         type: 'success',
         callBack () {
+          debugger
           that.$router.go(-1)
         }
       })

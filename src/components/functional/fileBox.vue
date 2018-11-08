@@ -12,8 +12,7 @@
     <!--链接-->
     <div class="postLink" v-if="!isFile">
       <a @click.stop="toLink" class="content-file" :href="item.url">
-        <img v-show="true" class="file-logo" v-if="item.icon" :src="item.icon" />
-        <img v-show="true" class="file-logo" v-else src="@/assets/icon/postLink.png" />
+        <img v-show="true" class="file-logo" src="@/assets/icon/postLink.png" />
         <div class="file-desc">
           <p class="text">{{item.title || '链接'}}</p>
         </div>
