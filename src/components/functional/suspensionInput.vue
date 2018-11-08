@@ -62,11 +62,13 @@
           outline: none;
         }
         textarea{
+          font-size: 30px;/*px*/
           line-height: 39px;
           width: 100%;
           height: 200%;
           border-style: none;
           outline: none;
+          color: #354048;
         }
       }
       & .ask-btn {
