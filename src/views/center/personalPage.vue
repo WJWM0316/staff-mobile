@@ -266,7 +266,7 @@ export default {
       })
     },
     choseTab (index) {
-      if (!this.userInfo.base.isExternalTutor) {
+      if (!this.isTutor) {
         this.tabIndex = index
         if (index === 1 && this.postData.list.length === 0) {
           this.getPostList({page: 1})
@@ -370,7 +370,7 @@ export default {
       return new Promise((resolve, reject) => {
         this.courseData.page++
         let data = {
-          uid: this.$route.query.uid,
+          uid: this.$route.query.uid || this.userInfo.base.uid,
           page: this.courseData.page
         }
         getTaCourseApi(data, needLoading).then(res => {
@@ -386,7 +386,7 @@ export default {
       return new Promise((resolve, reject) => {
         this.liveData.page++
         let data = {
-          uid: this.$route.query.uid,
+          uid: this.$route.query.uid || this.userInfo.base.uid,
           page: this.liveData.page
         }
         getTaLiveApi(data, needLoading).then(res => {

@@ -11,6 +11,7 @@ class WS {
   closeTime = 0 // ws断开的时间
   lastTealthTime = 0 // 上一次心跳发送的时间
   event = null // 自定义事件
+  needReConnect = true // 关闭ws是否需要自动重连
   // 创建一个websocket
   create = (url) => {
     // 判断浏览器是否支持webSocket, 不支持直接alert提示
@@ -116,7 +117,8 @@ class WS {
     return data
   }
   // 关闭websocket
-  close = () => {
+  close = (isReConnect) => {
+    this.needReConnect = isReConnect
     this.ws.close()
   }
   // 加入直播间
@@ -172,19 +174,21 @@ class WS {
   }
   // 断线重连
   reConnect = () => {
-    clearInterval(this.keepAliveTimer)
-    clearTimeout(this.receiveMessageTimer)
-    if (!this.reconnectMark) { // 如果没有重连过，进行重连。
-      this.closeTime = new Date().getTime()
-      this.reconnectMark = true
-    }
-    if (new Date().getTime() - this.closeTime >= 60000) { // 60秒中重连，连不上就不连了
-      console.log('======websocket重连不上，自动关闭')
-      store.dispatch('updata_wsStatus', 2)
-      this.close()
-    } else {
-      store.dispatch('updata_wsStatus', 0)
-      this.create(this.url) // 断线重连
+    if (this.needReConnect) {
+      clearInterval(this.keepAliveTimer)
+      clearTimeout(this.receiveMessageTimer)
+      if (!this.reconnectMark) { // 如果没有重连过，进行重连。
+        this.closeTime = new Date().getTime()
+        this.reconnectMark = true
+      }
+      if (new Date().getTime() - this.closeTime >= 60000) { // 60秒中重连，连不上就不连了
+        console.log('======websocket重连不上，自动关闭')
+        store.dispatch('updata_wsStatus', 2)
+        this.close()
+      } else {
+        store.dispatch('updata_wsStatus', 0)
+        this.create(this.url) // 断线重连
+      }
     }
   }
 }
