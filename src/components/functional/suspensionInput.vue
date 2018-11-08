@@ -63,9 +63,9 @@
         }
         textarea{
           font-size: 30px;/*px*/
-          line-height: 39px;
+          padding-top: 8px;
           width: 100%;
-          height: 200%;
+          height: 100%;
           border-style: none;
           outline: none;
           color: #354048;
