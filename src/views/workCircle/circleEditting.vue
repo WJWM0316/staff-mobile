@@ -704,6 +704,8 @@ export default {
       height: 100%;
       background-color: rgba(0,0,0,0.5);
       z-index: 8888;
+      -webkit-user-select: none;
+      -webkit-user-drag: none;
       .inpLeft{
         position: absolute;
         padding-right: 8px;
