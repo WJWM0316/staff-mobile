@@ -36,10 +36,10 @@ export default {
         }
         getMessageListApi(data, needLoding).then(res => {
           this.list = this.list.concat(res.data)
-          if (!res.meta && res.meta.currentPage === res.meta.lastPage) {
+          if (res.meta && res.meta.currentPage === res.meta.lastPage) {
             this.noData = true
           }
-          if (res.data.length > 0) this.removeRed()
+          this.removeRed()
           resolve(res)
         })
       })

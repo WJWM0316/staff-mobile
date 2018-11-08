@@ -30,7 +30,7 @@ export default {
           this.$router.push('/resetPassword')
           break
         case 'tutor':
-          this.$router.push('/homeTc')
+          this.$router.replace('/homeTc')
       }
     },
     outLogin () {
