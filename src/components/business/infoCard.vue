@@ -223,7 +223,6 @@ export default {
         background: #f8f8f8;
         border-radius: 3px;
         overflow: hidden;
-        border: 1px solid #ededed;
         box-sizing: border-box;
         .inner {
           height: 4px;
@@ -258,13 +257,16 @@ export default {
     padding-top: 3px;
   }
   &.recommend {
-    padding-left: 108px;
+    padding-left: 113px;
     .infoPhoto {
       width: 89px;
       height: 89px;
     }
     .right {
       height: 89px;
+      .label {
+         margin: 6px 0 0px;
+      }
     }
   }
 }
