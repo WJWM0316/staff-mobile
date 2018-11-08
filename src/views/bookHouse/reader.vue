@@ -52,13 +52,13 @@ export default {
 .reader {
   .content {
     padding: 18px 20px;
-    font-size: 16px; /*px*/
+    font-size: 30px; /*px*/
+    line-height: 1.4;
     font-weight: 300;
     color: #354048;
-    line-height: 2;
     h1 {
-      font-size: 18px; /*px*/
-      line-height: 1;
+      font-size: 36px; /*px*/
+      line-height: 1.4;
       margin-bottom: 12px;
     }
   }

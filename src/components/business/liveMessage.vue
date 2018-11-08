@@ -126,7 +126,6 @@ export default {
       }
       .imgPriview {
         height: 200px;
-        width: auto;
         display: block;
         border-radius: 3px;
       }

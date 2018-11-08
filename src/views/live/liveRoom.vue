@@ -256,9 +256,9 @@ export default {
       let res = await getLiveDetailApi({id: this.option.liveId})
       this.liveDetail = res.data
       this.option.teacherId = res.data.masterUid
-      // 直播已开始且未结束都可以加入直播
-      if (this.liveDetail.status !== 3 && this.liveDetail.status !== 1) {
-        this.addLive()
+      // 直播进行中才可以加入直播
+      if (this.liveDetail.status === 2) {
+        this.creatWs()
       }
       // 直播已开始才要获取历史消息记录
       if (this.liveDetail.status !== 1) {
@@ -380,12 +380,9 @@ export default {
       let company = localstorage.get('XPLUSCompany') || settings.defaultCompany
       let websocketUrl = settings.websocketUrl
       ws.create(`${websocketUrl}/${company}`)
-      setTimeout(() => {
-        this.addLive()
-      }, 1000)
     },
-    closeWs () {
-      ws.close()
+    closeWs (isReConnect) {
+      ws.close(isReConnect)
     },
     addLive () { // 加入直播间
       ws.addLive(this.id)
@@ -423,9 +420,7 @@ export default {
           putUpdataLiveApi(data).then(res => {
             this.liveDetail.status = 2
             this.liveDetail.expectedStartTime = new Date().getTime()
-            setTimeout(() => {
-              this.addLive()
-            }, 1000)
+            this.creatWs() // 开启直播
           })
         }
       })
@@ -445,6 +440,11 @@ export default {
       let data = obj.detail
       // 登录和退出登录逻辑
       if (data.hasOwnProperty('cmd')) {
+        switch (data.cmd) {
+          case 'login.token':
+            that.addLive()
+            break
+        }
       // 接收信息处理
       } else if (data.hasOwnProperty('msgType')) {
         switch (data.msgType) {
@@ -486,6 +486,7 @@ export default {
       }
       msgPositionApi(data)
     }
+    this.closeWs(false) // 关闭ws
     this.leaveLive() // 退出直播间
     window.removeEventListener('wsOnMessage', onMessage)
   }
