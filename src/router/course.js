@@ -38,7 +38,7 @@ const routers = [
   {
     path: '/punchEdit',
     name: 'cardEdit',
-    meta: { title: '打卡' },
+    meta: { title: '打卡', reload: true },
     component: resolve => require(['@/views/course/punchEditting'], resolve)
   },
   {

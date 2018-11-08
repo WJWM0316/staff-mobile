@@ -16,7 +16,7 @@ const routers = [
   {
     path: '/circleEdit',
     name: 'circleEdit',
-    meta: { title: 'X PLUS' },
+    meta: { title: 'XPLUS', reload: true },
     component: resolve => require(['@/views/workCircle/circleEditting'], resolve)
   },
   /* 设置  */
