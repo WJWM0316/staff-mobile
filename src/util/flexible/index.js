@@ -36,8 +36,14 @@ class Flexible {
       this.metaEl.setAttribute('content', 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no')
       this.docEl.firstElementChild.appendChild(this.metaEl)
     }
-
-    window.dpr = this.dpr = Math.floor(window.devicePixelRatio) || 1
+    // window.dpr = this.dpr = Math.floor(window.devicePixelRatio) || 1
+    var u = navigator.userAgent
+    var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
+    if (isiOS) {
+      window.dpr = this.dpr = Math.floor(window.devicePixelRatio) || 1
+    } else {
+      window.dpr = this.dpr = 1
+    }
     this.scale = 1 / this.dpr
     this.minSize = Math.min(this.docEl.clientWidth, this.docEl.clientHeight)
 

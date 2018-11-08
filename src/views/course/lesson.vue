@@ -369,14 +369,15 @@ export default {
     }
     /*课节富文本*/
     .module-content{
-      font-weight: 300 !important;
       color: #354048;
       box-sizing: border-box;
       padding: 0 20px;
       margin-top: 30px;
       width: 100%;
-      font-size: 16px;
-      line-height: 24px;
+      font-size: 30px; /*px*/
+      line-height: 1.4;
+      font-weight: 300;
+      color: #354048;
       word-break: break-all;
     }
     /* 音频样式 */
@@ -396,9 +397,10 @@ export default {
   .lesson-task{
     padding: 0 20px;
     .content-txt{
+      font-size: 30px; /*px*/
+      line-height: 1.4;
       font-weight: 300;
-      display: -webkit-box;
-      width: 100%;
+      color: #354048;
     }
     .content-img{
       & .content-images {

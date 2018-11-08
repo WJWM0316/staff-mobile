@@ -121,10 +121,15 @@ export default {
         display: inline-block;
       }
     }
+    .ceshi {
+      font-size: 30px; /*px*/
+      line-height: 1.4;
+      font-weight: 300;
+    }
     .h5 {
       margin-top: 10px;
-      font-size: 15px;
-      line-height: 22px;
+      font-size: 30px; /*px*/
+      line-height: 1.4;
       font-weight: 300;
     }
   }
