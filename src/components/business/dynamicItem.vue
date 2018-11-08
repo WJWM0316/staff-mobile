@@ -319,7 +319,7 @@ export default {
         right: 0px;
         top: 4px;
         display: flex;
-        align-items: center;
+        align-content: center;
         justify-content: center;
       }
       .headerPhoto {
@@ -336,11 +336,14 @@ export default {
         font-size: 28px;/*px*/
         font-weight: 700;
       }
-      /*.isTopping{
-        position:absolute;
-        right: 30px;
-        top: 5px;
-      }*/
+      .isTopping{
+        width: 20px;
+        height: 20px;
+        img{
+          width: 100%;
+          height: 100%;
+        }
+      }
       .evaluate{
         width: 30px;
         font-size: 30px;
@@ -522,6 +525,11 @@ export default {
         float: left;
       }
       .right {
+        text-align: right;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+        width: 201px;
         float: right;
       }
     }
