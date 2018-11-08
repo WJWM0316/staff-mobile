@@ -65,9 +65,9 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
         // 如果是微信环境直接先走微信授权，非微信环境直接正常登陆
         let path = location.href
         if (path.indexOf('?') === -1) {
-          path = `${path}?redirect=true`
+          path = `${path}`
         } else {
-          path = `${path}&redirect=true`
+          path = `${path}`
         }
         if (browser.isWechat() && !router.history.current.query.bind_code) {
           location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(path)}`

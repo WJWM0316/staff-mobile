@@ -2,7 +2,7 @@ const routers = [
   {
     path: '/course',
     name: 'course',
-    meta: { title: '选课', needBottomTab: true, keepAlive: true },
+    meta: { title: '选课', needBottomTab: true, keepAlive: true, pullDown: true },
     component: resolve => require(['@/views/course/index'], resolve)
   },
   {
