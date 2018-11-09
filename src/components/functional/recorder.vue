@@ -41,9 +41,9 @@ export default {
   computed: {
     durationShow () {
       if (this.status === 'recording') {
-        return Math.ceil(this.progress / 1000)
+        return Math.floor(this.progress / 1000)
       } else if (this.status === 'finish') {
-        return Math.ceil(this.duration / 1000)
+        return Math.floor(this.duration / 1000)
       }
       
     },
