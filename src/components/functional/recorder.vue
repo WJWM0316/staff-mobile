@@ -40,7 +40,7 @@ export default {
   },
   computed: {
     durationShow () {
-      return Math.ceil(this.duration / 1000)
+      return Math.ceil(this.progress)
     },
     btnClass () {
       if (this.status === 'default' || this.status === 'finish') {
@@ -154,7 +154,6 @@ export default {
       this.stopInterval()
     },
     touchstartFun () {
-      console.log('点击了')
       if (this.status === 'default') { // 开始录音
         this.handleStart()
       } else if (this.status === 'finish') { // 播放录音
