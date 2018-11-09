@@ -45,7 +45,6 @@ export default {
       } else if (this.status === 'finish') {
         return Math.floor(this.duration / 1000)
       }
-      
     },
     btnClass () {
       if (this.status === 'default' || this.status === 'finish') {

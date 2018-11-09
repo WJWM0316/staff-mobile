@@ -185,7 +185,9 @@ export default {
         this.isPullup = false
       }
     },
-    audioList () {},
+    audioList (val) {
+      console.log(val)
+    },
     sendData () {},
     openArea (val) {
       if (val) this.newMsgCount = 0
@@ -315,6 +317,7 @@ export default {
     },
     nextMusic (index) {
       this.$refs.scroll.scrollToElement(this.$refs.message.getElementsByClassName('live-message')[index])
+      console.log(this.$refs.messageItem[index], index, 11111111)
       this.$refs.messageItem[index].$children[0].play()
     },
     loadPrev () {
