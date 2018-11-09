@@ -9,7 +9,7 @@
     <Popup v-model="openCatalog" position='left' height="100%" class="popup" v-if="detail">
       <p class="catalogP">目录</p>
       <div class="catalog">
-        <div class="header">
+        <div class="header" @click.stop="toDetail">
           <img class="icon" :src="detail.smallUrl" alt="">
           <div class="msg">
             <p class="title">{{detail.title}}</p>
@@ -101,6 +101,9 @@ export default {
           this.$router.replace(`/reader?id=${this.bookId}&sectionId=${this.sectionId}`)
         }
       }
+    },
+    toDetail () {
+      this.$router.push(`/bookDetail?id=${this.bookId}`)
     }
   },
   created () {
