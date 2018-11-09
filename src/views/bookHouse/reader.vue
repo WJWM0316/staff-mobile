@@ -1,19 +1,22 @@
 <template>
   <div class="reader">
-    <div class="content" v-if="pageInfo" v-html="pageInfo.content"></div>
-    <div class="operArea">
+    <div class="content" ref="richText" v-if="pageInfo" v-html="pageInfo.content"></div>
+    <div class="operArea" v-show="showOper">
       <div class="item" @click.stop="openCatalog = true"><i class="icon iconfont icon-read_btn_datalog"></i>目录</div>
       <div class="item" @click.stop="paging('prev')" :class="{'hide': sectionIndex <= 0}">上一章</div>
       <div class="item" @click.stop="paging('next')" :class="{'hide': sectionIndex >= catalog.length - 1}">下一章</div>
     </div>
-    <Popup v-model="openCatalog" position='left' height="100%" class="popup">
+    <Popup v-model="openCatalog" position='left' height="100%" class="popup" v-if="detail">
+      <p class="catalogP">目录</p>
       <div class="catalog">
-        <p class="catalogP">目录</p>
         <div class="header">
           <img class="icon" :src="detail.smallUrl" alt="">
           <div class="msg">
             <p class="title">{{detail.title}}</p>
           </div>
+        </div>
+        <div class="list">
+          <p class="item border-bottom-1px" v-for="(n, index) in catalog" :key="index" :class="{'cur': sectionId === n.chapterId}" @click.stop="jump(n.chapterId)">{{n.chapterName}}</p>
         </div>
       </div>
     </Popup>
@@ -34,7 +37,8 @@ export default {
       sectionId: this.$route.query.sectionId,
       sectionIndex: 0, // 章节序号
       catalog: [],
-      openCatalog: false // 打开目录
+      openCatalog: false, // 打开目录
+      showOper: false // 操作栏
     }
   },
   methods: {
@@ -60,7 +64,18 @@ export default {
       this.sectionId = data.sectionId
       getContentApi(data).then(res => {
         this.pageInfo = res.data
+        this.$nextTick(() => {
+          if (this.$refs.richText.clientHeight <= window.clientHeight) {
+            this.showOper = true
+          }
+        })
       })
+    },
+    jump (id) {
+      this.sectionId = id
+      this.getCatalog()
+      this.openCatalog = false
+      this.$router.push(`/reader?id=${this.bookId}&sectionId=${id}`)
     },
     paging (type) {
       if (type === 'prev') {
@@ -78,8 +93,20 @@ export default {
       }
     }
   },
-  created () {
+  mounted () {
     this.getCatalog()
+    let lastY = 0
+    window.onscroll = (e) => {
+      console.log(window.pageYOffset)
+      if (window.pageYOffset > lastY) {
+        if (!this.showOper) {
+          this.showOper = true
+        }
+        lastY = window.pageYOffset
+      } else {
+        this.showOper = false
+      }
+    }
   }
 }
 </script>
@@ -112,6 +139,7 @@ export default {
     font-size: 30px; /*px*/
     font-weight: 300;
     box-shadow: 0px -3px 10px 0px rgba(0,0,0,0.05);
+    background: #fff;
     .item {
       .icon {
         font-size: 50px; /*px*/
@@ -124,29 +152,53 @@ export default {
     }
   }
   .popup {
+    background: #fff;
+    .catalogP {
+      padding: 18px 0 0 20px;
+      color: #354048;
+      font-size: 32px; /*px*/
+      font-weight: 700;
+      line-height: 20px;
+    }
     .catalog {
       width: 325px;
-      height: 100%;
-      padding: 0 17px 0 20px;
       box-sizing: border-box;
-      background: #fff;
-      .catalogP {
-        padding: 18px 0 0 20px;
-        color: #354048;
-        font-size: 32px; /*px*/
-        font-weight: 700;
-        line-height: 20px;
-      }
       .header {
-        padding-left: 45px;
+        padding: 18px 17px 15px 65px;
         position: relative;
+        border-bottom: 1px solid #DCDCDC;
         .icon {
           position: absolute;
           width: 30px;
           height: 42px;
           display: block;
-          top: 0;
-          left: 0;
+          top: 18px;
+          left: 20px;
+        }
+        .msg {
+          font-size: 30px; /*px*/
+          font-weight: 300;
+          color: #354048;
+          height: 42px;
+          display: flex;
+          align-items: center;
+          line-height: 20px;
+        }
+      }
+      .list {
+        padding: 0 20px;
+        .item {
+          width: 100%;
+          height: 59px;
+          display: flex;
+          align-items: center;
+          color: #354048;
+          font-weight: 300;
+          line-height: 18px;
+          font-size: 28px; /*px*/
+          &.cur {
+            color: #D7AB70;
+          }
         }
       }
     }
