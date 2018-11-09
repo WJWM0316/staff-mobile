@@ -243,3 +243,10 @@ export const delPostApi = (id) => {
     type: 'delete'
   })
 }
+/* 获取工作圈帖子热门评论列表 */
+export const getHotCommentListApi = (data) => {
+  return request({
+    url: `/jobcircle/comment/hot/${data.id}?count=${data.count}`,
+    type: 'get'
+  })
+}
