@@ -27,7 +27,7 @@
 
 <style lang="less" scoped>
   .suspension-input {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
