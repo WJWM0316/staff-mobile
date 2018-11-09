@@ -4,6 +4,7 @@
       <div class="cover">
         <img class="coverImg" :src="pageInfo.url" alt="">
       </div>
+      <backHome></backHome>
       <div class="title">{{pageInfo.title}}</div>
       <div class="msg">{{pageInfo.wordIntro}}</div>
       <div class="members" v-if="pageInfo.readCount">
@@ -26,7 +27,11 @@
 </template>
 <script>
 import {getBookInfoApi} from '@/api/pages/bookHouse'
+import backHome from '@c/layout/backHome'
 export default {
+  components: {
+    backHome
+  },
   data () {
     return {
       pageInfo: null
