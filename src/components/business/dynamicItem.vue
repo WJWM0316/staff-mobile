@@ -40,7 +40,8 @@
       </div>
       <!--视频-->
       <div class="content-video" v-if="item.type === '视频'" @click.stop="playMovie">
-        <video class="playVideo" width="416" height="234" controls v-if="movie">
+        <div class="videoBOx" v-if="videoPlay"><i class="icon iconfont icon-play_vidio"></i></div>
+        <video class="playVideo" width="416" height="234" controls v-if="movie" ref="video">
           <source :src="item.accessory[0].url" type="video/mp4">
           您的浏览器不支持 HTML5 video 标签，请升级浏览器或者更换浏览器。
         </video>
@@ -162,7 +163,8 @@ export default {
       isfavor: false,
       movie: true, // 视频播放开关
       fileType: '', // 文件的类型xml，或者其他
-      isFile: true // 是否文件类型
+      isFile: true, // 是否文件类型
+      videoPlay: true
     }
   },
   methods: {
@@ -296,6 +298,10 @@ export default {
       } else {
         this.$emit('setPostTop', this.item)
       }
+    },
+    playMovie () {
+      this.videoPlay = false
+      this.$refs['video'].play()
     }
   },
   mounted () {}
@@ -319,7 +325,7 @@ export default {
         right: 0px;
         top: 4px;
         display: flex;
-        align-items: center;
+        align-content: center;
         justify-content: center;
       }
       .headerPhoto {
@@ -336,11 +342,14 @@ export default {
         font-size: 28px;/*px*/
         font-weight: 700;
       }
-      /*.isTopping{
-        position:absolute;
-        right: 30px;
-        top: 5px;
-      }*/
+      .isTopping{
+        width: 20px;
+        height: 20px;
+        img{
+          width: 100%;
+          height: 100%;
+        }
+      }
       .evaluate{
         width: 30px;
         font-size: 30px;
@@ -447,9 +456,30 @@ export default {
       }
       /*  视频部分  */
       .content-video {
+        width: 335px;
+        height: 187px;
         margin-top: 5px;
         position: relative;
         display: inline-block;
+        .videoBOx{
+          box-sizing: border-box;
+          width: 335px;
+          height: 187px;
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 9998;
+          background-color: #000000;
+          i{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            font-size: 50px;
+            color: #FFFFFF;
+            z-index: 9999;
+          }
+        }
         .playVideo{
           background-color: #000000;
           height: 187px;
@@ -465,7 +495,9 @@ export default {
           }
         }
         video {
+          background: #000000;
           width: 100%;
+          height: 187px;
         }
       }
     }
@@ -522,6 +554,11 @@ export default {
         float: left;
       }
       .right {
+        text-align: right;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+        width: 201px;
         float: right;
       }
     }
