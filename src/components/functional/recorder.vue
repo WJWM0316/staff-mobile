@@ -40,7 +40,12 @@ export default {
   },
   computed: {
     durationShow () {
-      return Math.ceil(this.progress)
+      if (this.status === 'recording') {
+        return Math.ceil(this.progress / 1000)
+      } else if (this.status === 'finish') {
+        return Math.ceil(this.duration / 1000)
+      }
+      
     },
     btnClass () {
       if (this.status === 'default' || this.status === 'finish') {
