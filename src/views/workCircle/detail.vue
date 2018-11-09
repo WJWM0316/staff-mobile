@@ -128,7 +128,7 @@ export default {
         id: this.$route.query.id
       }
       let res = await getHotCommentListApi(param)
-      this.hotCommentList.push(...res.data)
+      this.commentList.push(...res.data)
     },
     /* 获取评论列表 */
     async getCommentList () {
@@ -138,7 +138,7 @@ export default {
         id: this.$route.query.id
       }
       let res = await firstCommentListlApi(param)
-      this.commentList.push(...this.hotCommentList, ...res.data)
+      this.commentList.push( ...res.data)
     },
     /* 获取点赞列表 */
     async getFavorList () {
