@@ -127,7 +127,7 @@ export default {
         id: this.$route.query.id
       }
       let res = await firstCommentListlApi(param)
-      this.commentList = res.data
+      this.commentList = [...this.item.hotComments, ...res.data]
     },
     /* 获取点赞列表 */
     async getFavorList () {
