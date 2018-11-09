@@ -68,7 +68,7 @@ import classmateItem from '@c/business/classmateItem'
 import contentheader from '@c/business/dynamicItem'
 import discussItem from '@c/business/discussItem'
 import suspensionInput from '@c/functional/suspensionInput'
-import { postDetailApi, firstCommentListlApi, circleCommentApi, commonFavorListApi, commonFavorApi, circlePostToTopApi, delCirclePostToTopApi } from '@/api/pages/workCircle'
+import { postDetailApi, firstCommentListlApi, circleCommentApi, commonFavorListApi, commonFavorApi, circlePostToTopApi, delCirclePostToTopApi, getHotCommentListApi } from '@/api/pages/workCircle'
 import { Actionsheet } from 'vux'
 export default {
   name: 'detail',
@@ -85,6 +85,7 @@ export default {
       item: {},
       page: 1, // 当前评论翻页页数
       commentList: [], // 评论列表
+      hotCommentList: [],
       favorList: [], // 点赞列表
       displaySuspensionInput: false,
       suspensionInputPlaceholder: '来分享你的想法吧～',
@@ -119,6 +120,16 @@ export default {
         this.getFavorList()
       }
     },
+    /* 获取热门评论列表 */
+    async getHotCommentList () {
+      let param = {
+        page: this.page,
+        count: 20,
+        id: this.$route.query.id
+      }
+      let res = await getHotCommentListApi(param)
+      this.commentList.push(...res.data)
+    },
     /* 获取评论列表 */
     async getCommentList () {
       let param = {
@@ -127,7 +138,7 @@ export default {
         id: this.$route.query.id
       }
       let res = await firstCommentListlApi(param)
-      this.commentList = res.data
+      this.commentList.push( ...res.data)
     },
     /* 获取点赞列表 */
     async getFavorList () {
@@ -143,6 +154,7 @@ export default {
       let { id } = this.$route.query
       let res = await postDetailApi(id)
       this.item = res.data
+      this.getHotCommentList()
       this.getCommentList()
     },
     /* 点击评论调起底部输入框 */

@@ -9,7 +9,7 @@ const routers = [
   {
     path: '/circleDetail',
     name: 'circleDetail',
-    meta: { title: '工作圈详情', pullDown: true, keepAlive: true },
+    meta: { title: '工作圈详情', pullDown: true },
     component: resolve => require(['@/views/workCircle/circleDetail'], resolve)
   },
   /* 工作圈发帖页  */
