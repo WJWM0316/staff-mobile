@@ -56,7 +56,7 @@
           <span class='txt'>{{liveDetail.endTime * 1000 | date('MMMDo HH:mm')}} 直播结束</span>
         </div>
       </scroller>
-      <div class="scrollBtn" v-if="liveDetail.status !== 1">
+      <div class="scrollBtn" v-if="liveDetail.status !== 1 && list.length > 0">
         <i class="btn" @click.stop="scrollTo('top')"><img src="@a/icon/live_btn_gotop@3x.png" alt=""></i>
         <i class="btn" @click.stop="scrollTo('bottom')"><img src="@a/icon/live_btn_gobase@3x.png" alt=""></i>
       </div>
@@ -92,7 +92,7 @@
             </upLoadFile>
           </span>
           <span @click.stop="tutorOper('answer')">
-            <i class="icon icon4 iconfont icon-icon_mymeaasage"></i> <!-- red:data-num="1" -->
+            <i class="icon icon4 iconfont icon-icon_mymeaasage" :class="{'red': newMsgCount > 0}" :data-num="newMsgCount"></i> <!-- red:data-num="1" -->
           </span>
         </div>
         <div class="typeBox">
@@ -108,7 +108,7 @@
     <!-- 导师操作权限 直播已结束-->
     <template v-if="liveDetail.isTutor && liveDetail.status === 3">
       <xButton class="startLiveBtn" @click.stop.native="openArea = true">
-        <p class="enter"><span>进入问答区</span></p>
+        <p class="enter"><span :class="{'red': newMsgCount > 0}">进入问答区</span></p>
         <p class="number"><span>直播共收到{{liveDetail.problemCount}}条提问</span></p>
       </xButton>
     </template>
@@ -165,7 +165,8 @@ export default {
       audioList: [], // 音频列表
       curOperType: null, // 导师选择发布的类型
       fileId: null, // 导师发布的附件id
-      scrollerHeight: null // 用于计算scroller的高度
+      scrollerHeight: null, // 用于计算scroller的高度
+      newMsgCount: 0 // 新提问数量
     }
   },
   computed: {
@@ -184,7 +185,11 @@ export default {
         this.isPullup = false
       }
     },
-    sendData () {}
+    audioList () {},
+    sendData () {},
+    openArea (val) {
+      if (val) this.newMsgCount = 0
+    }
   },
   methods: {
     ...mapActions([
@@ -255,6 +260,7 @@ export default {
     async getDetail () {
       let res = await getLiveDetailApi({id: this.option.liveId})
       this.liveDetail = res.data
+      this.newMsgCount = res.data.newProblemCount
       this.option.teacherId = res.data.masterUid
       // 直播进行中才可以加入直播
       if (this.liveDetail.status === 2) {
@@ -468,6 +474,9 @@ export default {
           // 其他人离开该直播间
           case 'live_logout':
             that.updata_onlineNum(data.data.onlineLiveCount)
+            break
+          case 'live_problem_count':
+            that.newMsgCount = data.data.count
             break
           // 直播结束
           case 'live_end': {
@@ -774,7 +783,7 @@ export default {
       bottom: 0;
       left: 0;
       width: 100%;
-      height: 49px;
+      height: 52px;
       .enter, .number {
         color: #354048;
         font-size: 30px; /*px*/
@@ -782,7 +791,22 @@ export default {
         &.number {
           font-size: 24px; /*px*/
         }
-        > span {}
+        > span {
+          &.red {
+            position: relative;
+            &::after {
+              content: '';
+              width: 5px;
+              height: 5px;
+              background: #FF4949;
+              position: absolute;
+              border-radius: 50%;
+              top: 0px;
+              right: -7px;
+              display: block;
+            }
+          }
+        }
       }
     }
   }
