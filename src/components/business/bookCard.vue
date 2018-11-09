@@ -5,9 +5,9 @@
         <div class="title">{{cardData.title}}</div>
         <div class="progressBox">
           <div class="progress">
-            <div class="inner" :style="{'width': progress}"></div>
+            <div class="inner" :style="{'width': cardData.currentReadingPercent}"></div>
           </div>
-          <span class="num">98%</span>
+          <span class="num">{{cardData.currentReadingPercent}}</span>
         </div>
     </div>
     <div class="allBook" v-if="type === 0">
@@ -36,7 +36,6 @@ export default {
   },
   data () {
     return {
-      progress: 0
     }
   },
   methods: {

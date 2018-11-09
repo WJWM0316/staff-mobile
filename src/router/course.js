@@ -8,7 +8,7 @@ const routers = [
   {
     path: '/myCourse',
     name: 'myCourse',
-    meta: { title: '我的课程' },
+    meta: { title: '我的课程', keepAlive: true },
     component: resolve => require(['@/views/course/myCourse'], resolve)
   },
   {

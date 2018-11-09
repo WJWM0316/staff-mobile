@@ -1,7 +1,7 @@
 <template>
   <div class="reader">
     <div class="content" ref="richText" v-if="pageInfo" v-html="pageInfo.content"></div>
-    <div class="operArea" v-show="showOper">
+    <div class="operArea" :class="{'floor': showOper}">
       <div class="item" @click.stop="openCatalog = true"><i class="icon iconfont icon-read_btn_datalog"></i>目录</div>
       <div class="item" @click.stop="paging('prev')" :class="{'hide': sectionIndex <= 0}">上一章</div>
       <div class="item" @click.stop="paging('next')" :class="{'hide': sectionIndex >= catalog.length - 1}">下一章</div>
@@ -64,60 +64,62 @@ export default {
       this.sectionId = data.sectionId
       getContentApi(data).then(res => {
         this.pageInfo = res.data
-        this.$nextTick(() => {
-          if (this.$refs.richText.clientHeight <= window.clientHeight) {
-            this.showOper = true
-          }
-        })
       })
     },
     jump (id) {
       this.sectionId = id
       this.getCatalog()
       this.openCatalog = false
-      this.$router.push(`/reader?id=${this.bookId}&sectionId=${id}`)
+      this.$router.replace(`/reader?id=${this.bookId}&sectionId=${id}`)
     },
     paging (type) {
       if (type === 'prev') {
         if (this.sectionIndex > 0) {
           this.sectionIndex--
           this.getDetail()
-          this.$router.push(`/reader?id=${this.bookId}&sectionId=${this.sectionId}`)
+          this.$router.replace(`/reader?id=${this.bookId}&sectionId=${this.sectionId}`)
         }
       } else {
         if (this.sectionIndex < this.catalog.length - 1) {
           this.sectionIndex++
           this.getDetail()
-          this.$router.push(`/reader?id=${this.bookId}&sectionId=${this.sectionId}`)
+          this.$router.replace(`/reader?id=${this.bookId}&sectionId=${this.sectionId}`)
         }
       }
     }
   },
-  mounted () {
+  created () {
     this.getCatalog()
     let lastY = 0
+    let timer = null
     window.onscroll = (e) => {
-      console.log(window.pageYOffset)
       if (window.pageYOffset > lastY) {
         if (!this.showOper) {
           this.showOper = true
+          clearTimeout(timer)
+          timer = setTimeout(() => {
+            this.showOper = false
+          }, 2000)
         }
-        lastY = window.pageYOffset
       } else {
         this.showOper = false
       }
+      lastY = window.pageYOffset
     }
   }
 }
 </script>
 <style lang="less">
 .reader {
+  position: relative;
   .content {
     padding: 18px 20px 49px;
     font-size: 30px; /*px*/
     line-height: 1.4;
     font-weight: 300;
     color: #354048;
+    min-height: 100vh;
+    box-sizing: border-box;
     h1 {
       font-size: 36px; /*px*/
       line-height: 1.4;
@@ -132,7 +134,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: fixed;
+    position: absolute;
     left: 0;
     bottom: 0;
     color: #929292;
@@ -140,6 +142,9 @@ export default {
     font-weight: 300;
     box-shadow: 0px -3px 10px 0px rgba(0,0,0,0.05);
     background: #fff;
+    &.floor {
+      position: fixed;
+    }
     .item {
       .icon {
         font-size: 50px; /*px*/

@@ -2,7 +2,7 @@ const routers = [
   {
     path: '/bookHouse',
     name: 'bookHouse',
-    meta: {title: '书籍', pullDown: true},
+    meta: {title: '书籍', pullDown: true, keepAlive: true},
     component: resolve => require(['@/views/bookHouse/index'], resolve)
   },
   {
