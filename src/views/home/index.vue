@@ -73,8 +73,9 @@
           <div class="btnBox btn1"><div class="btn" @click.stop="jump('course')">发现更多课程</div></div>
           <div class="title"><i class="icon"></i>更多学习</div>
         </template>
-        <div class="enter" @click.stop="jump('liveList')">
-          <img src="@a/icon/home_banner_right@3x.png" alt="">
+        <div class="enter">
+          <img src="@a/icon/p1.png"  @click.stop="jump('liveList')">
+          <img src="@a/icon/p2.png"  @click.stop="jump('bookHouse')">
         </div>
       </div>
     </template>
@@ -151,6 +152,9 @@ export default {
           break
         case 'myCourse':
           this.$router.push('/myCourse')
+          break
+        case 'bookHouse':
+          this.$router.push('/bookHouse')
           break
       }
     },
@@ -401,9 +405,15 @@ export default {
         width: 100%;
         padding: 0px 20px 25px 20px;
         box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
         img {
-          width: 100%;
+          width: 163px;
+          height: 80px;
           display: block;
+        }
+        img:first-child {
+          margin-right: 9px;
         }
       }
     }
