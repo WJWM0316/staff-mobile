@@ -462,6 +462,7 @@ export default {
             that.list.push(data.data)
             that.$refs.scroll.scrollBottom('liveMsg')
             if (data.data.type === 'audio') {
+              data.data.index = that.audioList[that.audioList.length - 1].index + 1
               that.audioList.push(data.data)
             }
             break
@@ -637,7 +638,7 @@ export default {
         padding-bottom: 100px;
       }
       &.audio {
-        padding-bottom: 220px;
+        padding-bottom: 208px;
       }
       .scroll {
         height: 100%;
