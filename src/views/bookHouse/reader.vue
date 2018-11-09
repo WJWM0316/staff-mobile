@@ -3,8 +3,8 @@
     <div class="content" ref="richText" v-if="pageInfo" v-html="pageInfo.content"></div>
     <div class="operArea" :class="{'floor': showOper}">
       <div class="item" @click.stop="openCatalog = true"><i class="icon iconfont icon-read_btn_datalog"></i>目录</div>
-      <div class="item" @click.stop="paging('prev')" :class="{'hide': sectionIndex <= 0}">上一章</div>
-      <div class="item" @click.stop="paging('next')" :class="{'hide': sectionIndex >= catalog.length - 1}">下一章</div>
+      <div class="item" @click.stop="paging('prev')" :class="{'hide': sectionIndex <= 0}">上一节</div>
+      <div class="item" @click.stop="paging('next')" :class="{'hide': sectionIndex >= catalog.length - 1}">下一节</div>
     </div>
     <Popup v-model="openCatalog" position='left' height="100%" class="popup" v-if="detail">
       <p class="catalogP">目录</p>
@@ -16,7 +16,10 @@
           </div>
         </div>
         <div class="list">
-          <p class="item border-bottom-1px" v-for="(n, index) in catalog" :key="index" :class="{'cur': sectionId === n.chapterId}" @click.stop="jump(n.chapterId)">{{n.chapterName}}</p>
+          <div class="catalogItem" v-for="(n, index) in catalog" :key="index">
+            <p class="title border-bottom-1px"  :class="{'cur': sectionId === n.chapterId}"  @click.stop="jump(n.chapterId)">{{n.chapterName}}</p>
+            <p class="sectionItem border-bottom-1px" v-if="n.catalogueSections.length > 0" v-for="(i, index) in n.catalogueSections" :key="index" :class="{'cur': sectionId === i.sectionId}"  @click.stop="jump(i.sectionId)">{{i.sectionName}}</p>
+          </div>
         </div>
       </div>
     </Popup>
@@ -37,6 +40,7 @@ export default {
       sectionId: this.$route.query.sectionId,
       sectionIndex: 0, // 章节序号
       catalog: [],
+      idList: [], // 章节id列表
       openCatalog: false, // 打开目录
       showOper: false // 操作栏
     }
@@ -48,18 +52,27 @@ export default {
         this.detail = res.data.bookDetail
         if (this.sectionId) {
           this.catalog.forEach((item, index) => {
-            if (this.sectionId === item.chapterId) {
-              this.sectionIndex = index
+            if (item.catalogueSections.length > 0) {
+              item.catalogueSections.forEach((item1, index1) => {
+                this.idList.push(item1.sectionId)
+              })
+            } else {
+              this.idList.push(item.chapterId)
+            }
+          })
+          this.idList.forEach((itme2, index2) => {
+            if (this.sectionId === itme2) {
+              this.sectionIndex = index2
             }
           })
         }
         this.getDetail()
       })
     },
-    getDetail () {
+    getDetail (id) {
       let data = {
         bookId: this.bookId,
-        sectionId: this.catalog[this.sectionIndex].chapterId
+        sectionId: id || this.idList[this.sectionIndex]
       }
       this.sectionId = data.sectionId
       getContentApi(data).then(res => {
@@ -67,12 +80,14 @@ export default {
       })
     },
     jump (id) {
+      window.scroll(0, 0)
       this.sectionId = id
-      this.getCatalog()
+      this.getDetail(id)
       this.openCatalog = false
       this.$router.replace(`/reader?id=${this.bookId}&sectionId=${id}`)
     },
     paging (type) {
+      window.scroll(0, 0)
       if (type === 'prev') {
         if (this.sectionIndex > 0) {
           this.sectionIndex--
@@ -113,7 +128,7 @@ export default {
 .reader {
   position: relative;
   .content {
-    padding: 18px 20px 49px;
+    padding: 18px 20px 59px;
     font-size: 30px; /*px*/
     line-height: 1.4;
     font-weight: 300;
@@ -192,17 +207,26 @@ export default {
       }
       .list {
         padding: 0 20px;
-        .item {
+        .catalogItem {
           width: 100%;
-          height: 59px;
-          display: flex;
-          align-items: center;
-          color: #354048;
-          font-weight: 300;
-          line-height: 18px;
-          font-size: 28px; /*px*/
-          &.cur {
-            color: #D7AB70;
+          .title {
+            padding: 21px 0;
+            color: #354048;
+            line-height: 18px;
+            font-size: 28px; /*px*/
+            &.cur {
+              color: #D7AB70;
+            }
+          }
+          .sectionItem {
+            padding: 21px 10px;
+            color: #666666;
+            line-height: 18px;
+            font-size: 28px; /*px*/
+            font-weight: 300;
+            &.cur {
+              color: #D7AB70;
+            }
           }
         }
       }

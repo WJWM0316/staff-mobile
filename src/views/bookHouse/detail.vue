@@ -38,7 +38,7 @@ export default {
       })
     },
     read () {
-      this.$router.push(`/reader?id=${this.$route.query.id}&sectionId=${this.pageInfo.sessionId}`)
+      this.$router.push(`/reader?id=${this.$route.query.id}&sectionId=${this.pageInfo.userReadingPercent.currentCatalogueId}`)
     }
   },
   created () {
