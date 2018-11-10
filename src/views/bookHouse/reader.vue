@@ -85,6 +85,13 @@ export default {
       this.sectionId = id
       this.getDetail(id)
       this.openCatalog = false
+      if (this.sectionId) {
+        this.idList.forEach((itme2, index2) => {
+          if (this.sectionId === itme2) {
+            this.sectionIndex = index2
+          }
+        })
+      }
       this.$router.replace(`/reader?id=${this.bookId}&sectionId=${id}`)
     },
     paging (type) {
@@ -95,7 +102,6 @@ export default {
           this.$router.replace(`/reader?id=${this.bookId}&sectionId=${this.sectionId}`)
         }
       } else {
-        console.log(this.sectionIndex, this.idList.length)
         if (this.sectionIndex < this.idList.length - 1) {
           this.sectionIndex++
           this.getDetail()

@@ -16,7 +16,7 @@
       <div class="content">
         <div class="title">{{cardData.title}}</div>
         <div class="msg">{{cardData.wordIntro}}</div>
-        <div class="num"><i class="icon iconfont icon-read_icon_browse"></i> {{cardData.readCount}}人</div>
+        <div class="num"><i class="icon iconfont icon-read_icon_browse1"></i> {{cardData.readCount}}人</div>
       </div>
     </div>
   </div>
@@ -129,6 +129,7 @@ export default {
       position: absolute;
       top: 0;
       left: 0;
+      box-shadow:0px 2px 5px 0px rgba(219,219,219,1);
     }
     .content {
       width: 100%;
@@ -159,6 +160,7 @@ export default {
           vertical-align: sub;
           font-size: 40px; /*px*/
           color: #BCBCBC;
+          margin-right: 4px;
         }
       }
     }
