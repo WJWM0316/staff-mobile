@@ -50,16 +50,16 @@ export default {
       getCatalogueApi({bookId: this.bookId}).then(res => {
         this.catalog = res.data.catalogues
         this.detail = res.data.bookDetail
+        this.catalog.forEach((item, index) => {
+          if (item.catalogueSections.length > 0) {
+            item.catalogueSections.forEach((item1, index1) => {
+              this.idList.push(item1.sectionId)
+            })
+          } else {
+            this.idList.push(item.chapterId)
+          }
+        })
         if (this.sectionId) {
-          this.catalog.forEach((item, index) => {
-            if (item.catalogueSections.length > 0) {
-              item.catalogueSections.forEach((item1, index1) => {
-                this.idList.push(item1.sectionId)
-              })
-            } else {
-              this.idList.push(item.chapterId)
-            }
-          })
           this.idList.forEach((itme2, index2) => {
             if (this.sectionId === itme2) {
               this.sectionIndex = index2

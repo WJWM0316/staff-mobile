@@ -47,7 +47,11 @@ export default {
       })
     },
     read () {
-      this.$router.replace(`/reader?id=${this.$route.query.id}&sectionId=${this.pageInfo.readInfo.currentCatalogueId}`)
+      if (this.pageInfo.readInfo.currentCatalogueId) {
+        this.$router.replace(`/reader?id=${this.$route.query.id}&sectionId=${this.pageInfo.readInfo.currentCatalogueId}`)
+      } else {
+        this.$router.replace(`/reader?id=${this.$route.query.id}`)
+      }
     }
   },
   created () {
