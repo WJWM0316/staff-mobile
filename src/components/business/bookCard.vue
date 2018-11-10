@@ -40,8 +40,20 @@ export default {
   },
   methods: {
     toDetail () {
-      let id = this.cardData.readInfo.currentCatalogueId || this.cardData.currentCatalogueId
-      if (parseInt(this.cardData.readInfo.currentReadingPercent) > 0 || parseInt(this.cardData.currentReadingPercent) > 0) {
+      let id = this.cardData.currentCatalogueId || this.cardData.readInfo.currentCatalogueId
+      let isRead = false
+      if (this.type === 1) {
+        id = this.cardData.currentCatalogueId
+        if (parseInt(this.cardData.currentReadingPercent) > 0) {
+          isRead = true
+        }
+      } else {
+        id = this.cardData.readInfo.currentCatalogueId
+        if (parseInt(this.cardData.readInfo.currentReadingPercent) > 0) {
+          isRead = true
+        }
+      }
+      if (isRead) {
         this.$router.push(`/reader?id=${this.cardData.bookId}&sectionId=${id}`)
       } else {
         this.$router.push(`/bookDetail?id=${this.cardData.bookId}`)
