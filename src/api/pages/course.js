@@ -64,17 +64,19 @@ export const getCourseJoinApi = (data, needLoading) => {
   })
 }
 // 打卡或评论点赞
-export const getFavorApi = (data) => {
+export const getFavorApi = (data, needLoading) => {
   return request({
     url: `/coursesectioncard/commonFavor/${data.sourceId}?sourceType=${data.sourceType}`,
-    type: 'put'
+    type: 'put',
+    needLoading: needLoading
   })
 }
 // 打卡或评论取消点赞
-export const delFavorApi = (data) => {
+export const delFavorApi = (data, needLoading) => {
   return request({
     url: `/coursesectioncard/commonFavor/${data.sourceId}?sourceType=${data.sourceType}`,
-    type: 'delete'
+    type: 'delete',
+    needLoading: needLoading
   })
 }
 // 课节打卡提交

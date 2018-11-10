@@ -236,18 +236,18 @@ export default {
       if (!this.isfavor) {
         // 点赞
         if (this.isCourse) { // 课节打卡点赞
-          await getFavorApi(param)
+          await getFavorApi(param, false)
         } else { // 工作圈打卡点赞
-          await circleCommonFavorApi(param)
+          await circleCommonFavorApi(param, false)
         }
         this.item.favorTotal += 1
         this.isfavor = true
       } else {
         // 取消点赞
         if (this.isCourse) { // 课节打卡取消点赞
-          await delFavorApi(param)
+          await delFavorApi(param, false)
         } else { // 工作圈打卡取消点赞
-          await delCircleCommonFavorApi(param)
+          await delCircleCommonFavorApi(param, false)
         }
         this.item.favorTotal -= 1
         this.isfavor = false

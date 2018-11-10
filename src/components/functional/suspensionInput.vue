@@ -36,7 +36,7 @@
     -webkit-overflow-scrolling: touch;
     background-color: #f8f8f8;
     &.z-focused {
-      padding-bottom: 33px;
+      /*padding-bottom: 33px;*/
     }
     .ask-box {
       max-height: 174px;

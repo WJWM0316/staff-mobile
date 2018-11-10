@@ -118,17 +118,19 @@ export const commonFavorListApi = (data) => {
   })
 }
 /* 点赞评论或帖子 */
-export const circleCommonFavorApi = (data) => {
+export const circleCommonFavorApi = (data, needLoading) => {
   return request({
     url: `/jobcircle/commonFavor/${data.sourceId}?sourceType=${data.circleSourceType}`,
-    type: 'put'
+    type: 'put',
+    needLoading: needLoading
   })
 }
 /* 评论或帖子取消点赞 */
-export const delCircleCommonFavorApi = (data) => {
+export const delCircleCommonFavorApi = (data, needLoading) => {
   return request({
     url: `/jobcircle/commonFavor/${data.sourceId}?sourceType=${data.circleSourceType}`,
-    type: 'delete'
+    type: 'delete',
+    needLoading: needLoading
   })
 }
 /* 删除评论 */
