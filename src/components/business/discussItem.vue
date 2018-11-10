@@ -201,9 +201,9 @@ export default {
       }
       if (this.item.isFavor === 0) {
         if (this.isCourse) { // 课程点赞
-          await getFavorApi(param)
+          await getFavorApi(param, false)
         } else { // 工作圈点赞
-          await circleCommonFavorApi(param)
+          await circleCommonFavorApi(param, false)
         }
         this.item.isFavor = 1
         this.item.favorCount += 1
@@ -211,9 +211,9 @@ export default {
         this.item.favorUsers.push({realname: this.item.currentUserInfo.realname})
       } else {
         if (this.isCourse) {
-          await delFavorApi(param)
+          await delFavorApi(param, false)
         } else {
-          await delCircleCommonFavorApi(param)
+          await delCircleCommonFavorApi(param, false)
         }
         this.item.isFavor = 0
         this.item.favorCount -= 1
