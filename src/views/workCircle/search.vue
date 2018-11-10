@@ -16,7 +16,7 @@
             </div>
             <div class="content">
               <p class="title">{{item.cardContent}}</p>
-              <p class="msg">{{item.releaseUser.realname}} {{item.releaseUser.createdAt}}</p>
+              <p class="msg">{{item.releaseUser.realname}} {{item.createdAt}}</p>
             </div>
           </div>
           <noDataShow v-if="results && results.length === 0"></noDataShow>

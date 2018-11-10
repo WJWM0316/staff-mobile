@@ -82,7 +82,7 @@ export default {
       padding-top: 50px;
     }
     .icon {
-      font-size: 50px !important; /*px*/
+      font-size: 40px !important; /*px*/
       color: #929292;
       padding-right: 10px;
     }

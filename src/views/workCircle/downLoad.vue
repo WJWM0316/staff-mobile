@@ -9,10 +9,13 @@
     <div class="picBox" v-for="(picItem, index) in nowFileList" :key="index" v-if="type === 1" @click.stop="isSelect(picItem)">
       <div class="chooseImg" v-if="showSelect" :class="{'isChoose': picItem.chooseIndex}"><img v-if="picItem.chooseIndex" src="@/assets/icon/photo_selected@3x.png" /></div>
       <img class="picItem" v-lazyload :src="picItem.fileInfo.middleUrl" v-preview="true" :data-src="picItem.fileInfo.url" v-if="picItem.type === '图片'"/>
-      <video class="video" :poster="picItem.fileInfo.coverImg.url" controls ref="video" v-else>
-        <source :src="picItem.fileInfo.url" type="video/mp4">
-           您的浏览器不支持 HTML5 video 标签，请升级浏览器或者更换浏览器。
-      </video>
+      <div class="playVideo" v-else>
+        <!--<div class="videoBOx" @click.stop="play" v-if="!videoPlay"><i class="icon iconfont icon-play_vidio"></i></div>-->
+        <video class="video" :poster="picItem.fileInfo.coverImg.url" controls ref="video">
+          <source :src="picItem.fileInfo.url" type="video/mp4">
+             您的浏览器不支持 HTML5 video 标签，请升级浏览器或者更换浏览器。
+        </video>
+      </div>
     </div>
     <!--文件和链接-->
     <template v-if="type === 2 || type === 3">
@@ -63,7 +66,8 @@ export default {
       isFile: '', // 是否文件
       fileType: '', // 文件的类型xml，或者其他
       showSelect: false, // 是否展示图片选择圈
-      selectPicList: [] // 选中的图片列表
+      selectPicList: [], // 选中的图片列表
+      videoPlay: false
     }
   },
   methods: {
@@ -181,6 +185,11 @@ export default {
         // 触发a的单击事件
         a.dispatchEvent(event)
       })
+    },
+    play () {
+      this.videoPlay = true
+      console.log(this.$refs['video'])
+      this.$refs['video'].play()
     }
   },
   created () {
@@ -234,11 +243,34 @@ export default {
       font-size: 28px;/*px*/
       color: #354048;
     }
-    .video{
-      width: 90px;
-      height: 90px;
-      margin-left: 3px;
-      margin-bottom: 3px;
+    .playVideo{
+      position: relative;
+      .videoBOx{
+        margin-left: 3px;
+        box-sizing: border-box;
+        width: 90px;
+        height: 90px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 9998;
+        background-color: #000000;
+        i{
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translateX(-50%) translateY(-50%);
+          font-size: 20px;
+          color: #FFFFFF;
+          z-index: 9999;
+        }
+      }
+      .video{
+        width: 90px;
+        height: 90px;
+        margin-left: 3px;
+        margin-bottom: 3px;
+      }
     }
   }
   .fileItemBox{

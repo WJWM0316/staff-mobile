@@ -4,8 +4,8 @@
       <div class="content-file" @click.stop="fileOpen(fileType.url)">
         <img class="file-logo" :src="fileType.extension | fileCover" />
         <div class="file-desc">
-          <p class="text">{{fileType.fileName}}</p>
-          <p class="text">{{fileType.sizeM}}</p>
+          <p class="text fileText">{{fileType.fileName}}</p>
+          <p class="text fileText">{{fileType.sizeM}}</p>
         </div>
       </div>
     </template>
@@ -14,7 +14,7 @@
       <a @click.stop="toLink" class="content-file" :href="item.url">
         <img v-show="true" class="file-logo" src="@/assets/icon/postLink.png" />
         <div class="file-desc">
-          <p class="text">{{item.title || '链接'}}</p>
+          <p class="text linkText">{{item.title || '链接'}}</p>
         </div>
       </a>
     </div>
@@ -77,6 +77,8 @@ export default{
         max-width: 261px;
         overflow: hidden;
         text-overflow:ellipsis;
+      }
+      .fileText{
         white-space: nowrap;
       }
       .text:last-of-type {
@@ -87,7 +89,12 @@ export default{
     }
   }
   .postLink{
-    .text{
+    .linkText{
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box !important;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
       color: #111111 !important;
     }
   }
