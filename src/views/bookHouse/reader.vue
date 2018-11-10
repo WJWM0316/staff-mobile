@@ -147,7 +147,7 @@ export default {
     }
   }
   .operArea {
-    padding: 0 12px 0 20px;
+    padding: 0 20px;
     width: 100%;
     height: 49px;
     box-sizing: border-box;
@@ -168,8 +168,9 @@ export default {
     .item {
       .icon {
         font-size: 50px; /*px*/
-        margin-right: 10px;
+        margin-right: 5px;
         vertical-align: middle;
+        color: #ACACAC;
       }
       &.hide {
         opacity: 0;
