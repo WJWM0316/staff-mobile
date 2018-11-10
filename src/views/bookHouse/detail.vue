@@ -47,7 +47,7 @@ export default {
       })
     },
     read () {
-      this.$router.replace(`/reader?id=${this.$route.query.id}&sectionId=${this.pageInfo.userReadingPercent.currentCatalogueId}`)
+      this.$router.replace(`/reader?id=${this.$route.query.id}&sectionId=${this.pageInfo.readInfo.currentCatalogueId}`)
     }
   },
   created () {

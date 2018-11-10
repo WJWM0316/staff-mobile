@@ -333,8 +333,12 @@ export default {
       this.curPlayIndex = index
       this.$refs.messageItem[index].$children[0].play()
     },
+    curPlayMusic (index) {
+      this.curPlayIndex = index
+    },
     jumpAudio () {
-      this.$refs.scroll.scrollToElement(this.$refs.message.getElementsByClassName('live-message')[this.curPlayIndex])
+      let index = this.audioList[this.curPlayIndex].index
+      this.$refs.scroll.scrollToElement(this.$refs.message.getElementsByClassName('live-message')[index])
     },
     loadPrev () {
       if (this.isPulldown && this.list.length > 0 && this.list[0].messageId) {

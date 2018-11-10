@@ -40,7 +40,12 @@ export default {
   },
   methods: {
     toDetail () {
-      this.$router.push(`/bookDetail?id=${this.cardData.bookId}`)
+      let id = this.cardData.readInfo.currentCatalogueId || this.cardData.currentCatalogueId
+      if (parseInt(this.cardData.readInfo.currentReadingPercent) > 0 || parseInt(this.cardData.currentReadingPercent) > 0) {
+        this.$router.push(`/reader?id=${this.cardData.bookId}&sectionId=${id}`)
+      } else {
+        this.$router.push(`/bookDetail?id=${this.cardData.bookId}`)
+      }
     }
   }
 }

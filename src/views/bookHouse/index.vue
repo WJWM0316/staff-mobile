@@ -56,9 +56,9 @@ export default {
     choseTab (index) {
       this.tabIndex = index
       if (index === 0) {
-        this.$router.push('/bookHouse')
+        this.$router.replace('/bookHouse')
       } else {
-        this.$router.push('/bookHouse?all=true')
+        this.$router.replace('/bookHouse?all=true')
       }
       this.init()
     },
