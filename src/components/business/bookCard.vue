@@ -16,7 +16,7 @@
       <div class="content">
         <div class="title">{{cardData.title}}</div>
         <div class="msg">{{cardData.wordIntro}}</div>
-        <div class="num"><i class="icon iconfont icon-read_icon_browse1"></i> {{cardData.readCount}}人</div>
+        <div class="num"><i class="icon iconfont icon-read_icon_browse1"></i>{{cardData.readCount}}人</div>
       </div>
     </div>
   </div>

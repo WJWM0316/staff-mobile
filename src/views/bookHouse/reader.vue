@@ -166,6 +166,14 @@ export default {
       position: fixed;
     }
     .item {
+      width: 70px;
+      text-align: center;
+      &:first-child {
+        text-align: left;
+      }
+      &:last-child {
+        text-align: right;
+      }
       .icon {
         font-size: 50px; /*px*/
         margin-right: 5px;
