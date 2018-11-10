@@ -146,12 +146,12 @@ export default {
       if (key === 'selected') {
         circlePostToTopApi({id: this.nowChoosePost.id}).then(res => {
           this.reverse(this.sort)
-          this.$toast({text: '帖子置顶成功', type: 'success'})
+          this.$toast({text: '置顶成功', type: 'success'})
         })
       } else {
         delPostApi(this.nowChoosePost.id).then(res => {
           this.reverse(this.sort)
-          this.$toast({text: '删除成功'})
+          this.$toast({text: '删除成功', type: 'success'})
         })
       }
     },

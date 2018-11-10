@@ -221,7 +221,6 @@ export default {
         this.item.favorUsers.map(function (item, index) {
           if (item.realname === that.item.currentUserInfo.realname) {
             that.item.favorUsers.splice(index, 1)
-            console.log(that.item.currentUserInfo.realname, index)
           }
         })
       }
@@ -232,7 +231,7 @@ export default {
       } else {
         await delCommentApi(this.item.id)
       }
-      this.$toast({text: '评论已删除', type: 'success'})
+      this.$toast({text: '删除成功', type: 'success'})
       this.$emit('delComment', {index: this.index})
     }
   },

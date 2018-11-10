@@ -6,7 +6,7 @@
         <span class="text">重录</span>
       </button>
       <button type="button" class="control btn" @click.stop="touchstartFun()">
-        <p class="duration" v-show="status === 'finish'">{{durationShow}}s</p>
+        <p class="duration" v-show="status === 'recording' || status === 'finish'">{{durationShow}}s</p>
         <div class="btnShadow">
           <div class="operBtn" :class="{'playing': status === 'recording' || status === 'listening'}">
             <i class="icon iconfont" :class="btnClass"></i>
@@ -40,7 +40,11 @@ export default {
   },
   computed: {
     durationShow () {
-      return Math.ceil(this.duration / 1000)
+      if (this.status === 'recording') {
+        return Math.ceil(this.progress / 1000) - 1
+      } else if (this.status === 'finish') {
+        return Math.ceil(this.duration / 1000) - 1
+      }
     },
     btnClass () {
       if (this.status === 'default' || this.status === 'finish') {
@@ -154,7 +158,6 @@ export default {
       this.stopInterval()
     },
     touchstartFun () {
-      console.log('点击了')
       if (this.status === 'default') { // 开始录音
         this.handleStart()
       } else if (this.status === 'finish') { // 播放录音
@@ -185,7 +188,7 @@ export default {
       const self = this
       this.$confirm({
         title: '重新开始录音',
-        content: '重新录音，原有录音将会丢失',
+        content: '重新录音，原有录音将会替换',
         confirmBack: () => {
           self.progress = 0
           self.status = 'default'

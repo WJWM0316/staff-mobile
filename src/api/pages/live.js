@@ -39,6 +39,16 @@ export const getJoinListApi = (data, needLoading) => {
   })
 }
 
+// 获取分类列表
+export const getCategoryApi = (data, needLoading) => {
+  return request({
+    type: 'get',
+    url: `/category`,
+    data,
+    needLoading: needLoading
+  })
+}
+
 // 获取近期直播列表
 export const getRecentListApi = (data, needLoading) => {
   return request({

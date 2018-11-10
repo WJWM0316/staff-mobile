@@ -11,9 +11,9 @@
       </div>
       <div class="h5Area" v-html="pageInfo.intro"></div>
     </div>
-    <div class="footerBtn" v-if="!isIntroduce">
+    <div class="footerBtn" v-if="!isIntroduce || (isIntroduce && pageInfo.status === 1)">
       <div class="timestatus">
-        <p class="txt" v-if="pageInfo.status === 1">直播于{{pageInfo.expectedStartTime * 1000 | date('MMMDo hh:mm')}}开始</p>
+        <p class="txt" v-if="pageInfo.status === 1">直播于{{pageInfo.expectedStartTime * 1000 | date('MMMDo HH:mm')}}开始</p>
         <p class="txt" v-if="pageInfo.status === 2">直播进行中</p>
         <p class="txt" v-if="pageInfo.status === 3">直播已结束</p>
       </div>

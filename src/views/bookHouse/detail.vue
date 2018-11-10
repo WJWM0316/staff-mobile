@@ -4,11 +4,13 @@
       <div class="cover">
         <img class="coverImg" :src="pageInfo.url" alt="">
       </div>
+      <backHome></backHome>
       <div class="title">{{pageInfo.title}}</div>
       <div class="msg">{{pageInfo.wordIntro}}</div>
       <div class="members" v-if="pageInfo.readCount">
         <div class="memberInfo">
-          <img v-for="(n, index) in pageInfo.memberInfo" :key="index">
+          <img v-for="(n, index) in pageInfo.memberInfo" :key="index" :src="n.avatarInfo.smallUrl" v-if="index < 4" @click.stop="toPerson(n.uid)">
+          <img src="@a/icon/firends-call-more.png" v-if="pageInfo.memberInfo.length > 4">
         </div>
         <div class="num"><i class="icon iconfont icon-read_icon_browse"></i> {{pageInfo.readCount}}人</div>
       </div>
@@ -25,20 +27,27 @@
 </template>
 <script>
 import {getBookInfoApi} from '@/api/pages/bookHouse'
+import backHome from '@c/layout/backHome'
 export default {
+  components: {
+    backHome
+  },
   data () {
     return {
       pageInfo: null
     }
   },
   methods: {
+    toPerson (id) {
+      this.$router.push(`/personalPage?uid=${id}`)
+    },
     getDetail () {
       getBookInfoApi({bookId: this.$route.query.id}).then(res => {
         this.pageInfo = res.data
       })
     },
     read () {
-      this.$router.push(`/reader?id=${this.$route.query.id}&sectionId=${this.pageInfo.sessionId}`)
+      this.$router.replace(`/reader?id=${this.$route.query.id}&sectionId=${this.pageInfo.userReadingPercent.currentCatalogueId}`)
     }
   },
   created () {
@@ -88,7 +97,20 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      .memberInfo {}
+      .memberInfo {
+        font-size: 0;
+        img {
+          width: 30px;
+          height: 30px;
+          border: 1px solid #DBDBDB;
+          display: inline-block;
+          border-radius: 50%;
+          margin-left: -5px;
+          &:first-child {
+            margin-left: 0;
+          }
+        }
+      }
       .num {
         margin-top: 10px;
         font-size: 24px; /*px*/

@@ -9,6 +9,7 @@
 
 <script>
 import noDataBox from '@c/layout/noDataShow'
+import localstorage from '@u/localstorage'
 export default {
   name: 'lostPage',
   components: {
@@ -21,7 +22,11 @@ export default {
   },
   methods: {
     back () {
-      this.$router.push({path: ' /home '})
+      if (localstorage.get('curHome') === 'home') {
+        this.$router.push({path: '/home'})
+      } else {
+        this.$router.push({path: '/homeTc'})
+      }
     }
   }
 }

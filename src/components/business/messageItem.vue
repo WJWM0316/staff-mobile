@@ -156,8 +156,8 @@ export default {
       position: relative;
       flex: 0 0 auto;
       .headImg{
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         background: pink;
         border-radius: 50%;
         .sex {
@@ -186,7 +186,7 @@ export default {
           line-height: 19px;
           font-weight: 600;
           width: 295px;
-          color: #576b95;
+          color: #4080ad;
         }
         .name-gold{
           color: #d7ab70;
@@ -196,6 +196,7 @@ export default {
           margin-left: 5px;
           font-size: 14px;
           color: #929292;
+          font-weight: 300;
           }
         }
       .desc-middle{
@@ -228,10 +229,12 @@ export default {
         width: 100%;
         .send-time{
           flex: 1 1 auto;
+          font-weight: 300;
         }
         .linght-house{
           width: 130px;
           text-align: right;
+          font-weight: 300;
           .setEllipsis(130px);
         }
       }

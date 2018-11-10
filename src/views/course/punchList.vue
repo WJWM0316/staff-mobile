@@ -85,7 +85,7 @@ export default {
       if (item) {
         await setExcellentCourseCardApi(param)
         this.getCourseCardListApi()
-        this.$toast({text: '设置优秀打卡成功', type: 'success'})
+        this.$toast({text: '设置成功', type: 'success'})
       }
     },
     async pullUp () {

@@ -1,13 +1,13 @@
 <template>
-  <div id="app-box" v-cloak  :class="{'hasTab' : $route.meta.needBottomTab}">
+  <div id="app-box" :class="{'hasTab' : $route.meta.needBottomTab}">
     <div id="page" ref="page" @touchmove="touchMove" @touchstart="touchStart" @touchend="touchEnd" :style="scrollY">
       <div class="pulldown-tip" ref="pulldownTip" v-show="$route.meta.pullDown">
         <img class="pull-icon" src="@/assets/icon/loading.png" alt="">
       </div>
       <keep-alive>
-        <router-view v-if="$route.meta.keepAlive"></router-view>
+        <router-view v-if="$route.meta.keepAlive" :key="$route.name"></router-view>
       </keep-alive>
-      <router-view v-if="!$route.meta.keepAlive"></router-view>
+      <router-view v-if="!$route.meta.keepAlive" :key="$route.name"></router-view>
     </div>
     <tabbar slot="bottom" class="bottomTab"  v-show="$route.meta.needBottomTab" v-model="tabIndex">
       <tabbar-item
@@ -127,7 +127,7 @@ export default {
       }
     },
     tabIndex (index) {
-      this.$router.push(this.tabList[index].src)
+      this.$router.replace(this.tabList[index].src)
     },
     userInfo () {}
   },

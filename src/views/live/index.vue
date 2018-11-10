@@ -21,29 +21,33 @@
       <div class="all" v-show="tabIndex === 1">
         <div class="list">
           <template v-if="all.list1.length > 0">
-            <div class="head">
+            <div class="head border-bottom-1px">
               <i class="icon"></i>
               <span class="txt">近期直播</span>
             </div>
             <infoCard type="3" v-for="item in all.list1" :key='item.liveId' :item="item"></infoCard>
+            <noDataShow v-if="all.list1.length === 0"></noDataShow>
           </template>
-          <template v-if="all.list2.length > 0">
-            <div class="head">
+          <template v-if="all.isRequireEnd">
+            <div class="head border-bottom-1px">
               <i class="icon"></i>
               <span class="txt">回顾直播</span>
             </div>
+            <div class="category">
+              <span v-for="(n, index) in category" :class="{'cur': categoryIndex === index}" :key="index" @click.stop="toggleType(n.categoryId, index)">{{n.categoryName}}</span>
+            </div>
             <infoCard type="3" v-for="item in all.list2" :key='item.liveId' :item="item"></infoCard>
+            <noDataShow v-if="all.list2.length === 0"></noDataShow>
           </template>
         </div>
         <pullUpUi v-if="tabIndex === 1" :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :key='2'></pullUpUi>
-        <noDataShow v-if="all.list1.length === 0 && all.list2.length === 0"></noDataShow>
       </div>
     </div>
   </div>
 </template>
 <script>
 import infoCard from '@c/business/infoCard.vue'
-import { getJoinListApi, getRecentListApi, getEndListApi } from '@/api/pages/live'
+import { getJoinListApi, getRecentListApi, getEndListApi, getCategoryApi } from '@/api/pages/live'
 export default {
   components: {
     infoCard
@@ -52,6 +56,8 @@ export default {
     return {
       tabIndex: 0,
       tabList: ['我参与的直播', '所有直播'],
+      category: [], // 直播分类
+      categoryIndex: 0, // 直播分类索引
       joined: {
         list: [],
         page: 1,
@@ -60,6 +66,7 @@ export default {
       },
       all: {
         isLoad: false, // 列表还未加载
+        isRequireEnd: false, // 是否请求过回顾列表
         list1: [],
         list2: [],
         recentPage: 1, // 近期直播页数
@@ -75,6 +82,7 @@ export default {
       if (this.tabIndex === 1) {
         this.$router.push('/live?type=all')
         if (!this.all.isLoad && !this.all.noData) {
+          this.getCategory()
           this.getRecentList({page: 1}, true)
         }
       } else {
@@ -110,6 +118,18 @@ export default {
         }
       }
     },
+    getCategory () { // 获取直播回顾分类
+      getCategoryApi().then(res => {
+        this.category = res.data
+      })
+    },
+    toggleType (id, index) { // 切换直播回顾分类
+      this.all.endPage = 1
+      this.allnoData = false
+      this.all.list2 = []
+      this.categoryIndex = index
+      this.getEndList({page: 1, categoryId: id}, true)
+    },
     getJoinList ({page, count}, needLoading) {
       return new Promise((resolve, reject) => {
         let data = {
@@ -135,17 +155,19 @@ export default {
         getRecentListApi(data, needLoading).then(res => {
           this.all.list1 = this.all.list1.concat(res.data || [])
           if (res.data.length < 20) {
-            this.getEndList({page: 1}, false)
+            this.getEndList({page: 1}, true)
           }
           resolve(res)
         })
       })
     },
-    getEndList ({page, count}, needLoading) {
+    getEndList ({page, count, categoryId}, needLoading) {
+      this.all.isRequireEnd = true
       return new Promise((resolve, reject) => {
         let data = {
           page: page || 1,
-          count: count || 20
+          count: count || 20,
+          categoryId
         }
         getEndListApi(data, needLoading).then(res => {
           this.all.list2 = this.all.list2.concat(res.data || [])
@@ -227,6 +249,41 @@ export default {
         line-height: 20px;
         font-weight: 700;
         color: #929292;
+      }
+    }
+    .category {
+      width: 100%;
+      padding: 0 20px;
+      box-sizing: border-box;
+      white-space: nowrap;
+      overflow-x: scroll;
+      line-height: 40px;
+      font-size: 0;
+      span {
+        font-size: 28px; /*px*/
+        color: #929292;
+        margin-right: 22px;
+        font-weight: 300;
+        line-height: 40px;
+        display: inline-block;
+        &:last-child {
+          margin-right: 0;
+        }
+        &.cur {
+          color: #354048;
+          font-weight: 700;
+          position: relative;
+          &::after {
+            content: '';
+            width: 15px;
+            height: 3px;
+            background: #FFE266;
+            position: absolute;
+            left: 50%;
+            margin-left: -7.5px;
+            bottom: 0;
+          }
+        }
       }
     }
   }
