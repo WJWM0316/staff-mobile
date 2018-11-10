@@ -80,13 +80,13 @@ export default {
     choseTab (index) {
       this.tabIndex = index
       if (this.tabIndex === 1) {
-        this.$router.push('/live?type=all')
+        this.$router.replace('/live?type=all')
         if (!this.all.isLoad && !this.all.noData) {
           this.getCategory()
           this.getRecentList({page: 1}, true)
         }
       } else {
-        this.$router.push('/live')
+        this.$router.replace('/live')
         if (this.joined.list.length === 0 && !this.joined.noData) {
           this.getJoinList({page: 1}, true)
         }

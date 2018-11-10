@@ -77,17 +77,16 @@ export default {
       this.sectionId = data.sectionId
       getContentApi(data).then(res => {
         this.pageInfo = res.data
+        window.scroll(0, 0)
       })
     },
     jump (id) {
-      window.scroll(0, 0)
       this.sectionId = id
       this.getDetail(id)
       this.openCatalog = false
       this.$router.replace(`/reader?id=${this.bookId}&sectionId=${id}`)
     },
     paging (type) {
-      window.scroll(0, 0)
       if (type === 'prev') {
         if (this.sectionIndex > 0) {
           this.sectionIndex--
