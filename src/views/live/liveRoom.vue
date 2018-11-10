@@ -23,6 +23,7 @@
       <div class='txt'>连接服务器失败，点击重新连接</div>
       <i class='icon iconfont icon-me_icon_edit_chevron'></i>
     </div>
+    <!-- 返回最顶部最底部按钮 -->
     <div class='main' ref="main" :class="{'text': curOperType === 'text', 'audio': curOperType === 'audio'}">
       <scroller class='scroll'
         ref='scroll'
@@ -49,6 +50,7 @@
             :isNeedRead='!liveDetail.isTutor'
             :isNeedEnd='!liveDetail.isTutor'
             ref="messageItem"
+            @curPlayMusic='curPlayMusic'
             @nextMusic='nextMusic'
           ></live-message>
         </div>
@@ -59,6 +61,11 @@
       <div class="scrollBtn" v-if="liveDetail.status !== 1 && list.length > 0">
         <i class="btn" @click.stop="scrollTo('top')"><img src="@a/icon/live_btn_gotop@3x.png" alt=""></i>
         <i class="btn" @click.stop="scrollTo('bottom')"><img src="@a/icon/live_btn_gobase@3x.png" alt=""></i>
+      </div>
+      <!-- 返回当前播放音频的位置 -->
+      <div class="audioPos" @click.stop="jumpAudio" v-if="!liveDetail.isTutor">
+        <span>回到播放位置</span>
+        <i class="icon"></i>
       </div>
     </div>
     <!-- 普通学员操作权限 -->
@@ -163,6 +170,7 @@ export default {
       isPulldown: true, // 是否开启下拉
       isPullup: true, // 是否开启上拉
       audioList: [], // 音频列表
+      curPlayIndex: 0, // 当前正在播放的音频序号
       curOperType: null, // 导师选择发布的类型
       fileId: null, // 导师发布的附件id
       scrollerHeight: null, // 用于计算scroller的高度
@@ -175,7 +183,15 @@ export default {
       wsStatus: state => state.websocket.wsStatus,
       sendData: state => state.websocket.sendData,
       onlineNum: state => state.websocket.onlineNum
-    })
+    }),
+    moreThanThree () {
+      // 直播结束超过三天不给提问
+      if (this.liveDetail.status === 3 && new Date().getTime() - this.liveDetail.endTime * 1000 > 3 * 3600 * 1000) {
+        return true
+      } else {
+        return false
+      }
+    }
   },
   watch: {
     list () {},
@@ -185,9 +201,7 @@ export default {
         this.isPullup = false
       }
     },
-    audioList (val) {
-      console.log(val)
-    },
+    audioList (val) {},
     sendData () {},
     openArea (val) {
       if (val) this.newMsgCount = 0
@@ -316,9 +330,11 @@ export default {
       })
     },
     nextMusic (index) {
-      this.$refs.scroll.scrollToElement(this.$refs.message.getElementsByClassName('live-message')[index])
-      console.log(this.$refs.messageItem[index], index, 11111111)
+      this.curPlayIndex = index
       this.$refs.messageItem[index].$children[0].play()
+    },
+    jumpAudio () {
+      this.$refs.scroll.scrollToElement(this.$refs.message.getElementsByClassName('live-message')[this.curPlayIndex])
     },
     loadPrev () {
       if (this.isPulldown && this.list.length > 0 && this.list[0].messageId) {
@@ -345,6 +361,14 @@ export default {
       }
     },
     putQuestions () {
+      if (this.moreThanThree) {
+        this.$toast({
+          text: '<p>直播结束超过三天，</p><p>不允许提问！</p>',
+          type: 'text',
+          width: '10em'
+        })
+        return
+      }
       if (this.problemTxt !== '') {
         return new Promise((resolve, reject) => {
           let data = {
@@ -680,6 +704,27 @@ export default {
           }
         }
       }
+      .audioPos {
+        width: 110px;
+        height: 36px;
+        padding: 0 10px 0 15px;
+        position: fixed;
+        bottom: 81px;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 24px; /*px*/
+        color: #929292;
+        font-weight: 300;
+        box-sizing: border-box;
+        background: #fff;
+        border-radius: 50px 0 0 50px;
+        box-shadow: 0px 10px 20px 0px rgba(200,200,200,0.1);
+        .icon {
+          .setTriangle()
+        }
+      }
     }
     .footer {
       width: 100%;
@@ -800,8 +845,8 @@ export default {
             position: relative;
             &::after {
               content: '';
-              width: 5px;
-              height: 5px;
+              width: 7px;
+              height: 7px;
               background: #FF4949;
               position: absolute;
               border-radius: 50%;

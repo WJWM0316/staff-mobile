@@ -13,6 +13,7 @@
         :key="messageData.messageId"
         :isNeedRead='isNeedRead'
         :isNeedEnd='isNeedEnd'
+        @curPlayMusic='curPlayMusic'
         @removeRed="removeRed"
         @nextMusic='nextMusic'
         @endAudio='endAudio'
@@ -79,6 +80,11 @@ export default {
       }
       endAudioApi(data)
     },
+    // 当前播放音频
+    curPlayMusic (index) {
+      this.$emit('curPlayMusic', index)
+    },
+    // 一下个播放音频
     nextMusic (index) {
       this.$emit('nextMusic', index)
     }

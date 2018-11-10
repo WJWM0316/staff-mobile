@@ -111,13 +111,13 @@ class WS {
   // 接收数据
   resolve = (data) => {
     this.ws.onmessage = (evt) => {
-      console.log(evt.data)
       data = evt.data
     }
     return data
   }
   // 关闭websocket
   close = (isReConnect) => {
+    if (!this.ws) return
     this.needReConnect = isReConnect
     this.ws.close()
   }

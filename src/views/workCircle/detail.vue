@@ -205,19 +205,18 @@ export default {
     toTop (e) {
       this.nowChoosePost = e
       this.addActionsConfig.show = true
-      console.log(e)
     },
     /* 选择置顶或取消 */
     async handleAddActoinItem (key, item) {
       if (key === 'selected') {
         circlePostToTopApi({id: this.nowChoosePost.id}).then(res => {
           this.item.isTop = true
-          this.$toast({text: '帖子置顶成功', type: 'success'})
+          this.$toast({text: '置顶成功', type: 'success'})
         })
       } else {
         delCirclePostToTopApi({id: this.nowChoosePost.id}).then(res => {
           this.item.isTop = false
-          this.$toast({text: '取消置顶成功'})
+          this.$toast({text: '取消成功', type: 'success'})
         })
       }
     }

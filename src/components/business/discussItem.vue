@@ -209,7 +209,6 @@ export default {
         this.item.favorCount += 1
         if (!this.item.favorUsers) this.item.favorUsers = []
         this.item.favorUsers.push({realname: this.item.currentUserInfo.realname})
-        this.$toast({text: '点赞成功', type: 'success'})
       } else {
         if (this.isCourse) {
           await delFavorApi(param)
@@ -222,10 +221,8 @@ export default {
         this.item.favorUsers.map(function (item, index) {
           if (item.realname === that.item.currentUserInfo.realname) {
             that.item.favorUsers.splice(index, 1)
-            console.log(that.item.currentUserInfo.realname, index)
           }
         })
-        this.$toast({text: '取消点赞成功'})
       }
     },
     async del () {
@@ -234,7 +231,7 @@ export default {
       } else {
         await delCommentApi(this.item.id)
       }
-      this.$toast({text: '评论已删除', type: 'success'})
+      this.$toast({text: '删除成功', type: 'success'})
       this.$emit('delComment', {index: this.index})
     }
   },

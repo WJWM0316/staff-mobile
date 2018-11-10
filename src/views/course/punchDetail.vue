@@ -219,9 +219,9 @@ export default {
       await setExcellentCourseCardApi(param)
       await this.getPunchCardDetails()
       if (this.nowChoosePunch.isExcellentCard) {
-        this.$toast({text: '已取消优秀打卡'})
+        this.$toast({text: '取消成功', type: 'success'})
       } else {
-        this.$toast({text: '设置优秀打卡成功', type: 'success'})
+        this.$toast({text: '设置成功', type: 'success'})
       }
     }
   },

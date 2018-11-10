@@ -1,6 +1,6 @@
 <template>
   <div class="message">
-    <div class="title">消息通知</div>
+    <div class="title border-bottom-1px">消息通知</div>
     <div class="list">
       <messageItem
         v-for="(item, index) in list"
