@@ -2,7 +2,7 @@
   <div class="reader">
     <div class="content" ref="richText" v-if="pageInfo" v-html="pageInfo.content"></div>
     <div class="operArea" :class="{'floor': showOper}">
-      <div class="item" @click.stop="openCatalog = true"><i class="icon iconfont icon-read_btn_datalog"></i>目录</div>
+      <div class="item" @click.stop="openCatalog = true"><i class="icon iconfont icon-menu"></i>目录</div>
       <div class="item" @click.stop="paging('prev')" :class="{'hide': sectionIndex <= 0}">上一节</div>
       <div class="item" @click.stop="paging('next')" :class="{'hide': sectionIndex >= idList.length - 1}">下一节</div>
     </div>

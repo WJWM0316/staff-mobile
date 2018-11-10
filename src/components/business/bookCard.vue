@@ -113,7 +113,7 @@ export default {
       color: #BCBCBC;
       font-size: 24px; /*px*/
       line-height: 16px;
-      margin-top: 6px;
+      margin-top: 5px;
     }
   }
   .allBook {
