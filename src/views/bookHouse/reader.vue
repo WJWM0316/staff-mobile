@@ -4,15 +4,16 @@
     <div class="operArea" :class="{'floor': showOper}">
       <div class="item" @click.stop="openCatalog = true"><i class="icon iconfont icon-read_btn_datalog"></i>目录</div>
       <div class="item" @click.stop="paging('prev')" :class="{'hide': sectionIndex <= 0}">上一节</div>
-      <div class="item" @click.stop="paging('next')" :class="{'hide': sectionIndex >= catalog.length - 1}">下一节</div>
+      <div class="item" @click.stop="paging('next')" :class="{'hide': sectionIndex >= idList.length - 1}">下一节</div>
     </div>
     <Popup v-model="openCatalog" position='left' height="100%" class="popup" v-if="detail">
       <p class="catalogP">目录</p>
       <div class="catalog">
-        <div class="header" @click.stop="toDetail">
+        <div class="header border-bottom-1px" @click.stop="toDetail">
           <img class="icon" :src="detail.smallUrl" alt="">
           <div class="msg">
             <p class="title">{{detail.title}}</p>
+            <i class="back iconfont icon-me_icon_edit_chevron"></i>
           </div>
         </div>
         <div class="list">
@@ -50,16 +51,16 @@ export default {
       getCatalogueApi({bookId: this.bookId}).then(res => {
         this.catalog = res.data.catalogues
         this.detail = res.data.bookDetail
+        this.catalog.forEach((item, index) => {
+          if (item.catalogueSections.length > 0) {
+            item.catalogueSections.forEach((item1, index1) => {
+              this.idList.push(item1.sectionId)
+            })
+          } else {
+            this.idList.push(item.chapterId)
+          }
+        })
         if (this.sectionId) {
-          this.catalog.forEach((item, index) => {
-            if (item.catalogueSections.length > 0) {
-              item.catalogueSections.forEach((item1, index1) => {
-                this.idList.push(item1.sectionId)
-              })
-            } else {
-              this.idList.push(item.chapterId)
-            }
-          })
           this.idList.forEach((itme2, index2) => {
             if (this.sectionId === itme2) {
               this.sectionIndex = index2
@@ -77,17 +78,16 @@ export default {
       this.sectionId = data.sectionId
       getContentApi(data).then(res => {
         this.pageInfo = res.data
+        window.scroll(0, 0)
       })
     },
     jump (id) {
-      window.scroll(0, 0)
       this.sectionId = id
       this.getDetail(id)
       this.openCatalog = false
       this.$router.replace(`/reader?id=${this.bookId}&sectionId=${id}`)
     },
     paging (type) {
-      window.scroll(0, 0)
       if (type === 'prev') {
         if (this.sectionIndex > 0) {
           this.sectionIndex--
@@ -95,7 +95,8 @@ export default {
           this.$router.replace(`/reader?id=${this.bookId}&sectionId=${this.sectionId}`)
         }
       } else {
-        if (this.sectionIndex < this.catalog.length - 1) {
+        console.log(this.sectionIndex, this.idList.length)
+        if (this.sectionIndex < this.idList.length - 1) {
           this.sectionIndex++
           this.getDetail()
           this.$router.replace(`/reader?id=${this.bookId}&sectionId=${this.sectionId}`)
@@ -133,14 +134,14 @@ export default {
   .content {
     padding: 18px 20px 59px;
     font-size: 30px; /*px*/
-    line-height: 1.4;
+    line-height: 1.9;
     font-weight: 300;
     color: #354048;
     min-height: 100vh;
     box-sizing: border-box;
     h1 {
       font-size: 36px; /*px*/
-      line-height: 1.4;
+      line-height: 1.9;
       margin-bottom: 12px;
     }
   }
@@ -189,7 +190,6 @@ export default {
       .header {
         padding: 18px 17px 15px 65px;
         position: relative;
-        border-bottom: 1px solid #DCDCDC;
         .icon {
           position: absolute;
           width: 30px;
@@ -206,6 +206,15 @@ export default {
           display: flex;
           align-items: center;
           line-height: 20px;
+          justify-content: space-between;
+          .title {
+            width: 80%;
+            .setEllipsisLn(2)
+          }
+          .back {
+            font-size: 24px; /*px*/
+            color: rgb(220, 220, 220);
+          }
         }
       }
       .list {

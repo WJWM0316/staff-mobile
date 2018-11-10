@@ -3,12 +3,13 @@
     <div class="mineBook" v-if="type === 1">
       <img class="cover defaultImg" :src="cardData.middleUrl" alt="">
         <div class="title">{{cardData.title}}</div>
-        <div class="progressBox">
+        <div class="progressBox" v-if="cardData.currentReadingPercent < 100">
           <div class="progress">
-            <div class="inner" :style="{'width': cardData.currentReadingPercent}"></div>
+            <div class="inner" :style="{'width': cardData.currentReadingPercent + '%'}"></div>
           </div>
-          <span class="num">{{cardData.currentReadingPercent}}</span>
+          <span class="num">{{cardData.currentReadingPercent}}%</span>
         </div>
+        <div class="end" v-else>已读完</div>
     </div>
     <div class="allBook" v-if="type === 0">
       <img class="cover" :src="cardData.middleUrl" alt="">
@@ -40,7 +41,24 @@ export default {
   },
   methods: {
     toDetail () {
-      this.$router.push(`/bookDetail?id=${this.cardData.bookId}`)
+      let id = ''
+      let isRead = false
+      if (this.type === 1) {
+        id = this.cardData.currentCatalogueId
+        if (this.cardData.currentReadingPercent > 0) {
+          isRead = true
+        }
+      } else {
+        id = this.cardData.readInfo.currentCatalogueId
+        if (this.cardData.readInfo.currentReadingPercent > 0) {
+          isRead = true
+        }
+      }
+      if (isRead) {
+        this.$router.push(`/reader?id=${this.cardData.bookId}&sectionId=${id}`)
+      } else {
+        this.$router.push(`/bookDetail?id=${this.cardData.bookId}`)
+      }
     }
   }
 }
@@ -90,6 +108,12 @@ export default {
           left: 0;
         }
       }
+    }
+    .end {
+      color: #BCBCBC;
+      font-size: 24px; /*px*/
+      line-height: 16px;
+      margin-top: 6px;
     }
   }
   .allBook {

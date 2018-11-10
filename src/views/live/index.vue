@@ -80,13 +80,13 @@ export default {
     choseTab (index) {
       this.tabIndex = index
       if (this.tabIndex === 1) {
-        this.$router.push('/live?type=all')
+        this.$router.replace('/live?type=all')
         if (!this.all.isLoad && !this.all.noData) {
           this.getCategory()
           this.getRecentList({page: 1}, true)
         }
       } else {
-        this.$router.push('/live')
+        this.$router.replace('/live')
         if (this.joined.list.length === 0 && !this.joined.noData) {
           this.getJoinList({page: 1}, true)
         }
@@ -121,11 +121,17 @@ export default {
     getCategory () { // 获取直播回顾分类
       getCategoryApi().then(res => {
         this.category = res.data
+        let data = {
+          categoryId: null,
+          categoryName: '全部',
+          sort: 0
+        }
+        this.category.unshift(data)
       })
     },
     toggleType (id, index) { // 切换直播回顾分类
       this.all.endPage = 1
-      this.allnoData = false
+      this.all.noData = false
       this.all.list2 = []
       this.categoryIndex = index
       this.getEndList({page: 1, categoryId: id}, true)

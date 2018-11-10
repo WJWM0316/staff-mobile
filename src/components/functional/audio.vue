@@ -140,9 +140,11 @@ export default {
             }
             this.updata_audioCurId(nowId)
             this.audio.play()
+            this.$emit('curPlayMusic', this.curIndex)
           }, 200)
         } catch (e) {
           this.audio.play()
+          this.$emit('curPlayMusic', this.curIndex)
         }
       }
       if (!this.isCurAudio) {
