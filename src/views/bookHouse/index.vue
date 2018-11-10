@@ -14,7 +14,9 @@
       <span class="tabItem" v-for="(n, index) in tabBarList" :key="n.id" :class="{'cur': tabBarIndex === index}" @click.stop="toggle(n.id, index)">{{n.tagName}}</span>
     </div>
     <div class="myList" v-show="tabIndex === 0">
-      <bookCard class="item" v-for="item in myData.list" :key='item.bookId+11' :cardData="item" :type="1"></bookCard>
+      <div style="overflow: hidden;">
+        <bookCard class="item" v-for="item in myData.list" :key='item.bookId+11' :cardData="item" :type="1"></bookCard>
+      </div>
       <pullUpUi v-if="tabIndex === 0" :noData="myData.noData" :pullUpStatus="myData.pullUpStatus" @pullUp="pullUp" :key='1'></pullUpUi>
       <noDataShow v-if="myData.list.length === 0"></noDataShow>
     </div>
@@ -78,7 +80,7 @@ export default {
         this.allData.page++
         getBooksListApi({page: this.allData.page, tag_id: tabId}).then(res => {
           this.allData.list = this.allData.list.concat(res.data)
-          if (res.meta.currentPage === res.meta.lastPage) {
+          if (!res.meta.nextPageUrl) {
             this.allData.noData = true
           }
           resolve(res.data)
@@ -92,7 +94,7 @@ export default {
         this.myData.page++
         getMyBooksListApi({page: this.myData.page}).then(res => {
           this.myData.list = this.myData.list.concat(res.data)
-          if (res.meta.currentPage === res.meta.lastPage) {
+          if (!res.meta.nextPageUrl) {
             this.myData.noData = true
           }
           resolve(res.data)
@@ -208,6 +210,7 @@ export default {
   }
   .myList {
     padding: 30px 23px;
+    overflow: hidden;
     .item {
       float: left;
       margin-right: 22px;
