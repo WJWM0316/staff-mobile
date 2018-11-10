@@ -90,11 +90,11 @@ export default{
   }
   .postLink{
     .linkText{
-      overflow:hidden; 
-      text-overflow:ellipsis;
-      display:-webkit-box !important; 
-      -webkit-box-orient:vertical;
-      -webkit-line-clamp:2; 
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box !important;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
       color: #111111 !important;
     }
   }
