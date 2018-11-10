@@ -43,7 +43,7 @@ export default {
       catalog: [],
       idList: [], // 章节id列表
       openCatalog: false, // 打开目录
-      showOper: false // 操作栏
+      showOper: true // 操作栏
     }
   },
   methods: {
@@ -110,15 +110,10 @@ export default {
   created () {
     this.getCatalog()
     let lastY = 0
-    let timer = null
     window.onscroll = (e) => {
-      if (window.pageYOffset > lastY) {
+      if (window.pageYOffset < lastY) {
         if (!this.showOper) {
           this.showOper = true
-          clearTimeout(timer)
-          timer = setTimeout(() => {
-            this.showOper = false
-          }, 2000)
         }
       } else {
         this.showOper = false
