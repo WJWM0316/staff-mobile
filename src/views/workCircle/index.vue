@@ -13,7 +13,7 @@
       </template>
     </div>
     <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
-    <nodata-box v-if="circleList.length === 0"></nodata-box>
+    <nodata-box class="nodata" v-if="circleList.length === 0"></nodata-box>
   </div>
 </template>
 
@@ -223,6 +223,13 @@ export default {
     }
     /*tab列表*/
     .content{
+    }
+    .nodata{
+      margin-top: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
     }
   }
 </style>

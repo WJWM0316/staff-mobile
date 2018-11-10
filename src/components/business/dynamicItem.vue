@@ -220,13 +220,6 @@ export default {
     },
     /*  点赞  */
     async praise () {
-      if (this.item.postType !== 'jobcircleSection' && this.$route.path !== '/punchDetail') {
-        this.$router.push({path: '/punchDetail', query: {id: this.item.courseSectionCardId}})
-        return
-      } else if (this.item.postType === 'jobcircleSection' && this.$route.path !== '/postDetail') {
-        this.$router.push({path: '/postDetail', query: {id: this.item.id}})
-        return
-      }
       let param = {
         sourceId: this.item.courseSectionCardId || this.item.id,
         sourceType: 'course_section_card',
@@ -240,6 +233,8 @@ export default {
         } else { // 工作圈打卡点赞
           await circleCommonFavorApi(param, false)
         }
+        if (!this.item.favorList) this.item.favorList = []
+        this.item.favorList.push({realname: this.item.currencyUser.realname})
         this.item.favorTotal += 1
         this.isfavor = true
       } else {
@@ -249,6 +244,12 @@ export default {
         } else { // 工作圈打卡取消点赞
           await delCircleCommonFavorApi(param, false)
         }
+        let that = this
+        this.item.favorList.map(function (item, index) {
+          if (item.realname === that.item.currencyUser.realname) {
+            that.item.favorList.splice(index, 1)
+          }
+        })
         this.item.favorTotal -= 1
         this.isfavor = false
       }
