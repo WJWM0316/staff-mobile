@@ -145,7 +145,8 @@ export default {
       showMask: false, // 展示链接输入框
       isCircleSelf: false, // 是否仅限圈内可见
       isiOS: '',
-      nowWeiXinImgNum: '' // 微信上传图片选中多少张
+      nowWeiXinImgNum: '', // 微信上传图片选中多少张
+      isSend: false // 是否已经发送帖子
     }
   },
   methods: {
@@ -200,6 +201,7 @@ export default {
         text: '发帖成功',
         type: 'success',
         callBack () {
+          that.isSend = true
           that.$router.go(-1)
         }
       })
@@ -355,7 +357,8 @@ export default {
     let u = navigator.userAgent
     let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
     this.isiOS = isiOS
-  }
+  },
+  beforeRouteLeave (to, from, next) {}
 }
 </script>
 
