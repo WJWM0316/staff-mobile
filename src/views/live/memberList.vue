@@ -10,7 +10,7 @@
       <span class="txt">成员列表</span>
     </div>
     <classmateItem v-for="(item, index) in studentList" :key="'student'+index" :item="item"></classmateItem>
-    <pullUpUi :noData="noData" :pullUpStatus="pullUpStatus" @pullUp="pullUp"></pullUpUi>
+    <pullUpUi :noData="noData" :list="studentList" :pullUpStatus="pullUpStatus" @pullUp="pullUp"></pullUpUi>
   </div>
 </template>
 <script>

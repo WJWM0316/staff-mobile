@@ -76,6 +76,7 @@ export default {
         top: 20px;
         left: 50%;
         margin-left: -50px;
+        box-shadow: 0px 2px 5px 0px rgba(219,219,219,1);
       }
     }
     .title {

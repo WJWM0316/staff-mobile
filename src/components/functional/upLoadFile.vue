@@ -239,6 +239,9 @@ export default {
 #image {
   max-width: 100%;
 }
+.cropper-modal {
+  opacity: 1 !important;
+}
 .upLoadFile {
   .upLoadFileBox {
     width: 100%;

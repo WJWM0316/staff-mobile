@@ -4,6 +4,7 @@
       <img src="@a/icon/error_404@3x.png" alt="">
     </div>
     <p class="txt">{{content}}</p>
+    <div class="btn" @click.stop="toChose" v-if='content === "还没开始读第一本书~"'>去选书</div>
   </div>
 </template>
 <script>
@@ -12,6 +13,11 @@ export default {
     content: {
       type: String,
       default: '暂时还没有内容哦～'
+    }
+  },
+  methods: {
+    toChose () {
+      this.$router.push('/bookHouse?all=true')
     }
   }
 }
@@ -36,6 +42,18 @@ export default {
       text-align: center;
       color: #BCBCBC;
       font-weight: 300;
+    }
+    .btn {
+      width: 170px;
+      height: 40px;
+      line-height: 40px;
+      margin: 14px auto;
+      color: #D7AB70;
+      font-weight: 300;
+      border: 0.5px solid #D7AB70;
+      box-sizing: border-box;
+      text-align: center;
+      border-radius: 50px;
     }
   }
 </style>

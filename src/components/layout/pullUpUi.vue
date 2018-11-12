@@ -3,7 +3,7 @@
     <div class="loading-container" v-show="pullUpStatus && !noData">
       <img class="loadmore" src="@/assets/icon/loadMore.gif">
     </div>
-    <p class="loading-connecting" v-show="!pullUpStatus && noData">没有更多数据</p>
+    <p class="loading-connecting" v-show="!pullUpStatus && noData && list.length > 0">没有更多数据</p>
   </div>
 </template>
 <script>
@@ -12,6 +12,12 @@ export default {
     pullUpStatus: {
       type: Boolean,
       default: false
+    },
+    list: {
+      type: Array,
+      default: () => {
+        return []
+      }
     },
     noData: {
       type: Boolean,

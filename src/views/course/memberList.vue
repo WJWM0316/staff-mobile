@@ -16,7 +16,7 @@
       <span class="txt">成员列表</span>
     </div>
     <classmateItem v-for="(item, index) in studentList" :key="'student'+index" :item="item"></classmateItem>
-    <pullUpUi :noData="noData" :pullUpStatus="pullUpStatus" @pullUp="pullUp"></pullUpUi>
+    <pullUpUi :noData="noData" :list="studentList" :pullUpStatus="pullUpStatus" @pullUp="pullUp"></pullUpUi>
     <!--链接输入弹窗-->
     <div class="Mask" v-if="showRule">
       <div class="ruleTxt">

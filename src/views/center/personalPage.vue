@@ -95,7 +95,7 @@
           :showCommunicate="false"
           :personal="true"
         ></dynamicItem>
-        <pullUpUi :noData="postData.noData" :pullUpStatus="postData.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+        <pullUpUi :noData="postData.noData" :list="postData.list" :pullUpStatus="postData.pullUpStatus" @pullUp="pullUp"></pullUpUi>
         <noDataShow v-if="postData.list.length === 0"></noDataShow>
       </div>
     </template>
@@ -118,7 +118,7 @@
             :key="item.id"
             type="1"
           ></infoCard>
-          <pullUpUi :noData="courseData.noData" :pullUpStatus="courseData.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+          <pullUpUi :noData="courseData.noData" :list="courseData.list" :pullUpStatus="courseData.pullUpStatus" @pullUp="pullUp"></pullUpUi>
           <noDataShow v-if="courseData.list.length === 0"></noDataShow>
         </div>
         <div v-if="tabExtIndex === 1">
@@ -128,7 +128,7 @@
             :key="item.liveId"
             type="3"
           ></infoCard>
-          <pullUpUi :noData="liveData.noData" :pullUpStatus="liveData.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+          <pullUpUi :noData="liveData.noData" :list="liveData.list" :pullUpStatus="liveData.pullUpStatus" @pullUp="pullUp"></pullUpUi>
           <noDataShow v-if="liveData.list.length === 0"></noDataShow>
         </div>
       </div>

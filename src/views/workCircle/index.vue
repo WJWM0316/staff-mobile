@@ -12,7 +12,7 @@
         <info-card type="2" :item="item" :isList="true" :showIntroduction="false" :origin="false" :key="index"></info-card>
       </template>
     </div>
-    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+    <pullUpUi :noData="all.noData" :list="all.list" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
     <nodata-box class="nodata" v-if="circleList.length === 0"></nodata-box>
   </div>
 </template>

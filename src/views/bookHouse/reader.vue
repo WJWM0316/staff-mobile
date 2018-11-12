@@ -134,16 +134,18 @@ export default {
   position: relative;
   .content {
     padding: 18px 20px 59px;
-    font-size: 30px; /*px*/
+    font-size: 32px; /*px*/
     line-height: 1.9;
-    font-weight: 300;
     color: #354048;
     min-height: 100vh;
     box-sizing: border-box;
-    h1 {
+    h1, h2, h3, h4, h5, h6 {
       font-size: 36px; /*px*/
-      line-height: 1.9;
+      line-height: 1.4;
       margin-bottom: 12px;
+    }
+    img {
+      margin: 10px 0;
     }
   }
   .operArea {
@@ -175,8 +177,8 @@ export default {
         text-align: right;
       }
       .icon {
-        font-size: 50px; /*px*/
-        margin-right: 5px;
+        font-size: 44px; /*px*/
+        margin-right: 4px;
         vertical-align: middle;
         color: #ACACAC;
       }
