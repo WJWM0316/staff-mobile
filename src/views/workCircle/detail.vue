@@ -127,8 +127,7 @@ export default {
         count: 20,
         id: this.$route.query.id
       }
-      let res = await getHotCommentListApi(param)
-      this.commentList.push(...res.data)
+      return getHotCommentListApi(param)
     },
     /* 获取评论列表 */
     async getCommentList () {
@@ -137,8 +136,7 @@ export default {
         count: 20,
         id: this.$route.query.id
       }
-      let res = await firstCommentListlApi(param)
-      this.commentList.push(...res.data)
+      return firstCommentListlApi(param)
     },
     /* 获取点赞列表 */
     async getFavorList () {
@@ -154,8 +152,9 @@ export default {
       let { id } = this.$route.query
       let res = await postDetailApi(id)
       this.item = res.data
-      this.getHotCommentList()
-      this.getCommentList()
+      let hotRes = await this.getHotCommentList()
+      let res1 = await this.getCommentList()
+      this.commentList.push(...hotRes.data, ...res1.data)
     },
     /* 点击评论调起底部输入框 */
     async comment (param) {
@@ -192,8 +191,11 @@ export default {
         sourceType: 'job_circle_post', // 对应评论类型是打卡或是回复评论
         content: value // 评论内容
       }
-      circleCommentApi(params).then(res => {
-        this.getCommentList()
+      circleCommentApi(params).then(async res => {
+        let hotRes = await this.getHotCommentList()
+        let res1 = await this.getCommentList()
+        this.commentList = []
+        this.commentList.push(...hotRes.data, ...res1.data)
         this.item.commentTotal += 1
         this.$toast({text: '评论成功', type: 'success'})
         this.isShow = false
