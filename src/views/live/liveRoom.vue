@@ -302,21 +302,15 @@ export default {
       return getLiveRoomMsgApi(data, needLoading).then(res => {
         if (action === 1) {
           this.list = this.list.concat(res.data)
-          res.data.filter((item, index) => {
-            if (item.type === 'audio') {
-              item.index = index
-              this.audioList.push(item)
-            }
-          })
         } else {
           this.list = res.data.concat(this.list)
-          res.data.filter((item, index) => {
-            if (item.type === 'audio') {
-              item.index = index
-              this.audioList.unshift(item)
-            }
-          })
         }
+        this.list.forEach((item, index) => {
+          if (item.type === 'audio') {
+            item.index = index
+            this.audioList.push(item)
+          }
+        })
         if (isFirst) {
           this.$nextTick(() => {
             if (this.liveDetail.status === 2) {

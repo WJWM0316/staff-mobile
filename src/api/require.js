@@ -31,7 +31,7 @@ const hideLoading = () => {
 }
 export const request = ({type = 'post', url, data = {}, needLoading = true, config = {}} = {}) => {
   // 部分接口api域名不一样 需要重新定义host
-  if (url === '/sso_login/bind/wechat' || url === '/unifyauth/login' || url === '/unifyauth/captcha' || url === '/sso/user/companies') {
+  if (url === '/sso_login/bind/wechat' || url === '/sso/wechat/unbind' || url === '/unifyauth/login' || url === '/unifyauth/captcha' || url === '/sso/user/companies') {
     Vue.axios.defaults.baseURL = `${settings.oauthUrl}/`
   } else if (url === '/auth/token') {
     company = localstorage.get('XPLUSCompany')

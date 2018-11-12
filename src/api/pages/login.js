@@ -51,6 +51,15 @@ export const bindWxLogin = (data, needLoading) => {
     needLoading: false
   })
 }
+// 微信解绑
+export const unbindWxApi = (data, needLoading) => {
+  return request({
+    type: 'put',
+    url: `/sso/wechat/unbind`,
+    data,
+    needLoading: false
+  })
+}
 // sso token登录
 export const tokenLogin = (data, needLoading) => {
   return request({
