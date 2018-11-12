@@ -1,6 +1,7 @@
 <template>
   <div class="bookHouse">
     <div class="tab">
+      <i @click.stop="backBtn" class="backBtn iconfont icon-me_icon_edit_chevron"></i>
       <span class="item"
         v-for="(item, index) in tabList"
         :key="index"
@@ -74,6 +75,9 @@ export default {
       getTagListApi().then(res => {
         this.tabBarList = this.tabBarList.concat(res.data.tags)
       })
+    },
+    backBtn () {
+      this.$router.push('/home')
     },
     getAllList (tabId) {
       return new Promise((resolve, reject) => {
@@ -157,6 +161,13 @@ export default {
     top: 0;
     left: 0;
     z-index: 1;
+    .backBtn {
+      font-size: 30px; /*px*/
+      position: absolute;
+      top: 50%;
+      left: 17px;
+      transform: translateY(-50%) rotate(180deg);
+    }
     .item.cur {
       color: #354048;
       font-weight: 700;

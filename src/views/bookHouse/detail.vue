@@ -12,7 +12,7 @@
           <img v-for="(n, index) in pageInfo.memberInfo" :key="index" :src="n.avatarInfo.smallUrl" v-if="index < 4" @click.stop="toPerson(n.uid)">
           <img src="@a/icon/firends-call-more.png" v-if="pageInfo.memberInfo.length > 4">
         </div>
-        <div class="num"><i class="icon iconfont icon-read_icon_browse"></i> {{pageInfo.readCount}}人</div>
+        <div class="num"><i class="icon iconfont icon-read_icon_browse1"></i>{{pageInfo.readCount}}人</div>
       </div>
     </div>
     <div class="content">
@@ -120,7 +120,9 @@ export default {
         font-size: 24px; /*px*/
         font-weight: 300;
         line-height: 20px;
+        color: #BCBCBC;
         .icon {
+          margin-right: 5px;
           vertical-align: sub;
           font-size: 40px; /*px*/
           color: #BCBCBC;

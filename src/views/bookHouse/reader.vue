@@ -2,7 +2,7 @@
   <div class="reader">
     <div class="content" ref="richText" v-if="pageInfo" v-html="pageInfo.content"></div>
     <div class="operArea" :class="{'floor': showOper}">
-      <div class="item" @click.stop="openCatalog = true"><i class="icon iconfont icon-read_btn_datalog"></i>目录</div>
+      <div class="item" @click.stop="openCatalog = true"><i class="icon iconfont icon-menu"></i>目录</div>
       <div class="item" @click.stop="paging('prev')" :class="{'hide': sectionIndex <= 0}">上一节</div>
       <div class="item" @click.stop="paging('next')" :class="{'hide': sectionIndex >= idList.length - 1}">下一节</div>
     </div>
@@ -43,7 +43,7 @@ export default {
       catalog: [],
       idList: [], // 章节id列表
       openCatalog: false, // 打开目录
-      showOper: false // 操作栏
+      showOper: true // 操作栏
     }
   },
   methods: {
@@ -85,6 +85,13 @@ export default {
       this.sectionId = id
       this.getDetail(id)
       this.openCatalog = false
+      if (this.sectionId) {
+        this.idList.forEach((itme2, index2) => {
+          if (this.sectionId === itme2) {
+            this.sectionIndex = index2
+          }
+        })
+      }
       this.$router.replace(`/reader?id=${this.bookId}&sectionId=${id}`)
     },
     paging (type) {
@@ -95,7 +102,6 @@ export default {
           this.$router.replace(`/reader?id=${this.bookId}&sectionId=${this.sectionId}`)
         }
       } else {
-        console.log(this.sectionIndex, this.idList.length)
         if (this.sectionIndex < this.idList.length - 1) {
           this.sectionIndex++
           this.getDetail()
@@ -110,15 +116,10 @@ export default {
   created () {
     this.getCatalog()
     let lastY = 0
-    let timer = null
     window.onscroll = (e) => {
-      if (window.pageYOffset > lastY) {
+      if (window.pageYOffset < lastY) {
         if (!this.showOper) {
           this.showOper = true
-          clearTimeout(timer)
-          timer = setTimeout(() => {
-            this.showOper = false
-          }, 2000)
         }
       } else {
         this.showOper = false
@@ -146,7 +147,7 @@ export default {
     }
   }
   .operArea {
-    padding: 0 12px 0 20px;
+    padding: 0 20px;
     width: 100%;
     height: 49px;
     box-sizing: border-box;
@@ -165,10 +166,19 @@ export default {
       position: fixed;
     }
     .item {
+      width: 70px;
+      text-align: center;
+      &:first-child {
+        text-align: left;
+      }
+      &:last-child {
+        text-align: right;
+      }
       .icon {
         font-size: 50px; /*px*/
-        margin-right: 10px;
+        margin-right: 5px;
         vertical-align: middle;
+        color: #ACACAC;
       }
       &.hide {
         opacity: 0;

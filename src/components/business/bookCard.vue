@@ -16,7 +16,7 @@
       <div class="content">
         <div class="title">{{cardData.title}}</div>
         <div class="msg">{{cardData.wordIntro}}</div>
-        <div class="num"><i class="icon iconfont icon-read_icon_browse"></i> {{cardData.readCount}}人</div>
+        <div class="num"><i class="icon iconfont icon-read_icon_browse1"></i>{{cardData.readCount}}人</div>
       </div>
     </div>
   </div>
@@ -71,7 +71,7 @@ export default {
       width: 95px;
       height: 130px;
       display: block;
-      box-shadow:0px 2px 5px 0px rgba(219,219,219,1);
+      box-shadow: 0px 2px 5px 0px rgba(219,219,219,1);
       border-radius: 3px;
     }
     .title {
@@ -84,13 +84,12 @@ export default {
       .setEllipsisLn(2);
     }
     .progressBox {
-      margin-top: 6px;
+      margin-top: 5px;
       line-height: 16px;
       font-size: 24px; /*px*/
       font-weight: 300;
       color: #D7AB70;
       display: flex;
-      justify-content: space-between;
       align-items: center;
       .progress {
         width: 61px;
@@ -98,6 +97,7 @@ export default {
         border-radius: 3px;
         background: #EDEDED;
         position: relative;
+        margin-right: 7px;
         .inner {
           width: 40%;
           height: 4px;
@@ -113,7 +113,7 @@ export default {
       color: #BCBCBC;
       font-size: 24px; /*px*/
       line-height: 16px;
-      margin-top: 6px;
+      margin-top: 5px;
     }
   }
   .allBook {
@@ -129,6 +129,7 @@ export default {
       position: absolute;
       top: 0;
       left: 0;
+      box-shadow:0px 2px 5px 0px rgba(219,219,219,1);
     }
     .content {
       width: 100%;
@@ -154,10 +155,12 @@ export default {
         font-size: 24px; /*px*/
         font-weight: 300;
         line-height: 20px;
+        color: #BCBCBC;
         .icon {
           vertical-align: sub;
           font-size: 40px; /*px*/
           color: #BCBCBC;
+          margin-right: 4px;
         }
       }
     }
