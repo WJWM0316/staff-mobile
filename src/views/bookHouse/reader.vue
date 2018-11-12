@@ -183,7 +183,7 @@ export default {
         color: #ACACAC;
       }
       &.hide {
-        opacity: 0;
+        color: #DCDCDC;
       }
     }
   }
