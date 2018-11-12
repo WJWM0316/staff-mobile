@@ -35,38 +35,29 @@ export default {
       }
     },
     outLogin () {
+      let loadFun = () => {
+        outLoginApi().then(res => {
+          localstorage.remove('XPLUSCompany')
+          localstorage.remove('token')
+          localstorage.remove('ssoToken')
+          this.$toast({
+            text: '退出成功',
+            type: 'success',
+            callBack: () => {
+              this.$router.replace('/login')
+            }
+          })
+        })
+      }
       this.$confirm({
         content: '确定退出账号？',
         confirmBack: () => {
           if (browser.isWechat()) {
-            unbindWxApi({'Authorization-Sso': localstorage.get('ssoToken')}).then(res0 => {})
-            // unbindWxApi({'Authorization-Sso': localstorage.get('ssoToken')}).then(res0 => {
-            //   outLoginApi().then(res => {
-            //     localstorage.remove('XPLUSCompany')
-            //     localstorage.remove('token')
-            //     localstorage.remove('ssoToken')
-            //     this.$toast({
-            //       text: '退出成功',
-            //       type: 'success',
-            //       callBack: () => {
-            //         this.$router.replace('/login?is_bind=1')
-            //       }
-            //     })
-            //   })
-            // })
-          } else {
-            outLoginApi().then(res => {
-              localstorage.remove('XPLUSCompany')
-              localstorage.remove('token')
-              localstorage.remove('ssoToken')
-              this.$toast({
-                text: '退出成功',
-                type: 'success',
-                callBack: () => {
-                  this.$router.replace('/login?is_bind=1')
-                }
-              })
+            unbindWxApi().then(res0 => {
+              loadFun()
             })
+          } else {
+            loadFun()
           }
         }
       })

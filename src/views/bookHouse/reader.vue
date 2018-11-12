@@ -124,6 +124,9 @@ export default {
       } else {
         this.showOper = false
       }
+      if (window.pageYOffset === 0) {
+        this.showOper = true
+      }
       lastY = window.pageYOffset
     }
   }
