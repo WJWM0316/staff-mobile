@@ -1,7 +1,7 @@
 <template>
-  <div class="classmateItem" v-if="item" @click.stop="toPersonPage">
+  <div class="classmateItem" v-if="item" @click="toPersonPage">
     <div class="userInfo-img">
-      <img class="headImg" v-lazyload :src="item.avatarInfo.smallUrl || '@a/icon/default.png'">
+      <img class="headImg" :src="item.avatarInfo.smallUrl || '@a/icon/default.png'">
       <img class="mark" src="@/assets/icon/first.png" alt="" v-if="item.punchCardCount && index < 3 && index === 0" />
       <img class="mark" src="@/assets/icon/two.png" alt="" v-if="item.punchCardCount && index < 3 && index === 1" />
       <img class="mark" src="@/assets/icon/three.png" alt="" v-if="item.punchCardCount && index < 3 && index === 2" />

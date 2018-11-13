@@ -20,7 +20,7 @@ const routers = [
   {
     path: '/liveMemberList',
     name: 'liveMemberList',
-    meta: { title: '成员列表', pullDown: true },
+    meta: { title: '成员列表' },
     component: resolve => require(['@/views/live/memberList'], resolve)
   }
 ]

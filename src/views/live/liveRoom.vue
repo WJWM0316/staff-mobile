@@ -1,7 +1,7 @@
 <template>
   <div class='wrap' v-if="liveDetail.title">
     <div class='header'>
-      <p class='title'>{{liveDetail.title}}<i class="icon iconfont icon-me_icon_edit_chevron" v-if="liveDetail.isTutor" @click.stop="jumpMore"></i></p>
+      <p class='title' @click.stop="jumpMore">{{liveDetail.title}}<i class="icon iconfont icon-me_icon_edit_chevron" v-if="liveDetail.isTutor"></i></p>
       <p class='msg'>
         <span class='status green' v-show='liveDetail.status === 2 && wsStatus === 1'>直播进行中</span>
         <span class='status red' v-show='liveDetail.status === 2 && wsStatus === 0'>直播连接中</span>

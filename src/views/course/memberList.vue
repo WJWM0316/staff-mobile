@@ -1,21 +1,27 @@
 <template>
   <div class="memberList">
-    <div class="title" v-if="teacherList.length > 0">
-      <i class="icon iconfont icon-mypage_homepage"></i>
-      <span class="txt">导师</span>
-    </div>
-    <classmateItem v-for="(item, index) in teacherList" :key="'teacher'+index" :item="item"></classmateItem>
-    <div class="title" v-if="excellentList.length > 0">
-      <i class="icon iconfont icon-icon_list_gm"></i>
-      <span class="txt">优秀成员</span>
-      <i class="icon iconfont icon-btn_inf_outstanding" @click.stop="showMask"></i>
-    </div>
-    <classmateItem v-for="(item, index) in excellentList" :key="'excellent'+index" :item="item" :index="index"></classmateItem>
-    <div class="title" v-if="studentList.length > 0">
-      <i class="icon iconfont icon-icon_list_number"></i>
-      <span class="txt">成员列表</span>
-    </div>
-    <classmateItem v-for="(item, index) in studentList" :key="'student'+index" :item="item"></classmateItem>
+    <template v-if="teacherList.length > 0">
+      <div class="title">
+        <i class="icon iconfont icon-mypage_homepage"></i>
+        <span class="txt">导师</span>
+      </div>
+      <classmateItem v-for="(item, index) in teacherList" :key="'teacher'+index" :item="item"></classmateItem>
+    </template>
+    <template v-if="excellentList.length > 0">
+      <div class="title" v-if="excellentList.length > 0">
+        <i class="icon iconfont icon-icon_list_gm"></i>
+        <span class="txt">优秀成员</span>
+        <i class="icon iconfont icon-btn_inf_outstanding" @click.stop="showMask"></i>
+      </div>
+      <classmateItem v-for="(item, index) in excellentList" :key="'excellent'+index" :item="item" :index="index"></classmateItem>
+    </template>
+    <template v-if="studentList.length > 0">
+      <div class="title" v-if="studentList.length > 0">
+        <i class="icon iconfont icon-icon_list_number"></i>
+        <span class="txt">成员列表</span>
+      </div>
+      <classmateItem v-for="(item, index) in studentList" :key="'student'+index" :item="item"></classmateItem>
+    </template>
     <pullUpUi :noData="noData" :list="studentList" :pullUpStatus="pullUpStatus" @pullUp="pullUp"></pullUpUi>
     <!--链接输入弹窗-->
     <div class="Mask" v-if="showRule">
@@ -81,13 +87,18 @@ export default {
     }
   },
   created () {
-    this.getStudentList({page: 1})
+    this.getStudentList({page: 1}, true)
   }
 }
 </script>
 <style lang="less">
 .memberList {
   padding: 0 20px;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
   .title {
     display: flex;
     align-items: center;
