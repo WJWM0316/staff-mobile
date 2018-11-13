@@ -266,7 +266,7 @@ export default {
     },
     scrollBottom (type) {
       if (type === 'liveMsg') {
-        this.scroll && this.scroll.scrollTo(0, this.scroll.maxScrollY - 500)
+        this.scroll && this.scroll.scrollTo(0, this.scroll.maxScrollY)
       } else {
         this.scroll && this.scroll.scrollTo(0, this.scroll.maxScrollY)
       }

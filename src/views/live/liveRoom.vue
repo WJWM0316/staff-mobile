@@ -50,6 +50,7 @@
             :isNeedRead='!liveDetail.isTutor'
             :isNeedEnd='!liveDetail.isTutor'
             ref="messageItem"
+            @imgLoadEnd='imgLoadEnd'
             @curPlayMusic='curPlayMusic'
             @nextMusic='nextMusic'
           ></live-message>
@@ -163,6 +164,7 @@ export default {
       },
       id: '',
       list: [],
+      imgNum: 0, // list中的需要加载的图片数量，imgNum等于0说明图片都加载好了， 返回imgLoadEnd的时候减一
       problemTxt: '', // 提交的问题
       problemInfo: null, // 自己造的提问message, 用于列表展示
       userInfoBase: null, // 用户基础信息
@@ -194,7 +196,8 @@ export default {
     }
   },
   watch: {
-    list () {},
+    list (val) {
+    },
     wsStatus () {},
     liveDetail () {
       if (this.liveDetail.status === 2) {
@@ -213,6 +216,16 @@ export default {
       'updata_onlineNum',
       'updata_userInfo'
     ]),
+    imgLoadEnd () {
+      this.imgNum--
+      // 所有图片都加载出来后 scroller就要更新一下重新因为图片高度变化需要重新计算了
+      if (this.imgNum === 0) {
+        this.$refs.scroll.refresh()
+        if (this.liveDetail.status === 2) {
+          this.$refs.scroll.scrollBottom()
+        }
+      }
+    },
     async getUserInfo () {
       if (!this.userInfo) {
         let res = await userInfoApi()
@@ -311,15 +324,21 @@ export default {
             this.audioList.push(item)
           }
         })
-        if (isFirst) {
-          this.$nextTick(() => {
-            if (this.liveDetail.status === 2) {
-              setTimeout(() => {
-                this.$refs.scroll.scrollBottom()
-              }, 300)
-            }
-          })
-        }
+        // if (isFirst) {
+        //   this.$nextTick(() => {
+        //     console.log(this.imgNum, 1111111111)
+        //     if (this.liveDetail.status === 2) {
+        //       setTimeout(() => {
+        //         this.$refs.scroll.scrollBottom()
+        //       }, 300)
+        //     }
+        //   })
+        // }
+        res.data.forEach(e => {
+          if (e.type === 'img') {
+            this.imgNum++
+          }
+        })
         return res
       })
     },
@@ -486,6 +505,9 @@ export default {
             if (data.data.type === 'audio') {
               data.data.index = that.audioList[that.audioList.length - 1].index + 1
               that.audioList.push(data.data)
+            }
+            if (data.data.type === 'img') {
+              this.imgNum++
             }
             break
           // 自己发出去的信息后端接收成功后保存起来，若失败重新发送
