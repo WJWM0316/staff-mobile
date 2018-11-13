@@ -240,6 +240,7 @@ export default {
         top: 50%;
         left: 15px;
         font-size: 40px; /*px*/
+        line-height: 40px; /*px*/
         transform: translateY(-50%);
         color: #BCBCBC;
       }
