@@ -1,9 +1,11 @@
 <template>
   <div class="indexTc">
-    <div class="tab">
-      <span :class="{'cur': tabIndex === index}" v-for="(item, index) in tabList" :key="index"  @click.stop="choseTab(index)" >{{item}}</span>
+    <div class="header">
+      <div class="tab">
+        <span :class="{'cur': tabIndex === index}" v-for="(item, index) in tabList" :key="index"  @click.stop="choseTab(index)" >{{item}}</span>
+      </div>
+      <i class="icon iconfont icon-menu sidebarBtn" @click.stop="showSide = true"></i>
     </div>
-    <i class="icon iconfont icon-read_btn_datalog sidebarBtn" @click.stop="showSide = true"></i>
     <div class="courseList" v-show="tabIndex === 0">
       <infoCard v-for="item in courseList.list" :key="item.id" :item="item" type='1' :ellipsis2='true'></infoCard>
       <pullUpUi v-if="tabIndex === 0" :noData="courseList.noData" :pullUpStatus="courseList.pullUpStatus" @pullUp="pullUp"></pullUpUi>
@@ -191,52 +193,56 @@ export default {
 <style lang="less" scoped>
   .indexTc {
     position: relative;
-    .tab {
-      padding: 0 110px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 49px;
-      color: #BCBCBC;
-      font-weight: 300;
-      box-shadow: 0px 3px 5px 0px rgba(248,248,248,1);
-      > span {
-        line-height: 49px;
-        position: relative;
-        &.cur {
-          color: #354048;
-          font-weight: 700;
+    .header {
+      position: relative;
+      .tab {
+        padding: 0 110px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 49px;
+        color: #BCBCBC;
+        font-weight: 300;
+        box-shadow: 0px 3px 5px 0px rgba(248,248,248,1);
+        > span {
+          line-height: 49px;
           position: relative;
-          &::after {
+          &.cur {
+            color: #354048;
+            font-weight: 700;
+            position: relative;
+            &::after {
+              content: '';
+              width: 25px;
+              height: 3px;
+              background: #FFE266;
+              border-radius: 10px;
+              position: absolute;
+              left: 50%;
+              margin-left: -12.5px;
+              bottom: 0;
+            }
+          }
+          &.red::before {
             content: '';
-            width: 25px;
-            height: 3px;
-            background: #FFE266;
-            border-radius: 10px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
             position: absolute;
-            left: 50%;
-            margin-left: -12.5px;
-            bottom: 0;
+            top: 10px;
+            right: -10px;
+            background: #FF3434;
           }
         }
-        &.red::before {
-          content: '';
-          width: 7px;
-          height: 7px;
-          border-radius: 50%;
-          position: absolute;
-          top: 10px;
-          right: -10px;
-          background: #FF3434;
-        }
       }
-    }
-    .sidebarBtn {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      font-size: 30px; /*px*/
-      color: #BCBCBC;
+      .sidebarBtn {
+        position: absolute;
+        top: 50%;
+        left: 15px;
+        font-size: 40px; /*px*/
+        transform: translateY(-50%);
+        color: #BCBCBC;
+      }
     }
     .sidebar {
       width: 260px !important;
