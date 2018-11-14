@@ -41,9 +41,17 @@ export default {
   computed: {
     durationShow () {
       if (this.status === 'recording') {
-        return Math.ceil(this.progress / 1000) - 1
+        if (Math.ceil(this.progress / 1000) - 1 < 0) {
+          return 0
+        } else {
+          return Math.ceil(this.progress / 1000) - 1 < 0
+        }
       } else if (this.status === 'finish') {
-        return Math.ceil(this.duration / 1000) - 1
+        if (Math.ceil(this.duration / 1000) - 1 < 0) {
+          return 0
+        } else {
+          return Math.ceil(this.duration / 1000) - 1
+        }
       }
     },
     btnClass () {

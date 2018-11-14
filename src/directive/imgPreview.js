@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import wx from '@/mixins/wechat'
-
-
+let list = [] // 预览图片列表
 const preview = (el, binding, vnode) => {
-  let list = [] // 预览图片列表
+  list = []
   // 绑定图片点击事件
   const bindClick = (element, img, urls) => {
     element.addEventListener('click', (e) => {
@@ -37,11 +36,15 @@ const preview = (el, binding, vnode) => {
 // 注册图片预览
 Vue.directive('preview', {
   bind: function (el, binding, vnode) {
+    console.log(11111)
     preview(el, binding, vnode)
   },
   inserted: function (el) {
+    console.log(444)
   },
-  update: function (el) {
+  update: function (el, binding, vnode) {
+    console.log(222222222222222)
+    // preview(el, binding, vnode)
   },
   componentUpdated: function (el, binding, vnode) {
     preview(el, binding, vnode)

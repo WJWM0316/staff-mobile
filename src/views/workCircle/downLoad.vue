@@ -4,7 +4,6 @@
       <span>{{month}}</span>
       <!--<span class="selectPic" v-if="type === 1" @click.stop="selectPic">多选<span v-if="showSelect">({{selectPicList.length}})</span></span>-->
     </div>
-    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :isShowNoDataText="nowFileList.length !== 0"></pullUpUi>
     <!--图片-->
     <div class="picBox" v-for="(picItem, index) in nowFileList" :key="index" v-if="type === 1" @click.stop="isSelect(picItem)">
       <div class="chooseImg" v-if="showSelect" :class="{'isChoose': picItem.chooseIndex}"><img v-if="picItem.chooseIndex" src="@/assets/icon/photo_selected@3x.png" /></div>
@@ -13,7 +12,8 @@
         <img class="picItem" v-lazyload :src="picItem.fileInfo.coverImg.url"/>
         <vedio-box :url="picItem.fileInfo.coverImg.url"></vedio-box>
       </div>
-    </div>
+      <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+    </template>
     <!--文件和链接-->
     <template v-if="type === 2 || type === 3">
       <div class="fileItemBox" v-for="(fileItem, index) in nowFileList" :key="index">
@@ -28,13 +28,12 @@
         <file-box v-if="type === 3" :item="fileItem" :isFile="isFile" :fileType='fileItem.fileType'></file-box>
       </div>
     </template>
-    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :isShowNoDataText="nowFileList.length !== 0"></pullUpUi>
+    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
     <nodata-box v-if="nowFileList.length === 0"></nodata-box>
     <div class="saveBtn" v-if="showSelect" @click.stop="savePic">保存到本地相册</div>
     <div class="videoPlayBg" v-if="false"></div>
   </div>
 </template>
-
 <script>
 import { getPictureApi, getFilesApi, getUrlsApi } from '@/api/pages/workCircle'
 import fileBox from '@c/functional/fileBox'
@@ -138,7 +137,6 @@ export default {
     /* 滚动触发事件 */
     async pullUp () {
       if (this.isLastPage) {
-        console.log(' 111111 ')
         this.all.pullUpStatus = false
         this.all.noData = true
       } else {

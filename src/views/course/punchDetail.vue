@@ -43,16 +43,15 @@
       </template>
     </div>
     <!-- 悬浮输入框 -->
-    <suspension-input v-model="displaySuspensionInput"
-                      :placeholder="suspensionInputPlaceholder"
-                      :commentIndex="commentIndex"
-                      :sendText="'发送'"
-                      :isShow = 'isShow'
-                      @input = "blur"
-                      @send="sendComment"
-                      ref="input"
-      ></suspension-input>
-      <actionsheet v-model="addActionsConfig.show" :menus="nowChoosePunch.isExcellentCard === 1?addActionsConfig.menus2:addActionsConfig.menus" show-cancel @on-click-menu="handleAddActoinItem" />
+    <suspension-input
+      :placeholder="suspensionInputPlaceholder"
+      :commentIndex="commentIndex"
+      :sendText="'发送'"
+      :isShow = 'isShow'
+      @send="sendComment"
+      ref="input"
+    ></suspension-input>
+    <actionsheet v-model="addActionsConfig.show" :menus="nowChoosePunch.isExcellentCard === 1?addActionsConfig.menus2:addActionsConfig.menus" show-cancel @on-click-menu="handleAddActoinItem" />
   </div>
 </template>
 
@@ -75,7 +74,6 @@ export default {
     return {
       navTabName: 'comment',
       item: '',
-      displaySuspensionInput: false,
       suspensionInputPlaceholder: '来分享你的想法吧～',
       isShow: true,
       commentIndex: -1,
@@ -121,9 +119,6 @@ export default {
       let res = await getFavorListApi(param)
       this.favorList.push(...res.data)
     },
-    blur () {
-      this.displaySuspensionInput = false
-    },
     /**
      * 发送评论
      * @param data
@@ -143,7 +138,6 @@ export default {
     /* 点击评论调起底部输入框 */
     async comment (param) {
       this.isShow = true
-      this.displaySuspensionInput = true
       this.$refs.input.$refs['suspension-input'].focus()
       this.suspensionInputPlaceholder = '来分享你的想法吧～'
       this.commentIndex = -1
@@ -230,10 +224,10 @@ export default {
   }
 }
 </script>
-
 <style lang="less" scoped>
 .postDetail{
   padding-bottom: 40px;
+  box-sizing: border-box;
   .container{
     padding: 0 20px;
     padding-bottom: 20px;

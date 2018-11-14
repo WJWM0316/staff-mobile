@@ -15,7 +15,7 @@
         <div class="num"><i class="icon iconfont icon-read_icon_browse1"></i>{{pageInfo.readCount}}人</div>
       </div>
     </div>
-    <div class="content">
+    <div class="content" v->
       <div class="title">
         <i class="block"></i>
         <span>书籍简介</span>

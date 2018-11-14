@@ -41,7 +41,7 @@
         <div class='startTime'>
           <span class='txt'>{{liveDetail.expectedStartTime * 1000 | date('MMMDo HH:mm')}} 直播开始</span>
         </div>
-        <div class='message' ref="message">
+        <div class='message' ref="message" v-preview="true">
           <live-message
             v-for='(item, index) in list'
             :key='index'

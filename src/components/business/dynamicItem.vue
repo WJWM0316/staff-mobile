@@ -27,7 +27,7 @@
         </div>
       </div>
       <!--工作圈图片-->
-      <div class="content-images" v-if="item.type === '图片'" v-preview="openPreview">
+      <div class="content-images" v-if="item.type === '图片'" v-preview="true">
         <div class="item-image one" v-if="item.accessory.length === 1">
           <img :src="item.accessory[0].middleUrl || '../../assets/icon/img_head_default.png'" :data-src="item.accessory[0].url"/>
         </div>
@@ -128,10 +128,6 @@ export default {
       default: true
     },
     isCourse: {
-      type: Boolean,
-      default: true
-    },
-    openPreview: { // 是否开启图片预览
       type: Boolean,
       default: true
     },

@@ -202,7 +202,7 @@ export const getPictureApi = (data, needLoading) => {
     url: `/jobcircle/picture/${data.id}`,
     type: 'get',
     data: data,
-    needLoading: true
+    needLoading: needLoading
   })
 }
 /* 获取圈子最近的上传文件 */
@@ -211,7 +211,7 @@ export const getFilesApi = (data, needLoading) => {
     url: `/jobcircle/files/${data.id}`,
     type: 'get',
     data: data,
-    needLoading: true
+    needLoading: needLoading
   })
 }
 /* 获取圈子最近的帖子链接 */
