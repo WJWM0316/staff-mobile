@@ -5,7 +5,6 @@ const preview = (el, binding, vnode) => {
   list = []
   // 绑定图片点击事件
   const bindClick = (element, img, urls) => {
-    element.removeEventListener('click', bingFun)
     let bingFun = (e) => {
       let data = {
         img,
@@ -14,6 +13,7 @@ const preview = (el, binding, vnode) => {
       wx.methods.wechatPreviewImage(data)
       e.stopPropagation() // 防止事件冒泡
     }
+    element.removeEventListener('click', bingFun)
     element.addEventListener('click', bingFun)
   }
   // 遍历图片获取列表+绑定
@@ -36,20 +36,21 @@ const preview = (el, binding, vnode) => {
   }
 }
 // 注册图片预览
+let timer = null
 Vue.directive('preview', {
   bind: function (el, binding, vnode) {
-    console.log(11111)
     preview(el, binding, vnode)
   },
   inserted: function (el) {
-    console.log(444)
   },
   update: function (el, binding, vnode) {
-    console.log(222222222222222)
-    // preview(el, binding, vnode)
   },
   componentUpdated: function (el, binding, vnode) {
-    // preview(el, binding, vnode)
+    // 禁止多次调用
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      preview(el, binding, vnode)
+    }, 1000)
   },
   unbind: function (e) {
   }
