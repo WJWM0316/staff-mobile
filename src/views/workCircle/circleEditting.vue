@@ -101,6 +101,7 @@ import { attachesApi } from '@/api/pages/course'
 import { jobcirclePostApi } from '@/api/pages/workCircle'
 import uploadImg from '@c/functional/upLoadFile'
 import store from '@/store/index.js'
+import localstorage from '@u/localstorage'
 export default {
   name: 'circleEdit',
   components: {
@@ -146,7 +147,8 @@ export default {
       isCircleSelf: false, // 是否仅限圈内可见
       isiOS: '',
       nowWeiXinImgNum: '', // 微信上传图片选中多少张
-      isSend: false // 是否已经发送帖子
+      isSend: false, // 是否已经发送帖子
+      send: false
     }
   },
   methods: {
@@ -358,7 +360,23 @@ export default {
     let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
     this.isiOS = isiOS
   },
-  beforeRouteLeave (to, from, next) {}
+  beforeRouteLeave (to, from, next) {
+    let that = this
+    if (this.isSend) {
+      next(true)
+    } else {
+      this.$confirm({
+        title: '退出编辑',
+        content: '是否要退出编辑？',
+        confirmBack () {
+          next(true)
+        },
+        cancelBack () {
+          next(false)
+        }
+      })
+    }
+  }
 }
 </script>
 

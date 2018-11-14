@@ -58,6 +58,7 @@
                       :isShow = 'isShow'
                       @input = "blur"
                       @send="sendComment"
+                      @focus="focus"
                       ref="input"
       ></suspension-input>
     <actionsheet v-model="addActionsConfig.show" :menus="nowChoosePost.isTop?addActionsConfig.menus2:addActionsConfig.menus" show-cancel @on-click-menu="handleAddActoinItem" />
@@ -221,6 +222,10 @@ export default {
           this.$toast({text: '取消成功', type: 'success'})
         })
       }
+    },
+    focus () {
+      let a = document.getElementsByClassName(' postDetail ')
+      console.log(a.overflow)
     }
   },
   created () {
