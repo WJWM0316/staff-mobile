@@ -11,10 +11,14 @@
       <img class="picItem" v-lazyload :src="picItem.fileInfo.middleUrl" v-preview="true" :data-src="picItem.fileInfo.url" v-if="picItem.type === '图片'"/>
       <div class="playVideo" v-else>
         <!--<div class="videoBOx" @click.stop="play" v-if="!videoPlay"><i class="icon iconfont icon-play_vidio"></i></div>-->
-        <video class="video" :poster="picItem.fileInfo.coverImg.url" controls ref="video">
+        <!--<video class="video" :poster="picItem.fileInfo.coverImg.url" controls ref="video">
           <source :src="picItem.fileInfo.url" type="video/mp4">
              您的浏览器不支持 HTML5 video 标签，请升级浏览器或者更换浏览器。
-        </video>
+        </video>-->
+        <img class="picItem" v-lazyload :src="picItem.fileInfo.coverImg.url"/>
+        <div class="playIcon" @click.stop="play(picItem.fileInfo.url)">
+          <i class="icon iconfont icon-play_vidio"></i>
+        </div>
       </div>
     </div>
     <!--文件和链接-->
@@ -34,6 +38,7 @@
     <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :isShowNoDataText="nowFileList.length !== 0"></pullUpUi>
     <nodata-box v-if="nowFileList.length === 0"></nodata-box>
     <div class="saveBtn" v-if="showSelect" @click.stop="savePic">保存到本地相册</div>
+    <div class="videoPlayBg" v-if="false"></div>
   </div>
 </template>
 
@@ -186,13 +191,24 @@ export default {
         a.dispatchEvent(event)
       })
     },
-    play () {
-      this.videoPlay = true
-      console.log(this.$refs['video'])
-      this.$refs['video'].play()
+    play (videoUrl) {
+      window.video.src = videoUrl
+      window.video.play()
+    },
+    VideoObj () {
+      var video = document.createElement('video')
+      video.controls = 'controls'
+      video.style.position = 'fixed'
+      video.style.left = '0'
+      video.style.top = '50%'
+      video.style.transform = 'translateY(-50%)'
+      video.style.width = '100%'
+      video.style.zIndex = '9999'
+      window.video = video
     }
   },
   created () {
+    this.VideoObj()
     this.type = parseInt(this.$route.query.type)
     this.init()
   }
@@ -271,6 +287,26 @@ export default {
         margin-left: 3px;
         margin-bottom: 3px;
       }
+      .playIcon{
+        box-sizing: border-box;
+        width: 90px;
+        height: 90px;
+        position: absolute;
+        margin-left: 3px;
+        top: 0;
+        left: 0;
+        z-index: 9998;
+        background-color: #000000;
+        i{
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translateX(-50%) translateY(-50%);
+          font-size: 20px;
+          color: #FFFFFF;
+          z-index: 9999;
+        }
+      }
     }
   }
   .fileItemBox{
@@ -315,5 +351,14 @@ export default {
     background: #FFE266;
     font-size: 30px;/*px*/
     color: #354048;
+  }
+  .videoPlayBg{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: #000000;
+    z-index: 9998;
   }
 </style>
