@@ -12,7 +12,7 @@
           <img class="picItem" v-lazyload :src="picItem.fileInfo.middleUrl" :data-src="picItem.fileInfo.url" v-if="picItem.type === '图片'"/>
           <div class="playVideo" v-else>
             <img class="picItem" v-lazyload :src="picItem.fileInfo.coverImg.url"/>
-            <vedio-box :url="picItem.fileInfo.coverImg.url"></vedio-box>
+            <vedio-box :url="picItem.fileInfo.url"></vedio-box>
           </div>
         </div>
       </div>
