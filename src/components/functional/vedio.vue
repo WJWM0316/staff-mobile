@@ -10,6 +10,9 @@ export default {
       type: String
     }
   },
+  watch: {
+    url () {}
+  },
   data () {
     return {}
   },
