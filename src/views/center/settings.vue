@@ -21,7 +21,8 @@
 </template>
 <script>
 import localstorage from '@u/localstorage'
-import {outLoginApi} from '@/api/pages/login'
+import {outLoginApi, unbindWxApi} from '@/api/pages/login'
+import browser from '@u/browser'
 export default {
   methods: {
     jump (type) {
@@ -34,21 +35,30 @@ export default {
       }
     },
     outLogin () {
+      let loadFun = () => {
+        outLoginApi().then(res => {
+          localstorage.remove('XPLUSCompany')
+          localstorage.remove('token')
+          localstorage.remove('ssoToken')
+          this.$toast({
+            text: '退出成功',
+            type: 'success',
+            callBack: () => {
+              this.$router.replace('/login')
+            }
+          })
+        })
+      }
       this.$confirm({
         content: '确定退出账号？',
         confirmBack: () => {
-          outLoginApi().then(res => {
-            localstorage.remove('XPLUSCompany')
-            localstorage.remove('token')
-            localstorage.remove('ssoToken')
-            this.$toast({
-              text: '退出成功',
-              type: 'success',
-              callBack: () => {
-                this.$router.replace('/login?is_bind=1')
-              }
+          if (browser.isWechat()) {
+            unbindWxApi().then(res0 => {
+              loadFun()
             })
-          })
+          } else {
+            loadFun()
+          }
         }
       })
     }

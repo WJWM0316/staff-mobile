@@ -52,7 +52,6 @@ export default {
      */
     setWechatConfig () {
       let wx = Vue.wx
-      wx.config(this.wechatConfig)
       wx.ready(() => {
       })
       wx.error((res) => {
@@ -164,7 +163,6 @@ export default {
     getWechatRecorder () {
       const self = this
       let _localId = ''
-      console.log('测试能不能进来')
       return {
         /**
          * 触发回调
@@ -181,11 +179,9 @@ export default {
          * @return {Promise}
          */
         startRecord () {
-          console.log('开始录音startRecord')
           Vue.wx.startRecord({
             success: (res) => {
               this.triggerCallback('onStartRecord', res)
-              console.log('开始录音')
               Vue.wx.onVoiceRecordEnd({
                 // 录音时间超过一分钟没有停止的时候会执行 complete 回调
                 complete: res => {
@@ -219,7 +215,6 @@ export default {
         playVoice ({localId} = {}) {
           localId = localId || _localId
           if (!localId) {
-            console.log('没有找到localId')
             return
           }
           Vue.wx.playVoice({

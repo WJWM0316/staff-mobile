@@ -9,7 +9,7 @@
       <div class="msg">{{pageInfo.wordIntro}}</div>
       <div class="members" v-if="pageInfo.readCount">
         <div class="memberInfo">
-          <img v-for="(n, index) in pageInfo.memberInfo" :key="index" :src="n.avatarInfo.smallUrl" v-if="index < 4" @click.stop="toPerson(n.uid)">
+          <img v-for="(n, index) in pageInfo.memberInfo" :key="index" :src="n.avatarInfo.smallUrl" v-if="index < 4" @click.stop="toPerson(n.id)">
           <img src="@a/icon/firends-call-more.png" v-if="pageInfo.memberInfo.length > 4">
         </div>
         <div class="num"><i class="icon iconfont icon-read_icon_browse1"></i>{{pageInfo.readCount}}人</div>
@@ -76,6 +76,7 @@ export default {
         top: 20px;
         left: 50%;
         margin-left: -50px;
+        box-shadow: 0px 2px 5px 0px rgba(219,219,219,1);
       }
     }
     .title {

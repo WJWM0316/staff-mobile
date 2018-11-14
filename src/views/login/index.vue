@@ -18,7 +18,6 @@
       <xButton class="btn" @click.native="login">登录</xButton>
     </div>
     <div class="btnBox">
-      <span @click.stop="wxlogin" v-if="$route.query.is_bind && isWechat">微信登录</span>
       <span @click.stop="toggle(1)" v-if="!isTutor">切换导师版</span>
       <span @click.stop="toggle(2)" v-else>切换成员版</span>
       <span @click.stop="forget">忘记密码</span>

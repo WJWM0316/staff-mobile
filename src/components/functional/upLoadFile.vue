@@ -4,8 +4,8 @@
     <div class="cropper-container" v-show="panel">
       <img id="image" :src="fileUrl[fileUrl.length - 1]" alt="Picture">
       <div class="btnBox">
-        <div id="cancel" @click="cancel">取消</div>
-        <div id="button" @click="commit">确定</div>
+        <div id="cancel" @click.stop="cancel">取消</div>
+        <div id="button" @click.stop="commit">确定</div>
       </div>
     </div>
     <div class="upLoadFileBox">
@@ -238,6 +238,9 @@ export default {
 @import url('../../styles/cropper.less');
 #image {
   max-width: 100%;
+}
+.cropper-modal {
+  opacity: 1 !important;
 }
 .upLoadFile {
   .upLoadFileBox {

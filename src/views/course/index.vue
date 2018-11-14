@@ -8,7 +8,7 @@
         <info-card :item="item" :needProgress="false" :key="index" :ellipsis2="true" :isList="true"></info-card>
       </template>
     </div>
-    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :isShowNoDataText="circleList.length > 0"></pullUpUi>
+    <pullUpUi :noData="all.noData" :list="all.list" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :isShowNoDataText="circleList.length > 0"></pullUpUi>
     <nodata-box v-if="circleList.length === 0"></nodata-box>
 	</div>
 </template>

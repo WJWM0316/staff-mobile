@@ -3,7 +3,7 @@
     <div class="list">
       <info-card v-for="item in list" :item="item" :showIntroduction="false" :origin="true" :key="item.id"></info-card>
     </div>
-    <pullUpUi :noData="noData" :pullUpStatus="pullUpStatus" @pullUp="pullUp"></pullUpUi>
+    <pullUpUi :noData="noData" :list="list" :pullUpStatus="pullUpStatus" @pullUp="pullUp"></pullUpUi>
   </div>
 </template>
 <script>

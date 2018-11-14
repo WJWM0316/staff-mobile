@@ -113,24 +113,30 @@ export const getFavorListApi = (data) => {
   })
 }
 // 请求一级评论列表
-export const getCommentListApi = (data) => {
+export const getCommentListApi = (data, needLoading) => {
   return request({
-    url: `/coursesectioncard/comment/commentList/${data.postId}?page=${data.page}`,
-    type: 'get'
+    url: `/coursesectioncard/comment/commentList/${data.postId}`,
+    type: 'get',
+    data,
+    needLoading: needLoading
   })
 }
 // 请求一级热门评论列表
-export const getHotCommentListApi = (data) => {
+export const getHotCommentListApi = (data, needLoading) => {
   return request({
-    url: `/coursesectioncard/comment/hot/${data.postId}?count=${data.count}`,
-    type: 'get'
+    url: `/coursesectioncard/comment/hot/${data.postId}`,
+    type: 'get',
+    data,
+    needLoading: needLoading
   })
 }
 // 评论打卡或回复评论
-export const courseCardCommentApi = (data) => {
+export const courseCardCommentApi = (data, needLoading) => {
   return request({
-    url: `/coursesectioncard/commoneComment/${data.sourceId}?sourceType=${data.sourceType}&content=${data.content}`,
-    type: 'put'
+    url: `/coursesectioncard/commoneComment/${data.sourceId}`,
+    type: 'put',
+    data,
+    needLoading: needLoading
   })
 }
 // 评论打卡或回复评论
@@ -148,17 +154,21 @@ export const delCommentApi = (data) => {
   })
 }
 // 评论打卡或回复评论
-export const getReplyListApi = (data) => {
+export const getReplyListApi = (data, needLoading) => {
   return request({
-    url: `/coursesectioncard/comment/replyList/${data.id}?page=${data.page}&count=${data.count}&sort=${data.sort}`,
-    type: 'get'
+    url: `/coursesectioncard/comment/replyList/${data.id}`,
+    type: 'get',
+    data,
+    needLoading: needLoading
   })
 }
 // 评论打卡或回复评论
-export const getCirclePeopleListApi = (data) => {
+export const getCirclePeopleListApi = (data, needLoading) => {
   return request({
-    url: `/CourseSection/getPeopleList/${data.id}?page=${data.page}&count=${data.count}`,
-    type: 'get'
+    url: `/CourseSection/getPeopleList/${data.id}`,
+    type: 'get',
+    data,
+    needLoading: needLoading
   })
 }
 // 评论打卡或回复评论

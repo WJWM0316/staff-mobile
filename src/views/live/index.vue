@@ -15,7 +15,7 @@
         <div class="list">
           <infoCard type="3" v-for="item in joined.list" :key='item.liveId+11' :item="item"></infoCard>
         </div>
-        <pullUpUi v-if="tabIndex === 0" :noData="joined.noData" :pullUpStatus="joined.pullUpStatus" @pullUp="pullUp" :key='1'></pullUpUi>
+        <pullUpUi v-if="tabIndex === 0" :list="joined.list" :noData="joined.noData" :pullUpStatus="joined.pullUpStatus" @pullUp="pullUp" :key='1'></pullUpUi>
         <noDataShow v-if="joined.list.length === 0"></noDataShow>
       </div>
       <div class="all" v-show="tabIndex === 1">
@@ -40,7 +40,7 @@
             <noDataShow v-if="all.list2.length === 0"></noDataShow>
           </template>
         </div>
-        <pullUpUi v-if="tabIndex === 1" :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :key='2'></pullUpUi>
+        <pullUpUi v-if="tabIndex === 1" :list="all.list" :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :key='2'></pullUpUi>
       </div>
     </div>
   </div>

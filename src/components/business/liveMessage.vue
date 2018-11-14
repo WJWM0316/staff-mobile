@@ -22,6 +22,8 @@
         class="imgPriview"
         v-preview="true"
         v-if="messageData.type === 'img'"
+        @load.stop="imgLoad"
+        :class="{'vertical': isVertical}"
         :src="messageData.file.middleUrl" :data-src="messageData.file.url">
     </div>
   </div>
@@ -59,11 +61,24 @@ export default {
       }
     }
   },
+  data () {
+    return {
+      isLoad: false, // 是否加载完毕
+      isVertical: false // 是否是竖版图片
+    }
+  },
   watch: {
     audioList () {},
     messageData () {}
   },
   methods: {
+    imgLoad (e) {
+      this.isLoad = true
+      if (e.target.width < e.target.height) {
+        this.isVertical = true
+      }
+      this.$emit('imgLoadEnd', e)
+    },
     // 消除音频红点
     removeRed () {
       let data = {
@@ -131,9 +146,12 @@ export default {
         border-radius: 3px;
       }
       .imgPriview {
-        height: 200px;
+        width: 180px;
         display: block;
         border-radius: 3px;
+        &.vertical {
+          width: 135px;
+        }
       }
     }
   }
