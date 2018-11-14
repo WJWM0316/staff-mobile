@@ -9,7 +9,7 @@
       <div v-if="nowFileList.length > 0" v-preview="true">
         <div class="picBox" v-for="(picItem, index) in nowFileList" :key="index" v-if="type === 1" @click.stop="isSelect(picItem)">
           <div class="chooseImg" v-if="showSelect" :class="{'isChoose': picItem.chooseIndex}"><img v-if="picItem.chooseIndex" src="@/assets/icon/photo_selected@3x.png" /></div>
-          <img class="picItem" v-lazyload :src="picItem.fileInfo.middleUrl" v-preview="true" :data-src="picItem.fileInfo.url" v-if="picItem.type === '图片'"/>
+          <img class="picItem" v-lazyload :src="picItem.fileInfo.middleUrl" :data-src="picItem.fileInfo.url" v-if="picItem.type === '图片'"/>
           <div class="playVideo" v-else>
             <img class="picItem" v-lazyload :src="picItem.fileInfo.coverImg.url"/>
             <div class="playIcon" @click.stop="play(picItem.fileInfo.url)">

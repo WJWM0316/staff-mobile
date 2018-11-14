@@ -5,14 +5,16 @@ const preview = (el, binding, vnode) => {
   list = []
   // 绑定图片点击事件
   const bindClick = (element, img, urls) => {
-    element.addEventListener('click', (e) => {
+    element.removeEventListener('click', bingFun)
+    let bingFun = (e) => {
       let data = {
         img,
         urls
       }
       wx.methods.wechatPreviewImage(data)
       e.stopPropagation() // 防止事件冒泡
-    })
+    }
+    element.addEventListener('click', bingFun)
   }
   // 遍历图片获取列表+绑定
   const findImg = (element) => {
@@ -47,7 +49,7 @@ Vue.directive('preview', {
     // preview(el, binding, vnode)
   },
   componentUpdated: function (el, binding, vnode) {
-    preview(el, binding, vnode)
+    // preview(el, binding, vnode)
   },
   unbind: function (e) {
   }
