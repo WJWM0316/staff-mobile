@@ -12,7 +12,7 @@
           <img class="picItem" v-lazyload :src="picItem.fileInfo.middleUrl" :data-src="picItem.fileInfo.url" v-if="picItem.type === '图片'"/>
           <div class="playVideo" v-else>
             <img class="picItem" v-lazyload :src="picItem.fileInfo.coverImg.url"/>
-            <vedio-box :url="picItem.fileInfo.url"></vedio-box>
+            <vedio-box :url="picItem.fileInfo.url" @play="play"></vedio-box>
           </div>
         </div>
       </div>
@@ -35,7 +35,7 @@
     <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
     <nodata-box v-if="nowFileList.length === 0"></nodata-box>
     <div class="saveBtn" v-if="showSelect" @click.stop="savePic">保存到本地相册</div>
-    <div class="videoPlayBg" v-if="false"></div>
+    <div class="videoPlayBg" v-if="videoPlay" @click.stop="close"></div>
   </div>
 </template>
 <script>
@@ -187,6 +187,13 @@ export default {
         // 触发a的单击事件
         a.dispatchEvent(event)
       })
+    },
+    play () {
+      this.videoPlay = true
+    },
+    close () {
+      this.videoPlay = false
+      document.body.removeChild(window.video)
     }
   },
   created () {
