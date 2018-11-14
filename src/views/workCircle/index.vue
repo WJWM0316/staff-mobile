@@ -4,7 +4,7 @@
       <span class="attention" :class="{bottom : isFocus==='attention'}" @click="tab('attention')">关注</span>
       <span class="all" :class="{bottom : isFocus==='all'}" @click="tab('all')">全部</span>
     </div>
-    <div class="classify">
+    <div class="classify" v-if="!(total === 0 && isFocus === 'attention')">
       <span class="tabItem" v-for="(item,index) in tabList" :key="index" :class="{ isFocusClassify:showBorder === item.groupName }" @click="cutoverTab(item)">{{item.groupName}}</span>
     </div>
     <div class="content">
@@ -45,7 +45,8 @@ export default {
         noData: false,
         pullUpStatus: false
       },
-      isLastPage: false // 是否最后一页
+      isLastPage: false, // 是否最后一页
+      total: 0 // 关注的工作圈数量
     }
   },
   methods: {
@@ -58,12 +59,14 @@ export default {
       } else {
         res = await this.getAttentions()
       }
+      this.total = res.meta.total
       res.meta.currentPage === res.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
       this.circleList = res.data
     },
     /* 初始化方法 */
     async init () {
       let res = await this.getAttentions()
+      this.total = res.meta.total
       let classfy = await getCircleClassfyApi()
       classfy.data.unshift({
         count: 10,
@@ -101,7 +104,6 @@ export default {
     /* 滚动触发事件 */
     async pullUp () {
       if (this.isLastPage) {
-        console.log(' 111111 ')
         this.all.pullUpStatus = false
         this.all.noData = true
       } else {
@@ -116,6 +118,7 @@ export default {
         } else {
           res = await this.getAttentions(false)
         }
+        this.total = res.meta.total
         res.meta.currentPage === res.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
         this.circleList.push(...res.data)
         this.all.pullUpStatus = false

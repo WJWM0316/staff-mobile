@@ -213,6 +213,10 @@ export default {
           this.$toast({text: '取消成功', type: 'success'})
         })
       }
+    },
+    focus () {
+      let a = document.getElementsByClassName(' postDetail ')
+      console.log(a.overflow)
     }
   },
   created () {
