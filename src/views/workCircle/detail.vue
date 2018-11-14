@@ -51,15 +51,14 @@
       </template>
     </div>
     <!-- 悬浮输入框 -->
-    <suspension-input v-model="displaySuspensionInput"
-                      :placeholder="suspensionInputPlaceholder"
-                      :commentIndex="commentIndex"
-                      :sendText="'发送'"
-                      :isShow = 'isShow'
-                      @input = "blur"
-                      @send="sendComment"
-                      ref="input"
-      ></suspension-input>
+    <suspension-input
+      :placeholder="suspensionInputPlaceholder"
+      :commentIndex="commentIndex"
+      :sendText="'发送'"
+      :isShow = 'isShow'
+      @send="sendComment"
+      ref="input"
+    ></suspension-input>
     <actionsheet v-model="addActionsConfig.show" :menus="nowChoosePost.isTop?addActionsConfig.menus2:addActionsConfig.menus" show-cancel @on-click-menu="handleAddActoinItem" />
   </div>
 </template>
@@ -87,7 +86,6 @@ export default {
       commentList: [], // 评论列表
       hotCommentList: [],
       favorList: [], // 点赞列表
-      displaySuspensionInput: false,
       suspensionInputPlaceholder: '来分享你的想法吧～',
       isShow: true,
       commentIndex: -1,
@@ -159,7 +157,6 @@ export default {
     /* 点击评论调起底部输入框 */
     async comment (param) {
       this.isShow = true
-      this.displaySuspensionInput = true
       this.$refs.input.$refs['suspension-input'].focus()
       this.suspensionInputPlaceholder = '来分享你的想法吧～'
       this.commentIndex = -1
@@ -177,9 +174,6 @@ export default {
         case 'del':
           break
       }
-    },
-    blur () {
-      this.displaySuspensionInput = false
     },
     /**
      * 发送评论
@@ -199,8 +193,6 @@ export default {
         this.item.commentTotal += 1
         this.$toast({text: '评论成功', type: 'success'})
         this.isShow = false
-      }).catch(e => {
-        this.$toast({text: '评论失败'})
       })
     },
     /* 调起置顶选项框 */
@@ -230,6 +222,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .postDetail{
+  box-sizing: border-box;
   padding-bottom: 40px;
   .container{
     padding: 0 20px;

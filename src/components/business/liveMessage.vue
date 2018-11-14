@@ -20,7 +20,6 @@
       ></audio-message>
       <img
         class="imgPriview"
-        v-preview="true"
         v-if="messageData.type === 'img'"
         @load.stop="imgLoad"
         :class="{'vertical': isVertical}"

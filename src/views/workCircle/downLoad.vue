@@ -4,19 +4,23 @@
       <span>{{month}}</span>
       <!--<span class="selectPic" v-if="type === 1" @click.stop="selectPic">多选<span v-if="showSelect">({{selectPicList.length}})</span></span>-->
     </div>
-    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :isShowNoDataText="nowFileList.length !== 0"></pullUpUi>
     <!--图片-->
-    <div class="picBox" v-for="(picItem, index) in nowFileList" :key="index" v-if="type === 1" @click.stop="isSelect(picItem)">
-      <div class="chooseImg" v-if="showSelect" :class="{'isChoose': picItem.chooseIndex}"><img v-if="picItem.chooseIndex" src="@/assets/icon/photo_selected@3x.png" /></div>
-      <img class="picItem" v-lazyload :src="picItem.fileInfo.middleUrl" v-preview="true" :data-src="picItem.fileInfo.url" v-if="picItem.type === '图片'"/>
-      <div class="playVideo" v-else>
-        <!--<div class="videoBOx" @click.stop="play" v-if="!videoPlay"><i class="icon iconfont icon-play_vidio"></i></div>-->
-        <video class="video" :poster="picItem.fileInfo.coverImg.url" controls ref="video">
-          <source :src="picItem.fileInfo.url" type="video/mp4">
-             您的浏览器不支持 HTML5 video 标签，请升级浏览器或者更换浏览器。
-        </video>
+    <template v-if="type === 1">
+      <div v-if="nowFileList.length > 0" v-preview="true">
+        <div class="picBox" v-for="(picItem, index) in nowFileList" :key="index" @click.stop="isSelect(picItem)">
+          <div class="chooseImg" v-if="showSelect" :class="{'isChoose': picItem.chooseIndex}"><img v-if="picItem.chooseIndex" src="@/assets/icon/photo_selected@3x.png" /></div>
+          <img class="picItem" v-lazyload :src="picItem.fileInfo.middleUrl" :data-src="picItem.fileInfo.url" v-if="picItem.type === '图片'"/>
+          <div class="playVideo" v-else>
+            <!--<div class="videoBOx" @click.stop="play" v-if="!videoPlay"><i class="icon iconfont icon-play_vidio"></i></div>-->
+            <video class="video" :poster="picItem.fileInfo.coverImg.url" controls ref="video">
+              <source :src="picItem.fileInfo.url" type="video/mp4">
+                 您的浏览器不支持 HTML5 video 标签，请升级浏览器或者更换浏览器。
+            </video>
+          </div>
+        </div>
       </div>
-    </div>
+      <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+    </template>
     <!--文件和链接-->
     <template v-if="type === 2 || type === 3">
       <div class="fileItemBox" v-for="(fileItem, index) in nowFileList" :key="index">
@@ -31,7 +35,7 @@
         <file-box v-if="type === 3" :item="fileItem" :isFile="isFile" :fileType='fileItem.fileType'></file-box>
       </div>
     </template>
-    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :isShowNoDataText="nowFileList.length !== 0"></pullUpUi>
+    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
     <nodata-box v-if="nowFileList.length === 0"></nodata-box>
     <div class="saveBtn" v-if="showSelect" @click.stop="savePic">保存到本地相册</div>
   </div>
@@ -138,7 +142,6 @@ export default {
     /* 滚动触发事件 */
     async pullUp () {
       if (this.isLastPage) {
-        console.log(' 111111 ')
         this.all.pullUpStatus = false
         this.all.noData = true
       } else {
@@ -169,21 +172,6 @@ export default {
         if (item.id === pic.id) {
           item.chooseIndex = true
         }
-      })
-    },
-    /* 保存图片 */
-    savePic () {
-      this.selectPicList.forEach((item, index) => {
-        let a = document.createElement('a')
-        a.setAttribute('download', '下载图片')
-        // 创建一个单击事件
-        let event = new MouseEvent('click')
-        // // 将a的download属性设置为我们想要下载的图片名称，若name不存在则使用‘下载图片名称’作为默认名称
-        // a.download = item.fileInfo.fileName || '下载图片'
-        // 将生成的URL设置为a.href属性
-        a.href = item.fileInfo.url
-        // 触发a的单击事件
-        a.dispatchEvent(event)
       })
     },
     play () {

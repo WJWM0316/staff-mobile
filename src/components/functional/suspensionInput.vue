@@ -1,88 +1,29 @@
 <template>
   <!-- 悬浮输入框 -->
-  <div class="suspension-input" :class="{ 'z-focused': isFocused }" v-show="isShow">
+  <div class="suspension-input" :class="{'allHeight': isFocused}" v-show="isShow">
+    <div class="mask" v-show="isFocused" @click="blurFun"></div>
     <div class="ask-box">
-      <div class="user-input">
-        <!--<input type="text"
+      <div class="user-input" ref="user-input">
+        <!-- <input type="text"
                :placeholder="placeholder"
                v-model="suspensionInputContent"
-               @blur="hide()"
-               @focus="handleFocus"
+               v-focus
                ref="suspension-input"
                maxlength="1999"
-                />-->
-        <textarea :rows="rows"
-          cols="40"
+                /> -->
+        <textarea
           v-model="suspensionInputContent"
+          v-focus
           maxlength="1999"
           ref="suspension-input"
-          @focus="handleFocus"
-          @blur="hide()"
+          @focus.stop="hasFocus"
+          @blur.stop="hasBlur"
           :placeholder="placeholder"></textarea>
       </div>
       <span class="ask-btn" @click="send">{{sendText}}</span>
     </div>
   </div>
 </template>
-
-<style lang="less" scoped>
-  .suspension-input {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 99;
-    /*overflow-y: scroll;*/
-    -webkit-overflow-scrolling: touch;
-    background-color: #f8f8f8;
-    &.z-focused {
-      /*padding-bottom: 33px;*/
-    }
-    .ask-box {
-      max-height: 174px;
-      min-height: 54px;
-      padding: 7px 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      & .user-input {
-        margin-top: 0;
-        width: 315px;
-        min-height: 40px;
-        max-height: 160px;
-        border-radius: 20px;
-        background-color: #fff;
-        font-size: 14px;
-        padding: 0 10px;
-        & input {
-          line-height: 39px;
-          width: 100%;
-          height: 100%;
-          border-style: none;
-          outline: none;
-        }
-        textarea{
-          font-size: 30px;/*px*/
-          padding-top: 8px;
-          width: 100%;
-          height: 100%;
-          border-style: none;
-          outline: none;
-          color: #354048;
-        }
-      }
-      & .ask-btn {
-        flex: 0 0 auto;
-        margin-right: -10px;
-        padding: 0 10px;
-        border-radius: 0;
-        font-size: 15px;
-        font-weight: 700;
-        color: #d7ab70;
-      }
-    }
-  }
-</style>
 
 <script>
 export default {
@@ -95,10 +36,6 @@ export default {
       type: Boolean,
       default: false
     },
-    value: {
-      type: Boolean,
-      default: false
-    },
     content: {
       type: String,
       default: ''
@@ -108,30 +45,18 @@ export default {
     return {
       suspensionInputContent: '',
       suspensionInput: '',
-      isFocused: false,
-      rows: 1
+      isFocused: false
     }
   },
   watch: {
     suspensionInputContent (val) {
-      if (val.length > 17 && val.length < 34) {
-        this.rows = 2
-      } else if (val.length > 34 && val.length < 51) {
-        this.rows = 3
-      } else if (val.length > 51) {
-        this.rows = 4
-      } else {
-        this.rows = 1
-      }
+      let elem = this.suspensionInput
+      elem.setAttribute('style', '')
+      elem.scrollTop = 0 // 防抖动
+      elem.style.height = elem.scrollHeight + 'px'
+      this.$refs['user-input'].scrollTop = 1000 // 确保输入的内容能够在最底部
     },
     isShow (val) {},
-    value (val) {
-      if (val && this.suspensionInput) {
-        this.$nextTick(() => {
-          this.$refs['suspension-input'].focus()
-        })
-      }
-    },
     commentIndex (index, oldIndex) {
       if (index !== oldIndex) {
         this.suspensionInputContent = ''
@@ -155,13 +80,14 @@ export default {
       })
       this.suspensionInputContent = ''
     },
-    hide () {
-      this.isFocused = false
-      this.$emit('input', false)
-    },
-    handleFocus () {
-      this.$emit('focus')
+    hasFocus () {
       this.isFocused = true
+    },
+    hasBlur () {
+      this.isFocused = false
+    },
+    blurFun () {
+      this.suspensionInput.blur()
     }
   },
   mounted () {
@@ -169,3 +95,77 @@ export default {
   }
 }
 </script>
+<style lang="less" scoped>
+  .suspension-input {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    -webkit-overflow-scrolling: touch;
+    &.allHeight {
+      height: 100vh;
+    }
+    .mask {
+      height: 100vh;
+      width: 100%;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      z-index: 1;
+    }
+    .ask-box {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      z-index: 2;
+      padding: 6px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #f8f8f8;
+      & .user-input {
+        margin-top: 0;
+        width: 315px;
+        max-height: 95px;
+        border-radius: 20px;
+        background-color: #fff;
+        font-size: 14px;
+        padding: 0 10px;
+        overflow-y: scroll;
+        box-sizing: border-box;
+        & input {
+          line-height: 39px;
+          width: 100%;
+          height: 100%;
+          border-style: none;
+          outline: none;
+          display: block;
+          font-weight: 300;
+        }
+        textarea{
+          font-size: 30px;/*px*/
+          padding: 8.5px 0;
+          width: 100%;
+          height: 39px;
+          line-height: 22px;
+          box-sizing: border-box;
+          border-style: none;
+          font-weight: 300;
+          outline: none;
+          color: #354048;
+          display: block;
+        }
+      }
+      & .ask-btn {
+        flex: 0 0 auto;
+        margin-right: -10px;
+        padding: 0 10px;
+        border-radius: 0;
+        font-size: 15px;
+        font-weight: 700;
+        color: #d7ab70;
+      }
+    }
+  }
+</style>
