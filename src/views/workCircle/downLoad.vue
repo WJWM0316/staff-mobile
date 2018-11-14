@@ -10,15 +10,8 @@
       <div class="chooseImg" v-if="showSelect" :class="{'isChoose': picItem.chooseIndex}"><img v-if="picItem.chooseIndex" src="@/assets/icon/photo_selected@3x.png" /></div>
       <img class="picItem" v-lazyload :src="picItem.fileInfo.middleUrl" v-preview="true" :data-src="picItem.fileInfo.url" v-if="picItem.type === '图片'"/>
       <div class="playVideo" v-else>
-        <!--<div class="videoBOx" @click.stop="play" v-if="!videoPlay"><i class="icon iconfont icon-play_vidio"></i></div>-->
-        <!--<video class="video" :poster="picItem.fileInfo.coverImg.url" controls ref="video">
-          <source :src="picItem.fileInfo.url" type="video/mp4">
-             您的浏览器不支持 HTML5 video 标签，请升级浏览器或者更换浏览器。
-        </video>-->
         <img class="picItem" v-lazyload :src="picItem.fileInfo.coverImg.url"/>
-        <div class="playIcon" @click.stop="play(picItem.fileInfo.url)">
-          <i class="icon iconfont icon-play_vidio"></i>
-        </div>
+        <vedio-box :url="picItem.fileInfo.coverImg.url"></vedio-box>
       </div>
     </div>
     <!--文件和链接-->
@@ -45,12 +38,14 @@
 <script>
 import { getPictureApi, getFilesApi, getUrlsApi } from '@/api/pages/workCircle'
 import fileBox from '@c/functional/fileBox'
+import vedioBox from '@c/functional/vedio'
 import nodataBox from '@c/business/nodataBox'
 export default {
   name: 'fileDownLoad',
   components: {
     fileBox,
-    nodataBox
+    nodataBox,
+    vedioBox
   },
   props: {
     item: {
@@ -190,25 +185,9 @@ export default {
         // 触发a的单击事件
         a.dispatchEvent(event)
       })
-    },
-    play (videoUrl) {
-      window.video.src = videoUrl
-      window.video.play()
-    },
-    VideoObj () {
-      var video = document.createElement('video')
-      video.controls = 'controls'
-      video.style.position = 'fixed'
-      video.style.left = '0'
-      video.style.top = '50%'
-      video.style.transform = 'translateY(-50%)'
-      video.style.width = '100%'
-      video.style.zIndex = '9999'
-      window.video = video
     }
   },
   created () {
-    this.VideoObj()
     this.type = parseInt(this.$route.query.type)
     this.init()
   }
@@ -286,26 +265,6 @@ export default {
         height: 90px;
         margin-left: 3px;
         margin-bottom: 3px;
-      }
-      .playIcon{
-        box-sizing: border-box;
-        width: 90px;
-        height: 90px;
-        position: absolute;
-        margin-left: 3px;
-        top: 0;
-        left: 0;
-        z-index: 9998;
-        background-color: #000000;
-        i{
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translateX(-50%) translateY(-50%);
-          font-size: 20px;
-          color: #FFFFFF;
-          z-index: 9999;
-        }
       }
     }
   }
