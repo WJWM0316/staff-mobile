@@ -52,6 +52,7 @@ export default {
      */
     setWechatConfig () {
       let wx = Vue.wx
+      wx.config(this.wechatConfig)
       wx.ready(() => {
       })
       wx.error((res) => {
