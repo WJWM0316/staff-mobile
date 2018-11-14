@@ -189,13 +189,13 @@ export default {
     }
   }
   .circleHeader{
+    padding: 0 20px;
     color: #354048;
     font-size: 36px;/*px*/
     font-weight: 700;
     line-height: 22px;
-    margin: 29px auto 23px;
+    margin: 29px 0 23px;
     text-align: center;
-    .setEllipsis(80%)
   }
   .info {
     .title {

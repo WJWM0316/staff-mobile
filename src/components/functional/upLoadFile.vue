@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="upLoadFileBox">
-      <template v-if="attach_type !== 'img' || attach_type !== 'vedio' || !isWeiXin">
+      <template v-if="attach_type !== 'img' || !isWeiXin">
         <slot name="img"></slot>
         <img v-if="fileUrl[fileUrl.length - 1]" :src="fileUrl[fileUrl.length - 1]" alt="" id="image">
         <img v-else :src="imgUrl" alt="" id="image">
@@ -33,7 +33,7 @@
 import { uploadApi, uploadFileApi } from '@/api/common'
 import WechatMixin from '@/mixins/wechat'
 import Cropper from 'cropperjs'
-import browser from '@u/browser'
+import store from '@/store/index'
 export default {
   mixins: [WechatMixin],
   components: {
@@ -82,7 +82,12 @@ export default {
     },
     /* 是否微信环境 */
     isWeiXin () {
-      return browser.isWechat()
+      let ua = window.navigator.userAgent.toLowerCase()
+      if (ua.match(/MicroMessenger/i) && ua.match(/MicroMessenger/i)[0] === 'micromessenger') {
+        return true
+      } else {
+        return false
+      }
     }
   },
   data () {
@@ -122,14 +127,12 @@ export default {
         this.fileUrl.forEach((e, index) => {
           formData.append(`file${index}`, e)
         })
-        this.$store.dispatch('updata_loadingTxt', '正在上传中')
         uploadApi(formData).then(res => {
           this.$toast({
             text: '上传成功',
             type: 'success'
           })
           this.$emit('upLoadResult', res.data)
-          this.$store.dispatch('updata_loadingTxt', '努力加载中...')
         })
       }
     },
@@ -139,7 +142,7 @@ export default {
         count: this.count
       }
       this.wechatChooseImage(option).then(async res => {
-        this.$store.dispatch('updata_loadingTxt', '正在上传中')
+        store.dispatch('updata_loadingTxt', '努力上传中...')
         this.$emit('choseResult', res) // 选择图片的结果
         this.uploadList = []
         for (let i = 0; i < res.length; i++) {
@@ -149,13 +152,13 @@ export default {
             type: 'img'
           }
           let res1 = await this.wxUploadFile(data)
-          this.$store.dispatch('updata_loadingStatus', true)
+          store.dispatch('updata_loadingStatus', true)
           this.uploadList.push(res1.data[0])
         }
-        this.$store.dispatch('updata_loadingStatus', false)
+        store.dispatch('updata_loadingStatus', false)
         // alert(JSON.stringify(this.uploadList))
         this.$emit('upLoadResult', this.uploadList) // 上传图片的结果
-        this.$store.dispatch('updata_loadingTxt', '努力加载中...')
+        store.dispatch('updata_loadingTxt', '努力加载中...')
       }).catch((e) => {
         console.log(e)
       })

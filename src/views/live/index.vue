@@ -25,7 +25,7 @@
               <i class="icon"></i>
               <span class="txt">近期直播</span>
             </div>
-            <infoCard type="3" v-for="item in all.list1" :key='item.liveId+1111' :item="item"></infoCard>
+            <infoCard type="3" v-for="item in all.list1" :key='item.liveId' :item="item"></infoCard>
             <noDataShow v-if="all.list1.length === 0"></noDataShow>
           </template>
           <template v-if="all.isRequireEnd">
@@ -36,7 +36,7 @@
             <div class="category">
               <span v-for="(n, index) in category" :class="{'cur': categoryIndex === index}" :key="index" @click.stop="toggleType(n.categoryId, index)">{{n.categoryName}}</span>
             </div>
-            <infoCard type="3" v-for="item in all.list2" :key='item.liveId+2222' :item="item"></infoCard>
+            <infoCard type="3" v-for="item in all.list2" :key='item.liveId' :item="item"></infoCard>
             <noDataShow v-if="all.list2.length === 0"></noDataShow>
           </template>
         </div>
@@ -151,13 +151,12 @@ export default {
         })
       })
     },
-    getRecentList ({page, count, categoryId}, needLoading) {
+    getRecentList ({page, count}, needLoading) {
       if (!this.all.isLoad) this.all.isLoad = true // 防止切换tab是重复加载
       return new Promise((resolve, reject) => {
         let data = {
           page: page || 1,
-          count: count || 20,
-          categoryId
+          count: count || 20
         }
         getRecentListApi(data, needLoading).then(res => {
           this.all.list1 = this.all.list1.concat(res.data || [])
