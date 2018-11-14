@@ -188,7 +188,7 @@ export default {
             localstorage.remove('draft')
             localstorage.remove('draftImg')
             localstorage.remove('draftImgId')
-            this.$router.push({path: "/courseLesson",query: {id: this.$route.query.id}})
+            this.$router.push({path: '/courseLesson', query: {id: this.$route.query.id}})
           }
         })
       } catch (e) {

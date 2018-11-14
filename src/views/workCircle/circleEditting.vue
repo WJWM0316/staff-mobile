@@ -9,9 +9,9 @@
     <div class="select-box" v-show="isChoose" v-if="isChoose">
       <!--选择图片-->
       <div class="takePhoto">
-        <upload-img class="wxChooseImg" :attach_type="'img'" @choseResult="choseResult" @upLoadResult="upLoadResult">
+        <uploadFile class="wxChooseImg" :attach_type="'img'" @choseResult="choseResult" @upLoadResult="upLoadResult">
           <img slot="img" class="icon" src="@/assets/icon/btn_pic@3x.png" />
-        </upload-img>
+        </uploadFile>
       </div>
       <!--选择视频-->
       <div class="audio" @click.stop="video">
@@ -36,27 +36,25 @@
         <img class="image" :src="item" />
         <div class="close" @click="handleDeleteImage(index, item)"><i class="icon iconfont icon-live_btn_close"></i></div>
       </div>
-      <upload-img class="wxChooseImg"
+      <uploadFile class="wxChooseImg"
         :attach_type="'img'"
         @choseResult="choseResult"
         @upLoadResult="upLoadResult"
         :count="count"
         v-if="images.length < 20">
         <img slot="img" class="icon" src="@/assets/icon/icon_plus.png" />
-      </upload-img>
-      <!--<div class="takePhoto" @click.stop="photo" v-if="images.length < 20">
-        <input v-if="!isiOS" id="photo" type="file" accept="image/*" capture="camera" multiple>
-        <input v-else id="photo" type="file" multiple>
-        <img class="icon" src="@/assets/icon/icon_plus.png" />
-      </div>-->
+      </uploadFile>
     </div>
     <!--视频-->
     <div class="video" v-if="fileType === 1">
       <div class="delBtn" @click="del"><i class="icon iconfont icon-live_btn_close"></i></div>
-      <video width="416" height="234" controls v-if="movie">
-        <source :src="movie" type="video/mp4">
-        您的浏览器不支持 HTML5 video 标签。
-      </video>
+      <uploadFile class="chooseVedio"
+        :attach_type="'vedio'"
+        @choseResult="choseResult"
+        @upLoadResult="upLoadResult"
+      >
+        <vedioBox></vedioBox>
+      </uploadFile>
     </div>
     <!--文件-->
     <div class="file" v-if="fileType === 2">
@@ -89,23 +87,24 @@
     </div>
     <!--链接输入弹窗-->
     <div class="Mask" v-if="showMask" @click.stop="closeTask">
-      <div class="inpLeft"><img src="@/assets/icon/btn_link@3x.png" /></div>
+      <div class="inpLeft"><img src="@/assets/icon/btn_link@3x.png"/></div>
       <input @click.stop="inp" type="text" v-model="inpLink" placeholder="请在此处复制或者输入链接"/>
       <div class="linkBtn" @click.stop="done">确认</div>
     </div>
   </div>
 </template>
-
 <script>
 import { attachesApi } from '@/api/pages/course'
 import { jobcirclePostApi } from '@/api/pages/workCircle'
-import uploadImg from '@c/functional/upLoadFile'
-import store from '@/store/index.js'
+import uploadFile from '@c/functional/upLoadFile'
+import browser from '@u/browser'
 import localstorage from '@u/localstorage'
+import vedioBox from '@c/functional/vedio'
 export default {
   name: 'circleEdit',
   components: {
-    uploadImg
+    uploadFile,
+    vedioBox
   },
   computed: {
     canPublish: {
@@ -121,6 +120,9 @@ export default {
           return 20 - this.images.length
         }
       }
+    },
+    isiOS () {
+      return browser.isWechat()
     }
   },
   data () {
@@ -145,7 +147,6 @@ export default {
       inpLink: '', // 输入的链接
       showMask: false, // 展示链接输入框
       isCircleSelf: false, // 是否仅限圈内可见
-      isiOS: '',
       nowWeiXinImgNum: '', // 微信上传图片选中多少张
       isSend: false, // 是否已经发送帖子
       send: false
@@ -208,41 +209,6 @@ export default {
         }
       })
     },
-    /* 选择图片 */
-    photo () {
-      let that = this
-      document.getElementById('photo').addEventListener('change', function (e) {
-        let reader = new FileReader()
-        let imgFile = this.files
-        reader.readAsDataURL(this.files[0])
-        let inp2 = this.cloneNode(true)
-        this.parentNode.replaceChild(inp2, this)
-        reader.onload = function () {
-          that.attachType = 'img'
-          for (let i = 0; i < imgFile.length; i++) {
-            console.log(that.uploadImgList.length)
-            that.uploadFile(imgFile[i]).then(res => {
-              that.isChoose = false
-              that.fileType = 0
-              that.images.push(res.data[0].url)
-              that.uploadImgList.push(res.data[0].id)
-            })
-          }
-        }
-      })
-    },
-    /* 上传图片或其他文件 */
-    async uploadFile (nowImg) {
-      let config = {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-      let formData = new FormData()
-      formData.append('attach_type', this.attachType)
-      formData.append(this.fileName, nowImg)
-      return attachesApi(formData, config, true)
-    },
     /**
      * 删除图片
      */
@@ -254,46 +220,6 @@ export default {
         this.fileType = ''
       }
     },
-    /* 上传视频 */
-    video () {
-      let that = this
-      document.getElementById('video').addEventListener('change', function (e) {
-        let reader = new FileReader()
-        let videoFile = this.files[0]
-        console.log(videoFile)
-        reader.readAsDataURL(this.files[0])
-        reader.onload = function () {
-          that.attachType = 'video'
-          // 上传视频文件
-          that.uploadFile(videoFile).then(res => {
-            that.isChoose = false
-            that.fileType = 1
-            that.fileData = res.data[0]
-            that.movie = res.data[0].url
-          })
-        }
-      })
-    },
-    /* 上传文件 */
-    file () {
-      let that = this
-      document.getElementById('file').addEventListener('change', function (e) {
-        let reader = new FileReader()
-        let docFile = this.files[0]
-        console.log(docFile.name)
-        reader.readAsDataURL(this.files[0])
-        reader.onload = function () {
-          that.attachType = 'doc'
-          that.fileName = docFile.name
-          // 上传视频文件
-          that.uploadFile(docFile).then(res => {
-            that.isChoose = false
-            that.fileType = 2
-            that.fileData = res.data[0]
-          })
-        }
-      })
-    },
     del () {
       console.log(' 删除 ')
       this.fileData = ''
@@ -302,33 +228,6 @@ export default {
       this.fileType = ''
       this.inpLink = ''
     },
-    showimg () {
-      let that = this
-      document.getElementById('image').addEventListener('change', function (e) {
-        let inp = this
-        console.log(this.files)
-        let reader = null
-        reader = new FileReader()
-        reader.readAsDataURL(this.files[0])
-        reader.onload = function () {
-          let b = that.dataURLtoFile(this.result)
-          that.images.push(this.result)
-        }
-      })
-    },
-    // 将base64转换为文件
-    dataURLtoFile (dataurl, filename) {
-      let arr = dataurl.split(',')
-      let mime = arr[0].match(/:(.*?);/)[1]
-      let bstr = atob(arr[1])
-      let n = bstr.length
-      let u8arr = new Uint8Array(n)
-      while (n--) {
-        u8arr[n] = bstr.charCodeAt(n)
-      }
-      return new File([u8arr], filename, {type: mime})
-    },
-    inp () {},
     /* 确认输入链接 */
     done () {
       if (this.inpLink) {
@@ -356,9 +255,6 @@ export default {
     }
   },
   created () {
-    let u = navigator.userAgent
-    let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
-    this.isiOS = isiOS
   },
   beforeRouteLeave (to, from, next) {
     let that = this
