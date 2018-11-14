@@ -16,6 +16,7 @@ export default {
   methods: {
     play (videoUrl) {
       window.video.src = videoUrl
+      // document.body.appendChild(window.video)
       window.video.play()
     },
     videoObj () {
