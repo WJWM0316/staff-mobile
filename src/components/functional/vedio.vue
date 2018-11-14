@@ -45,10 +45,7 @@ export default {
     box-sizing: border-box;
     width: 90px;
     height: 90px;
-    position: absolute;
     margin-left: 3px;
-    top: 0;
-    left: 0;
     z-index: 9998;
     background-color: #000000;
     i{
