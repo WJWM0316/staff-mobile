@@ -10,12 +10,14 @@ const preview = (el, binding, vnode) => {
         img,
         urls
       }
-      console.log(111111111111)
+      console.log(element, 11111)
       wx.methods.wechatPreviewImage(data)
       e.stopPropagation() // 防止事件冒泡
     }
-    element.removeEventListener('click', bingFun)
-    element.addEventListener('click', bingFun)
+    if (!element.getAttribute('binded')) {
+      element.setAttribute('binded', true)
+      element.addEventListener('click', bingFun)
+    }
   }
   // 遍历图片获取列表+绑定
   const findImg = (element) => {
@@ -47,11 +49,7 @@ Vue.directive('preview', {
   update: function (el, binding, vnode) {
   },
   componentUpdated: function (el, binding, vnode) {
-    // 禁止多次调用
-    clearTimeout(timer)
-    timer = setTimeout(() => {
-      preview(el, binding, vnode)
-    }, 2000)
+    preview(el, binding, vnode)
   },
   unbind: function (e) {
   }

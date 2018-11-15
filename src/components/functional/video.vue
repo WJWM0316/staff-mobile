@@ -1,6 +1,6 @@
 <template>
   <div class="playIcon" ref="videoBox" @click.stop="playVedio(url)">
-    <i class="icon iconfont icon-play_vidio" v-show="videoIndex !== index || isPaused"></i>
+    <i class="icon iconfont icon-play_vidio" v-show="(videoIndex !== index) || playOver"></i>
   </div>
 </template>
 <script>
@@ -15,15 +15,20 @@ export default {
     }
   },
   watch: {
-    url () {}
+    index () {
+    },
+    url () {},
+    playOver (val) {
+      console.log(333333, val, this.videoIndex, this.index)
+    }
   },
   computed: {
     ...mapState({
       videoIndex: state => state.global.videoIndex
     }),
     isPaused () {
-      if (this.videoIndex !== this.index) return
-      if (this.playing) {
+      // if (this.videoIndex !== this.index) return
+      if (this.playOver) {
         return true
       } else {
         return false
@@ -32,8 +37,7 @@ export default {
   },
   data () {
     return {
-      playing: false,
-      curIndex: null
+      playOver: false
     }
   },
   methods: {
@@ -42,7 +46,6 @@ export default {
     ]),
     playVedio (videoUrl) {
       if (this.videoIndex !== this.index) {
-        this.updata_videoIndex(this.index)
         if (window.video) {
           let HTMLCollection = document.getElementsByTagName('video')
           for (let i = 0; i < HTMLCollection.length; i++) {
@@ -52,25 +55,31 @@ export default {
         this.$refs.videoBox.appendChild(window.video)
         window.video.src = videoUrl
         window.video.play()
+        // if (window.video.requestFullscreen) {
+        //   window.video.requestFullscreen()
+        // } else if (window.video.mozRequestFullScreen) {
+        //   window.video.mozRequestFullScreen()
+        // } else if (window.video.webkitRequestFullScreen) {
+        //   window.video.webkitRequestFullScreen()
+        // }
       } else {
         if (window.video.paused) {
+          this.playOver = false
           window.video.play()
         } else {
           window.video.pause()
         }
       }
+      this.updata_videoIndex(this.index)
     }
   },
   mounted () {
     var video = document.createElement('video')
     video.setAttribute('id', 'video')
-    video.setAttribute('x5-playsinline', '')
-    video.setAttribute('playsinline', '')
-    video.setAttribute('webkit-playsinline', '')
-    video.setAttribute('style', 'width:auto;height:100%;margin:0 auto;display:block;')
+    video.setAttribute('style', 'width:auto;height:100%;margin:0 auto;display:block;object-fit: cover;object-position: center center;')
     window.video = video
     window.video.addEventListener('pause', () => {
-      this.playing = false
+      this.playOver = true
     })
   }
 }
