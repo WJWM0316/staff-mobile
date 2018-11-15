@@ -1,7 +1,8 @@
 <template>
   <div class="aduio" :class="{'isRead': !isReaded && isNeedRead, 'isReadEnd': isReadEnded && isNeedEnd, 'lessonBg': isLesson}"  @click.stop="play">
-    <div class="playBtn" :class="{'lessonPlayBtn': isLesson, 'gifBtn': status === 2 && isLesson}">
-      <img src="@a/icon/playing.png" v-show="status === 0">
+    <div class="playBtn" :class="{'lessonPlayBtn': isLesson, 'gifBtn': (status === 2 && isLesson) || (status === 0 && isLesson)}">
+      <img src="@a/icon/playing.png" v-show="status === 0 && !isLesson">
+      <img class="lessonGif" src="@a/icon/lessonPlaying.png" v-show="status === 0 && isLesson">
       <img src="@a/icon/music_loading.png" class="load" v-show="status === 1">
       <img src="@a/icon/playing.gif" v-show="status === 2 && !isLesson">
       <img class="lessonGif" src="@a/icon/lessonPlaying.gif" v-show="status === 2 && isLesson">
@@ -274,7 +275,7 @@ export default {
       margin-right: 29px !important;
     }
     .gifBtn{
-      margin-right: 6px !important;
+      margin-right: 3px !important;
       width: 44px;
       height: 44px;
       .lessonGif{
