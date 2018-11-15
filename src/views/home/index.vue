@@ -231,7 +231,9 @@ export default {
           .num {
             font-size: 76px; /*px*/
             color: #354048;
-            line-height: 50px;
+            padding-top: 6px;
+            height: 44px;
+            line-height: 44px;
             font-family: 'MyNewFont'
           }
           .txt {
@@ -411,6 +413,7 @@ export default {
           width: 163px;
           height: 80px;
           display: block;
+          border-radius: 2px;
         }
         img:first-child {
           margin-right: 9px;
