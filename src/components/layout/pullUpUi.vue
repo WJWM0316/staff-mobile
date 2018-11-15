@@ -7,6 +7,7 @@
   </div>
 </template>
 <script>
+let scrollFun = null
 export default {
   props: {
     pullUpStatus: {
@@ -38,26 +39,24 @@ export default {
       show: false
     }
   },
-  methods: {
-    scrollFun () {
+  mounted () {
+    let that = this
+    this.tabHeight = 59 * window.dpr
+    this.winHeight = window.screen.height * window.dpr
+    scrollFun = () => {
       this.show = true
-      let that = this
-      let tabHeight = 59 * window.dpr
-      let winHeight = window.screen.height * window.dpr
-      if (window.scrollY && window.scrollY + tabHeight / 4 >= document.body.clientHeight - winHeight) {
+      if (window.scrollY && window.scrollY + this.tabHeight / 4 >= document.body.clientHeight - this.winHeight) {
         if (!this.pullUpStatus && !this.noData) {
           this.$emit('pullUp')
           console.log('加载更多数据')
         }
       }
     }
-  },
-  mounted () {
-    window.removeEventListener('scroll', this.scrollFun())
-    window.addEventListener('scroll', this.scrollFun())
+    window.removeEventListener('scroll', scrollFun)
+    window.addEventListener('scroll', scrollFun)
   },
   destroyed () {
-    window.removeEventListener('scroll', this.scrollFun())
+    window.removeEventListener('scroll', scrollFun)
   }
 }
 </script>
