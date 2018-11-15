@@ -38,12 +38,12 @@ export default {
       show: false
     }
   },
-  mounted () {
-    let that = this
-    let tabHeight = 59 * window.dpr
-    let winHeight = window.screen.height * window.dpr
-    window.onscroll = (e) => {
+  methods: {
+    scrollFun () {
       this.show = true
+      let that = this
+      let tabHeight = 59 * window.dpr
+      let winHeight = window.screen.height * window.dpr
       if (window.scrollY && window.scrollY + tabHeight / 4 >= document.body.clientHeight - winHeight) {
         if (!this.pullUpStatus && !this.noData) {
           this.$emit('pullUp')
@@ -51,6 +51,13 @@ export default {
         }
       }
     }
+  },
+  mounted () {
+    window.removeEventListener('scroll', this.scrollFun())
+    window.addEventListener('scroll', this.scrollFun())
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollFun())
   }
 }
 </script>

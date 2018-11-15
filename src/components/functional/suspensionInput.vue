@@ -103,6 +103,8 @@ export default {
     right: 0;
     z-index: 99;
     -webkit-overflow-scrolling: touch;
+    display: flex;
+    align-items: flex-end;
     &.allHeight {
       height: 100vh;
     }
@@ -115,6 +117,7 @@ export default {
       z-index: 1;
     }
     .ask-box {
+      height: 54px;
       position: absolute;
       left: 0;
       bottom: 0;
@@ -124,6 +127,7 @@ export default {
       align-items: center;
       justify-content: space-between;
       background-color: #f8f8f8;
+      box-sizing: border-box;
       & .user-input {
         margin-top: 0;
         width: 315px;
