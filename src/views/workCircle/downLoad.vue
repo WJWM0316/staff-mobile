@@ -11,7 +11,7 @@
           <div class="chooseImg" v-if="showSelect" :class="{'isChoose': picItem.chooseIndex}"><img v-if="picItem.chooseIndex" src="@/assets/icon/photo_selected@3x.png" /></div>
           <img class="picItem" v-lazyload :src="picItem.fileInfo.middleUrl" :data-src="picItem.fileInfo.url" v-if="picItem.type === '图片'"/>
           <div class="playVideo" v-else>
-            <vedio-box class="videoBox" :url="picItem.fileInfo.url" @play="play"></vedio-box>
+            <vedio-box class="videoBox" :url="picItem.fileInfo.url" :index="index"></vedio-box>
           </div>
         </div>
       </div>
@@ -33,7 +33,6 @@
     <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" :list="nowFileList" @pullUp="pullUp"></pullUpUi>
     <nodata-box v-if="nowFileList.length === 0"></nodata-box>
     <!--<div class="saveBtn" v-if="showSelect" @click.stop="savePic">保存到本地相册</div>-->
-    <div class="videoPlayBg" v-if="videoPlay" @click.stop="close"></div>
   </div>
 </template>
 <script>
@@ -67,8 +66,7 @@ export default {
       isFile: '', // 是否文件
       fileType: '', // 文件的类型xml，或者其他
       showSelect: false, // 是否展示图片选择圈
-      selectPicList: [], // 选中的图片列表
-      videoPlay: false
+      selectPicList: [] // 选中的图片列表
     }
   },
   methods: {
@@ -141,7 +139,6 @@ export default {
     },
     /* 滚动触发事件 */
     async pullUp () {
-      console.log(11111111)
       if (this.isLastPage) {
         this.all.pullUpStatus = false
         this.all.noData = true
@@ -189,13 +186,6 @@ export default {
         // 触发a的单击事件
         a.dispatchEvent(event)
       })
-    },
-    play () {
-      this.videoPlay = true
-    },
-    close () {
-      this.videoPlay = false
-      document.body.removeChild(window.video)
     }
   },
   created () {
@@ -263,7 +253,6 @@ export default {
       }
     }
   }
-  
   .fileItemBox{
     padding: 0 20px;
     border: 0.5px solid #F7F7F7;
@@ -312,14 +301,5 @@ export default {
     background: #FFE266;
     font-size: 30px;/*px*/
     color: #354048;
-  }
-  .videoPlayBg{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: #000000;
-    z-index: 9998;
   }
 </style>

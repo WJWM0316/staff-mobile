@@ -10,6 +10,7 @@ const preview = (el, binding, vnode) => {
         img,
         urls
       }
+      console.log(111111111111)
       wx.methods.wechatPreviewImage(data)
       e.stopPropagation() // 防止事件冒泡
     }

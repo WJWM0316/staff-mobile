@@ -19,6 +19,9 @@ export default {
   [types.AUDIOCURID] (state, data) {
     state.audioCurId = data
   },
+  [types.VIDEOINDEX] (state, data) {
+    state.videoIndex = data
+  },
   [types.WXCONFIGURL] (state, data) {
     state.wxConfigUrl = data
   },

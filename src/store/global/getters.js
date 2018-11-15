@@ -17,6 +17,9 @@ export default {
   audioCurId: function (state) {
     return state.audioCurId
   },
+  videoIndex: function (state) {
+    return state.videoIndex
+  },
   wxConfigUrl: function (state) {
     return state.wxConfigUrl
   },
