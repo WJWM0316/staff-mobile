@@ -63,6 +63,7 @@ export default{
   border-radius: 3px;
   box-sizing: border-box;
   .content-file {
+    line-height: 18px;
     padding-left: 54px;
     position: relative;
     width: 100%;
@@ -85,7 +86,7 @@ export default{
       flex-direction: column;
       justify-content: space-evenly;
       .text {
-        font-size: 26px;/*px*/
+        font-size: 28px;/*px*/
         font-weight: 300;
         display: block;
         max-width: 261px;
