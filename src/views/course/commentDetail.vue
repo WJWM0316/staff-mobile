@@ -110,6 +110,7 @@ export default {
     async pageInit () {
       this.$route.query.isCourse === 'false' ? this.isCourse = false : this.isCourse = true
       console.log(this.$route)
+      this.replyId = this.$route.query.id
       await this.getCommentDetail()
       await this.getReplyList()
     },

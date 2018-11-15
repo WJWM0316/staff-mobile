@@ -262,6 +262,7 @@ export default {
     font-size: 30px;/*px*/
     width: 280px;
     .content-text{
+      color: #354048;
       word-wrap: break-word;
       font-size: 30px;/*px*/
     }
@@ -271,6 +272,9 @@ export default {
       padding-bottom: 5px;
       .user-career{
         font-size: 24px;/*px*/
+      }
+      .user-name{
+        font-weight: 500;
       }
     }
     &.border {

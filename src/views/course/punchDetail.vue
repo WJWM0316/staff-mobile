@@ -41,6 +41,7 @@
           </div>
         </div>
       </template>
+      <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" :list="navTabName === 'comment'? commentList : favorList" @pullUp="pullUp"></pullUpUi>
     </div>
     <!-- 悬浮输入框 -->
     <suspension-input
@@ -77,6 +78,7 @@ export default {
       suspensionInputPlaceholder: '来分享你的想法吧～',
       isShow: true,
       commentIndex: -1,
+      isLastPage: false,
       nowPges: 1, // 点赞列表当前页数
       page: 1, // 评论列表当前页数
       favorList: [], // 点赞列表
@@ -93,6 +95,10 @@ export default {
           label: ' 取消优秀打卡 ',
           value: ' disSelect '
         }]
+      },
+      all: {
+        noData: false,
+        pullUpStatus: false
       }
     }
   },
@@ -103,7 +109,7 @@ export default {
         this.navTabName = targetName
         if (this.navTabName === 'praise') {
           /* 点赞列表 */
-          if (this.favorList.length === 0) {
+          if (this.favorList.length !== this.item.favorTotal) {
             this.getFavorList()
           }
         }
@@ -117,6 +123,7 @@ export default {
         sourceType: 'course_section_card'
       }
       let res = await getFavorListApi(param)
+      res.meta.nextPageUrl ? this.isLastPage = false : this.isLastPage = true
       this.favorList.push(...res.data)
     },
     /**
@@ -174,6 +181,7 @@ export default {
         page: this.page
       }
       let res = await getCommentListApi(param)
+      res.meta.nextPageUrl ? this.isLastPage = false : this.isLastPage = true
       return res.data
     },
     /* 合并热门评论与全部评论 */
@@ -216,6 +224,23 @@ export default {
         this.$toast({text: '取消成功', type: 'success'})
       } else {
         this.$toast({text: '设置成功', type: 'success'})
+      }
+    },
+    /* 上拉加载 */
+    async pullUp () {
+      console.log(this.isLastPage)
+      if (this.isLastPage) {
+        this.all.noData = true
+        this.all.pullUpStatus = false
+      } else {
+        if (this.navTabName === 'comment') {
+          this.page += 1
+          let all = await this.getCommentList()
+          this.commentList.push(...all)
+        } else {
+          this.nowPges += 1
+          this.getFavorList()
+        }
       }
     }
   },
