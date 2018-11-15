@@ -162,6 +162,7 @@ export default {
       this.appendProblem()
     },
     show (val) {
+      this.tabIndex = 0
       if (val && this.scrollPart.list.length === 0) {
         this.getList({page: 1, type: 'my'})
       }
@@ -266,8 +267,8 @@ export default {
       this.tabIndex = index
       if (index === 1 && this.scrollAll.list.length === 0 && !this.scrollAll.noData) {
         this.getList({page: 1, type: 'all'})
-        this.appendProblem()
       }
+      this.appendProblem()
     }
   }
 }

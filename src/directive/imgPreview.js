@@ -50,7 +50,7 @@ Vue.directive('preview', {
     clearTimeout(timer)
     timer = setTimeout(() => {
       preview(el, binding, vnode)
-    }, 1000)
+    }, 2000)
   },
   unbind: function (e) {
   }

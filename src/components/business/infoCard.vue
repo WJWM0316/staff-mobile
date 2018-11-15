@@ -257,15 +257,18 @@ export default {
     padding-top: 3px;
   }
   &.recommend {
-    padding-left: 113px;
+    padding-left: 108px;
     .infoPhoto {
       width: 89px;
       height: 89px;
     }
     .right {
       height: 89px;
+      .title {
+        margin-top: 5px;
+      }
       .label {
-         margin: 6px 0 0px;
+         margin: 15px 0 0px;
       }
     }
   }

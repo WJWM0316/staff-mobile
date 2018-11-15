@@ -6,7 +6,7 @@
     </div>
     <!--图片-->
     <template v-if="type === 1">
-      <div v-if="nowFileList.length > 0" v-preview="true">
+      <div class="wrapImg" v-if="nowFileList.length > 0" v-preview="true">
         <div class="picBox" v-for="(picItem, index) in nowFileList" :key="index" v-if="type === 1" @click.stop="isSelect(picItem)">
           <div class="chooseImg" v-if="showSelect" :class="{'isChoose': picItem.chooseIndex}"><img v-if="picItem.chooseIndex" src="@/assets/icon/photo_selected@3x.png" /></div>
           <img class="picItem" v-lazyload :src="picItem.fileInfo.middleUrl" :data-src="picItem.fileInfo.url" v-if="picItem.type === '图片'"/>
@@ -221,45 +221,49 @@ export default {
       color: #D7AB70;
     }
   }
-  .picBox{
-    position: relative;
-    float: left;
-    .picItem{
-      width: 90px;
-      height: 90px;
-      margin-left: 3px;
-      margin-bottom: 3px;
-      object-fit: cover;
-      vertical-align: middle;
-    }
-    .chooseImg{
-      position: absolute;
-      right: 5px;
-      top: 5px;
-      width: 21px;
-      height: 21px;
-      z-index: 10;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.5);
-      border: 1px solid #FFFFFF;
-    }
-    .isChoose{
-      text-align: center;
-      background: #FFE266;
-      font-size: 28px;/*px*/
-      color: #354048;
-    }
-    .playVideo{
-      width: 90px;
-      height: 90px;
-      margin-left: 3px;
-      .videoBox{
+  .wrapImg {
+    overflow: hidden;
+    .picBox{
+      position: relative;
+      float: left;
+      .picItem{
+        width: 90px;
+        height: 90px;
+        margin-left: 3px;
+        margin-bottom: 3px;
+        object-fit: cover;
+        vertical-align: middle;
+      }
+      .chooseImg{
         position: absolute;
-        top: 0;
-        left: 0;
+        right: 5px;
+        top: 5px;
+        width: 21px;
+        height: 21px;
+        z-index: 10;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.5);
+        border: 1px solid #FFFFFF;
+      }
+      .isChoose{
+        text-align: center;
+        background: #FFE266;
+        font-size: 28px;/*px*/
+        color: #354048;
+      }
+      .playVideo{
+        width: 90px;
+        height: 90px;
+        margin-left: 3px;
+        .videoBox{
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
       }
     }
   }
+  
   .fileItemBox{
     padding: 0 20px;
     border: 0.5px solid #F7F7F7;
