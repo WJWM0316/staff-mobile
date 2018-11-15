@@ -10,10 +10,10 @@ const preview = (el, binding, vnode) => {
         img,
         urls
       }
-      console.log(element, 11111)
       wx.methods.wechatPreviewImage(data)
       e.stopPropagation() // 防止事件冒泡
     }
+    // 已绑定的不在重新绑定
     if (!element.getAttribute('binded')) {
       element.setAttribute('binded', true)
       element.addEventListener('click', bingFun)
