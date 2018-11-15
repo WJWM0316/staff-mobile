@@ -39,7 +39,7 @@
           课程介绍<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
         </div>
         <div v-else @click.stop="toCourseDetail">
-          课程主页<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
+          课程主页
         </div>
       </div>
       <div v-if="type === '2'">
@@ -254,7 +254,7 @@ export default {
     .right{
       display: flex;
       align-items: center;
-      color: #4080AD;
+      color: #666666;
       font-size: 24px;/*px*/
       font-weight: 300;
       .to_img{

@@ -172,6 +172,7 @@ export default {
   methods: {
     // 点击评论事件
     commentAreaClick () {
+      this.comment()
       console.log(' 我是底部评论区点击评论事件 ')
     },
     toUserInfo (id) {

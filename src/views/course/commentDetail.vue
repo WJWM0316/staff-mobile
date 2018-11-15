@@ -42,22 +42,8 @@
           <p class="community-empty-desc">成为第一个点赞的人吧~</p>
         </div>
       </template>
+      <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" :list="navTabName === 'comment'? replyList : favorList" @pullUp="pullUp"></pullUpUi>
     </div>
-      <!--<div class="ask-box {{isShowPumpBtn ? 'show' : ''}}">-->
-      <!--<div class="user-input">-->
-      <!--<input type="text" placeholder="{{placeholderText}}"-->
-      <!--bindblur="sleep"-->
-      <!--@confirm="sendComment"-->
-      <!--focus="{{isPumpFocus}}"-->
-      <!--bindinput="bindInputPump"-->
-      <!--value="{{pumpContent}}"-->
-      <!--maxlength="1000"-->
-      <!--placeholder-style="color: #bcbcbc"-->
-      <!--cursor-spacing="20" />-->
-      <!--</div>-->
-      <!--<text class="ask-btn" @tap="sendComment">发送</text>-->
-      <!--</div>-->
-    <!-- footer -->
     <!-- 悬浮输入框 -->
     <suspension-input v-model="displaySuspensionInput"
                       :placeholder="suspensionInputPlaceholder"
@@ -97,7 +83,12 @@ export default {
       nowReplyListPage: 1, // 二级评论当前页数
       isCourse: true, // 是否课程评论详情
       favorList: [], // 点赞列表
-      favorPges: 1 // 点赞列表翻页
+      favorPges: 1, // 点赞列表翻页
+      isLastPage: false,
+      all: {
+        noData: false,
+        pullUpStatus: false
+      }
     }
   },
   computed: {},
@@ -109,7 +100,6 @@ export default {
   methods: {
     async pageInit () {
       this.$route.query.isCourse === 'false' ? this.isCourse = false : this.isCourse = true
-      console.log(this.$route)
       this.replyId = this.$route.query.id
       await this.getCommentDetail()
       await this.getReplyList()
@@ -140,7 +130,12 @@ export default {
       } else {
         res = await getCircleCommentListlApi(param)
       }
-      this.replyList = res.data
+      res.meta.nextPageUrl ? this.isLastPage = false : this.isLastPage = true
+      if (this.nowReplyListPage === 1) {
+        this.replyList = res.data
+      } else {
+        this.replyList.push(...res.data)
+      }
     },
     /* 获取点赞列表 */
     async getFavorList () {
@@ -156,7 +151,12 @@ export default {
         param.sourceType = 'job_circle_comment'
         res = await commonFavorListApi(param)
       }
-      this.favorList.push(...res.data)
+      res.meta.nextPageUrl ? this.isLastPage = false : this.isLastPage = true
+      if (this.favorPges === 1) {
+        this.favorList = res.data
+      } else {
+        this.favorList.push(...res.data)
+      }
     },
     /* 组件触发的事件 */
     operation (e) {
@@ -187,8 +187,6 @@ export default {
       this.isShow = true
       this.displaySuspensionInput = true
     },
-    /* 删除 */
-    async del () {},
     /* 发送评论 */
     async sendComment ({value, commentIndex}) {
       this.putComment(value).then(res => {
@@ -225,6 +223,21 @@ export default {
     /* 删除评论 */
     delComment (e) {
       console.log(e)
+      this.discussInfo.commentCount -= 1
+      this.getReplyList()
+    },
+    /* 上拉加载 */
+    pullUp () {
+      if (this.isLastPage) {
+        this.all.noData = true
+        this.all.pullUpStatus = false
+      } else {
+        if (this.navTabName === 'comment') {
+          this.getReplyList()
+        } else {
+          this.getFavorList()
+        }
+      }
     }
   },
   created () {

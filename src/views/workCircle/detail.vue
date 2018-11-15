@@ -17,11 +17,11 @@
           <div v-for="(commentItem, index) in commentList" :key="index">
             <div>
               <!-- 热门评论 -->
-              <div class="hot-area" v-if="item.hotComments.length > 0 && index === 0">
+              <div class="hot-area" v-if="hotCommentNum > 0 && index === 0">
                 <i class="hot-icon"><img src="../../assets/icon/icon_hotcomment@3x.png" alt=""></i><span>热门评论</span>
               </div>
               <!-- 全部评论 -->
-              <div class="hot-area" v-if="item.commentTotal > 0 && index === item.hotComments.length">
+              <div class="hot-area" v-if="item.commentTotal > 0 && index === hotCommentNum">
                 <i class="hot-icon"><img src="../../assets/icon/tab-massage-3@3x.png" alt=""></i><span>全部评论</span>
               </div>
             </div>
@@ -107,18 +107,27 @@ export default {
         noData: false,
         pullUpStatus: false
       },
-      nowChoosePost: '' // 当前选中的要置顶或取消的帖子
+      nowChoosePost: '', // 当前选中的要置顶或取消的帖子
+      hotCommentNum: ''
     }
   },
   methods: {
     /* 删除评论 */
     delComment (e) {
       this.commentList.splice(e.index, 1)
+      if (e.index < this.hotCommentNum) {
+        this.hotCommentNum -= 1
+      }
     },
     /* 切换nav */
     toggle (targetName) {
       if (this.navTabName !== targetName) {
         this.navTabName = targetName
+        if (this.navTabName === 'praise') {
+          this.isShow = false
+        } else {
+          this.isShow = true
+        }
       }
       if (this.navTabName === 'praise' && this.item.favorTotal > 0 && this.favorList.length === 0) {
         this.getFavorList()
@@ -151,7 +160,11 @@ export default {
       }
       let res = await commonFavorListApi(param)
       res.meta.nextPageUrl ? this.isLastPage = false : this.isLastPage = true
-      this.favorList.push(...res.data)
+      if (this.favorPges === 1) {
+        this.favorList = [...res.data]
+      } else {
+        this.favorList.push(...res.data)
+      }
     },
     async init () {
       let { id } = this.$route.query
@@ -160,6 +173,7 @@ export default {
       let hotRes = await this.getHotCommentList()
       let res1 = await this.getCommentList()
       res1.meta.nextPageUrl ? this.isLastPage = false : this.isLastPage = true
+      this.hotCommentNum = hotRes.data.length
       this.commentList.push(...hotRes.data, ...res1.data)
     },
     /* 点击评论调起底部输入框 */
@@ -197,6 +211,7 @@ export default {
         let hotRes = await this.getHotCommentList()
         let res1 = await this.getCommentList()
         res1.meta.nextPageUrl ? this.isLastPage = false : this.isLastPage = true
+        this.hotCommentNum = hotRes.data.length
         this.commentList = []
         this.commentList.push(...hotRes.data, ...res1.data)
         this.item.commentTotal += 1
@@ -227,10 +242,19 @@ export default {
       console.log(a.overflow)
     },
     /* 上拉加载 */
-    pullUp () {
+    async pullUp () {
       if (this.isLastPage) {
         this.all.noData = true
         this.all.pullUpStatus = false
+      } else {
+        if (this.navTabName === 'comment') {
+          this.page += 1
+          let all = await this.getCommentList()
+          this.commentList.push(...all.data)
+        } else {
+          this.favorPges += 1
+          this.getFavorList()
+        }
       }
     }
   },
