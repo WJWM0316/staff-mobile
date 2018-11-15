@@ -15,7 +15,6 @@
           </div>
         </div>
       </div>
-      <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
     </template>
     <!--文件和链接-->
     <template v-if="type === 2 || type === 3">
@@ -26,14 +25,14 @@
           <div class="fileCreatedTime">{{fileItem.createdDay}}</div>
         </div>
         <!--文件-->
-        <file-box v-if="type === 2" :item="fileItem.fileInfo" :isFile="isFile" :fileType='fileItem.fileType'></file-box>
+        <file-box class="fileBox" v-if="type === 2" :item="fileItem.fileInfo" :isFile="isFile" :fileType='fileItem.fileType'></file-box>
         <!--链接-->
-        <file-box v-if="type === 3" :item="fileItem" :isFile="isFile" :fileType='fileItem.fileType'></file-box>
+        <file-box class="fileBox" v-if="type === 3" :item="fileItem" :isFile="isFile" :fileType='fileItem.fileType'></file-box>
       </div>
     </template>
-    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+    <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" :list="nowFileList" @pullUp="pullUp"></pullUpUi>
     <nodata-box v-if="nowFileList.length === 0"></nodata-box>
-    <div class="saveBtn" v-if="showSelect" @click.stop="savePic">保存到本地相册</div>
+    <!--<div class="saveBtn" v-if="showSelect" @click.stop="savePic">保存到本地相册</div>-->
     <div class="videoPlayBg" v-if="videoPlay" @click.stop="close"></div>
   </div>
 </template>
@@ -103,10 +102,6 @@ export default {
         res = await getUrlsApi(param, needLoading)
       }
       res.data.map((item, index) => {
-        if (this.type === 2) {
-          let result = item.fileInfo.fileName.match(/\.[^\.]+/)
-          item.fileType = result[0]
-        }
         if (index === 0 || (index > 0 && item.month !== res.data[index - 1].month)) {
           item.needShowTitle = true
         } else {
@@ -114,7 +109,14 @@ export default {
         }
         return item
       })
-      res.meta.currentPage === res.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
+      /* 是否最后一页 */
+      if (res.meta.currentPage === res.meta.lastPage) {
+        this.isLastPage = true
+        this.all.noData = true
+        this.all.pullUpStatus = false
+      } else {
+        this.isLastPage = false
+      }
       if (this.nowPage === 1) {
         this.nowFileList = res.data
       } else {
@@ -139,6 +141,7 @@ export default {
     },
     /* 滚动触发事件 */
     async pullUp () {
+      console.log(11111111)
       if (this.isLastPage) {
         this.all.pullUpStatus = false
         this.all.noData = true
@@ -259,11 +262,12 @@ export default {
   }
   .fileItemBox{
     padding: 0 20px;
+    border: 0.5px solid #F7F7F7;
     .fileItemHeader{
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-top: 30px;
+      padding-top: 15px;
       font-size: 28px;/*px*/
      .fileCreatedTime{
        color: #BCBCBC;
@@ -279,13 +283,18 @@ export default {
       }
     }
     .fileTitle{
+      font-size: 30px;/*px*/
       color: #666666;
       margin-right: -20px;
       margin-left: -20px;
-      padding: 30px 20px 15px;
+      padding: 20px;
       /*height: 50px;*/
       /*line-height: 50px;*/
       border-bottom: 1px solid #EEEEEE;/*px*/
+    }
+    .fileBox{
+      margin-top: 15px;
+      margin-bottom: 15px;
     }
   }
   .saveBtn{
