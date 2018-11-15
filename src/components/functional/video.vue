@@ -46,7 +46,7 @@ export default {
       top: 50%;
       left: 50%;
       transform: translateX(-50%) translateY(-50%);
-      font-size: 20px;
+      font-size: 70px;/*px*/
       color: #FFFFFF;
       z-index: 9999;
     }
