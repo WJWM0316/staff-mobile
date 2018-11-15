@@ -44,9 +44,9 @@ export default {
     })
   },
   // 更新微信配置
-  updata_wxConfig: ({commit}, data) => {
+  updata_wxConfigUrl: ({commit}, data) => {
     return new Promise((resolve, reject) => {
-      commit(types.WXCONFIG, data)
+      commit(types.WXCONFIGURL, data)
       resolve()
     })
   },

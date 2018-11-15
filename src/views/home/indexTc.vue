@@ -292,6 +292,7 @@ export default {
             margin-right: 19px;
             color: rgb(188, 188, 188);
             vertical-align: middle;
+            font-weight: 300;
           }
         }
       }

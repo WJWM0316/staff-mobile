@@ -6,22 +6,36 @@
       <p class="addon" :class="{ 'z-active': form.content.length > 0 }"><span class="current">{{form.content.length}}</span>/{{lengths.textMax}}</p>
     </div>
     <!--四项选择框-->
-    <div class="select-box" v-show="isChoose" v-if="isChoose">
+    <div class="select-box" v-show="isChoose">
       <!--选择图片-->
-      <div class="takePhoto">
-        <uploadFile class="wxChooseImg" :attach_type="'img'" @choseResult="choseResult" @upLoadResult="upLoadResult">
+      <div class="takePhoto" @click="attachType = 'img'">
+        <uploadFile
+          class="wxChooseImg"
+          attach_type='img'
+          @choseResult="choseResult"
+          @upLoadResult="upLoadResult"
+        >
           <img slot="img" class="icon" src="@/assets/icon/btn_pic@3x.png" />
         </uploadFile>
       </div>
       <!--选择视频-->
-      <div class="audio" @click.stop="video">
-        <input v-if="!isiOS" id="video" type="file" accept="video/*" capture="camcorder" multiple>
-        <input v-else id="video" type="file" accept="*" multiple>
+      <div class="video" @click="attachType = 'video'">
+        <uploadFile class="chooseVedio"
+          attach_type='video'
+          @choseResult="choseResult"
+          @upLoadResult="upLoadResult"
+        >
+        </uploadFile>
         <img class="icon" src="@/assets/icon/btn_video@3x.png"/>
       </div>
       <!--选择文件-->
-      <div class="file" @click.stop="file">
-        <input id="file" type="file" multiple>
+      <div class="file" @click="attachType = 'doc'">
+        <uploadFile class="chooseVedio"
+          attach_type='doc'
+          @choseResult="choseResult"
+          @upLoadResult="upLoadResult"
+        >
+        </uploadFile>
         <img class="icon" src="@/assets/icon/btn_doc@3x.png"/>
       </div>
       <!--选择链接-->
@@ -31,10 +45,10 @@
     </div>
     <!--四项选择框-->
     <!--选择图片-->
-    <div class="images" v-if="fileType === 0">
+    <div class="images" v-show="fileType === 0">
       <div class="item" v-for="(item, index) in images" :key="index">
         <img class="image" :src="item" />
-        <div class="close" @click="handleDeleteImage(index, item)"><i class="icon iconfont icon-live_btn_close"></i></div>
+        <div class="close" @click="delFile('img', index, item)"><i class="icon iconfont icon-live_btn_close"></i></div>
       </div>
       <uploadFile class="wxChooseImg"
         :attach_type="'img'"
@@ -46,35 +60,22 @@
       </uploadFile>
     </div>
     <!--视频-->
-    <div class="video" v-if="fileType === 1">
-      <div class="delBtn" @click="del"><i class="icon iconfont icon-live_btn_close"></i></div>
-      <uploadFile class="chooseVedio"
-        :attach_type="'vedio'"
-        @choseResult="choseResult"
-        @upLoadResult="upLoadResult"
-      >
-        <vedioBox></vedioBox>
-      </uploadFile>
+    <div class="video" v-show="fileType === 1">
+      <div class="delBtn" @click="delFile('video')"><i class="icon iconfont icon-live_btn_close"></i></div>
+        <videoBox class="videoBox" :url="movie"></videoBox>
     </div>
     <!--文件-->
-    <div class="file" v-if="fileType === 2">
-      <div class="delBtn" @click="del"><i class="icon iconfont icon-live_btn_close"></i></div>
-      <div class="content-file" @click.stop="fileOpen(fileData.url)">
-        <img class="file-logo" :src="fileData.extension | fileCover" />
-        <div class="file-desc">
-          <p class="text">{{fileData.fileName}}</p>
-          <p class="text">{{fileData.sizeM}}</p>
-        </div>
+    <div class="file" v-show="fileType === 2">
+      <div class="delBtn" @click="delFile('doc')"><i class="icon iconfont icon-live_btn_close"></i></div>
+      <div class="content-file">
+        <fileBox :item="fileData"></fileBox>
       </div>
     </div>
     <!--链接-->
-    <div class="postLink" v-if="fileType === 3">
-      <div class="delBtn" @click="del"><i class="icon iconfont icon-live_btn_close"></i></div>
-      <div class="content-file" @click.stop="tolink">
-        <img v-show="true" class="file-logo" src="@/assets/icon/postLink.png" />
-        <div class="file-desc">
-          <p class="text">{{inpLink}}</p>
-        </div>
+    <div class="postLink" v-show="fileType === 3">
+      <div class="delBtn" @click="delFile('link')"><i class="icon iconfont icon-live_btn_close"></i></div>
+      <div class="content-file">
+        <fileBox :item="fileData" :isFile='false'></fileBox>
       </div>
     </div>
     <div class="circleSelf" @click.stop="setCircleSelf">
@@ -86,10 +87,12 @@
       <button type="button" class="u-btn-publish" :disabled="!canPublish" @click="handleSubmit">发布</button>
     </div>
     <!--链接输入弹窗-->
-    <div class="Mask" v-if="showMask" @click.stop="closeTask">
-      <div class="inpLeft"><img src="@/assets/icon/btn_link@3x.png"/></div>
-      <input @click.stop="inp" type="text" v-model="inpLink" placeholder="请在此处复制或者输入链接"/>
-      <div class="linkBtn" @click.stop="done">确认</div>
+    <div class="Mask" v-show="showMask" @click.stop="closeTask">
+      <div class="bottomBox" ref="content">
+        <div class="inpLeft"><img src="@/assets/icon/btn_link@3x.png"/></div>
+        <input type="text" v-model="inpLink" placeholder="请在此处复制或者输入链接"/>
+        <div class="linkBtn" @click.stop="done">确认</div>
+      </div>
     </div>
   </div>
 </template>
@@ -97,14 +100,18 @@
 import { attachesApi } from '@/api/pages/course'
 import { jobcirclePostApi } from '@/api/pages/workCircle'
 import uploadFile from '@c/functional/upLoadFile'
+import fileBox from '@c/functional/fileBox'
 import browser from '@u/browser'
+import {URL} from '@u/regular'
 import localstorage from '@u/localstorage'
-import vedioBox from '@c/functional/vedio'
+import videoBox from '@c/functional/video'
+import { removeFileApi } from '@/api/common'
 export default {
   name: 'circleEdit',
   components: {
     uploadFile,
-    vedioBox
+    videoBox,
+    fileBox
   },
   computed: {
     canPublish: {
@@ -122,6 +129,9 @@ export default {
       }
     },
     isiOS () {
+      return browser.isIos()
+    },
+    isWechat () {
       return browser.isWechat()
     }
   },
@@ -140,9 +150,8 @@ export default {
         imageMax: 20 // 图片最大张数
       },
       movie: '', // 上传的视频
-      attachType: 'img', // 上传的文件类型默认图片
-      fileName: 'img1', // 上传文件名，默认img1
-      fileData: '', // 存在上传的文件数据
+      attachType: null, // 上传的文件类型
+      fileData: null, // 存在上传的文件数据
       uploadImgList: [], // 存放上传图片id的数组
       inpLink: '', // 输入的链接
       showMask: false, // 展示链接输入框
@@ -154,15 +163,39 @@ export default {
   },
   methods: {
     /* 微信选择图片返回 */
-    choseResult (res) {},
+    choseResult (res) {
+      switch (this.attachType) {
+        case 'img':
+          if (this.isWechat) {
+            this.images = this.images.concat(res)
+          }
+          break
+      }
+    },
     /* 上传后返回 */
     upLoadResult (res) {
-      res.forEach(item => {
-        this.images.push(item.url)
-        this.uploadImgList.push(item.id)
-      })
-      this.isChoose = false
-      this.fileType = 0
+      switch (this.attachType) {
+        case 'img':
+          res.forEach(item => {
+            if (!this.isWechat) {
+              this.images.push(item.url)
+            }
+            this.uploadImgList.push(item.id)
+          })
+          this.isChoose = false
+          this.fileType = 0
+          break
+        case 'video':
+          this.isChoose = false
+          this.fileType = 1
+          this.fileData = res[0]
+          this.movie = res[0].url
+          break
+        case 'doc':
+          this.isChoose = false
+          this.fileType = 2
+          this.fileData = res[0]
+      }
     },
     /**
      * 提交表单
@@ -210,28 +243,40 @@ export default {
       })
     },
     /**
-     * 删除图片
+     * 删除文件
      */
-    handleDeleteImage (index, image) {
-      this.images.splice(index, 1)
-      this.uploadImgList.splice(index, 1)
-      if (this.images.length === 0) {
-        this.isChoose = true
-        this.fileType = ''
+    delFile (type, index, image) {
+      if (type === 'img') {
+        this.images.splice(index, 1)
+        removeFileApi({id: this.uploadImgList[index]}, false).then(res => {
+          this.uploadImgList.splice(index, 1)
+        })
+        if (this.images.length === 0) {
+          this.isChoose = true
+          this.fileType = null
+        }
+      } else if (type === 'video') {
+        removeFileApi({id: this.fileData.id}, false).then(res => {
+          this.fileData = null
+          this.movie = ''
+        })
+      } else if (type === 'link') {
+        this.inpLink = ''
+      } else {
+        removeFileApi({id: this.fileData.id}, false).then(res => {
+          this.fileData = null
+        })
       }
-    },
-    del () {
-      console.log(' 删除 ')
-      this.fileData = ''
-      this.movie = ''
-      this.isChoose = true
       this.fileType = ''
-      this.inpLink = ''
+      this.isChoose = true
     },
     /* 确认输入链接 */
     done () {
-      if (this.inpLink) {
-        console.log(this.inpLink)
+      if (this.inpLink === '') {
+        this.$toast({text: '链接不能为空'})
+      } else if (!URL.test(this.inpLink)) {
+        this.$toast({text: '链接格式不正确'})
+      } else {
         this.fileType = 3
         this.isChoose = false
         this.showMask = false
@@ -240,18 +285,13 @@ export default {
     postLink () {
       this.showMask = true
     },
-    closeTask () {
+    closeTask (e) {
+      // 点击区域是底部输入框的不需要关闭
+      if (e.target.parentNode === this.$refs.content) return
       this.showMask = false
     },
     setCircleSelf () {
       this.isCircleSelf = !this.isCircleSelf
-    },
-    fileOpen (url) {
-      window.location.href = url
-    },
-    /* 跳转链接 */
-    tolink () {
-      // window.location.href = this.inpLink
     }
   },
   created () {
@@ -294,7 +334,7 @@ export default {
     /* 四项选择盒子样子 */
     .select-box{
       display: flex;
-      .takePhoto, .audio, .file, .link{
+      .takePhoto, .video, .file, .link{
         position: relative;
         margin-right: 9px;
         width: 77px;
@@ -430,7 +470,11 @@ export default {
     .video{
       display: inline-block;
       position: relative;
-      >.delBtn{
+      .videoBox {
+        width: 208px;
+        height: 117px;
+      }
+      .delBtn{
         position: absolute;
         right: 3px;
         top: 3px;
@@ -441,11 +485,6 @@ export default {
           height: 20px;
           width: 20px;
         }
-      }
-      >video{
-        object-fit:fill;
-        width: 208px;
-        /*height: 117px;*/
       }
     }
     .file, .postLink{
@@ -466,39 +505,6 @@ export default {
           color: #FFFFFF;
           height: 20px;
           width: 20px;
-        }
-      }
-      /*  文件  */
-      .content-file {
-        margin-top: 22px;
-        display: flex;
-        align-items: center;
-        background-color: #F8F8F8;
-        padding: 7.5px 10px 8.5px;
-        border-radius: 3px;
-        .file-logo {
-          width: 44px;
-          height: 44px;
-          border-radius: 3px;
-        }
-        .file-desc {
-          font-size: 14px;/*px*/
-          color: #111111;
-          margin-left: 10px;
-          .text {
-            font-size: 26px;/*px*/
-            font-weight: 300;
-            display: block;
-            max-width: 261px;
-            overflow: hidden;
-            text-overflow:ellipsis;
-            white-space: nowrap;
-          }
-          .text:last-of-type {
-            font-weight: 300;
-            margin-top: 1px;
-            color: #bcbcbc;
-          }
         }
       }
     }
@@ -620,46 +626,46 @@ export default {
       width: 100%;
       height: 100vh;
       background-color: rgba(0,0,0,0.5);
-      z-index: 8888;
       -webkit-user-select: none;
       -webkit-user-drag: none;
-      .inpLeft{
+      .bottomBox {
         position: absolute;
-        padding-right: 8px;
-        bottom: 32px;
-        left: 32px;
-        width: 20px;
-        height: 20px;
-        z-index: 100;
-        >img{
-          left: 32px;
-          width: 20px;
-          display: block;
-        }
-        .z-focused {
-          padding-bottom: 33px;
-        }
-      }
-      >input{
-        width: 290px;
+        width: 100%;
         height: 44px;
-        background: #FFFFFF;
-        border-radius: 35px;
-        position: absolute;
-        left: 20px;
         bottom: 20px;
-        color: #354048;
+        overflow: hidden;
+        padding: 0 20px;
         box-sizing: border-box;
-        padding-left: 45px;
-        padding-right: 20px;
-        font-size: 30px;/*px*/
-      }
-      .linkBtn{
-        position: absolute;
-        bottom: 32px;
-        right: 20px;
-        font-size: 32px;/*px*/
-        color: #FFE266;
+        .inpLeft{
+          width: 20px;
+          height: 20px;
+          position: absolute;
+          top: 50%;
+          margin-top: -10px;
+          left: 32px;
+          >img{
+            left: 32px;
+            width: 20px;
+            display: block;
+          }
+        }
+        >input{
+          width: 290px;
+          height: 44px;
+          background: #FFFFFF;
+          border-radius: 35px;
+          color: #354048;
+          box-sizing: border-box;
+          padding-left: 45px;
+          padding-right: 20px;
+          font-size: 30px;/*px*/
+        }
+        .linkBtn{
+          font-size: 32px;/*px*/
+          color: #FFE266;
+          float: right;
+          line-height: 44px;
+        }
       }
     }
   }
