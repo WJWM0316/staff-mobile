@@ -42,22 +42,8 @@
           <p class="community-empty-desc">成为第一个点赞的人吧~</p>
         </div>
       </template>
+      <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" :list="navTabName === 'comment'? replyList : favorList" @pullUp="pullUp"></pullUpUi>
     </div>
-      <!--<div class="ask-box {{isShowPumpBtn ? 'show' : ''}}">-->
-      <!--<div class="user-input">-->
-      <!--<input type="text" placeholder="{{placeholderText}}"-->
-      <!--bindblur="sleep"-->
-      <!--@confirm="sendComment"-->
-      <!--focus="{{isPumpFocus}}"-->
-      <!--bindinput="bindInputPump"-->
-      <!--value="{{pumpContent}}"-->
-      <!--maxlength="1000"-->
-      <!--placeholder-style="color: #bcbcbc"-->
-      <!--cursor-spacing="20" />-->
-      <!--</div>-->
-      <!--<text class="ask-btn" @tap="sendComment">发送</text>-->
-      <!--</div>-->
-    <!-- footer -->
     <!-- 悬浮输入框 -->
     <suspension-input v-model="displaySuspensionInput"
                       :placeholder="suspensionInputPlaceholder"
@@ -97,7 +83,12 @@ export default {
       nowReplyListPage: 1, // 二级评论当前页数
       isCourse: true, // 是否课程评论详情
       favorList: [], // 点赞列表
-      favorPges: 1 // 点赞列表翻页
+      favorPges: 1, // 点赞列表翻页
+      isLastPage: false,
+      all: {
+        noData: false,
+        pullUpStatus: false
+      }
     }
   },
   computed: {},
@@ -225,6 +216,13 @@ export default {
     /* 删除评论 */
     delComment (e) {
       console.log(e)
+    },
+    /* 上拉加载 */
+    pullUp () {
+      if (this.isLastPage) {
+        this.all.noData = true
+        this.all.pullUpStatus = false
+      }
     }
   },
   created () {

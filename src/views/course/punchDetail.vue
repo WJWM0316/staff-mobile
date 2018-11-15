@@ -124,7 +124,11 @@ export default {
       }
       let res = await getFavorListApi(param)
       res.meta.nextPageUrl ? this.isLastPage = false : this.isLastPage = true
-      this.favorList.push(...res.data)
+      if (this.nowPges === 1) {
+        this.favorList = [...res.data]
+      } else {
+        this.favorList.push(...res.data)
+      }
     },
     /**
      * 发送评论
@@ -171,7 +175,6 @@ export default {
       }
       let res = await getHotCommentListApi(param)
       this.hotCommentNum = res.data.length
-      console.log(this.hotCommentNum)
       return res.data
     },
     /* 获取全部打卡评论列表 */
@@ -204,6 +207,9 @@ export default {
     delComment (index) {
       console.log(index)
       this.commentList.splice(index.index, 1)
+      if (index.index < this.hotCommentNum) {
+        this.hotCommentNum -= 1
+      }
     },
     /* 评选优秀打卡 */
     async setPostTop (item) {
