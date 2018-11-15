@@ -1,6 +1,6 @@
 <template>
   <div class="reader">
-    <div class="content" ref="richText" v-if="pageInfo" v-html="pageInfo.content"></div>
+    <div class="content" id="content" ref="richText" v-if="pageInfo" v-html="pageInfo.content"></div>
     <div class="operArea" :class="{'floor': showOper}">
       <div class="item" @click.stop="openCatalog = true"><i class="icon iconfont icon-menu"></i>目录</div>
       <div class="item" @click.stop="paging('prev')" :class="{'hide': sectionIndex <= 0}">上一节</div>
@@ -43,7 +43,9 @@ export default {
       catalog: [],
       idList: [], // 章节id列表
       openCatalog: false, // 打开目录
-      showOper: true // 操作栏
+      showOper: true, // 操作栏
+      position: 0, // 记录浏览位置
+      wrap: null // 容器
     }
   },
   methods: {
@@ -70,15 +72,21 @@ export default {
         this.getDetail()
       })
     },
-    getDetail (id) {
-      let data = {
-        bookId: this.bookId,
-        sectionId: id || this.idList[this.sectionIndex]
-      }
-      this.sectionId = data.sectionId
-      getContentApi(data).then(res => {
-        this.pageInfo = res.data
-        window.scroll(0, 0)
+    getDetail (id, needloading) {
+      return new Promise((resolve, reject) => {
+        let data = {
+          bookId: this.bookId,
+          sectionId: id || this.idList[this.sectionIndex],
+          position: this.position
+        }
+        this.sectionId = data.sectionId
+        getContentApi(data, needloading).then(res => {
+          this.pageInfo = res.data
+          resolve(res)
+          this.$nextTick(() => {
+            window.scrollTo(0, this.pageInfo.position)
+          })
+        })
       })
     },
     jump (id) {
@@ -117,18 +125,25 @@ export default {
     this.getCatalog()
     let lastY = 0
     window.onscroll = (e) => {
-      if (window.pageYOffset < lastY) {
+      this.position = window.scrollY
+      console.log(window.scrollY)
+      if (window.scrollY < lastY) {
         if (!this.showOper) {
           this.showOper = true
         }
       } else {
         this.showOper = false
       }
-      if (window.pageYOffset === 0) {
+      if (window.scrollY === 0) {
         this.showOper = true
       }
-      lastY = window.pageYOffset
+      lastY = window.scrollY
     }
+  },
+  beforeRouteLeave (to, from, next) {
+    this.getDetail().then(res => {
+      next(true)
+    })
   }
 }
 </script>

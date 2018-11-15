@@ -192,7 +192,6 @@ export default {
         this.commentList.push(...hotRes.data, ...res1.data)
         this.item.commentTotal += 1
         this.$toast({text: '评论成功', type: 'success'})
-        this.isShow = false
       })
     },
     /* 调起置顶选项框 */
