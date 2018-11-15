@@ -6,6 +6,7 @@ Vue.directive('focus', {
       // 强制输入框顶起
       setTimeout(() => {
         document.body.scrollTop = document.body.scrollHeight
+        window.scrollTo(0, 10000)
       }, 500)
     })
   },
