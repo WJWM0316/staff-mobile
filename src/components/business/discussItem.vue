@@ -262,6 +262,7 @@ export default {
     font-size: 30px;/*px*/
     width: 280px;
     .content-text{
+      color: #354048;
       word-wrap: break-word;
       font-size: 30px;/*px*/
     }

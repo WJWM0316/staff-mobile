@@ -49,7 +49,7 @@
           </div>
         </div>
       </template>
-      <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" :list="nowFileList" @pullUp="pullUp"></pullUpUi>
+      <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" :list="navTabName === 'comment'? commentList : favorList" @pullUp="pullUp"></pullUpUi>
     </div>
     <!-- 悬浮输入框 -->
     <suspension-input
@@ -90,6 +90,7 @@ export default {
       suspensionInputPlaceholder: '来分享你的想法吧～',
       isShow: true,
       commentIndex: -1,
+      isLastPage: false,
       favorPges: 1, // 当前点赞列表翻页页数
       addActionsConfig: { // 置顶评选
         show: false,
@@ -149,6 +150,7 @@ export default {
         page: this.favorPges
       }
       let res = await commonFavorListApi(param)
+      res.meta.nextPageUrl ? this.isLastPage = false : this.isLastPage = true
       this.favorList.push(...res.data)
     },
     async init () {
@@ -157,6 +159,7 @@ export default {
       this.item = res.data
       let hotRes = await this.getHotCommentList()
       let res1 = await this.getCommentList()
+      res1.meta.nextPageUrl ? this.isLastPage = false : this.isLastPage = true
       this.commentList.push(...hotRes.data, ...res1.data)
     },
     /* 点击评论调起底部输入框 */
@@ -193,6 +196,7 @@ export default {
       circleCommentApi(params).then(async res => {
         let hotRes = await this.getHotCommentList()
         let res1 = await this.getCommentList()
+        res1.meta.nextPageUrl ? this.isLastPage = false : this.isLastPage = true
         this.commentList = []
         this.commentList.push(...hotRes.data, ...res1.data)
         this.item.commentTotal += 1
@@ -222,6 +226,13 @@ export default {
     focus () {
       let a = document.getElementsByClassName(' postDetail ')
       console.log(a.overflow)
+    },
+    /* 上拉加载 */
+    pullUp () {
+      if (this.isLastPage) {
+        this.all.noData = true
+        this.all.pullUpStatus = false
+      }
     }
   },
   created () {
