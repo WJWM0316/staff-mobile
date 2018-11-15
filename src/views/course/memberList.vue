@@ -73,6 +73,7 @@ export default {
       })
     },
     pullUp () {
+      console.log(1111111111111)
       this.page++
       this.pullUpStatus = true
       this.getStudentList({page: this.page}, false).then(res => {
