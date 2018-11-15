@@ -246,6 +246,7 @@ export default {
         height: 90px;
         margin-left: 3px;
         .videoBox{
+          margin-left: 3px;
           position: absolute;
           top: 0;
           left: 0;
