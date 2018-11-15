@@ -49,6 +49,7 @@
           </div>
         </div>
       </template>
+      <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" :list="nowFileList" @pullUp="pullUp"></pullUpUi>
     </div>
     <!-- 悬浮输入框 -->
     <suspension-input
@@ -100,6 +101,10 @@ export default {
           label: '取消帖子置顶',
           value: 'disSelect'
         }]
+      },
+      all: {
+        noData: false,
+        pullUpStatus: false
       },
       nowChoosePost: '' // 当前选中的要置顶或取消的帖子
     }
@@ -242,6 +247,7 @@ export default {
       }
       &.comment span:nth-of-type(1),
       &.praise span:nth-of-type(2) {
+        font-weight: 700;
         color: #354048;
         position: relative;
       }

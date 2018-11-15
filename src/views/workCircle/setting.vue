@@ -10,7 +10,7 @@
     </div>
     <div class="member" v-if="isOwner">
       <span>成员管理</span>
-      <span class="tip">请前往PC端进行管理</span>
+      <span class="tip">请前往xplus.xiaodengta.com进行管理</span>
     </div>
     <div class="top">
       <span>置顶该工作圈</span>

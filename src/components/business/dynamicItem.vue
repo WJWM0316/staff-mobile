@@ -533,10 +533,11 @@ export default {
       /*时间和删除按钮*/
       .time-and-del{
         .time{
-          color: #666666;
+          color: #666666 !important;
+          font-weight: 300;
         }
         .del-btn {
-          color: #576b95;
+          color: #4080AD;
           margin-left: 10px;
         }
       }

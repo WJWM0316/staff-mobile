@@ -272,6 +272,9 @@ export default {
       .user-career{
         font-size: 24px;/*px*/
       }
+      .user-name{
+        font-weight: 500;
+      }
     }
     &.border {
       border-bottom: solid 1px #ededed; /*px*/
