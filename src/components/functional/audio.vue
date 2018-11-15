@@ -274,9 +274,12 @@ export default {
       margin-right: 29px !important;
     }
     .gifBtn{
-      margin-right: 8px !important;
+      margin-right: 6px !important;
       width: 44px;
       height: 44px;
+      .lessonGif{
+        margin-left: -5px;
+      }
     }
     .progress {
       width: 125px;

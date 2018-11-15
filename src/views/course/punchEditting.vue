@@ -65,6 +65,7 @@
 import { postPunchCardApi, getPunchCardDetailsApi, attachesApi } from '@/api/pages/course'
 import uploadImg from '@c/functional/upLoadFile'
 import localstorage from '@u/localstorage'
+import { removeFileApi } from '@/api/common'
 export default {
   components: {
     uploadImg
@@ -198,8 +199,9 @@ export default {
     /* 删除图片 */
     handleDeleteImage (index, image) {
       this.images.splice(index, 1)
-      this.uploadImgList.splice(index, 1)
-      console.log(this.images, this.uploadImgList)
+      removeFileApi({id: this.uploadImgList[index]}, false).then(res => {
+        this.uploadImgList.splice(index, 1)
+      })
     },
     /* 是否加载草稿 */
     loadDraft () {
