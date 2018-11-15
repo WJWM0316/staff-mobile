@@ -91,7 +91,9 @@ export default {
     },
     jump (id) {
       this.sectionId = id
-      this.getDetail(id)
+      this.getDetail(id).then(res => {
+        window.scrollTo(0, 0)
+      })
       this.openCatalog = false
       if (this.sectionId) {
         this.idList.forEach((itme2, index2) => {
@@ -112,7 +114,9 @@ export default {
       } else {
         if (this.sectionIndex < this.idList.length - 1) {
           this.sectionIndex++
-          this.getDetail()
+          this.getDetail().then(res => {
+            window.scrollTo(0, 0)
+          })
           this.$router.replace(`/reader?id=${this.bookId}&sectionId=${this.sectionId}`)
         }
       }
