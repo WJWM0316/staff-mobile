@@ -108,10 +108,13 @@ export default {
       if (this.navTabName !== targetName) {
         this.navTabName = targetName
         if (this.navTabName === 'praise') {
+          this.isShow = false
           /* 点赞列表 */
           if (this.favorList.length !== this.item.favorTotal) {
             this.getFavorList()
           }
+        } else {
+          this.isShow = true
         }
       }
     },

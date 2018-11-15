@@ -123,6 +123,11 @@ export default {
     toggle (targetName) {
       if (this.navTabName !== targetName) {
         this.navTabName = targetName
+        if (this.navTabName === 'praise') {
+          this.isShow = false
+        } else {
+          this.isShow = true
+        }
       }
       if (this.navTabName === 'praise' && this.item.favorTotal > 0 && this.favorList.length === 0) {
         this.getFavorList()
