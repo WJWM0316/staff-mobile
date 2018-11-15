@@ -100,7 +100,6 @@ export default {
   methods: {
     async pageInit () {
       this.$route.query.isCourse === 'false' ? this.isCourse = false : this.isCourse = true
-      console.log(this.$route)
       this.replyId = this.$route.query.id
       await this.getCommentDetail()
       await this.getReplyList()
@@ -131,7 +130,12 @@ export default {
       } else {
         res = await getCircleCommentListlApi(param)
       }
-      this.replyList = res.data
+      res.meta.nextPageUrl ? this.isLastPage = false : this.isLastPage = true
+      if (this.nowReplyListPage === 1) {
+        this.replyList = res.data
+      } else {
+        this.replyList.push(...res.data)
+      }
     },
     /* 获取点赞列表 */
     async getFavorList () {
@@ -147,7 +151,12 @@ export default {
         param.sourceType = 'job_circle_comment'
         res = await commonFavorListApi(param)
       }
-      this.favorList.push(...res.data)
+      res.meta.nextPageUrl ? this.isLastPage = false : this.isLastPage = true
+      if (this.favorPges === 1) {
+        this.favorList = res.data
+      } else {
+        this.favorList.push(...res.data)
+      }
     },
     /* 组件触发的事件 */
     operation (e) {
@@ -178,8 +187,6 @@ export default {
       this.isShow = true
       this.displaySuspensionInput = true
     },
-    /* 删除 */
-    async del () {},
     /* 发送评论 */
     async sendComment ({value, commentIndex}) {
       this.putComment(value).then(res => {
@@ -216,12 +223,20 @@ export default {
     /* 删除评论 */
     delComment (e) {
       console.log(e)
+      this.discussInfo.commentCount -= 1
+      this.getReplyList()
     },
     /* 上拉加载 */
     pullUp () {
       if (this.isLastPage) {
         this.all.noData = true
         this.all.pullUpStatus = false
+      } else {
+        if (this.navTabName === 'comment') {
+          this.getReplyList()
+        } else {
+          this.getFavorList()
+        }
       }
     }
   },
