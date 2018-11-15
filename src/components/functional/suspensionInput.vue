@@ -118,7 +118,8 @@ export default {
       z-index: 1;
     }
     .ask-box {
-      height: 54px;
+      min-height: 54px;
+      max-height: 107px;
       position: absolute;
       left: 0;
       bottom: 0;
