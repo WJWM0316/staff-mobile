@@ -40,7 +40,7 @@
 <script>
 import { getPictureApi, getFilesApi, getUrlsApi } from '@/api/pages/workCircle'
 import fileBox from '@c/functional/fileBox'
-import vedioBox from '@c/functional/vedio'
+import vedioBox from '@c/functional/video'
 import nodataBox from '@c/business/nodataBox'
 export default {
   name: 'fileDownLoad',

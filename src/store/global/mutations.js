@@ -19,8 +19,8 @@ export default {
   [types.AUDIOCURID] (state, data) {
     state.audioCurId = data
   },
-  [types.WXCONFIG] (state, data) {
-    state.wxConfig = data
+  [types.WXCONFIGURL] (state, data) {
+    state.wxConfigUrl = data
   },
   [types.CURAUDIOURL] (state, data) {
     state.curAudioURL = data

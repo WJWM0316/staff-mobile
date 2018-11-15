@@ -17,8 +17,8 @@ export default {
   audioCurId: function (state) {
     return state.audioCurId
   },
-  wxConfig: function (state) {
-    return state.wxConfig
+  wxConfigUrl: function (state) {
+    return state.wxConfigUrl
   },
   curAudioUrl: function (state) {
     return state.curAudioUrl

@@ -16,22 +16,30 @@ export const getWechatSignApi = data => request({
  * 文件上传
  * @param {*} data
  */
-export const uploadApi = (data, config, needLoading) => request({
+export const uploadApi = (data, needLoading) => request({
   type: 'post',
   url: '/attaches',
   data,
-  config,
+  needLoading: needLoading
+})
+/**
+ * 文件删除
+ * @param {*} data
+ */
+export const removeFileApi = (data, needLoading) => request({
+  type: 'delete',
+  url: `/attaches/${data.id}`,
+  data,
   needLoading: needLoading
 })
 /**
  * 获取文件上传配置
  * @param {*} data
  */
-export const uploadFileApi = (data, config, needLoading) => request({
+export const uploadFileApi = (data, needLoading) => request({
   type: 'post',
   url: '/attaches/config',
   data,
-  config,
   needLoading: needLoading
 })
 /**

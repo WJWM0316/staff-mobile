@@ -1,5 +1,5 @@
 <template>
-  <div class="playIcon" @click.stop="play(url)">
+  <div class="playIcon" ref="videoBox" @click.stop="playVedio(url)">
     <i class="icon iconfont icon-play_vidio"></i>
   </div>
 </template>
@@ -17,36 +17,29 @@ export default {
     return {}
   },
   methods: {
-    play (videoUrl) {
+    playVedio (videoUrl) {
       this.$emit('play')
-      document.body.appendChild(window.video)
+      if (document.getElementById('video')) {
+        document.removeChild(document.getElementById('video'))
+      }
+      var video = document.createElement('video')
+      window.video = video
+      video.setAttribute('id', 'video')
+      video.setAttribute('style', 'width:auto;height:100%;margin:0 auto;display:block;')
+      this.$refs.videoBox.appendChild(window.video)
       window.video.src = videoUrl
       window.video.play()
-    },
-    videoObj () {
-      var video = document.createElement('video')
-      video.controls = 'controls'
-      video.style.position = 'fixed'
-      video.style.left = '0'
-      video.style.top = '50%'
-      video.style.transform = 'translateY(-50%)'
-      video.style.width = '100%'
-      video.style.zIndex = '9999'
-      window.video = video
     }
   },
   created () {
-    this.videoObj()
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .playIcon{
     box-sizing: border-box;
     width: 90px;
     height: 90px;
-    margin-left: 3px;
-    z-index: 9998;
     background-color: #000000;
     i{
       position: absolute;
@@ -56,6 +49,12 @@ export default {
       font-size: 20px;
       color: #FFFFFF;
       z-index: 9999;
+    }
+    #video {
+      width: auto;
+      height: 100%;
+      margin: 0 auto;
+      display: block;
     }
   }
 </style>

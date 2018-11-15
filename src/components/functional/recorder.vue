@@ -44,7 +44,7 @@ export default {
         if (Math.ceil(this.progress / 1000) - 1 < 0) {
           return 0
         } else {
-          return Math.ceil(this.progress / 1000) - 1 < 0
+          return Math.ceil(this.progress / 1000) - 1
         }
       } else if (this.status === 'finish') {
         if (Math.ceil(this.duration / 1000) - 1 < 0) {

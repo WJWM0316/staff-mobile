@@ -4,7 +4,7 @@ export default {
   userInfo: null, // 用户信息
   pullUpStatus: false, // 上拉加载
   pullDownStatus: false, // 下拉刷新
-  wxConfig: null, // 微信配置
+  wxConfigUrl: null, // 微信配置
   audioCurId: null, // 当前播放的id
   curAudioUrl: null // 当前播放音频的url
 }

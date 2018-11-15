@@ -1,26 +1,25 @@
 <template>
-  <div class="fileBox">
+  <div class="fileBox" v-if="item">
     <template v-if="isFile">
-      <div class="content-file" @click.stop="fileOpen(fileType.url)">
+      <a class="content-file" :href="fileType.url">
         <img class="file-logo" :src="fileType.extension | fileCover" />
         <div class="file-desc">
           <p class="text fileText">{{fileType.fileName}}</p>
           <p class="text fileText">{{fileType.sizeM}}</p>
         </div>
-      </div>
+      </a>
     </template>
     <!--链接-->
     <div class="postLink" v-if="!isFile">
-      <a @click.stop="toLink" class="content-file" :href="item.url">
-        <img v-show="true" class="file-logo" src="@/assets/icon/postLink.png" />
+      <div class="content-file" @click.stop="tolink">
+        <img class="file-logo" src="@/assets/icon/postLink.png" />
         <div class="file-desc">
           <p class="text linkText">{{item.title || '链接'}}</p>
         </div>
-      </a>
+      </div>
     </div>
   </div>
 </template>
-
 <script>
 export default{
   name: 'fileBox',
@@ -43,40 +42,54 @@ export default{
     }
   },
   methods: {
-    fileOpen (url) {
-      console.log(11111111111111)
-      window.location.href = url
-    },
-    toLink () {}
+    /* 跳转链接 */
+    tolink () {
+      let url = this.inpLink
+      if (url.indexOf('http') === -1) {
+        url = `http://${url}`
+      }
+      location.href = url
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
 .fileBox{
+  width: 100%;
+  height: 60px;
+  padding: 7.5px 10px 8.5px;
+  background: #F8F8F8;
+  border-radius: 3px;
+  box-sizing: border-box;
   .content-file {
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    background-color: #F8F8F8;
-    padding: 7.5px 10px 8.5px;
-    border-radius: 3px;
+    padding-left: 54px;
+    position: relative;
+    width: 100%;
+    display: block;
+    height: 100%;
+    box-sizing: border-box;
     .file-logo {
       width: 44px;
       height: 44px;
       border-radius: 3px;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
     .file-desc {
+      height: 44px;
       font-size: 14px;/*px*/
       color: #111111;
-      margin-left: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
       .text {
         font-size: 26px;/*px*/
         font-weight: 300;
         display: block;
         max-width: 261px;
-        overflow: hidden;
-        text-overflow:ellipsis;
+        .setEllipsis();
       }
       .fileText{
         white-space: nowrap;
