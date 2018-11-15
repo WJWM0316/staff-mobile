@@ -43,6 +43,13 @@ export default {
       resolve()
     })
   },
+  // 当前播放视频索引
+  updata_videoIndex: ({commit}, data) => {
+    return new Promise((resolve, reject) => {
+      commit(types.VIDEOINDEX, data)
+      resolve()
+    })
+  },
   // 更新微信配置
   updata_wxConfigUrl: ({commit}, data) => {
     return new Promise((resolve, reject) => {
