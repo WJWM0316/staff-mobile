@@ -1,9 +1,10 @@
 <template>
-  <div class="aduio" :class="{'isRead': !isReaded && isNeedRead, 'isReadEnd': isReadEnded && isNeedEnd}"  @click.stop="play">
-    <div class="playBtn" :class="{'lessonPlayBtn': isLesson}">
+  <div class="aduio" :class="{'isRead': !isReaded && isNeedRead, 'isReadEnd': isReadEnded && isNeedEnd, 'lessonBg': isLesson}"  @click.stop="play">
+    <div class="playBtn" :class="{'lessonPlayBtn': isLesson, 'gifBtn': status === 2 && isLesson}">
       <img src="@a/icon/playing.png" v-show="status === 0">
       <img src="@a/icon/music_loading.png" class="load" v-show="status === 1">
-      <img src="@a/icon/playing.gif" v-show="status === 2">
+      <img src="@a/icon/playing.gif" v-show="status === 2 && !isLesson">
+      <img class="lessonGif" src="@a/icon/lessonPlaying.gif" v-show="status === 2 && isLesson">
     </div>
     <div class="progress" :class="{'lessonProgress': isLesson}" ref="progress">
       <div class="realBar" :style="{'width': `${progress}%`}">
@@ -48,7 +49,7 @@ export default {
         }
       }
     },
-    isLesson: {
+    isLesson: { // lessonPlaying
       type: Boolean,
       default: false
     }
@@ -224,6 +225,10 @@ export default {
     font-size: 0;
     white-space: nowrap;
     position: relative;
+    &.lessonBg{
+      border: 0.5px solid #FFF1B9;
+      background-color: #FFFBEC;
+    }
     &.isRead:before {
       position: absolute;
       top: 0;
@@ -259,9 +264,19 @@ export default {
           animation: loading 1s linear infinite;
         }
       }
+      .lessonGif{
+        width: 44px !important;
+        max-width: 44px !important;
+        height: 44px;
+      }
     }
     .lessonPlayBtn{
-      margin-right: 29px;
+      margin-right: 29px !important;
+    }
+    .gifBtn{
+      margin-right: 8px !important;
+      width: 44px;
+      height: 44px;
     }
     .progress {
       width: 125px;
@@ -318,6 +333,7 @@ export default {
       }
     }
     .lessonProgress{
+      background-color: #EDEDED;
       width: 188px;
     }
     .duration {

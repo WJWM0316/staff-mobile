@@ -7,7 +7,7 @@
         {{communityCourse.title}}
       </div>
       <div class="header-info">
-        <div class="left"><img v-if="communityCourse.tutorUser.avatarInfo" :src="communityCourse.tutorUser.avatarInfo.smallUrl"/><span class="mast-name">{{communityCourse.tutorUser.realname | ellipsis(12)}}</span><span>{{communityCourse.createTime}}</span></div>
+        <div class="left"><img v-if="communityCourse.tutorUser.avatarInfo" :src="communityCourse.tutorUser.avatarInfo.smallUrl"/><span class="mast-name">{{communityCourse.tutorUser.realname | ellipsis(12)}}</span><span class="mast-time">{{communityCourse.createTime}}</span></div>
         <span class="backCourse" @click.stop="backCourse">课程主页</span>
       </div>
     </div>
@@ -292,6 +292,7 @@ export default {
       width: 100%;
       padding: 0 20px;
       display: flex;
+      align-items: center;
       justify-content: space-between;
       font-size: 28px;/*px*/
      .left{
@@ -301,6 +302,9 @@ export default {
      .mast-name{
        margin-right: 20px;
        margin-left: 8px;
+     }
+     span{
+       font-weight: 300;
      }
      img{
        width: 24px;
@@ -499,6 +503,7 @@ export default {
         z-index: 8888;
       }
       >div{
+        font-weight: 300;
         width: 100%;
         height: 40px;
         display: flex;
@@ -506,7 +511,7 @@ export default {
         justify-content: center;
         font-size: 28px;/*px*/
         color: #354048;
-        background-color: rgba(255, 226, 102, 0.16);
+        background-color: #FFFAE6;
         border-radius: 20px;
         &>span{
           padding-left: 7px;

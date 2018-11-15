@@ -90,7 +90,7 @@ export default {
       discussItemList: [],
       commentIndex: -1,
       suspensionInputPlaceholder: '写评论',
-      isShow: false,
+      isShow: true,
       displaySuspensionInput: true,
       navTabName: 'comment',
       replyId: '', // 当前回复id

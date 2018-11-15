@@ -11,7 +11,6 @@
           <div class="chooseImg" v-if="showSelect" :class="{'isChoose': picItem.chooseIndex}"><img v-if="picItem.chooseIndex" src="@/assets/icon/photo_selected@3x.png" /></div>
           <img class="picItem" v-lazyload :src="picItem.fileInfo.middleUrl" :data-src="picItem.fileInfo.url" v-if="picItem.type === '图片'"/>
           <div class="playVideo" v-else>
-            <img class="picItem" :src="picItem.fileInfo.coverImg.middleUrl"/>
             <vedio-box class="videoBox" :url="picItem.fileInfo.url" @play="play"></vedio-box>
           </div>
         </div>
@@ -221,7 +220,7 @@ export default {
   }
   .picBox{
     position: relative;
-    display: inline-block;
+    float: left;
     .picItem{
       width: 90px;
       height: 90px;
@@ -248,7 +247,9 @@ export default {
       color: #354048;
     }
     .playVideo{
-      position: relative;
+      width: 90px;
+      height: 90px;
+      margin-left: 3px;
       .videoBox{
         position: absolute;
         top: 0;

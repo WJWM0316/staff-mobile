@@ -90,7 +90,7 @@
     <!--链接输入弹窗-->
     <div class="Mask" v-if="showMask" @click.stop="closeTask">
       <div class="inpLeft"><img src="@/assets/icon/btn_link@3x.png" /></div>
-      <input @click.stop="inp" type="text" v-model="inpLink" placeholder="请在此处复制或者输入链接"/>
+      <input type="text" v-model="inpLink" placeholder="请在此处复制或者输入链接"/>
       <div class="linkBtn" @click.stop="done">确认</div>
     </div>
   </div>
@@ -328,7 +328,6 @@ export default {
       }
       return new File([u8arr], filename, {type: mime})
     },
-    inp () {},
     /* 确认输入链接 */
     done () {
       if (this.inpLink) {

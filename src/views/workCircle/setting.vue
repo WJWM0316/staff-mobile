@@ -189,6 +189,7 @@ export default {
   }
   /*保存*/
   .saveBtn{
+    width: 330px;
     height: 44px;
     text-align: center;
     line-height: 44px;
@@ -196,7 +197,7 @@ export default {
     border-radius: 22px;
     color: #354048;
     font-weight: 300;
-    margin: 50px 30px 0;
+    margin-top: 50px;
     background-color: #FFE266;
   }
 }

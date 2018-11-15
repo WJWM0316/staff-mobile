@@ -169,6 +169,7 @@ export default {
     }
     .content{
       padding: 15px 20px;
+      padding-bottom: 30px;
       font-size: 30px; /*px*/
       line-height: 1.4;
       font-weight: 300;
