@@ -15,12 +15,8 @@ export default {
     }
   },
   watch: {
-    index () {
-    },
-    url () {},
-    playOver (val) {
-      console.log(333333, val, this.videoIndex, this.curIndex, this.videoIndex === this.curIndex && this.playOver)
-    }
+    index () {},
+    url () {}
   },
   computed: {
     ...mapState({
@@ -48,7 +44,12 @@ export default {
     ]),
     playVedio (videoUrl) {
       this.curIndex = this.index
-      let fullscreen = () => {
+      let fullscreenPlay = () => {
+        try {
+          window.video.play()
+        } catch (e) {
+          window.video.play()
+        }
         if (window.video.requestFullscreen) {
           window.video.requestFullscreen()
         } else if (window.video.mozRequestFullScreen) {
@@ -66,13 +67,11 @@ export default {
         }
         this.$refs.videoBox.appendChild(window.video)
         window.video.src = videoUrl
-        window.video.play()
-        fullscreen()
+        fullscreenPlay()
       } else {
         if (window.video.paused) {
           this.playOver = false
-          window.video.play()
-          fullscreen()
+          fullscreenPlay()
         } else {
           window.video.pause()
         }
@@ -85,9 +84,6 @@ export default {
     video.setAttribute('id', 'video')
     video.setAttribute('style', 'width:auto;height:100%;margin:0 auto;display:block;object-fit: cover;object-position: center center;')
     window.video = video
-    window.video.addEventListener('pause', () => {
-      this.playOver = true
-    })
   }
 }
 </script>
