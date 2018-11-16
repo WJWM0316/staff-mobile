@@ -75,7 +75,7 @@
     <div class="postLink" v-show="fileType === 3">
       <div class="delBtn" @click="delFile('link')"><i class="icon iconfont icon-live_btn_close"></i></div>
       <div class="content-file">
-        <fileBox :item="fileData" :isFile='false'></fileBox>
+        <fileBox :item="inpLink" :isFile='false'></fileBox>
       </div>
     </div>
     <div class="circleSelf" @click.stop="setCircleSelf">

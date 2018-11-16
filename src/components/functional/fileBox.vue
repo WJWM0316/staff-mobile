@@ -14,7 +14,8 @@
       <div class="content-file" @click.stop="tolink">
         <img class="file-logo" src="@/assets/icon/postLink.png" />
         <div class="file-desc">
-          <p class="text linkText">{{item.title || '链接'}}</p>
+          <p class="text linkText" v-if="item.url">{{item.title || '链接'}}</p>
+          <p class="text linkText" v-else>{{item || '链接'}}</p>
         </div>
       </div>
     </div>

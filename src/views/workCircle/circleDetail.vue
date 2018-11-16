@@ -1,6 +1,6 @@
 <template>
   <div class="circleDetail">
-    <circle-header :pageInfo="pageInfo" type='2'></circle-header>
+    <circle-header :pageInfo="pageInfo" type='2' :scroll-top.prop="1000"></circle-header>
     <!--下载文件-->
     <div class="fileDownload">
       <div class="downloadImg" @click.stop="toAlbum">
@@ -17,7 +17,7 @@
       </div>
     </div>
     <!--帖子区域-->
-    <div class="content" ref="circleDetail">
+    <div class="content">
       <div class="top">
         <div class="postNum">共有 <span style="color: #D7AB70;">{{postListTotal}}</span> 篇帖子</div>
         <div v-if="sort === 'asc'" class="reverse" @click.stop="reverse('desc')"><img src="../../assets/icon/bnt_order@3x.png"/>倒序</div>
@@ -193,7 +193,8 @@ export default {
   async created () {
     await this.init()
   },
-  mounted () {}
+  mounted () {},
+  activated () {}
 }
 </script>
 
