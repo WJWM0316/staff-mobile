@@ -100,4 +100,3 @@ Vue.filter('activeTime', timestamp => {
   }
   return timeStr
 })
-

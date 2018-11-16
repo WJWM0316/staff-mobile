@@ -13,6 +13,9 @@ import VueClipboard from 'vue-clipboard2'
 Vue.use(VueClipboard)
 Vue.prototype.$wechat = wx
 Vue.wx = wx
+Vue.prototype.removeFontSize = function (val) {
+  return val.replace(/font-size/g, 'noUse')
+}
 
 Vue.config.productionTip = false
 

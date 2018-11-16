@@ -1,18 +1,20 @@
 import Vue from 'vue'
 import wx from '@/mixins/wechat'
 let list = [] // 预览图片列表
+let bingFun = null
 const preview = (el, binding, vnode) => {
   list = []
   // 绑定图片点击事件
   const bindClick = (element, img, urls) => {
-    let bingFun = (e) => {
+    bingFun = (e) => {
       let data = {
         img,
-        urls
+        urls: list
       }
       wx.methods.wechatPreviewImage(data)
       e.stopPropagation() // 防止事件冒泡
     }
+
     // 已绑定的不在重新绑定
     if (!element.getAttribute('binded')) {
       element.setAttribute('binded', true)
@@ -22,11 +24,17 @@ const preview = (el, binding, vnode) => {
   // 遍历图片获取列表+绑定
   const findImg = (element) => {
     let HTMLCollection = element.getElementsByTagName('img')
-    let list = []
+    list = []
+    // 先遍历获取list再一个个绑定
     for (let i = 0; i < HTMLCollection.length; i++) {
       let dataSrc = HTMLCollection[i].getAttribute('data-src')
       if (dataSrc) {
         list.push(dataSrc)
+      }
+    }
+    for (let i = 0; i < HTMLCollection.length; i++) {
+      let dataSrc = HTMLCollection[i].getAttribute('data-src')
+      if (dataSrc) {
         bindClick(HTMLCollection[i], dataSrc, list)
       }
     }
