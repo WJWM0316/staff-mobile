@@ -46,10 +46,7 @@ export default{
     /* 跳转链接 */
     tolink () {
       let url = this.inpLink
-      if (url.indexOf('http') === -1) {
-        url = `http://${url}`
-      }
-      location.href = url
+      location.href = this.item.url || this.item
     }
   }
 }
