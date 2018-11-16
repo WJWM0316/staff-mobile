@@ -1,10 +1,11 @@
 <template>
-  <div class="playIcon" ref="videoBox" @click.stop="playVedio(url)">
+  <div class="playIcon" ref="videoBox" @click.stop="playVedio(url)" :class="{'square': type==='square', 'horizontal': type==='horizontal' && !vertical, 'vertical': type==='vertical' || (vertical && type !=='square')}">
     <i class="icon iconfont icon-play_vidio"></i>
   </div>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
+import browser from '@u/browser'
 export default {
   props: {
     url: {
@@ -12,11 +13,17 @@ export default {
     },
     index: {
       type: Number
+    },
+    type: {
+      type: String,
+      default: 'square'
     }
   },
   watch: {
     index () {},
-    url () {}
+    url () {},
+    type () {},
+    vertical () {}
   },
   computed: {
     ...mapState({
@@ -24,7 +31,6 @@ export default {
     }),
     isPaused () {
       if (this.curIndex !== this.videoIndex) return
-      console.log(this.curIndex, 11111111)
       if (this.playOver) {
         return true
       } else {
@@ -35,7 +41,7 @@ export default {
   data () {
     return {
       playOver: false,
-      curIndex: 0
+      vertical: false // 是否为竖版
     }
   },
   methods: {
@@ -43,14 +49,9 @@ export default {
       'updata_videoIndex'
     ]),
     playVedio (videoUrl) {
-      this.curIndex = this.index
       let fullscreenPlay = () => {
-        try {
-          window.video.play()
-        } catch (e) {
-          console.log(e)
-          window.video.play()
-        }
+        this.playOver = true
+        // 兼容pc全屏播放
         // if (window.video.requestFullscreen) {
         //   window.video.requestFullscreen()
         // } else if (window.video.mozRequestFullScreen) {
@@ -58,6 +59,12 @@ export default {
         // } else if (window.video.webkitRequestFullScreen) {
         //   window.video.webkitRequestFullScreen()
         // }
+        try {
+          window.video.play()
+        } catch (e) {
+          console.log(e)
+          window.video.play()
+        }
       }
       if (this.videoIndex !== this.index) {
         if (window.video) {
@@ -71,20 +78,38 @@ export default {
         fullscreenPlay()
       } else {
         if (window.video.paused) {
-          this.playOver = false
           fullscreenPlay()
         } else {
           window.video.pause()
         }
       }
       this.updata_videoIndex(this.index)
+      if (browser.isAndroid()) {
+        if (this.type !== 'square') {
+          let timeupdate = () => {
+            if (this.videoIndex === this.index) {
+              if (window.video.clientHeight > window.video.clientWidth && window.video.getAttribute('style')) {
+                this.vertical = true
+                window.video.setAttribute('style', 'width:100%;height:auto;margin:0 auto;display:block;object-fit: cover;object-position: center center;')
+              } else {
+                window.video.setAttribute('style', 'width:auto;height:100%;margin:0 auto;display:block;object-fit: cover;object-position: center center;')
+              }
+            }
+          }
+          window.video.removeEventListener('timeupdate', timeupdate)
+          window.video.addEventListener('timeupdate', timeupdate)
+        } else {
+          window.video.setAttribute('style', 'width:auto;height:100%;margin:0 auto;display:block;object-fit: cover;object-position: center center;')
+        }
+      } else {
+        window.video.setAttribute('style', 'width:auto;height:100%;margin:0 auto;display:block;object-fit: cover;object-position: center center;')
+      }
     }
   },
   mounted () {
-    console.log(this.index, 1)
     var video = document.createElement('video')
+    video.setAttribute('x5-playsinline', true)
     video.setAttribute('id', 'video')
-    video.setAttribute('style', 'width:auto;height:100%;margin:0 auto;display:block;object-fit: cover;object-position: center center;')
     window.video = video
   }
 }
@@ -92,10 +117,20 @@ export default {
 <style lang="less" scoped>
   .playIcon{
     box-sizing: border-box;
-    width: 90px;
-    height: 90px;
     background-color: #000000;
-    i{
+    &.square {
+      width: 90px;
+      height: 90px;
+    }
+    &.horizontal {
+      width: 335px;
+      height: 187px;
+    }
+    &.vertical {
+      width: 187px;
+      height: 335px;
+    }
+    i {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -105,8 +140,6 @@ export default {
       z-index: 9999;
     }
     #video {
-      width: auto;
-      height: 100%;
       margin: 0 auto;
       display: block;
     }

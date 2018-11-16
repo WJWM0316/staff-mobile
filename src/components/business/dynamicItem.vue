@@ -1,5 +1,5 @@
 <template>
-  <div class="dynamicItem" :class="{bottomBorder : showBorder}" @click.stop="toDetail">
+  <div class="dynamicItem" :class="{bottomBorder : showBorder}" @click.stop="toDetail" :key="index">
     <div class="header">
       <img class="headerPhoto" v-if="item.releaseUser" :src="item.releaseUser.avatarInfo.smallUrl" />
       <div class="appellation" v-if="item.releaseUser" @click.stop="toUserInfo(item.releaseUser.id)">{{item.releaseUser.realname}}</div>
@@ -40,7 +40,7 @@
       </div>
       <!--视频-->
       <div class="content-video" v-if="item.type === '视频'">
-        <videoBox :url="item.accessory[0].url" :index="index"></videoBox>
+        <videoBox :url="item.accessory[0].url" :key="index" :index="index" type="horizontal"></videoBox>
       </div>
       <!--文件，链接-->
       <div v-if="item.type === '链接' || item.type === '文件'">
@@ -445,15 +445,10 @@ export default {
       }
       /*  视频部分  */
       .content-video {
-        width: 335px;
-        height: 187px;
         margin-top: 5px;
         position: relative;
         display: inline-block;
         .playIcon {
-          width: 100%;
-          height: 100%;
-          display: block;
         }
       }
     }
