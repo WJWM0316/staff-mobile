@@ -39,14 +39,8 @@
         </div>
       </div>
       <!--视频-->
-      <div class="content-video" v-if="item.type === '视频'" @click.stop="playMovie">
-        <div class="videoBOx" v-if="videoPlay"><i class="icon iconfont icon-play_vidio"></i></div>
-        <video class="playVideo" width="416" height="234" controls v-if="movie" ref="video">
-          <source :src="item.accessory[0].url" type="video/mp4">
-          您的浏览器不支持 HTML5 video 标签，请升级浏览器或者更换浏览器。
-        </video>
-        <div class="placeholder" v-else>
-        </div>
+      <div class="content-video" v-if="item.type === '视频'">
+        <videoBox :url="item.accessory[0].url"></videoBox>
       </div>
       <!--文件，链接-->
       <div v-if="item.type === '链接' || item.type === '文件'">
@@ -110,10 +104,12 @@
 import { getFavorApi, delFavorApi, setExcellentCourseCardApi } from '@/api/pages/course'
 import { circleCommonFavorApi, delCircleCommonFavorApi, delCirclePostApi, circlePostToTopApi } from '@/api/pages/workCircle'
 import fileBox from '@c/functional/fileBox'
+import videoBox from '@c/functional/video'
 export default {
   name: 'dynamicItem',
   components: {
-    fileBox
+    fileBox,
+    videoBox
   },
   props: {
     item: {
@@ -295,10 +291,6 @@ export default {
       } else {
         this.$emit('setPostTop', this.item)
       }
-    },
-    playMovie () {
-      this.videoPlay = false
-      this.$refs['video'].play()
     }
   },
   mounted () {}
@@ -458,43 +450,10 @@ export default {
         margin-top: 5px;
         position: relative;
         display: inline-block;
-        .videoBOx{
-          box-sizing: border-box;
-          width: 335px;
-          height: 187px;
-          position: absolute;
-          top: 0;
-          left: 0;
-          z-index: 9998;
-          background-color: #000000;
-          i{
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translateX(-50%) translateY(-50%);
-            font-size: 50px;
-            color: #FFFFFF;
-            z-index: 9999;
-          }
-        }
-        .playVideo{
-          background-color: #000000;
-          height: 187px;
-        }
-        .placeholder {
-          width: 335px;
-          height: 187px;
-          background: rgba(0, 0, 0, .8) url('~@/assets/icon/video-play.png') no-repeat center;
-          background-size: 17.5px 17.5px;
-          img {
-            width: 100%;
-            height: 100%;
-          }
-        }
-        video {
-          background: #000000;
+        .playIcon {
           width: 100%;
-          height: 187px;
+          height: 100%;
+          display: block;
         }
       }
     }
