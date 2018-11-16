@@ -25,7 +25,7 @@
       <div class="audioBox" v-if="communityCourse.av && communityCourse.av.attachType==='audio'">
         <audio-item :messageData="audioList" :isLesson="true"></audio-item>
       </div>
-      <div class="module-content h5-code" v-html="communityCourse.details" ref="H5">
+      <div class="module-content h5-code" v-html="removeFontSize(communityCourse.details)" ref="H5">
       </div>
     </div>
 
@@ -41,7 +41,7 @@
             <div class="title-pic2"></div>
           </div>
           <!--头部标题-->
-          <div class="content-txt" v-html="communityCourse.punchCardTitle">
+          <div class="content-txt" v-html="removeFontSize(communityCourse.punchCardTitle)">
           </div>
           <div class="content-img">
             <div class="content-images" v-if="communityCourse.punchCardCImgInfo">

@@ -20,7 +20,7 @@
         <i class="block"></i>
         <span>书籍简介</span>
       </div>
-      <div class="h5" v-html="pageInfo.introduce"></div>
+      <div class="h5" v-html="removeFontSize(pageInfo.introduce)"></div>
     </div>
     <xButton class="readBtn" @click.native.stop="read">开始阅读</xButton>
   </div>
@@ -36,6 +36,8 @@ export default {
     return {
       pageInfo: null
     }
+  },
+  computed: {
   },
   methods: {
     toPerson (id) {
@@ -150,14 +152,9 @@ export default {
         display: inline-block;
       }
     }
-    .ceshi {
-      font-size: 30px; /*px*/
-      line-height: 1.4;
-      font-weight: 300;
-    }
     .h5 {
       margin-top: 10px;
-      font-size: 30px; /*px*/
+      font-size: 30px !important; /*px*/
       line-height: 1.4;
       font-weight: 300;
     }

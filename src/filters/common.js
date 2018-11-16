@@ -84,3 +84,13 @@ Vue.filter('conversion', (value) => {
     return `${min}:${second}`
   }
 })
+
+/**
+ * 富文本过滤掉字体
+ */
+Vue.filter('removeFontSize', (value) => {
+  if (!value) {
+    return
+  }
+  return value.replace(/font-size/g, 'noUse')
+})

@@ -1,6 +1,6 @@
 <template>
   <div class="reader">
-    <div class="content" id="content" ref="richText" v-if="pageInfo" v-html="pageInfo.content"></div>
+    <div class="content" id="content" ref="richText" v-if="pageInfo" v-html="removeFontSize(pageInfo.content)"></div>
     <div class="operArea" :class="{'floor': showOper}">
       <div class="item" @click.stop="openCatalog = true"><i class="icon iconfont icon-menu"></i>目录</div>
       <div class="item" @click.stop="paging('prev')" :class="{'hide': sectionIndex <= 0}">上一节</div>
