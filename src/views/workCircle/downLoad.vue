@@ -213,47 +213,20 @@ export default {
   }
   .wrapImg {
     overflow: hidden;
+    padding: 0 3px;
     .picBox{
       position: relative;
       float: left;
-      .picItem{
+      margin: 0 3px 3px 0;
+      box-sizing: border-box;
+      &:nth-child(4n) {
+        margin: 0 0 3px 0;
+      }
+      .picItem, .playVideo{
         width: 90px;
         height: 90px;
-        margin-left: 3px;
-        margin-bottom: 3px;
-        object-fit: cover;
-        vertical-align: middle;
-      }
-      .chooseImg{
-        position: absolute;
-        right: 5px;
-        top: 5px;
-        width: 21px;
-        height: 21px;
-        z-index: 10;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.5);
-        border: 1px solid #FFFFFF;
-      }
-      .isChoose{
-        text-align: center;
-        background: #FFE266;
-        font-size: 28px;/*px*/
-        color: #354048;
-      }
-      .playVideo{
-        width: 90px;
-        height: 90px;
-        margin-left: 3px;
-        margin-bottom: 3px;
-        object-fit: cover;
-        vertical-align: middle;
-        .videoBox{
-          margin-left: 3px;
-          position: absolute;
-          top: 0;
-          left: 0;
-        }
+        overflow: hidden;
+        display: block;
       }
     }
   }

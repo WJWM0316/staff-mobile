@@ -1,5 +1,5 @@
 <template>
-  <div class="playIcon" ref="videoBox" @click.stop="playVedio(url)" :class="{'square': type==='square', 'horizontal': type==='horizontal' && !vertical, 'vertical': type==='vertical' || vertical}">
+  <div class="playIcon" ref="videoBox" @click.stop="playVedio(url)" :class="{'square': type==='square', 'horizontal': type==='horizontal' && !vertical, 'vertical': type==='vertical' || (vertical && type !=='square')}">
     <i class="icon iconfont icon-play_vidio"></i>
   </div>
 </template>
@@ -85,18 +85,22 @@ export default {
       }
       this.updata_videoIndex(this.index)
       if (browser.isAndroid()) {
-        let timeupdate = () => {
-          if (this.videoIndex === this.index) {
-            if (window.video.clientHeight > window.video.clientWidth && window.video.getAttribute('style')) {
-              this.vertical = true
-              window.video.setAttribute('style', 'width:100%;height:auto;margin:0 auto;display:block;object-fit: cover;object-position: center center;')
-            } else {
-              window.video.setAttribute('style', 'width:auto;height:100%;margin:0 auto;display:block;object-fit: cover;object-position: center center;')
+        if (this.type !== 'square') {
+          let timeupdate = () => {
+            if (this.videoIndex === this.index) {
+              if (window.video.clientHeight > window.video.clientWidth && window.video.getAttribute('style')) {
+                this.vertical = true
+                window.video.setAttribute('style', 'width:100%;height:auto;margin:0 auto;display:block;object-fit: cover;object-position: center center;')
+              } else {
+                window.video.setAttribute('style', 'width:auto;height:100%;margin:0 auto;display:block;object-fit: cover;object-position: center center;')
+              }
             }
           }
+          window.video.removeEventListener('timeupdate', timeupdate)
+          window.video.addEventListener('timeupdate', timeupdate)
+        } else {
+          window.video.setAttribute('style', 'width:auto;height:100%;margin:0 auto;display:block;object-fit: cover;object-position: center center;')
         }
-        window.video.removeEventListener('timeupdate', timeupdate)
-        window.video.addEventListener('timeupdate', timeupdate)
       } else {
         window.video.setAttribute('style', 'width:auto;height:100%;margin:0 auto;display:block;object-fit: cover;object-position: center center;')
       }
@@ -126,7 +130,7 @@ export default {
       width: 187px;
       height: 335px;
     }
-    i{
+    i {
       position: absolute;
       top: 50%;
       left: 50%;
