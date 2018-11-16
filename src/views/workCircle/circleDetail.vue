@@ -17,13 +17,13 @@
       </div>
     </div>
     <!--帖子区域-->
-    <div class="content">
+    <div class="content" ref="circleDetail">
       <div class="top">
         <div class="postNum">共有 <span style="color: #D7AB70;">{{postListTotal}}</span> 篇帖子</div>
         <div v-if="sort === 'asc'" class="reverse" @click.stop="reverse('desc')"><img src="../../assets/icon/bnt_order@3x.png"/>倒序</div>
         <div v-else class="reverse" @click.stop="reverse('asc')"><img src="../../assets/icon/bnt_order@3x.png"/>正序</div>
       </div>
-      <div class="bottom">
+      <div class="bottom" ref="circleDetail">
         <!--置顶帖子-->
         <div class="priorityPost">
           <div class="priorityPostBox" v-for="(item,index) in postList" :key="index" v-if="item.isTop" @click.stop="toDetail(item)">
@@ -190,9 +190,10 @@ export default {
       this.postList.splice(index.index, 1)
     }
   },
-  created () {
-    this.init()
-  }
+  async created () {
+    await this.init()
+  },
+  mounted () {}
 }
 </script>
 

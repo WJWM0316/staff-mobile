@@ -51,6 +51,8 @@ export default {
   },
   methods: {
     async tab (name) {
+      this.param.organization = 0
+      this.showBorder = '全部'
       this.param.page = 1
       this.isFocus = name
       let res = {}
