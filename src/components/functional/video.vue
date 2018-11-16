@@ -1,6 +1,6 @@
 <template>
   <div class="playIcon" ref="videoBox" @click.stop="playVedio(url)">
-    <i class="icon iconfont icon-play_vidio" v-show="(videoIndex !== index) || playOver"></i>
+    <i class="icon iconfont icon-play_vidio"></i>
   </div>
 </template>
 <script>
@@ -19,7 +19,7 @@ export default {
     },
     url () {},
     playOver (val) {
-      console.log(333333, val, this.videoIndex, this.index)
+      console.log(333333, val, this.videoIndex, this.curIndex, this.videoIndex === this.curIndex && this.playOver)
     }
   },
   computed: {
@@ -27,7 +27,8 @@ export default {
       videoIndex: state => state.global.videoIndex
     }),
     isPaused () {
-      // if (this.videoIndex !== this.index) return
+      if (this.curIndex !== this.videoIndex) return
+      console.log(this.curIndex, 11111111)
       if (this.playOver) {
         return true
       } else {
@@ -37,7 +38,8 @@ export default {
   },
   data () {
     return {
-      playOver: false
+      playOver: false,
+      curIndex: 0
     }
   },
   methods: {
@@ -45,6 +47,16 @@ export default {
       'updata_videoIndex'
     ]),
     playVedio (videoUrl) {
+      this.curIndex = this.index
+      let fullscreen = () => {
+        if (window.video.requestFullscreen) {
+          window.video.requestFullscreen()
+        } else if (window.video.mozRequestFullScreen) {
+          window.video.mozRequestFullScreen()
+        } else if (window.video.webkitRequestFullScreen) {
+          window.video.webkitRequestFullScreen()
+        }
+      }
       if (this.videoIndex !== this.index) {
         if (window.video) {
           let HTMLCollection = document.getElementsByTagName('video')
@@ -55,17 +67,12 @@ export default {
         this.$refs.videoBox.appendChild(window.video)
         window.video.src = videoUrl
         window.video.play()
-        // if (window.video.requestFullscreen) {
-        //   window.video.requestFullscreen()
-        // } else if (window.video.mozRequestFullScreen) {
-        //   window.video.mozRequestFullScreen()
-        // } else if (window.video.webkitRequestFullScreen) {
-        //   window.video.webkitRequestFullScreen()
-        // }
+        fullscreen()
       } else {
         if (window.video.paused) {
           this.playOver = false
           window.video.play()
+          fullscreen()
         } else {
           window.video.pause()
         }
