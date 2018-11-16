@@ -214,6 +214,7 @@ export default {
         position: absolute;
         top: 50%;
         left: 17px;
+        color: #BCBCBC;
         transform: translateY(-50%) rotate(180deg);
       }
       .tabItem {
