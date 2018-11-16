@@ -151,7 +151,7 @@ export default {
 </script>
 <style lang="less">
 .bookHouse {
-  padding-top: 49px;
+  padding-top: 89px;
   .tab {
     width: 100%;
     height: 49px;
@@ -199,8 +199,13 @@ export default {
     padding: 0 15px;
     font-size: 28px; /*px*/
     height: 40px;
+    position: fixed;
+    top: 49px;
+    left: 0;
     white-space: nowrap;
     overflow-x: scroll;
+    background: #fff;
+    z-index: 2;
     .tabItem {
       color: #929292;
       font-weight: 300;
