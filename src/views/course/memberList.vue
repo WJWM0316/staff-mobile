@@ -119,7 +119,7 @@ export default {
     }
     .txt {
       padding-right: 6px;
-      font-size: 30px;  /*px*/
+      font-size: 32px;  /*px*/
       color: #929292;
       font-weight: 700;
     }
