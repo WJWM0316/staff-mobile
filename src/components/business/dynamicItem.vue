@@ -40,7 +40,7 @@
       </div>
       <!--视频-->
       <div class="content-video" v-if="item.type === '视频'">
-        <videoBox :url="item.accessory[0].url"></videoBox>
+        <videoBox :url="item.accessory[0].url" :index="index"></videoBox>
       </div>
       <!--文件，链接-->
       <div v-if="item.type === '链接' || item.type === '文件'">

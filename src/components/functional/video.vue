@@ -48,15 +48,16 @@ export default {
         try {
           window.video.play()
         } catch (e) {
+          console.log(e)
           window.video.play()
         }
-        if (window.video.requestFullscreen) {
-          window.video.requestFullscreen()
-        } else if (window.video.mozRequestFullScreen) {
-          window.video.mozRequestFullScreen()
-        } else if (window.video.webkitRequestFullScreen) {
-          window.video.webkitRequestFullScreen()
-        }
+        // if (window.video.requestFullscreen) {
+        //   window.video.requestFullscreen()
+        // } else if (window.video.mozRequestFullScreen) {
+        //   window.video.mozRequestFullScreen()
+        // } else if (window.video.webkitRequestFullScreen) {
+        //   window.video.webkitRequestFullScreen()
+        // }
       }
       if (this.videoIndex !== this.index) {
         if (window.video) {
@@ -80,6 +81,7 @@ export default {
     }
   },
   mounted () {
+    console.log(this.index, 1)
     var video = document.createElement('video')
     video.setAttribute('id', 'video')
     video.setAttribute('style', 'width:auto;height:100%;margin:0 auto;display:block;object-fit: cover;object-position: center center;')
