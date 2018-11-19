@@ -41,15 +41,15 @@
       <div class="taskbody">
         <div v-html="taskContent.punchCardTitle"></div>
         <!--图片-->
-        <div class="content-img" v-if="taskContent.punchCardCImgInfo && taskContent.punchCardCImgInfo.length>0">
+        <div class="content-img" v-if="taskContent.punchCardCImgInfo && taskContent.punchCardCImgInfo.length>0" v-preview="true">
           <div class="content-images">
             <!-- 图片为 1 张时 -->
             <div class="item-image one" v-if="taskContent.punchCardCImgInfo && taskContent.punchCardCImgInfo.length === 1">
-              <img :src="taskContent.punchCardCImgInfo[0].smallUrl || '@/assets/icon/img_head_default.png'" v-preview="true" :data-src="taskContent.punchCardCImgInfo[0].url" />
+              <img :src="taskContent.punchCardCImgInfo[0].smallUrl || '@/assets/icon/img_head_default.png'" :data-src="taskContent.punchCardCImgInfo[0].url" />
             </div>
             <!--  图片为 多 张时  -->
             <div class="item-image" v-for="(file,index) in taskContent.punchCardCImgInfo" :key="index" v-else>
-              <img :src="file.smallUrl || '@/assets/icon/img_head_default.png'" v-if="!file.holder" v-preview="true" :data-src="file.url"/>
+              <img :src="file.smallUrl || '@/assets/icon/img_head_default.png'" v-if="!file.holder" :data-src="file.url"/>
             </div>
           </div>
         </div>

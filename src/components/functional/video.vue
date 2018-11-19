@@ -1,6 +1,10 @@
 <template>
-  <div class="playIcon" ref="videoBox" @click.stop="playVedio(url)" :class="{'square': type==='square', 'horizontal': type==='horizontal' && !vertical, 'vertical': type==='vertical' || (vertical && type !=='square')}">
-    <i class="icon iconfont icon-play_vidio"></i>
+  <div class="videoBox">
+    <template>
+      <div class="playIcon" ref="videoBox" @click.stop="playVideo(url)" :class="{'square': type==='square', 'horizontal': type==='horizontal' && !vertical, 'vertical': type==='vertical' || (vertical && type !=='square')}">
+        <i class="icon iconfont icon-play_vidio"></i>
+      </div>
+    </template>
   </div>
 </template>
 <script>
@@ -48,7 +52,7 @@ export default {
     ...mapActions([
       'updata_videoIndex'
     ]),
-    playVedio (videoUrl) {
+    playVideo (videoUrl) {
       let fullscreenPlay = () => {
         this.playOver = true
         // 兼容pc全屏播放
@@ -73,9 +77,11 @@ export default {
             HTMLCollection[i].parentNode.removeChild(HTMLCollection[i])
           }
         }
-        this.$refs.videoBox.appendChild(window.video)
         window.video.src = videoUrl
-        fullscreenPlay()
+        this.$refs.videoBox.appendChild(window.video)
+        setTimeout(() => {
+          fullscreenPlay()
+        }, 100)
       } else {
         if (window.video.paused) {
           fullscreenPlay()
@@ -108,7 +114,14 @@ export default {
   },
   mounted () {
     var video = document.createElement('video')
-    video.setAttribute('x5-playsinline', true)
+    if (browser.isAndroid()) {
+      video.setAttribute('x5-playsinline', true)
+      video.setAttribute('webkit-playsinline', true)
+      video.setAttribute('playsinline', true)
+      video.setAttribute('x-webkit-airplay', true)
+      video.setAttribute('x5-video-ignore-metadata', true)
+      video.setAttribute('x5-video-player-fullscreen', true)
+    }
     video.setAttribute('id', 'video')
     window.video = video
   }
@@ -142,6 +155,28 @@ export default {
     #video {
       margin: 0 auto;
       display: block;
+    }
+  }
+  .newMask {
+    width: 90px;
+    height: 90px;
+    position: relative;
+    .playIcon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+    .littleVideo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      display:block;
+      object-fit: cover;
+      object-position: center center;
     }
   }
 </style>
