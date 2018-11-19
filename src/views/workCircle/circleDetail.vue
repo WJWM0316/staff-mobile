@@ -148,7 +148,7 @@ export default {
           this.reverse(this.sort)
           this.$toast({text: '置顶成功', type: 'success'})
         })
-      } else {
+      } else if (key === 'del') {
         delPostApi(this.nowChoosePost.id).then(res => {
           this.reverse(this.sort)
           this.$toast({text: '删除成功', type: 'success'})
