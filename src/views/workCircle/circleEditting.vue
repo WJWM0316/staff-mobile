@@ -20,7 +20,7 @@
       </div>
       <!--选择视频-->
       <div class="video" @click="attachType = 'video'">
-        <uploadFile class="chooseVedio"
+        <uploadFile class="wxChooseImg"
           attach_type='video'
           @choseResult="choseResult"
           @upLoadResult="upLoadResult"
@@ -30,7 +30,7 @@
       </div>
       <!--选择文件-->
       <div class="file" @click="attachType = 'doc'">
-        <uploadFile class="chooseVedio"
+        <uploadFile class="wxChooseImg"
           attach_type='doc'
           @choseResult="choseResult"
           @upLoadResult="upLoadResult"

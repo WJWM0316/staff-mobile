@@ -137,6 +137,11 @@ export default {
     },
     async wxChoseImg () {
       await this.getWechatSign()
+      if (this.attach_type === 'video') {
+        this.count = 1
+      } else {
+        this.count = 9
+      }
       let option = {
         count: this.count
       }
