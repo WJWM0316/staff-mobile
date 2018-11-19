@@ -1,7 +1,7 @@
 <template>
   <div class="fileBox" v-if="item">
     <template v-if="isFile">
-      <a class="content-file" :download="fileType.fileName" :href="fileType.url">
+      <a class="content-file" @click.stop="downLoad(fileType)">
         <img class="file-logo" :src="fileType.extension | fileCover" />
         <div class="file-desc">
           <p class="text fileText">{{fileType.fileName}}</p>
@@ -14,7 +14,7 @@
       <div class="content-file" @click.stop="tolink">
         <img class="file-logo" src="@/assets/icon/postLink.png" />
         <div class="file-desc">
-          <p class="text linkText" v-if="item">{{item.title || '链接'}}</p>
+          <p class="linkText" v-if="item">{{item.title || '链接'}}</p>
         </div>
       </div>
     </div>
@@ -45,11 +45,21 @@ export default{
     /* 跳转链接 */
     tolink () {
       let url = this.inpLink
+      if (url.indexOf('http') === -1) {
+        url = 'http://' + url
+      }
       if (this.item.url) {
         location.href = this.item.url
       } else {
         location.href = this.item
       }
+    },
+    downLoad (fileType) {
+      const event = new MouseEvent('click')
+      const a = document.createElement('a')
+      a.href = fileType.url
+      a.download = fileType.fileName || '下载'
+      a.dispatchEvent(event)
     }
   }
 }
@@ -105,6 +115,9 @@ export default{
   }
   .postLink{
     .linkText{
+      font-size: 28px;/*px*/
+      font-weight: 300;
+      display: block;
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box !important;
