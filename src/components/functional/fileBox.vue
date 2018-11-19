@@ -44,14 +44,14 @@ export default{
   methods: {
     /* 跳转链接 */
     tolink () {
-      let url = this.inpLink
+      let url = this.item.title
       if (url.indexOf('http') === -1) {
         url = 'http://' + url
       }
       if (this.item.url) {
         location.href = this.item.url
       } else {
-        location.href = this.item
+        location.href = url
       }
     },
     downLoad (fileType) {
