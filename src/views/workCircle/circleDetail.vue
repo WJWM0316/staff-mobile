@@ -1,5 +1,5 @@
 <template>
-  <div class="circleDetail">
+  <div class="circleDetail" refs="main">
     <circle-header :pageInfo="pageInfo" type='2' :scroll-top.prop="1000"></circle-header>
     <!--下载文件-->
     <div class="fileDownload">
@@ -54,7 +54,7 @@ import { getCircleDetailApi, getPostlistApi, circlePostToTopApi, delPostApi } fr
 import circleHeader from '@c/business/commonHeader'
 import dynamicItem from '@c/business/dynamicItem'
 import nodataBox from '@c/business/nodataBox'
-import scroller from '@c/layout/scroller'
+import localstorage from '@u/localstorage'
 import { Actionsheet } from 'vux'
 export default {
   name: 'circleDetail',
@@ -62,8 +62,7 @@ export default {
     circleHeader,
     dynamicItem,
     Actionsheet,
-    nodataBox,
-    scroller
+    nodataBox
   },
   data () {
     return {
@@ -99,7 +98,7 @@ export default {
         pullUpStatus: false
       },
       isLastPage: false, // 是否最后一页
-      scrollerHeight: ''
+      scrollY: 0
     }
   },
   methods: {
@@ -127,6 +126,11 @@ export default {
       postListData.meta.currentPage >= postListData.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
       this.postListTotal = postListData.meta.total
       this.postList = postListData.data
+      this.$nextTick(() => {
+        let scrollY = localstorage.get('workCircleScroll') || 0
+        localstorage.remove('workCircleScroll')
+        window.scrollTo(0, scrollY)
+      })
     },
     /* 获取工作圈详情 */
     getCircleDetail (id) {
@@ -191,13 +195,26 @@ export default {
     },
     delPost (index) {
       this.postList.splice(index.index, 1)
+    },
+    scroll (pos) {
+      console.log(pos)
     }
   },
   async created () {
     await this.init()
   },
-  mounted () {},
-  activated () {}
+  mounted () {
+    let that = this
+    window.addEventListener('scroll', function () {
+      that.scrollY = window.scrollY
+    })
+  },
+  activated () {},
+  beforeRouteLeave (to, from, next) {
+    localstorage.set('workCircleScroll', this.scrollY)
+    next()
+  },
+  beforeDestroy () {}
 }
 </script>
 
@@ -206,6 +223,10 @@ export default {
   position: relative;
   min-height: 100vh;
   overflow-y: scroll;
+  .scroll{
+    height: 100vh;
+    width: 100%;
+  }
   /*文件下载区域*/
   .fileDownload{
     margin-top: 30px;
