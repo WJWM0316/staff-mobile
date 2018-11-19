@@ -34,13 +34,16 @@ const preview = (el, binding, vnode) => {
     }
     for (let i = 0; i < HTMLCollection.length; i++) {
       let dataSrc = HTMLCollection[i].getAttribute('data-src')
+      console.log(HTMLCollection[i])
       if (dataSrc) {
+        console.log(list)
         bindClick(HTMLCollection[i], dataSrc, list)
       }
     }
   }
   if (el.nodeName === 'IMG') {
     list.push(el.dataset.src)
+    list = [el.dataset.src]
     bindClick(el, el.dataset.src, list)
   } else {
     findImg(el)
