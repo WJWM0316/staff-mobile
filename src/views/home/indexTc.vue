@@ -7,7 +7,7 @@
       <i class="icon iconfont icon-menu sidebarBtn" @click.stop="showSide = true"></i>
     </div>
     <div class="courseList" v-show="tabIndex === 0">
-      <infoCard v-for="item in courseList.list" :key="item.id" :item="item" type='1' :ellipsis2='true'></infoCard>
+      <infoCard v-for="item in courseList.list" :key="item.id" :item="item" type='1' :ellipsis2='true' :isList="true"></infoCard>
       <pullUpUi v-if="tabIndex === 0" :noData="courseList.noData" :pullUpStatus="courseList.pullUpStatus" @pullUp="pullUp"></pullUpUi>
       <noDataShow v-if="courseList.list.length === 0"></noDataShow>
     </div>
