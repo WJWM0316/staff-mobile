@@ -1,6 +1,6 @@
 <template>
   <!--课节页面-->
-  <div class="lesson" v-if="communityCourse">
+  <div class="lesson" v-if="communityCourse" v-preview>
     <!--头部图片标题区-->
     <div class="lesson-header">
       <div class="header-title">
