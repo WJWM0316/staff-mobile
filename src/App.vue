@@ -5,9 +5,9 @@
         <img class="pull-icon" src="@/assets/icon/loading.png" alt="">
       </div>
       <keep-alive>
-        <router-view v-if="$route.meta.keepAlive" :key="$route.name"></router-view>
+        <router-view v-if="$route.meta.keepAlive" :key="$route.name" v-preview="true"></router-view>
       </keep-alive>
-      <router-view v-if="!$route.meta.keepAlive" :key="$route.name"></router-view>
+      <router-view v-if="!$route.meta.keepAlive" :key="$route.name" v-preview="true"></router-view>
     </div>
     <tabbar slot="bottom" class="bottomTab"  v-show="$route.meta.needBottomTab" v-model="tabIndex">
       <tabbar-item

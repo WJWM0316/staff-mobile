@@ -109,12 +109,14 @@ export const wxLogin = (data, redirect) => {
             text: '登录成功',
             type: 'success',
             callBack: () => {
-              location.href = `${location.href.split('/')[0]}//${location.host}/${res.data.companies[0].code}/${redirectUrl}&redirect=true` // 登录成功跳转到相应的公司
+              location.href = `${location.href.split('/')[0]}//${location.host}/${res.data.companies[0].code}${redirectUrl}&redirect=true` // 登录成功跳转到相应的公司
             }
           })
         })
       }
-      if (res.httpStatus === 400) {
+    }).catch(e => {
+      if (e.data.httpStatus === 400) {
+        localstorage.remove('bind_code')
         location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(location.href)}`
       }
     })

@@ -266,7 +266,7 @@ export default {
     },
     scrollBottom (type) {
       if (type === 'liveMsg') {
-        this.scroll && this.scroll.scrollTo(0, this.scroll.maxScrollY)
+        this.scroll && this.scroll.scrollTo(0, this.scroll.maxScrollY - 1000) // 定位到最底部
       } else {
         this.scroll && this.scroll.scrollTo(0, this.scroll.maxScrollY)
       }
