@@ -1,7 +1,7 @@
 <template>
   <div class="fileBox" v-if="item">
     <template v-if="isFile">
-      <a class="content-file" :href="fileType.url">
+      <a class="content-file" :download="fileType.fileName" :href="fileType.url">
         <img class="file-logo" :src="fileType.extension | fileCover" />
         <div class="file-desc">
           <p class="text fileText">{{fileType.fileName}}</p>
