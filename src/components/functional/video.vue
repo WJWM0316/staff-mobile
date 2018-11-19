@@ -20,7 +20,7 @@ export default {
     },
     type: {
       type: String,
-      default: 'square'
+      default: ''
     }
   },
   watch: {
@@ -131,6 +131,9 @@ export default {
   .playIcon{
     box-sizing: border-box;
     background-color: #000000;
+    position: relative;
+    width: 100%;
+    height: 100%;
     &.square {
       width: 90px;
       height: 90px;

@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="upLoadFileBox">
-      <template v-if="(attach_type !== 'img' && attach_type !== 'video' && isWeiXin) || !isWeiXin">
+      <template v-if="(attach_type !== 'img' && isWeiXin) || !isWeiXin">
         <slot name="img"></slot>
         <img v-if="fileUrl[fileUrl.length - 1]" :src="fileUrl[fileUrl.length - 1]" alt="" id="image">
         <img v-else :src="imgUrl" alt="" id="image">
@@ -137,6 +137,11 @@ export default {
     },
     async wxChoseImg () {
       await this.getWechatSign()
+      if (this.attach_type === 'video') {
+        this.count = 1
+      } else {
+        this.count = 9
+      }
       let option = {
         count: this.count
       }

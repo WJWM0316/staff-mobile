@@ -13,7 +13,7 @@ let company = localstorage.get('XPLUSCompany') || settings.defaultCompany
 let ssoToken = localstorage.get('ssoToken')
 // 动态设置本地和线上接口域名
 Vue.axios.defaults.baseURL = `${settings.host}/${company}`
-Vue.axios.defaults.timeout = 20000
+// Vue.axios.defaults.timeout = 20000
 let num = 0 // 处理loading的显示逻辑
 const showLoading = (needLoading) => {
   if (needLoading) {

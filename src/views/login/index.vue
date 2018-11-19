@@ -170,6 +170,12 @@ export default {
   },
   mounted () {
     let data = localstorage.get('account')
+    // 导师端过来的 还是导师登录页
+    if (localstorage.get('curHome') === 'homeTc') {
+      this.isTutor = true
+      this.type = 1
+      this.version = 1
+    }
     if (data) {
       let {email, password} = data
       this.account = email

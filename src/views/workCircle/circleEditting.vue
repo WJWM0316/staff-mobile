@@ -20,7 +20,7 @@
       </div>
       <!--选择视频-->
       <div class="video" @click="attachType = 'video'">
-        <uploadFile class="chooseVedio"
+        <uploadFile class="wxChooseImg"
           attach_type='video'
           @choseResult="choseResult"
           @upLoadResult="upLoadResult"
@@ -30,7 +30,7 @@
       </div>
       <!--选择文件-->
       <div class="file" @click="attachType = 'doc'">
-        <uploadFile class="chooseVedio"
+        <uploadFile class="wxChooseImg"
           attach_type='doc'
           @choseResult="choseResult"
           @upLoadResult="upLoadResult"
@@ -342,22 +342,13 @@ export default {
         width: 77px;
         height: 77px;
         background: #FBFBFB;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        >input{
-          color: #FFFFFF;
-          width: 77px;
-          height: 77px;
-          position: absolute;
-          top: 0;
-          left: 0;
-          opacity: 0;
-          z-index: 5;
-        }
         .icon{
           width: 23px;
           height: 23px;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
         }
       }
       .link{
