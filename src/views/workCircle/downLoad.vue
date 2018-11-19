@@ -191,6 +191,17 @@ export default {
   created () {
     this.type = parseInt(this.$route.query.type)
     this.init()
+  },
+  beforeRouteEnter (to, from, next) {
+    console.log(to.query)
+    if (to.query.type === 2) {
+      to.meta.title = '文件'
+    } else if (to.query.type === 3) {
+      to.meta.title = '链接'
+    } else {
+      to.meta.title = '图片'
+    }
+    next()
   }
 }
 </script>

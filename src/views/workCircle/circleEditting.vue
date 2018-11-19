@@ -75,7 +75,7 @@
     <div class="postLink" v-show="fileType === 3">
       <div class="delBtn" @click="delFile('link')"><i class="icon iconfont icon-live_btn_close"></i></div>
       <div class="content-file">
-        <fileBox :item="fileData" :isFile='false'></fileBox>
+        <fileBox :item="inpLink" :isFile='false'></fileBox>
       </div>
     </div>
     <div class="circleSelf" @click.stop="setCircleSelf">
@@ -90,7 +90,7 @@
     <div class="Mask" v-show="showMask" @click.stop="closeTask">
       <div class="bottomBox" ref="content">
         <div class="inpLeft"><img src="@/assets/icon/btn_link@3x.png"/></div>
-        <input type="text" v-model="inpLink" placeholder="请在此处复制或者输入链接"/>
+        <input type="text" v-model="inpLink.title" placeholder="请在此处复制或者输入链接"/>
         <div class="linkBtn" @click.stop="done">确认</div>
       </div>
     </div>
@@ -153,7 +153,9 @@ export default {
       attachType: null, // 上传的文件类型
       fileData: null, // 存在上传的文件数据
       uploadImgList: [], // 存放上传图片id的数组
-      inpLink: '', // 输入的链接
+      inpLink: {
+        title: ''
+      }, // 输入的链接
       showMask: false, // 展示链接输入框
       isCircleSelf: false, // 是否仅限圈内可见
       nowWeiXinImgNum: '', // 微信上传图片选中多少张
@@ -229,7 +231,7 @@ export default {
       } else if (this.fileType === 2) {
         param.files = this.fileData.id
       } else if (this.fileType === 3) {
-        param.urls = this.inpLink
+        param.urls = this.inpLink.title
       }
       await jobcirclePostApi(param)
       let that = this
@@ -261,7 +263,7 @@ export default {
           this.movie = ''
         })
       } else if (type === 'link') {
-        this.inpLink = ''
+        this.inpLink.title = ''
       } else {
         removeFileApi({id: this.fileData.id}, false).then(res => {
           this.fileData = null
@@ -272,9 +274,9 @@ export default {
     },
     /* 确认输入链接 */
     done () {
-      if (this.inpLink === '') {
+      if (this.inpLink.title === '') {
         this.$toast({text: '链接不能为空'})
-      } else if (!URL.test(this.inpLink)) {
+      } else if (!URL.test(this.inpLink.title)) {
         this.$toast({text: '链接格式不正确'})
       } else {
         this.fileType = 3

@@ -14,7 +14,7 @@
       <div class="content-file" @click.stop="tolink">
         <img class="file-logo" src="@/assets/icon/postLink.png" />
         <div class="file-desc">
-          <p class="text linkText">{{item.title || '链接'}}</p>
+          <p class="text linkText" v-if="item">{{item.title || '链接'}}</p>
         </div>
       </div>
     </div>
@@ -45,10 +45,11 @@ export default{
     /* 跳转链接 */
     tolink () {
       let url = this.inpLink
-      if (url.indexOf('http') === -1) {
-        url = `http://${url}`
+      if (this.item.url) {
+        location.href = this.item.url
+      } else {
+        location.href = this.item
       }
-      location.href = url
     }
   }
 }
@@ -83,8 +84,8 @@ export default{
       font-size: 14px;/*px*/
       color: #111111;
       display: flex;
-      flex-direction: column;
-      justify-content: space-evenly;
+      align-items: center;
+      flex-wrap: wrap;
       .text {
         font-size: 28px;/*px*/
         font-weight: 300;

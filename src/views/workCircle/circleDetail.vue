@@ -1,6 +1,6 @@
 <template>
   <div class="circleDetail">
-    <circle-header :pageInfo="pageInfo" type='2'></circle-header>
+    <circle-header :pageInfo="pageInfo" type='2' :scroll-top.prop="1000"></circle-header>
     <!--下载文件-->
     <div class="fileDownload">
       <div class="downloadImg" @click.stop="toAlbum">
@@ -17,7 +17,7 @@
       </div>
     </div>
     <!--帖子区域-->
-    <div class="content" ref="circleDetail">
+    <div class="content">
       <div class="top">
         <div class="postNum">共有 <span style="color: #D7AB70;">{{postListTotal}}</span> 篇帖子</div>
         <div v-if="sort === 'asc'" class="reverse" @click.stop="reverse('desc')"><img src="../../assets/icon/bnt_order@3x.png"/>倒序</div>
@@ -54,6 +54,7 @@ import { getCircleDetailApi, getPostlistApi, circlePostToTopApi, delPostApi } fr
 import circleHeader from '@c/business/commonHeader'
 import dynamicItem from '@c/business/dynamicItem'
 import nodataBox from '@c/business/nodataBox'
+import scroller from '@c/layout/scroller'
 import { Actionsheet } from 'vux'
 export default {
   name: 'circleDetail',
@@ -61,7 +62,8 @@ export default {
     circleHeader,
     dynamicItem,
     Actionsheet,
-    nodataBox
+    nodataBox,
+    scroller
   },
   data () {
     return {
@@ -96,7 +98,8 @@ export default {
         noData: false,
         pullUpStatus: false
       },
-      isLastPage: false // 是否最后一页
+      isLastPage: false, // 是否最后一页
+      scrollerHeight: ''
     }
   },
   methods: {
@@ -148,7 +151,7 @@ export default {
           this.reverse(this.sort)
           this.$toast({text: '置顶成功', type: 'success'})
         })
-      } else {
+      } else if (key === 'del') {
         delPostApi(this.nowChoosePost.id).then(res => {
           this.reverse(this.sort)
           this.$toast({text: '删除成功', type: 'success'})
@@ -193,7 +196,8 @@ export default {
   async created () {
     await this.init()
   },
-  mounted () {}
+  mounted () {},
+  activated () {}
 }
 </script>
 
