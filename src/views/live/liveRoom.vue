@@ -41,7 +41,7 @@
         <div class='startTime'>
           <span class='txt'>{{liveDetail.expectedStartTime * 1000 | date('MMMDo HH:mm')}} 直播开始</span>
         </div>
-        <div class='message' ref="message" v-preview="true">
+        <div class='message' ref="message">
           <live-message
             v-for='(item, index) in list'
             :key='index'
@@ -326,7 +326,6 @@ export default {
         })
         // if (isFirst) {
         //   this.$nextTick(() => {
-        //     console.log(this.imgNum, 1111111111)
         //     if (this.liveDetail.status === 2) {
         //       setTimeout(() => {
         //         this.$refs.scroll.scrollBottom()
@@ -501,7 +500,9 @@ export default {
           // 接收他人的信息
           case 'live_msg':
             that.list.push(data.data)
-            that.$refs.scroll.scrollBottom('liveMsg')
+            this.$nextTick(() => {
+              that.$refs.scroll.scrollBottom('liveMsg')
+            })
             if (data.data.type === 'audio') {
               data.data.index = that.audioList[that.audioList.length - 1].index + 1
               that.audioList.push(data.data)

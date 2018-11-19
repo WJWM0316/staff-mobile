@@ -41,7 +41,7 @@
       <div class="taskbody">
         <div v-html="taskContent.punchCardTitle"></div>
         <!--图片-->
-        <div class="content-img" v-if="taskContent.punchCardCImgInfo && taskContent.punchCardCImgInfo.length>0" v-preview="true">
+        <div class="content-img" v-if="taskContent.punchCardCImgInfo && taskContent.punchCardCImgInfo.length>0">
           <div class="content-images">
             <!-- 图片为 1 张时 -->
             <div class="item-image one" v-if="taskContent.punchCardCImgInfo && taskContent.punchCardCImgInfo.length === 1">
