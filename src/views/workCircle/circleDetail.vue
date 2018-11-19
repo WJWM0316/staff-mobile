@@ -54,6 +54,7 @@ import { getCircleDetailApi, getPostlistApi, circlePostToTopApi, delPostApi } fr
 import circleHeader from '@c/business/commonHeader'
 import dynamicItem from '@c/business/dynamicItem'
 import nodataBox from '@c/business/nodataBox'
+import scroller from '@c/layout/scroller'
 import { Actionsheet } from 'vux'
 export default {
   name: 'circleDetail',
@@ -61,7 +62,8 @@ export default {
     circleHeader,
     dynamicItem,
     Actionsheet,
-    nodataBox
+    nodataBox,
+    scroller
   },
   data () {
     return {
@@ -96,7 +98,8 @@ export default {
         noData: false,
         pullUpStatus: false
       },
-      isLastPage: false // 是否最后一页
+      isLastPage: false, // 是否最后一页
+      scrollerHeight: ''
     }
   },
   methods: {

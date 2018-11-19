@@ -201,6 +201,7 @@ export default {
     } else {
       to.meta.title = '图片'
     }
+    next()
   }
 }
 </script>
