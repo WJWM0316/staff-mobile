@@ -130,7 +130,6 @@ export default {
     let lastY = 0
     window.onscroll = (e) => {
       this.position = window.scrollY
-      console.log(window.scrollY)
       if (window.scrollY < lastY) {
         if (!this.showOper) {
           this.showOper = true

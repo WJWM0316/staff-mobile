@@ -2,7 +2,7 @@
   <div class="personalPage" ref="personalPage" v-if="userInfo">
     <div class="head">
       <div class="information"
-        v-if="(userInfo.base.mobile || userInfo.base.wechat || userInfo.base.email) && !isSelf"
+        v-if="(userInfo.base.mobile || userInfo.base.wechat || userInfo.base.email) && !isSelf && !userInfo.base.isExternalTutor"
         @click.stop="contactInformation.showSheet = true">联系方式<img class="icon" src="@a/icon/bnt_more_contact@3x.png">
       </div>
       <div class="msg">
@@ -14,7 +14,7 @@
         <p class="position" v-if="userInfo.base.isExternalTutor && userInfo.base.title">{{userInfo.base.title}}</p>
         <backHome class="backHome1" routeName="personalPage"></backHome>
       </div>
-      <div class="studyMsg">
+      <div class="studyMsg" v-if="!userInfo.base.isExternalTutor">
         <div class="item">
           <p class="result">{{userInfo.study.studyTimeCount}}</p>
           <p class="txt">学习时长/小时</p>
@@ -209,7 +209,7 @@ export default {
       }
     },
     isTutor () {
-      if (localstorage.get('curHome') === 'home') {
+      if (localstorage.get('curHome') === 'home' && !this.userInfo.base.isExternalTutor) {
         return false
       } else {
         return true
