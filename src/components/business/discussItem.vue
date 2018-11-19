@@ -319,15 +319,16 @@ export default {
     /* 评论区 */
     .comment-area {
       display: inline-block;
-      margin-top: 6px;
-      padding: 2px 5px;
+      margin-top: 10px;
+      padding: 2px 10px;
       width: 100%;
+      min-height: 34px;
       border-radius: 2px;
       background-color: #f8f8f8;
       box-sizing: border-box;
       font-size: 13px;/*px*/
       .praise-block {
-        padding: 9px 0 7px;
+        padding: 5px 0 2px;
         display: flex;
         box-sizing: border-box;
         width: 100%;
@@ -357,6 +358,11 @@ export default {
         padding: 2.5px 0;
         .reply {
           margin-top: 2px;
+          p{
+            font-size: 28px;/*px*/
+            color: #354048;
+            font-weight: 300;
+          }
         }
         .reply:first-of-type {
           margin-top: 0;

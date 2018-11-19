@@ -55,6 +55,9 @@ export default {
       elem.scrollTop = 0 // 防抖动
       elem.style.height = elem.scrollHeight + 'px'
       this.$refs['user-input'].scrollTop = 1000 // 确保输入的内容能够在最底部
+      if (val.length === 0) {
+        elem.removeAttribute('style')
+      }
     },
     isShow (val) {},
     commentIndex (index, oldIndex) {
@@ -79,6 +82,8 @@ export default {
         commentIndex
       })
       this.suspensionInputContent = ''
+      let elem = this.suspensionInput
+      elem.removeAttribute('style')
     },
     hasFocus () {
       this.isFocused = true

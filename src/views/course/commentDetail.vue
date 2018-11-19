@@ -268,7 +268,7 @@ export default {
         color: #354048;
         font-size: 30px;/*px*/
         span {
-          font-weight: 700;
+          font-weight: 300;
           line-height: 21px;
           margin-right: 31.5px;
           padding: 17.5px 0 8px;
