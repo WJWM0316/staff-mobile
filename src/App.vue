@@ -120,8 +120,8 @@ export default {
             bind_code: this.$route.query.bind_code,
             is_bind: this.$route.query.is_bind
           }
-          if (route.name && !route.query.routePath) {
-            this.$router.push(`/login?bind_code=${data.bind_code}&is_bind=${data.is_bind}&routePath=${encodeURIComponent(route.fullPath)}`)
+          if (route.name && !route.query.redirect_url) {
+            this.$router.push(`/login?bind_code=${data.bind_code}&is_bind=${data.is_bind}&redirect_url=${encodeURIComponent(route.fullPath)}`)
           }
         }
       }
