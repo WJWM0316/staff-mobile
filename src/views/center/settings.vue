@@ -38,13 +38,17 @@ export default {
       let loadFun = () => {
         outLoginApi().then(res => {
           localstorage.remove('XPLUSCompany')
+          localstorage.remove('account')
+          localstorage.remove('XPLUSCompanyName')
+          localstorage.remove('XPLUSCompanyList')
+          localstorage.remove('curHome')
           localstorage.remove('token')
           localstorage.remove('ssoToken')
           this.$toast({
             text: '退出成功',
             type: 'success',
             callBack: () => {
-              this.$router.replace('/login')
+              this.$wechat.closeWindow()
             }
           })
         })

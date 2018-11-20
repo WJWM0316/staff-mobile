@@ -101,13 +101,17 @@ export default {
             confirmBack: () => {
               outLoginApi().then(res => {
                 localstorage.remove('XPLUSCompany')
+                localstorage.remove('XPLUSCompanyName')
+                localstorage.remove('XPLUSCompanyList')
+                localstorage.remove('account')
+                localstorage.remove('curHome')
                 localstorage.remove('token')
                 localstorage.remove('ssoToken')
                 this.$toast({
                   text: '退出成功',
                   type: 'success',
                   callBack: () => {
-                    this.$router.replace('/login?is_bind=1')
+                    this.$wechat.closeWindow()
                   }
                 })
               })

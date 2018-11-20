@@ -64,11 +64,6 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
       case 401: // 未登录或登录过期
         // 如果是微信环境直接先走微信授权，非微信环境直接正常登陆
         let path = location.href
-        if (path.indexOf('?') === -1) {
-          path = `${path}`
-        } else {
-          path = `${path}`
-        }
         if (browser.isWechat() && !router.history.current.query.bind_code) {
           location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(path)}`
         }
@@ -102,7 +97,13 @@ export const wxLogin = (data, redirect) => {
         localstorage.set('XPLUSCompany', res.data.companies[0].code) // 储存公司名
         localstorage.set('ssoToken', res.data.ssoToken) // 储存ssoToken值
         tokenLogin({sso_token: res.data.ssoToken}).then(res0 => {
-          let redirectUrl = router.history.current.query.redirect_url
+          console.log(router.history.current, 111)
+          let redirectUrl = ''
+          if (router.history.current.query.redirect_url) {
+            redirectUrl = router.history.current.query.redirect_url
+          } else {
+            redirectUrl = router.history.current.fullPath
+          }
           localstorage.set('token', res0.data.token) // 储存token值
           resolve(res0)
           Vue.toast({

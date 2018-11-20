@@ -9,7 +9,7 @@
       </keep-alive>
       <router-view v-if="!$route.meta.keepAlive" :key="$route.name"></router-view>
     </div>
-    <tabbar slot="bottom" class="bottomTab"  v-show="$route.meta.needBottomTab" v-model="tabIndex">
+    <tabbar slot="bottom" class="bottomTab" v-show="$route.meta.needBottomTab">
       <tabbar-item
         v-for="(tab, index) in tabList"
         :selected="index === tabIndex"
@@ -127,9 +127,6 @@ export default {
         }
       }
     },
-    tabIndex (index) {
-      this.$router.replace(this.tabList[index].src)
-    },
     userInfo () {}
   },
   computed: {
@@ -153,6 +150,7 @@ export default {
     ]),
     selectTab (n) {
       this.tabIndex = n
+      this.$router.replace(this.tabList[n].src)
     },
     touchStart (e) {
       if (window.scrollY === 0 && this.$route.meta.pullDown) {

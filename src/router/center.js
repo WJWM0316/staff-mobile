@@ -2,7 +2,7 @@ const routers = [
   {
     path: '/center',
     name: 'center',
-    meta: { title: '我的', needBottomTab: true, keepAlive: true },
+    meta: { title: '我的', needBottomTab: true, pullDown: true },
     component: resolve => require(['@/views/center/index'], resolve)
   },
   {
@@ -19,7 +19,7 @@ const routers = [
   },
   {
     path: '/settings',
-    name: 'settings',
+    name: 'set',
     meta: { title: '账号管理' },
     component: resolve => require(['@/views/center/settings'], resolve)
   },
