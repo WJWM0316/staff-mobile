@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import wx from '@/mixins/wechat'
-let list = [] // 预览图片列表
 let bingFun = null
 const preview = (el, binding, vnode) => {
-  list = []
+  let list = []
   // 绑定图片点击事件
   const bindClick = (element, img, urls) => {
     bingFun = (e) => {
