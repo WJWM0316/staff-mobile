@@ -97,7 +97,6 @@ export const wxLogin = (data, redirect) => {
         localstorage.set('XPLUSCompany', res.data.companies[0].code) // 储存公司名
         localstorage.set('ssoToken', res.data.ssoToken) // 储存ssoToken值
         tokenLogin({sso_token: res.data.ssoToken}).then(res0 => {
-          console.log(router.history.current, 111)
           let redirectUrl = ''
           if (router.history.current.query.redirect_url) {
             redirectUrl = router.history.current.query.redirect_url
@@ -116,7 +115,7 @@ export const wxLogin = (data, redirect) => {
         })
       }
     }).catch(e => {
-      if (e.data.httpStatus === 400) {
+      if (e.data.httpStatus === 433) {
         localstorage.remove('bind_code')
         location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(location.href)}`
       }
