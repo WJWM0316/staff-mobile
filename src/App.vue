@@ -99,6 +99,7 @@ export default {
   },
   watch: {
     '$route' (route) {
+      console.log(route)
       switch (route.name) {
         case 'home' : this.tabIndex = 0; break
         case 'course' : this.tabIndex = 1; break
@@ -159,11 +160,11 @@ export default {
       }
     },
     touchMove (e) {
-      // let move = e.touches[0].clientY - this.startY
-      // if (window.scrollY === 0 && move > 0 && this.$route.meta.pullDown) {
-      //   e.preventDefault() // 阻止上拉到最顶部露出网址的微信默认行为
-      //   this.moveY = move
-      // }
+      let move = e.touches[0].clientY - this.startY
+      if (window.scrollY === 0 && move > 0 && this.$route.meta.pullDown) {
+        e.preventDefault() // 阻止上拉到最顶部露出网址的微信默认行为
+        this.moveY = move
+      }
     },
     touchEnd (e) {
       if (this.moveY !== 0 && this.$route.meta.pullDown) {
