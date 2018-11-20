@@ -86,9 +86,10 @@ export default {
     display: flex;
     align-items: center;
     font-size: 0;
+    margin-bottom: -15px;
     padding-top: 20px;
     &:nth-of-type(3){
-      padding-top: 50px;
+      padding-top: 47px;
     }
     .icon {
       font-size: 40px !important; /*px*/
@@ -96,7 +97,7 @@ export default {
       padding-right: 10px;
     }
     .txt {
-      font-size: 30px;  /*px*/
+      font-size: 32px;  /*px*/
       color: #929292;
       font-weight: 700;
     }

@@ -97,8 +97,7 @@ export default {
         noData: false,
         pullUpStatus: false
       },
-      isLastPage: false, // 是否最后一页
-      scrollY: 0
+      isLastPage: false // 是否最后一页
     }
   },
   methods: {
@@ -126,11 +125,6 @@ export default {
       postListData.meta.currentPage >= postListData.meta.lastPage ? this.isLastPage = true : this.isLastPage = false
       this.postListTotal = postListData.meta.total
       this.postList = postListData.data
-      this.$nextTick(() => {
-        let scrollY = localstorage.get('workCircleScroll') || 0
-        localstorage.remove('workCircleScroll')
-        window.scrollTo(0, scrollY)
-      })
     },
     /* 获取工作圈详情 */
     getCircleDetail (id) {
@@ -164,8 +158,8 @@ export default {
     },
     /* 去帖子详情 */
     toDetail (postItem) {
-      console.log(postItem)
-      this.$router.push({path: '/postDetail', query: {id: postItem.id}})
+      console.log(window.scrollY)
+      this.$router.push({path: '/postDetail', query: {id: postItem.id, scrollY: window.scrollY}})
     },
     /* 滚动触发事件 */
     async pullUp () {
@@ -203,15 +197,25 @@ export default {
   async created () {
     await this.init()
   },
-  mounted () {
-    let that = this
-    window.addEventListener('scroll', function () {
-      that.scrollY = window.scrollY
-    })
+  mounted () {},
+  activated () {
+    if (this.$route.query.scrollY) {
+      this.$nextTick(() => {
+        let scrollY = this.$route.query.scrollY || 0
+        window.scrollTo(0, scrollY)
+      })
+    } else {
+      this.nowPage = 1
+      this.all = {
+        list: [],
+        page: 1,
+        noData: false,
+        pullUpStatus: false
+      }
+      this.init()
+    }
   },
-  activated () {},
   beforeRouteLeave (to, from, next) {
-    localstorage.set('workCircleScroll', this.scrollY)
     next()
   },
   beforeDestroy () {}
