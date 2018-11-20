@@ -260,6 +260,12 @@ export default {
   },
   created () {
     this.init()
+  },
+  beforeRouteLeave (to, from, next) {
+    if (to.name === 'circleDetail') {
+      to.query.scrollY = this.$route.query.scrollY
+    }
+    next()
   }
 }
 </script>

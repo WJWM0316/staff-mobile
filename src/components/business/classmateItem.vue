@@ -107,6 +107,7 @@ export default {
     }
   }
   .excellent{
+    font-weight: 300;
     text-align: center;
     position: absolute;
     right: 0;
@@ -114,6 +115,7 @@ export default {
     font-size: 24px;/*px*/
     color: #929292;
     .punchCount{
+      font-weight: 700;
       font-size: 48px;/*px*/
       color: #D7AB70;
     }

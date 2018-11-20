@@ -204,7 +204,7 @@ export default {
       if (this.item.postType !== 'jobcircleSection') {
         this.$router.push({path: '/punchDetail', query: {id: this.item.courseSectionCardId}})
       } else {
-        this.$router.push({path: '/postDetail', query: {id: this.item.id}})
+        this.$router.push({path: '/postDetail', query: {id: this.item.id, scrollY: window.scrollY}})
       }
     },
     toUserInfo (userId) {

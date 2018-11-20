@@ -101,11 +101,12 @@ export default {
   left: 0;
   box-sizing: border-box;
   .title {
+    margin-bottom: -15px;
     display: flex;
     align-items: center;
     font-size: 0;
     padding-top: 20px;
-    &:nth-of-type(3), &:nth-of-type(5){
+    &:nth-of-type(3), &:nth-of-type(6){
         padding-top: 50px;
     }
     .icon {

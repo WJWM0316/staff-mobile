@@ -1,7 +1,7 @@
 <template>
   <div class="wrap" v-if="pageInfo">
     <top-header :pageInfo="pageInfo" type='1' @toCourseIntroduce="toCourseIntroduce" @toCourseDetail="toCourseDetail"></top-header>
-    <div class="introduce" v-if="!pageInfo.isJoin && !pageInfo.isMaster || isCourseIntroduce">
+    <div class="introduce" v-if="(!pageInfo.isJoin && !pageInfo.isMaster) || isCourseIntroduce">
       <div class="richText">
         <div class="title">关于课程</div>
         <div class="content" v-html="removeFontSize(pageInfo.intro)"></div>

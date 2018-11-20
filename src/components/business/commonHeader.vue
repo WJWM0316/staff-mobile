@@ -75,7 +75,7 @@ export default {
   },
   data () {
     return {
-      courseIntroduction: true
+      courseIntroduction: false
     }
   },
   methods: {
@@ -105,7 +105,7 @@ export default {
       this.$emit('toCourseIntroduce')
     },
     toCourseDetail () {
-      this.$router.push({path: '/courseDetail', query: {id: this.pageInfo.id, isCourseIntroduce: false}})
+      this.$router.push({path: '/courseDetail', query: {id: this.pageInfo.id}})
       this.courseIntroduction = true
       this.$emit('toCourseDetail')
     },
@@ -119,6 +119,13 @@ export default {
         if (!this.pageInfo.isJoin && !this.pageInfo.isMaster) return
         this.$router.push({path: '/memberList', query: {id: this.pageInfo.id}})
       }
+    }
+  },
+  created () {
+    if (this.$route.query.isCourseIntroduce) {
+      this.courseIntroduction = false
+    } else {
+      this.courseIntroduction = true
     }
   },
   mounted () {}
