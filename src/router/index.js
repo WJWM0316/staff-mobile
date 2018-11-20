@@ -48,8 +48,5 @@ router.beforeEach(async (to, from, next) => {
     next()
   }
 })
-router.afterEach(function (to, from) {
-})
-
 // 全局路由生命周期
 export default router

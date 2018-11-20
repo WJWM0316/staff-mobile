@@ -99,7 +99,6 @@ export default {
   },
   watch: {
     '$route' (route) {
-      console.log(route)
       switch (route.name) {
         case 'home' : this.tabIndex = 0; break
         case 'course' : this.tabIndex = 1; break
