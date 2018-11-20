@@ -49,6 +49,9 @@ export default {
             type: 'success',
             callBack: () => {
               this.$wechat.closeWindow()
+              window.opener = null
+              window.open('', '_self')
+              window.close()
             }
           })
         })
