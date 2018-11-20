@@ -38,7 +38,7 @@
     <div class="showTask" @click.stop="showTask" v-if="taskContent.punchCardTitle || (taskContent.punchCardCImgInfo && taskContent.punchCardCImgInfo.length > 0)">本节打卡任务 <img src="@/assets/icon/btn_up_task@3x.png"/></div>
     <div class="taskWindow" v-if="showTaskWindow">
       <div class="taskhead" @click.stop="closeTask">本节打卡任务 <img src="@/assets/icon/btn_packup_task@3x.png"/></div>
-      <div class="taskbody">
+      <div class="taskbody" v-preview="true">
         <div v-html="taskContent.punchCardTitle"></div>
         <!--图片-->
         <div class="content-img" v-if="taskContent.punchCardCImgInfo && taskContent.punchCardCImgInfo.length>0">

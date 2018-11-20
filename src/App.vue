@@ -5,9 +5,9 @@
         <img class="pull-icon" src="@/assets/icon/loading.png" alt="">
       </div>
       <keep-alive>
-        <router-view v-if="$route.meta.keepAlive" :key="$route.name" v-preview="true"></router-view>
+        <router-view v-if="$route.meta.keepAlive" :key="$route.name"></router-view>
       </keep-alive>
-      <router-view v-if="!$route.meta.keepAlive" :key="$route.name" v-preview="true"></router-view>
+      <router-view v-if="!$route.meta.keepAlive" :key="$route.name"></router-view>
     </div>
     <tabbar slot="bottom" class="bottomTab"  v-show="$route.meta.needBottomTab" v-model="tabIndex">
       <tabbar-item
@@ -99,6 +99,7 @@ export default {
   },
   watch: {
     '$route' (route) {
+      console.log(route)
       switch (route.name) {
         case 'home' : this.tabIndex = 0; break
         case 'course' : this.tabIndex = 1; break
@@ -120,8 +121,8 @@ export default {
             bind_code: this.$route.query.bind_code,
             is_bind: this.$route.query.is_bind
           }
-          if (route.name && !route.query.routePath) {
-            this.$router.push(`/login?bind_code=${data.bind_code}&is_bind=${data.is_bind}&routePath=${encodeURIComponent(route.fullPath)}`)
+          if (route.name && !route.query.redirect_url) {
+            this.$router.push(`/login?bind_code=${data.bind_code}&is_bind=${data.is_bind}&redirect_url=${encodeURIComponent(route.fullPath)}`)
           }
         }
       }
@@ -159,11 +160,11 @@ export default {
       }
     },
     touchMove (e) {
-      // let move = e.touches[0].clientY - this.startY
-      // if (window.scrollY === 0 && move > 0 && this.$route.meta.pullDown) {
-      //   e.preventDefault() // 阻止上拉到最顶部露出网址的微信默认行为
-      //   this.moveY = move
-      // }
+      let move = e.touches[0].clientY - this.startY
+      if (window.scrollY === 0 && move > 0 && this.$route.meta.pullDown) {
+        e.preventDefault() // 阻止上拉到最顶部露出网址的微信默认行为
+        this.moveY = move
+      }
     },
     touchEnd (e) {
       if (this.moveY !== 0 && this.$route.meta.pullDown) {

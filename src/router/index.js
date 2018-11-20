@@ -31,25 +31,26 @@ const router = new Router({
   routes
 })
 
-router.beforeEach(async (to, from, next) => {
-  document.title = to.meta.title // 设置页面title
-  var u = navigator.userAgent
-  var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
-  // XXX: 修复iOS版微信HTML5 History兼容性问题
-  let path = `/${company}${to.path}`
-  if (isiOS && path !== location.pathname && to.meta.reload) {
-    if (JSON.stringify(to.query) === '{}') {
-      // 此处不可使用location.replace
-      location.assign(`/${company}${to.fullPath}?redirect=true`)
-    } else {
-      location.assign(`/${company}${to.fullPath}&redirect=true`)
-    }
-  } else {
-    next()
-  }
-})
-router.afterEach(function (to, from) {
-})
+// router.beforeEach(async (to, from, next) => {
+//   document.title = to.meta.title // 设置页面title
+//   var u = navigator.userAgent
+//   var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
+//   // XXX: 修复iOS版微信HTML5 History兼容性问题
+//   let path = `/${company}${to.path}`
+//   if (isiOS && path !== location.pathname && to.meta.reload) {
+//     if (JSON.stringify(to.query) === '{}') {
+//       // 此处不可使用location.replace
+//       location.assign(`/${company}${to.fullPath}?redirect=true`)
+//     } else {
+//       location.assign(`/${company}${to.fullPath}&redirect=true`)
+//     }
+//   } else {
+//     next()
+//   }
+//   next()
+// })
+// router.afterEach(function (to, from) {
+// })
 
 // 全局路由生命周期
 export default router

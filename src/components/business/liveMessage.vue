@@ -23,7 +23,8 @@
         v-if="messageData.type === 'img'"
         @load.stop="imgLoad"
         :class="{'vertical': isVertical}"
-        :src="messageData.file.middleUrl" :data-src="messageData.file.url">
+        :src="messageData.file.middleUrl"
+        :data-src="messageData.file.url">
     </div>
   </div>
 </template>

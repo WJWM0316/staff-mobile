@@ -102,7 +102,7 @@ export const wxLogin = (data, redirect) => {
         localstorage.set('XPLUSCompany', res.data.companies[0].code) // 储存公司名
         localstorage.set('ssoToken', res.data.ssoToken) // 储存ssoToken值
         tokenLogin({sso_token: res.data.ssoToken}).then(res0 => {
-          let redirectUrl = router.history.current.fullPath
+          let redirectUrl = router.history.current.query.redirect_url
           localstorage.set('token', res0.data.token) // 储存token值
           resolve(res0)
           Vue.toast({

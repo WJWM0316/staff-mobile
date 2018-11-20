@@ -1,5 +1,5 @@
 <template>
-  <div class="bookHouse">
+  <div class="bookHouse" :class="{'tab1': tabIndex === 0}">
     <div class="tab">
       <i @click.stop="backBtn" class="backBtn iconfont icon-me_icon_edit_chevron"></i>
       <span class="item"
@@ -152,6 +152,9 @@ export default {
 <style lang="less">
 .bookHouse {
   padding-top: 89px;
+  &.tab1 {
+    padding-top: 49px;
+  }
   .tab {
     width: 100%;
     height: 49px;

@@ -41,6 +41,7 @@ const preview = (el, binding, vnode) => {
   }
   if (el.nodeName === 'IMG') {
     list.push(el.dataset.src)
+    list = [el.dataset.src]
     bindClick(el, el.dataset.src, list)
   } else {
     findImg(el)
