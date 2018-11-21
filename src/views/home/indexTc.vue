@@ -96,31 +96,43 @@ export default {
           this.$router.push('/home')
           break
         case 'outLogin':
-          this.$confirm({
-            content: '确定退出账号？',
-            confirmBack: () => {
-              outLoginApi().then(res => {
-                localstorage.remove('XPLUSCompany')
-                localstorage.remove('XPLUSCompanyName')
-                localstorage.remove('XPLUSCompanyList')
-                localstorage.remove('account')
-                localstorage.remove('curHome')
-                localstorage.remove('token')
-                localstorage.remove('ssoToken')
-                this.$toast({
-                  text: '退出成功',
-                  type: 'success',
-                  callBack: () => {
-                    this.$wechat.closeWindow()
-                    window.opener = null
-                    window.open('', '_self')
-                    window.close()
-                  }
-                })
-              })
+          this.outLogin()
+      }
+    },
+    outLogin () {
+      let loadFun = () => {
+        outLoginApi().then(res => {
+          localstorage.remove('XPLUSCompany')
+          localstorage.remove('account')
+          localstorage.remove('XPLUSCompanyName')
+          localstorage.remove('XPLUSCompanyList')
+          localstorage.remove('curHome')
+          localstorage.remove('token')
+          localstorage.remove('ssoToken')
+          this.$toast({
+            text: '退出成功',
+            type: 'success',
+            callBack: () => {
+              this.$wechat.closeWindow()
+              window.opener = null
+              window.open('', '_self')
+              window.close()
             }
           })
+        })
       }
+      this.$confirm({
+        content: '确定退出账号？',
+        confirmBack: () => {
+          if (browser.isWechat()) {
+            unbindWxApi().then(res0 => {
+              loadFun()
+            })
+          } else {
+            loadFun()
+          }
+        }
+      })
     },
     choseTab (index) {
       this.tabIndex = index
