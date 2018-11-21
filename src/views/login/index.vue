@@ -122,10 +122,6 @@ export default {
         })
         return false
       }
-      // 如果是手机号登录 说明是外部导师
-      if (PHONE.test(data.email)) {
-        this.version = 1
-      }
       login(data, this.version).catch(e => {
         // 错误三次就要输入验证码
         if (e.code === 410) {
@@ -158,8 +154,10 @@ export default {
     toggle (type) {
       if (type === 1) {
         this.isTutor = true
+        localstorage.set('curHome', 'homeTc')
       } else {
         this.isTutor = false
+        localstorage.set('curHome', 'home')
       }
       this.version = type
       this.$toast({

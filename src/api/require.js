@@ -124,7 +124,7 @@ export const wxLogin = (data, redirect) => {
 }
 
 // 登录
-export const login = (data, version, companyCode) => {
+export const login = (data, companyCode) => {
   return new Promise((resolve, reject) => {
     function loginFun (code) {
       company = localstorage.get('XPLUSCompany')
@@ -135,20 +135,15 @@ export const login = (data, version, companyCode) => {
           type: 'success',
           callBack: () => {
             localstorage.set('account', data) // 储存登录账号
+            let curHome = localstorage.get('curHome') // 当前首页为员工端首页
             // version 为0 即没有特意去切换导师端还是员工端，就返回上一步， 没有上一步默认去到员工端首页
-            if (!version) {
-              if (router.history.current.query.redirect_url) {
-                location.href = decodeURIComponent(router.history.current.query.redirect_url)
-                localstorage.set('curHome', 'home') // 当前首页为员工端首页
-              } else {
-                location.href = `${location.href.split('/')[0]}//${location.host}/${code}/home`
-              }
+            if (router.history.current.query.redirect_url) {
+              location.href = decodeURIComponent(router.history.current.query.redirect_url)
             } else {
-              // 为2 即切换了员工端， 为1 即切换到了导师端
-              if (version === 2) {
-                location.href = `${location.href.split('/')[0]}//${location.host}/${code}/home`
-              } else {
+              if (curHome === 'homeTc') {
                 location.href = `${location.href.split('/')[0]}//${location.host}/${code}/homeTc`
+              } else {
+                location.href = `${location.href.split('/')[0]}//${location.host}/${code}/home`
               }
             }
           }
