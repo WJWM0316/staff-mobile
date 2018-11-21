@@ -45,6 +45,7 @@ export default {
         key: null,
         img: null
       },
+      isToggle: false, // 是否切换过，切换了就不记录上一页
       version: 0, // 2 学员版 1 导师版
       accountErr: false, // 账号格式输入错误
       passwordErr: false, // 密码格式输入错误
@@ -122,7 +123,7 @@ export default {
         })
         return false
       }
-      login(data, this.version).catch(e => {
+      login(data, this.isToggle).catch(e => {
         // 错误三次就要输入验证码
         if (e.code === 410) {
           this.verification = e.data
@@ -159,6 +160,7 @@ export default {
         this.isTutor = false
         localstorage.set('curHome', 'home')
       }
+      this.isToggle = true
       this.version = type
       this.$toast({
         text: '切换成功',
