@@ -44,6 +44,7 @@ import { getTutorLiveApi } from '@/api/pages/live'
 import { outLoginApi, unbindWxApi } from '@/api/pages/login'
 import infoCard from '@c/business/infoCard'
 import localstorage from '@u/localstorage'
+import browser from '@u/browser'
 import { mapState } from 'vuex'
 export default {
   components: {
