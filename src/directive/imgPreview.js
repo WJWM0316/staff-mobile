@@ -26,9 +26,6 @@ const preview = (el, binding, vnode) => {
     if (!element.getAttribute('binded')) {
       element.setAttribute('binded', true)
       element.addEventListener('click', bingFun)
-    } else {
-      element.removeEventListener('click', bingFun, false)
-      // element.addEventListener('click', bingFun, false)
     }
   }
   // 遍历图片获取列表+绑定
