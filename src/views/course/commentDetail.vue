@@ -250,7 +250,7 @@ export default {
     box-sizing: border-box;
     padding: 0 20px;
     padding-bottom: 50px;
-    height: 100%;
+    height: 100vh;
     & .container {
       margin-left: -20px;
       margin-right: -20px;
