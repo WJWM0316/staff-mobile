@@ -49,7 +49,7 @@
           </div>
         </div>
       </template>
-      <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" :list="navTabName === 'comment'? commentList : favorList" @pullUp="pullUp"></pullUpUi>
+      <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
     </div>
     <!-- 悬浮输入框 -->
     <suspension-input

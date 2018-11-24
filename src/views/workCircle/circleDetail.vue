@@ -33,10 +33,10 @@
           </div>
         </div>
         <!--帖子-->
-        <dynamic-item v-for="(item,index) in postList" :key="index" :item="item" :index="index" :isCourse="false" @setPostTop="toTop" @delPost="delPost" v-if="!item.isTop"></dynamic-item>
+        <dynamic-item v-for="(item,index) in postList" :key="index" :item="item" :index="index" :isCourse="false" :showBorder="index !== postList.length-1" @setPostTop="toTop" @delPost="delPost" v-if="!item.isTop"></dynamic-item>
       </div>
       <nodata-box v-if="postListTotal === 0"></nodata-box>
-      <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
+      <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp" :list="postList" :circleClass="true"></pullUpUi>
     </div>
     <!-- 发帖   -->
     <div class="postBox" @click.stop="toEdit" v-if="pageInfo.isMember || pageInfo.isOwner">

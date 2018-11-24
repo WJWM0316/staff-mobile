@@ -85,7 +85,7 @@ export default {
         this.$toast({text: '请先解锁前面课节'})
         return
       }
-      this.$router.push(`/courseLesson?id=${item.courseSectionId}`)
+      this.$router.push(`/courseLesson?id=${item.courseSectionId}&courseId=${this.$route.query.id}`)
     },
     async init () {
       const { id } = this.$route.query

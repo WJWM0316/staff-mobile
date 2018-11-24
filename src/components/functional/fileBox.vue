@@ -116,7 +116,7 @@ export default{
   .postLink{
     .linkText{
       font-size: 28px;/*px*/
-      font-weight: 300;
+      font-weight: 500;
       display: block;
       overflow: hidden;
       text-overflow: ellipsis;

@@ -189,7 +189,7 @@ export default {
             localstorage.remove('draft')
             localstorage.remove('draftImg')
             localstorage.remove('draftImgId')
-            that.$router.push({path: '/courseLesson', query: {id: that.$route.query.id}})
+            that.$router.push({path: '/courseLesson', query: {id: that.$route.query.id, courseId: that.$route.query.courseId}})
           }
         })
       } catch (e) {
@@ -444,6 +444,7 @@ export default {
         }
       }
       .taskbody{
+        box-sizing: border-box;
         background-color: #FFFFFF;
         color: #354048;
         font-weight: 300;

@@ -5,7 +5,7 @@
       <img class="lessonGif" src="@a/icon/lessonPlaying.png" v-show="status === 0 && isLesson">
       <img src="@a/icon/music_loading.png" class="load" v-show="status === 1">
       <img src="@a/icon/playing.gif" v-show="status === 2 && !isLesson">
-      <img class="lessonGif" src="@a/icon/lessonPlaying.gif" v-show="status === 2 && isLesson">
+      <img class="lessonGif" src="@a/icon/lessonPlaying.gif" v-show="status === 2 && isLesson" @click.stop="lessonPause">
     </div>
     <div class="progress" :class="{'lessonProgress': isLesson}" ref="progress">
       <div class="realBar" :style="{'width': `${progress}%`}">
@@ -155,9 +155,13 @@ export default {
         if (this.audio.paused) {
           playFun()
         } else {
+          if (this.isLesson) return
           this.audio.pause()
         }
       }
+    },
+    lessonPause () {
+      this.audio.pause()
     }
   },
   mounted () {
@@ -227,7 +231,7 @@ export default {
     white-space: nowrap;
     position: relative;
     &.lessonBg{
-      border: 0.5px solid #FFF1B9;
+      border: 1px solid #FFF1B9;/*px*/
       background-color: #FFFBEC;
     }
     &.isRead:before {
@@ -339,6 +343,7 @@ export default {
     .lessonProgress{
       background-color: #EDEDED;
       width: 188px;
+      height: 4px;
     }
     .duration {
       float: right;
