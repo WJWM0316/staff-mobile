@@ -243,14 +243,7 @@ export default {
   created () {
     this.pageInit()
   },
-  mounted () {
-    const h = document.body.scrollHeight
-    window.onresize = function () {
-      if (document.body.scrollHeight < h) {
-        document.body.style.height = h
-      }
-    }
-  }
+  mounted () {}
 }
 </script>
 <style lang="less" scoped>
