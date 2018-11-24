@@ -261,14 +261,6 @@ export default {
   created () {
     this.init()
   },
-  mounted () {
-    const h = document.body.scrollHeight
-    window.onresize = function () {
-      if (document.body.scrollHeight < h) {
-        document.body.style.height = h
-      }
-    }
-  },
   beforeRouteLeave (to, from, next) {
     if (to.name === 'circleDetail') {
       to.query.scrollY = this.$route.query.scrollY
@@ -281,6 +273,7 @@ export default {
 .postDetail{
   box-sizing: border-box;
   padding-bottom: 40px;
+  height: 100%;
   .container{
     padding: 0 20px;
     .ceiling-box {
