@@ -242,6 +242,14 @@ export default {
   },
   created () {
     this.pageInit()
+  },
+  mounted () {
+    const h = document.body.scrollHeight
+    window.onresize = function () {
+      if (document.body.scrollHeight < h) {
+        document.body.style.height = h
+      }
+    }
   }
 }
 </script>
@@ -250,7 +258,7 @@ export default {
     box-sizing: border-box;
     padding: 0 20px;
     padding-bottom: 50px;
-    height: 100vh;
+    min-height: 100%;
     & .container {
       margin-left: -20px;
       margin-right: -20px;
@@ -297,43 +305,6 @@ export default {
         color: #354048;
         padding: 10px 0;
         border-bottom: solid 1px #dcdcdc; /* no */
-      }
-    }
-    .footer {
-      position: fixed;
-      bottom: 0;
-      right: 0;
-      left: 0;
-      & .page-operation {
-        display: flex;
-        align-items: center;
-        border-top: solid 1px #ededed; /* no */
-        background: #FFF;
-
-        & > button{
-          flex: 1 1 auto;
-          height: 50px;
-          font-size: 15px;
-          color: #666666;
-          border-style: none;
-          outline: none;
-          line-height: 1;
-          background-color: transparent;
-          text-align: center;
-        }
-
-        & .split {
-          width: 1px;
-          height: 20px;
-          background-color: #dcdcdc;
-        }
-      }
-
-      & .icon-zan, & .icon-pinglun {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        margin-right: 2px;
       }
     }
     .content-praise{
