@@ -1,10 +1,10 @@
 const routers = [
-  // {
-  //   path: '*',
-  //   redirect: to => {
-  //     return '/home'
-  //   }
-  // },
+  {
+    path: '*',
+    redirect: to => {
+      return '/home'
+    }
+  },
   {
     path: '/home',
     name: 'home',

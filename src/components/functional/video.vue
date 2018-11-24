@@ -153,7 +153,6 @@ export default {
       transform: translateX(-50%) translateY(-50%);
       font-size: 70px;/*px*/
       color: #FFFFFF;
-      z-index: 9999;
     }
     #video {
       margin: 0 auto;

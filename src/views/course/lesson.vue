@@ -1,6 +1,6 @@
 <template>
   <!--课节页面-->
-  <div class="lesson" v-if="communityCourse" v-preview>
+  <div class="lesson" v-if="communityCourse">
     <!--头部图片标题区-->
     <div class="lesson-header">
       <div class="header-title">
@@ -25,7 +25,7 @@
       <div class="audioBox" v-if="communityCourse.av && communityCourse.av.attachType==='audio'">
         <audio-item :messageData="audioList" :isLesson="true"></audio-item>
       </div>
-      <div class="module-content h5-code" v-html="removeFontSize(communityCourse.details)" ref="H5">
+      <div class="module-content h5-code" v-preview="'richText'" v-html="removeFontSize(communityCourse.details)" ref="H5">
       </div>
     </div>
 
@@ -41,9 +41,9 @@
             <div class="title-pic2"></div>
           </div>
           <!--头部标题-->
-          <div class="content-txt" v-html="removeFontSize(communityCourse.punchCardTitle)">
+          <div class="content-txt" v-preview="'richText'" v-html="removeFontSize(communityCourse.punchCardTitle)">
           </div>
-          <div class="content-img">
+          <div class="content-img" v-preview>
             <div class="content-images" v-if="communityCourse.punchCardCImgInfo">
               <!-- 图片为 1 张时 -->
               <div class="item-image one" v-if="communityCourse.punchCardCImgInfo && communityCourse.punchCardCImgInfo.length === 1">

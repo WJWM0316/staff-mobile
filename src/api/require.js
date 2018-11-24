@@ -64,11 +64,6 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
       case 401: // 未登录或登录过期
         // 如果是微信环境直接先走微信授权，非微信环境直接正常登陆
         let path = location.href
-        if (path.indexOf('?') === -1) {
-          path = `${path}`
-        } else {
-          path = `${path}`
-        }
         if (browser.isWechat() && !router.history.current.query.bind_code) {
           location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(path)}`
         }
@@ -94,7 +89,7 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
 }
 
 // 微信授权登录
-export const wxLogin = (data, redirect) => {
+export const wxLogin = (data, isToggle) => {
   return new Promise((resolve, reject) => {
     bindWxLogin(data).then(res => {
       // 绑定微信号成功
@@ -102,20 +97,36 @@ export const wxLogin = (data, redirect) => {
         localstorage.set('XPLUSCompany', res.data.companies[0].code) // 储存公司名
         localstorage.set('ssoToken', res.data.ssoToken) // 储存ssoToken值
         tokenLogin({sso_token: res.data.ssoToken}).then(res0 => {
-          let redirectUrl = router.history.current.query.redirect_url
+          let redirectUrl = ''
+          if (!isToggle) {
+            if (router.history.current.query.redirect_url) {
+              redirectUrl = router.history.current.query.redirect_url
+            }
+          } else {
+            let curHome = localstorage.get('curHome') // 当前首页为员工端首页
+            if (curHome === 'homeTc') {
+              redirectUrl = '/homeTc'
+            } else {
+              redirectUrl = '/home'
+            }
+          }
           localstorage.set('token', res0.data.token) // 储存token值
           resolve(res0)
           Vue.toast({
             text: '登录成功',
             type: 'success',
             callBack: () => {
-              location.href = `${location.href.split('/')[0]}//${location.host}/${res.data.companies[0].code}${redirectUrl}&redirect=true` // 登录成功跳转到相应的公司
+              if (redirectUrl.indexOf('?') !== -1) {
+                location.href = `${location.href.split('/')[0]}//${location.host}/${res.data.companies[0].code}${redirectUrl}&redirect=true` // 登录成功跳转到相应的公司
+              } else {
+                location.href = `${location.href.split('/')[0]}//${location.host}/${res.data.companies[0].code}${redirectUrl}?redirect=true` // 登录成功跳转到相应的公司
+              }
             }
           })
         })
       }
     }).catch(e => {
-      if (e.data.httpStatus === 400) {
+      if (e.data.httpStatus === 433) {
         localstorage.remove('bind_code')
         location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(location.href)}`
       }
@@ -124,7 +135,7 @@ export const wxLogin = (data, redirect) => {
 }
 
 // 登录
-export const login = (data, version, companyCode) => {
+export const login = (data, isToggle) => {
   return new Promise((resolve, reject) => {
     function loginFun (code) {
       company = localstorage.get('XPLUSCompany')
@@ -135,20 +146,15 @@ export const login = (data, version, companyCode) => {
           type: 'success',
           callBack: () => {
             localstorage.set('account', data) // 储存登录账号
+            let curHome = localstorage.get('curHome') // 当前首页为员工端首页
             // version 为0 即没有特意去切换导师端还是员工端，就返回上一步， 没有上一步默认去到员工端首页
-            if (!version) {
-              if (router.history.current.query.redirect_url) {
-                location.href = decodeURIComponent(router.history.current.query.redirect_url)
-                localstorage.set('curHome', 'home') // 当前首页为员工端首页
-              } else {
-                location.href = `${location.href.split('/')[0]}//${location.host}/${code}/home`
-              }
+            if (router.history.current.query.redirect_url && !isToggle) {
+              location.href = decodeURIComponent(router.history.current.query.redirect_url)
             } else {
-              // 为2 即切换了员工端， 为1 即切换到了导师端
-              if (version === 2) {
-                location.href = `${location.href.split('/')[0]}//${location.host}/${code}/home`
-              } else {
+              if (curHome === 'homeTc') {
                 location.href = `${location.href.split('/')[0]}//${location.host}/${code}/homeTc`
+              } else {
+                location.href = `${location.href.split('/')[0]}//${location.host}/${code}/home`
               }
             }
           }
@@ -158,6 +164,7 @@ export const login = (data, version, companyCode) => {
     // 没有微信授权或者微信授权后没有绑定的走正常登陆流程
     if (!router.history.current.query.bind_code) {
       // 如果没有公司信息，需要先获取ssoToken, 否则直接去公司登录
+      let companyCode = localstorage.get('ssoToken')
       if (!companyCode) {
         ssoLoginApi(data).then(res => {
           localstorage.set('ssoToken', res.data.ssoToken) // 储存ssoToken值
@@ -176,7 +183,7 @@ export const login = (data, version, companyCode) => {
     if (router.history.current.query.bind_code) {
       data.is_bind = router.history.current.query.is_bind
       data.bind_code = router.history.current.query.bind_code
-      wxLogin(data)
+      wxLogin(data, isToggle)
     }
   })
 }

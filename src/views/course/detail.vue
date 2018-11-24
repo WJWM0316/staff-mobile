@@ -4,7 +4,7 @@
     <div class="introduce" v-if="(!pageInfo.isJoin && !pageInfo.isMaster) || isCourseIntroduce">
       <div class="richText">
         <div class="title">关于课程</div>
-        <div class="content" v-html="removeFontSize(pageInfo.intro)"></div>
+        <div class="content" v-preview="'richText'" v-html="removeFontSize(pageInfo.intro)"></div>
       </div>
       <div class="bottomBtn" v-if="!isCourseIntroduce && !pageInfo.isMaster && pageInfo.isJoin === 0">
         <div class="join" @click.stop="joinCourse" v-if="pageInfo.status === '上线'">立即学习</div>
@@ -142,7 +142,6 @@ export default {
 <style lang="less" scoped>
 .introduce{
   padding-bottom: 49px;
-  height: 51vh;
   .richText{
     padding-bottom: 50px;
     margin-top: 50px;

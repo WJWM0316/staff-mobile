@@ -20,7 +20,7 @@
         <i class="block"></i>
         <span>书籍简介</span>
       </div>
-      <div class="h5" v-html="removeFontSize(pageInfo.introduce)"></div>
+      <div class="h5" v-preview="'richText'" v-html="removeFontSize(pageInfo.introduce)"></div>
     </div>
     <xButton class="readBtn" @click.native.stop="read">开始阅读</xButton>
   </div>

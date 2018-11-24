@@ -41,9 +41,10 @@ import { Popup } from 'vux'
 import { getTutorInfoApi } from '@/api/pages/center'
 import { getCourseTcApi } from '@/api/pages/course'
 import { getTutorLiveApi } from '@/api/pages/live'
-import { outLoginApi } from '@/api/pages/login'
+import { outLoginApi, unbindWxApi } from '@/api/pages/login'
 import infoCard from '@c/business/infoCard'
 import localstorage from '@u/localstorage'
+import browser from '@u/browser'
 import { mapState } from 'vuex'
 export default {
   components: {
@@ -96,24 +97,43 @@ export default {
           this.$router.push('/home')
           break
         case 'outLogin':
-          this.$confirm({
-            content: '确定退出账号？',
-            confirmBack: () => {
-              outLoginApi().then(res => {
-                localstorage.remove('XPLUSCompany')
-                localstorage.remove('token')
-                localstorage.remove('ssoToken')
-                this.$toast({
-                  text: '退出成功',
-                  type: 'success',
-                  callBack: () => {
-                    this.$router.replace('/login?is_bind=1')
-                  }
-                })
-              })
+          this.outLogin()
+      }
+    },
+    outLogin () {
+      let loadFun = () => {
+        outLoginApi().then(res => {
+          localstorage.remove('XPLUSCompany')
+          localstorage.remove('account')
+          localstorage.remove('XPLUSCompanyName')
+          localstorage.remove('XPLUSCompanyList')
+          localstorage.remove('curHome')
+          localstorage.remove('token')
+          localstorage.remove('ssoToken')
+          this.$toast({
+            text: '退出成功',
+            type: 'success',
+            callBack: () => {
+              this.$wechat.closeWindow()
+              window.opener = null
+              window.open('', '_self')
+              window.close()
             }
           })
+        })
       }
+      this.$confirm({
+        content: '确定退出账号？',
+        confirmBack: () => {
+          if (browser.isWechat()) {
+            unbindWxApi().then(res0 => {
+              loadFun()
+            })
+          } else {
+            loadFun()
+          }
+        }
+      })
     },
     choseTab (index) {
       this.tabIndex = index

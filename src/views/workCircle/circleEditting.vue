@@ -297,24 +297,25 @@ export default {
     }
   },
   created () {
-  },
-  beforeRouteLeave (to, from, next) {
-    let that = this
-    if (this.isSend) {
-      next(true)
-    } else {
-      this.$confirm({
-        title: '退出编辑',
-        content: '是否要退出编辑？',
-        confirmBack () {
-          next(true)
-        },
-        cancelBack () {
-          next(false)
-        }
-      })
-    }
   }
+  // ,
+  // beforeRouteLeave (to, from, next) {
+  //   let that = this
+  //   if (this.isSend) {
+  //     next(true)
+  //   } else {
+  //     this.$confirm({
+  //       title: '退出编辑',
+  //       content: '是否要退出编辑？',
+  //       confirmBack () {
+  //         next(true)
+  //       },
+  //       cancelBack () {
+  //         next(false)
+  //       }
+  //     })
+  //   }
+  // }
 }
 </script>
 

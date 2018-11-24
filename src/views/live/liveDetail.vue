@@ -9,7 +9,7 @@
         <i class="icon"></i>
         <span class="txt">直播简介</span>
       </div>
-      <div class="h5Area" v-html="pageInfo.intro"></div>
+      <div class="h5Area" v-preview="'richText'" v-html="removeFontSize(pageInfo.intro)"></div>
     </div>
     <div class="footerBtn" v-if="!isIntroduce || (isIntroduce && pageInfo.status === 1)">
       <div class="timestatus">
