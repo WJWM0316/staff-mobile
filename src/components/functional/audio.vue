@@ -18,8 +18,9 @@
         ></div>
       </div>
     </div>
-    <div class="duration lessonDuration" v-if="isLesson">{{messageData.duration | conversion}}</div>
-    <div class="duration" v-else>{{messageData.file.duration}}s</div>
+    <div class="duration lessonDuration" v-if="isLesson && status !== 2">{{nowPlayTiem ? nowPlayTiem : messageData.duration | conversion}}</div>
+    <div class="duration lessonDuration" v-else-if="isLesson && status === 2">{{nowPlayTiem | conversion}}</div>
+    <div class="duration" v-else>{{nowPlayTiem ? nowPlayTiem : messageData.file.duration}}s</div>
   </div>
 </template>
 <script>
@@ -70,13 +71,21 @@ export default {
       operation: false,
       currentTime: 0, // 当前播放进度
       duration: 0, // 音频时长
-      curIndex: 0 // 当前播放音频在audioList的索引值
+      curIndex: 0, // 当前播放音频在audioList的索引值
+      nowPlayTiem: 0 // 当前播放的音频的倒计时
     }
   },
   watch: {
     audioList () {},
     messageData () {},
     audioCurId (val) {
+    },
+    progress () {
+      if (this.isLesson) {
+        this.nowPlayTiem = this.messageData.duration - parseInt(this.audio.currentTime)
+      } else {
+        this.nowPlayTiem = this.messageData.file.duration - parseInt(this.audio.currentTime)
+      }
     }
   },
   computed: {
