@@ -9,12 +9,11 @@
         {{item.name || item.title}}
       </div>
       <template v-if="!item.userTitle || item.userTitle.length === 0">
-        <div class="label" :class="{'special' : isList}"><span class="department" v-if="item.groupName">{{item.groupName | ellipsis(10)}}</span><span class="name" v-if="item.realname">{{item.realname}}</span></div>
+        <div class="label" :class="{'special' : isList}"><span class="department" v-if="item.groupName" ref="label">{{item.groupName | ellipsis(10)}}</span><span class="name" v-if="item.realname" :style="maxWidth">{{item.realname}}</span></div>
       </template>
       <template v-else>
         <div class="label userTitle" v-if="item.userTitle.length > 0" :class="{'special-userTitle' : isList}">{{item.realname}} | {{item.userTitle[0].title}}</div>
       </template>
-      <!-- <div class="label" v-if="item.isRole === 5"></div> -->
       <div class="progress" v-if="type === '1' && item.isJoin && needProgress">
         <p class="txt" v-if="item.progress === 0">本课程还未学习</p>
         <p class="txt" v-if="item.progress > 0 && item.progress !== 100">已学习 <span class="num">{{item.progress}}%</span></p>
@@ -59,6 +58,11 @@ export default {
       default: false
     }
   },
+  data () {
+    return {
+      maxWidth: 0 // 计算name的最大宽度
+    }
+  },
   watch: {
     item () {}
   },
@@ -79,6 +83,11 @@ export default {
     }
   },
   mounted () {
+    this.$nextTick(() => {
+      if (this.$refs.label) {
+        this.maxWidth = `max-width: calc(100% - ${this.$refs.label.clientWidth}px)`
+      }
+    })
   }
 }
 </script>
@@ -167,7 +176,7 @@ export default {
       line-height: 16px;
       margin: 5px 0 0px;
       white-space: initial;
-      .setEllipsis();
+      display: flex;
       & > span {
         vertical-align: top;
       }
@@ -269,6 +278,13 @@ export default {
       }
       .label {
          margin: 15px 0 0px;
+         .department {
+          max-width: 68px;
+          .setEllipsis(auto);
+         }
+         .name {
+          .setEllipsis(auto);
+         }
       }
     }
   }
