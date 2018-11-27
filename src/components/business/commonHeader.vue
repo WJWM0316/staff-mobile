@@ -38,7 +38,7 @@
         <div v-if="courseIntroduction && (pageInfo.isJoin || pageInfo.isMaster)" @click.stop="toIntroduction">
           课程介绍<img class="to_img" src="../../assets/icon/bnt_arrow_int@3x.png"/>
         </div>
-        <div v-else @click.stop="toCourseDetail">
+        <div class="courseHome" v-else @click.stop="toCourseDetail">
           课程主页
         </div>
       </div>
@@ -263,13 +263,16 @@ export default {
       align-items: center;
       color: #666666;
       font-size: 24px;/*px*/
-      font-weight: 300;
+      font-weight: 500;
       .to_img{
         width: 12px;
         height: 12px;
       }
       &.workCircleRight{
         color: #666666;
+      }
+      .courseHome{
+        color: #4080AD;
       }
       &.live {
         color: #4080AD;

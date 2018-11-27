@@ -1,13 +1,13 @@
 <template>
   <div class="fileBox" v-if="item">
     <template v-if="isFile">
-      <a class="content-file" @click.stop="downLoad(fileType)">
+      <div class="content-file" @click.stop="downLoad(fileType)">
         <img class="file-logo" :src="fileType.extension | fileCover" />
         <div class="file-desc">
           <p class="text fileText">{{fileType.fileName}}</p>
           <p class="text fileText">{{fileType.sizeM}}</p>
         </div>
-      </a>
+      </div>
     </template>
     <!--链接-->
     <div class="postLink" v-if="!isFile">
@@ -116,7 +116,7 @@ export default{
   .postLink{
     .linkText{
       font-size: 28px;/*px*/
-      font-weight: 300;
+      font-weight: 500;
       display: block;
       overflow: hidden;
       text-overflow: ellipsis;

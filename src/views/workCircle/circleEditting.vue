@@ -333,7 +333,7 @@ export default {
   .p-publish-content {
     /*padding-bottom: 20px;*/
     position: relative;
-    padding: 25px;
+    padding: 25px 20px;
     /* 四项选择盒子样子 */
     .select-box{
       display: flex;
@@ -399,20 +399,24 @@ export default {
       margin: 0 -3px -6px;
       flex-flow: row wrap;
       >input{
-        width: 102px;
-        height: 102px;
+        width: 108px;
+        height: 108px;
       }
       .item {
         position: relative;
         display: block;
         flex: 0 0 auto;
         box-sizing: border-box;
-        margin: 0 3px 6px;
+        margin-bottom: 5px;
+        margin-right: 5px;
         font-size: 0;
+        &:nth-of-type(3n){
+          margin-right: 0;
+        }
         &>.image {
           background: #f1f1f1;
-          width: 102px;
-          height: 102px;
+          width: 108px;
+          height: 108px;
           object-fit: cover;
           vertical-align: middle;
         }
@@ -432,8 +436,8 @@ export default {
           }
         }
         &.add {
-          width: 102px;
-          height: 102px;
+          width: 108px;
+          height: 108px;
           line-height: 100px;
           text-align: center;
           border: solid 1px #ededed;
@@ -445,12 +449,11 @@ export default {
         }
       }
       .wxChooseImg{
-        margin-left: 3px;
         box-sizing: border-box;
         position: relative;
         border: 1px solid #EDEDED;
-        width: 102px;
-        height: 102px;
+        width: 108px;
+        height: 108px;
         .icon{
           width: 25px;
           height: 25px;

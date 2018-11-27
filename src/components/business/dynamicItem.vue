@@ -269,7 +269,7 @@ export default {
     /* 编辑 */
     edit () {
       if (this.isCourse) {
-        this.$router.push({path: '/punchEdit', query: {id: this.item.courseSectionId}})
+        this.$router.push({path: '/punchEdit', query: {id: this.item.courseSectionId, courseId: this.$route.query.courseId}})
       } else {
         let that = this
         this.$confirm({

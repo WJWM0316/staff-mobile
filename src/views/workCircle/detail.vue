@@ -49,7 +49,7 @@
           </div>
         </div>
       </template>
-      <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" :list="navTabName === 'comment'? commentList : favorList" @pullUp="pullUp"></pullUpUi>
+      <pullUpUi :noData="all.noData" :pullUpStatus="all.pullUpStatus" @pullUp="pullUp"></pullUpUi>
     </div>
     <!-- 悬浮输入框 -->
     <suspension-input
@@ -273,6 +273,7 @@ export default {
 .postDetail{
   box-sizing: border-box;
   padding-bottom: 40px;
+  height: 100%;
   .container{
     padding: 0 20px;
     .ceiling-box {

@@ -5,7 +5,7 @@
       <img class="lessonGif" src="@a/icon/lessonPlaying.png" v-show="status === 0 && isLesson">
       <img src="@a/icon/music_loading.png" class="load" v-show="status === 1">
       <img src="@a/icon/playing.gif" v-show="status === 2 && !isLesson">
-      <img class="lessonGif" src="@a/icon/lessonPlaying.gif" v-show="status === 2 && isLesson">
+      <img class="lessonGif" src="@a/icon/lessonPlaying.gif" v-show="status === 2 && isLesson" @click.stop="lessonPause">
     </div>
     <div class="progress" :class="{'lessonProgress': isLesson}" ref="progress">
       <div class="realBar" :style="{'width': `${progress}%`}">
@@ -18,8 +18,9 @@
         ></div>
       </div>
     </div>
-    <div class="duration lessonDuration" v-if="isLesson">{{messageData.duration | conversion}}</div>
-    <div class="duration" v-else>{{messageData.file.duration}}s</div>
+    <div class="duration lessonDuration" v-if="isLesson && status !== 2">{{nowPlayTiem ? nowPlayTiem : messageData.duration | conversion}}</div>
+    <div class="duration lessonDuration" v-else-if="isLesson && status === 2">{{nowPlayTiem | conversion}}</div>
+    <div class="duration" v-else>{{nowPlayTiem ? nowPlayTiem : messageData.file.duration}}s</div>
   </div>
 </template>
 <script>
@@ -70,13 +71,21 @@ export default {
       operation: false,
       currentTime: 0, // 当前播放进度
       duration: 0, // 音频时长
-      curIndex: 0 // 当前播放音频在audioList的索引值
+      curIndex: 0, // 当前播放音频在audioList的索引值
+      nowPlayTiem: 0 // 当前播放的音频的倒计时
     }
   },
   watch: {
     audioList () {},
     messageData () {},
     audioCurId (val) {
+    },
+    progress () {
+      if (this.isLesson) {
+        this.nowPlayTiem = this.messageData.duration - parseInt(this.audio.currentTime)
+      } else {
+        this.nowPlayTiem = this.messageData.file.duration - parseInt(this.audio.currentTime)
+      }
     }
   },
   computed: {
@@ -155,9 +164,13 @@ export default {
         if (this.audio.paused) {
           playFun()
         } else {
+          if (this.isLesson) return
           this.audio.pause()
         }
       }
+    },
+    lessonPause () {
+      this.audio.pause()
     }
   },
   mounted () {
@@ -227,7 +240,7 @@ export default {
     white-space: nowrap;
     position: relative;
     &.lessonBg{
-      border: 0.5px solid #FFF1B9;
+      border: 1px solid #FFF1B9;/*px*/
       background-color: #FFFBEC;
     }
     &.isRead:before {
@@ -339,6 +352,7 @@ export default {
     .lessonProgress{
       background-color: #EDEDED;
       width: 188px;
+      height: 4px;
     }
     .duration {
       float: right;

@@ -48,8 +48,7 @@ export default {
 
 <style lang="less" scoped>
 .classmateItem {
-  margin-top: 15px;
-  padding: 15px 0 0 65px;
+  padding: 15px 0 15px 65px;
   position: relative;
   .userInfo-img {
     width: 50px;

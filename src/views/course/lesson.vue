@@ -217,13 +217,13 @@ export default {
       return getCourseCardListApi(param)
     },
     toMindDetail () {
-      this.$router.push({path: '/punchDetail', query: {id: this.communityCourse.peopleCardInfo.id, courseId: this.communityCourse.courseSectionId}})
+      this.$router.push({path: '/punchDetail', query: {id: this.communityCourse.peopleCardInfo.id, courseId: this.$route.query.courseId}})
     },
     toPunch () {
-      this.$router.push({path: '/punchEdit', query: {id: this.communityCourse.courseSectionId}})
+      this.$router.push({path: '/punchEdit', query: {id: this.communityCourse.courseSectionId, courseId: this.$route.query.courseId}})
     },
     backCourse () {
-      this.$router.go(-1)
+      this.$router.push(`/courseDetail?id=${this.$route.query.courseId}`)
     },
     /* 置顶 */
     async setPostTop (item) {

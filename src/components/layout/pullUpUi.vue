@@ -3,7 +3,7 @@
     <div class="loading-container" v-show="pullUpStatus && !noData">
       <img class="loadmore" src="@/assets/icon/loadMore.gif">
     </div>
-    <p class="loading-connecting" v-show="!pullUpStatus && noData && list.length > 0">没有更多内容了~</p>
+    <p class="loading-connecting" v-show="!pullUpStatus && noData && list.length > 0" :class="{'circlePadding': circleClass}">没有更多内容了~</p>
   </div>
 </template>
 <script>
@@ -21,6 +21,10 @@ export default {
       }
     },
     noData: {
+      type: Boolean,
+      default: false
+    },
+    circleClass: {
       type: Boolean,
       default: false
     }
@@ -76,6 +80,9 @@ export default {
       color: #BCBCBC;
       text-align: center;
       padding: 20px 0 20px;
+    }
+    .circlePadding{
+      padding: 48px 0;
     }
   }
 </style>
