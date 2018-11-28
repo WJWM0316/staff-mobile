@@ -78,11 +78,11 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
     }
     // 未登录或者跳去404页面不需要提示
     if (!((err.response.status === 400 && err.response.data.code === 404) || err.response.status === 401) && err) {
-      // Vue.toast({
-      //   text: err.response.data.msg,
-      //   position: 'bottom',
-      //   width: '10em'
-      // })
+      Vue.toast({
+        text: err.response.data.msg,
+        position: 'bottom',
+        width: '10em'
+      })
     }
     // 授权码过期
     if ((err.response.status === 433 && err.response.data.code === 433) || (err.response.status === 434 && err.response.data.code === 434)) {
