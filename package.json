@@ -17,6 +17,7 @@
     "file-saver": "^2.0.0-rc.3",
     "layui-src": "^2.3.0",
     "lib-flexible": "^0.3.2",
+    "plyr": "^3.4.7",
     "px2rem-loader": "^0.1.9",
     "vue": "^2.5.2",
     "vue-clipboard2": "^0.2.1",

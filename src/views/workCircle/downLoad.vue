@@ -11,7 +11,8 @@
           <div class="chooseImg" v-if="showSelect" :class="{'isChoose': picItem.chooseIndex}"><img v-if="picItem.chooseIndex" src="@/assets/icon/photo_selected@3x.png" /></div>
           <img class="picItem" v-lazyload :src="picItem.fileInfo.middleUrl" :data-src="picItem.fileInfo.url" v-if="picItem.type === '图片'"/>
           <div class="playVideo" v-else>
-            <vedio-box class="videoBox" :url="picItem.fileInfo.url" type="square" :key="index" :index="index"></vedio-box>
+            <plyrPlayer class="videoBox" :url="picItem.fileInfo.url" :index="index" :poster="picItem.fileInfo.coverImg.middleUrl"></plyrPlayer>
+            <!-- <vedio-box class="videoBox" :url="picItem.fileInfo.url" type="square" :key="index" :index="index"></vedio-box> -->
           </div>
         </div>
       </div>
@@ -38,14 +39,14 @@
 <script>
 import { getPictureApi, getFilesApi, getUrlsApi } from '@/api/pages/workCircle'
 import fileBox from '@c/functional/fileBox'
-import vedioBox from '@c/functional/video'
+import plyrPlayer from '@c/functional/plyrPlayer'
 import nodataBox from '@c/business/nodataBox'
 export default {
   name: 'fileDownLoad',
   components: {
     fileBox,
     nodataBox,
-    vedioBox
+    plyrPlayer
   },
   props: {
     item: {
