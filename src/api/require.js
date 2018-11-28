@@ -63,14 +63,14 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
     switch (err.response.status) {
       case 401: // 未登录或登录过期
         // 如果是微信环境直接先走微信授权，非微信环境直接正常登陆
-        let path = location.href
-        if (browser.isWechat() && !router.history.current.query.bind_code) {
-          location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(path)}`
-        }
-        if (!browser.isWechat()) {
-          router.push(`/login?redirect_url=${encodeURIComponent(path)}`)
-        }
-        break
+        // let path = location.href
+        // if (browser.isWechat() && !router.history.current.query.bind_code) {
+        //   location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(path)}`
+        // }
+        // if (!browser.isWechat()) {
+        //   router.push(`/login?redirect_url=${encodeURIComponent(path)}`)
+        // }
+        // break
       case 400: // 正常错误
         if (err.response.data.code === 404) { // 数据丢失或屏蔽跳去404页面
           router.replace(`/404`)
