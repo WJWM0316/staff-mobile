@@ -81,7 +81,7 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
       Vue.toast({
         text: err.response.data.msg,
         position: 'bottom',
-        width: '10em'
+        width: '16em'
       })
     }
     // 授权码过期
