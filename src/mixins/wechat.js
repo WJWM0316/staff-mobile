@@ -36,15 +36,13 @@ export default {
     async getWechatSign () {
       if (this.$store.getters.wxConfigUrl === location.href) return
       this.$store.dispatch('updata_wxConfigUrl', location.href)
-      try {
-        const params = {
-          url: location.href.split('#')[0],
-          jsApiList: this.wechatConfig.jsApiList
-        }
-        const res = await getWechatSignApi(params)
-        this.wechatConfig = Object.assign({}, res.data)
-        this.setWechatConfig()
+      const params = {
+        url: location.href.split('#')[0],
+        jsApiList: this.wechatConfig.jsApiList
       }
+      const res = await getWechatSignApi(params)
+      this.wechatConfig = Object.assign({}, res.data)
+      this.setWechatConfig()
     },
     /**
      * 配置微信sdk
