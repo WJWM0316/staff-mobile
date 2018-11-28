@@ -17,18 +17,18 @@ Vue.use(WechatPlugin)
 Vue.use(ConfirmPlugin)
 
 Vue.toast = Vue.prototype.$toast = function ({text, position = 'middle', type = 'text', width = '7.6em', callBack}) {
-  // this.$vux.toast.show({
-  //   isShowMask: true,
-  //   text: text,
-  //   width: width,
-  //   type: type, // 类型，可选值 success, warn, cancel, text
-  //   position: position
-  // })
-  // if (callBack) {
-  //   setTimeout(res => {
-  //     callBack()
-  //   }, 2000)
-  // }
+  this.$vux.toast.show({
+    isShowMask: true,
+    text: text,
+    width: width,
+    type: type, // 类型，可选值 success, warn, cancel, text
+    position: position
+  })
+  if (callBack) {
+    setTimeout(res => {
+      callBack()
+    }, 2000)
+  }
 }
 
 // confirm

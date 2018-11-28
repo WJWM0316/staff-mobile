@@ -44,8 +44,6 @@ export default {
         const res = await getWechatSignApi(params)
         this.wechatConfig = Object.assign({}, res.data)
         this.setWechatConfig()
-      } catch (error) {
-        this.$vux.toast.text(error.message, 'bottom')
       }
     },
     /**
