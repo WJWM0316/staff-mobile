@@ -78,7 +78,7 @@ export default {
     async save () {
       try {
         if (this.name !== this.lastName && (this.name.length < 2 || this.name.length > 25)) {
-          this.$toast({text: ' 工作圈名只能是2到25个字 '})
+          this.$toast({text: '工作圈名只能是2到25个字'})
           return
         }
         /* 置顶操作 */

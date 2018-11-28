@@ -63,25 +63,25 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
     switch (err.response.status) {
       case 401: // 未登录或登录过期
         // 如果是微信环境直接先走微信授权，非微信环境直接正常登陆
-        // let path = location.href
-        // if (browser.isWechat() && !router.history.current.query.bind_code) {
-        //   location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(path)}`
-        // }
-        // if (!browser.isWechat()) {
-        //   router.push(`/login?redirect_url=${encodeURIComponent(path)}`)
-        // }
-        // break
+        let path = location.href
+        if (browser.isWechat() && !router.history.current.query.bind_code) {
+          location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(path)}`
+        }
+        if (!browser.isWechat()) {
+          router.push(`/login?redirect_url=${encodeURIComponent(path)}`)
+        }
+        break
       case 400: // 正常错误
         if (err.response.data.code === 404) { // 数据丢失或屏蔽跳去404页面
           router.replace(`/404`)
         }
     }
     // 未登录或者跳去404页面不需要提示
-    if (!((err.response.status === 400 && err.response.data.code === 404) || err.response.status === 401) && (err.response.data.msg.indexOf('undefined') === -1)) {
+    if (!((err.response.status === 400 && err.response.data.code === 404) || err.response.status === 401)) {
       Vue.toast({
         text: err.response.data.msg,
         position: 'bottom',
-        width: '16em'
+        width: '10em'
       })
     }
     // 授权码过期
