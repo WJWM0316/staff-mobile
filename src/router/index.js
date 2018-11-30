@@ -30,8 +30,14 @@ const router = new Router({
   base: `/${company}/`,
   routes
 })
-
 router.beforeEach(async (to, from, next) => {
+  if (location.href.split('/')[3] !== company) {
+    let path = to.fullPath.split('/')
+    path[1] = company
+    path = path.join('/')
+    console.log(`${location.href.split('/')[0]}//${location.host}${path}`)
+    location.href = `${location.href.split('/')[0]}//${location.host}${path}`
+  }
   document.title = to.meta.title // 设置页面title
   var u = navigator.userAgent
   var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
@@ -44,9 +50,11 @@ router.beforeEach(async (to, from, next) => {
     } else {
       location.assign(`/${company}${to.fullPath}&redirect=true`)
     }
+    next()
   } else {
     next()
   }
 })
+
 // 全局路由生命周期
 export default router

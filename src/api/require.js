@@ -58,10 +58,10 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
   return Vue.axios[type](url, datas, config, needLoading).then(res => {
     hideLoading()
     // 授权码过期
-    // if (res.data.data.code === 433 || res.data.data.code === 434) {
-    //   localstorage.remove('bind_code')
-    //   location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(location.href)}`
-    // }
+    if (res.data.data.code === 433 || res.data.data.code === 434) {
+      localstorage.remove('bind_code')
+      location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(location.href)}`
+    }
     return Promise.resolve(res.data)
   }).catch(err => {
     hideLoading()
