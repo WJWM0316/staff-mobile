@@ -1,11 +1,9 @@
 <template>
   <div class="plyrPlayer">
-    <div class="playBtn" v-if="!loading" @click.stop="plyrInit"><i class="icon iconfont icon-btn_play"></i></div>
-    <div class="poster" v-if="!loading"><img :src="poster"></div>
+    <div class="playBtn" v-if="!loading && !playing" @click.stop="plyrInit"><i class="icon iconfont icon-btn_play"></i></div>
+    <img class="poster" v-if="!loading" :src="poster">
     <div class="loadStatus" v-if="loading"><img src="@a/icon/music_loading.png" alt=""></div>
-    <div class="customvideo" :class="customvideo"
-      data-src="https://video.lanehub.cn/48f7c11baafc44a7a1f1a959ac1d2de3/7112d8d643864053b942b71d7566b1fc-1a97605ef90cc213707b52e4c15cecea-od-S00000001-200000.mp4" data-img="https://www.lanehub.cn/static/img/about_img_01.f38c6d0.jpg"
-    >
+    <div class="customvideo" :class="customvideo">
     </div>
   </div>
 </template>
@@ -24,6 +22,10 @@ export default {
     poster: {
       type: String,
       default: ''
+    },
+    isLittle: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -34,7 +36,8 @@ export default {
   data () {
     return {
       curIndex: null,
-      loading: false
+      loading: false,
+      playing: false
     }
   },
   methods: {
@@ -79,10 +82,14 @@ export default {
         videoBox.innerHTML = ''
       })
       window.player.once('timeupdate', event => {
+        if (this.loading) this.loading = false
+        if (!this.playing) this.playing = true
         if (!window.player.fullscreen.active) {
-          this.loading = false
           window.player.fullscreen.enter()
         }
+      })
+      window.player.once('pause', event => {
+        this.playing = false
       })
       const contain = document.querySelector(`.${this.customvideo}`).offsetWidth
       const video = document.querySelector(`.${this.customvideo} .plyr video`)
@@ -134,14 +141,14 @@ export default {
     }
   }
   .poster {
-    width: 100%;
-    height: auto;
+    width: auto;
+    height: 100%;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate3d(-50%, -50%, 0);
-    z-index: 1;
     background: #000;
+    display: block;
   }
   .loadStatus {
     width: 20px;
@@ -175,8 +182,8 @@ export default {
       height: 100%;
       video {
         position: absolute;
-        width: 100%;
-        height: auto;
+        width: auto;
+        height: 100%;
         top: 50%;
         left: 50%;
         transform: translate3d(-50%, -50%, 0);

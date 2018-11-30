@@ -40,7 +40,7 @@
       </div>
       <!--视频-->
       <div class="content-video" v-if="item.type === '视频'">
-        <videoBox :url="item.accessory[0].url" :key="index" :index="index" type="horizontal"></videoBox>
+        <plyrPlayer class="videoBox" :url="item.accessory[0].url" :key="index" :index="index" :poster="item.accessory[0].coverImg.url" type="horizontal"></plyrPlayer>
       </div>
       <!--文件，链接-->
       <div v-if="item.type === '链接' || item.type === '文件'">
@@ -104,12 +104,12 @@
 import { getFavorApi, delFavorApi, setExcellentCourseCardApi } from '@/api/pages/course'
 import { circleCommonFavorApi, delCircleCommonFavorApi, delCirclePostApi, circlePostToTopApi } from '@/api/pages/workCircle'
 import fileBox from '@c/functional/fileBox'
-import videoBox from '@c/functional/video'
+import plyrPlayer from '@c/functional/plyrPlayer'
 export default {
   name: 'dynamicItem',
   components: {
     fileBox,
-    videoBox
+    plyrPlayer
   },
   props: {
     item: {
@@ -448,7 +448,9 @@ export default {
         margin-top: 5px;
         position: relative;
         display: inline-block;
-        .playIcon {
+        .videoBox {
+          width: 335px;
+          height: 187px;
         }
       }
     }
