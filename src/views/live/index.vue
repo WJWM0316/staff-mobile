@@ -1,6 +1,6 @@
 <template>
   <div class="live">
-    <div class='tab border-bottom-1px'>
+    <div class='tab'>
       <i @click.stop="backBtn" class="backBtn iconfont icon-me_icon_edit_chevron"></i>
       <span
         class='tabItem'
@@ -207,7 +207,7 @@ export default {
       top: 0;
       left: 0;
       background: #fff;
-      box-shadow:0px 3px 5px 0px rgba(248,248,248,1);
+      box-shadow:0px 4px 20px 0px rgba(0,0,0,0.05);
       z-index: 1;
       .backBtn {
         font-size: 30px; /*px*/
@@ -243,7 +243,7 @@ export default {
     }
     .head {
       font-size: 0;
-      padding: 25px 20px 8px;
+      padding: 45px 20px 8px;
       .icon {
         width: 6px;
         height: 20px;
@@ -290,6 +290,7 @@ export default {
             left: 50%;
             margin-left: -7.5px;
             bottom: 0;
+            border-radius: 22px;
           }
         }
       }

@@ -172,29 +172,25 @@ export default {
     },
     /* 发布 */
     async Publish () {
-      try {
-        let param = {
-          course_section_id: this.taskContent.courseSectionId,
-          card_content: this.form.content,
-          type: this.uploadImgList.length > 0 ? 3 : 0,
-          array_file_id: this.uploadImgList
-        }
-        await postPunchCardApi(param)
-        let that = this
-        this.$toast({
-          text: '打卡成功',
-          type: 'success',
-          callBack () {
-            that.isSend = true
-            localstorage.remove('draft')
-            localstorage.remove('draftImg')
-            localstorage.remove('draftImgId')
-            that.$router.push({path: '/courseLesson', query: {id: that.$route.query.id, courseId: that.$route.query.courseId}})
-          }
-        })
-      } catch (e) {
-        this.$toast({text: e.msg})
+      let param = {
+        course_section_id: this.taskContent.courseSectionId,
+        card_content: this.form.content,
+        type: this.uploadImgList.length > 0 ? 3 : 0,
+        array_file_id: this.uploadImgList
       }
+      await postPunchCardApi(param)
+      let that = this
+      this.$toast({
+        text: '打卡成功',
+        type: 'success',
+        callBack () {
+          that.isSend = true
+          localstorage.remove('draft')
+          localstorage.remove('draftImg')
+          localstorage.remove('draftImgId')
+          that.$router.push({path: '/courseLesson', query: {id: that.$route.query.id, courseId: that.$route.query.courseId}})
+        }
+      })
     },
     /* 删除图片 */
     handleDeleteImage (index, image) {

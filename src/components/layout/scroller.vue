@@ -104,7 +104,7 @@ export default {
      */
     refreshDelay: {
       type: Number,
-      default: 50
+      default: 200
     },
     /**
      * 没有更多数据

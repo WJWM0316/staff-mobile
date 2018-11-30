@@ -179,6 +179,7 @@ export default {
       top: 50%;
       left: 17px;
       transform: translateY(-50%) rotate(180deg);
+      color: #354048;
     }
     .item.cur {
       color: #354048;

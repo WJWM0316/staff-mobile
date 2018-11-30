@@ -77,12 +77,22 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
         }
     }
     // 未登录或者跳去404页面不需要提示
-    if (!((err.response.status === 400 && err.response.data.code === 404) || err.response.status === 401) && (err && err.response && err.response.data.msg)) {
+    if (!((err.response.status === 400 && err.response.data.code === 404) || err.response.status === 401) && err) {
       Vue.toast({
         text: err.response.data.msg,
         position: 'bottom',
         width: '10em'
       })
+    }
+    // 授权码过期
+    if ((err.response.status === 433 && err.response.data.code === 433) || (err.response.status === 434 && err.response.data.code === 434)) {
+      let url = location.href
+      if (url.indexOf('bind_code') || url.indexOf('is_bind')) {
+        url = url.replace(/bind_code/g, 'old_bind_code')
+        url = url.replace(/is_bind/g, 'old_is_bind')
+      }
+      localstorage.remove('bind_code')
+      location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(url)}`
     }
     return Promise.reject(err.response)
   })
@@ -98,9 +108,13 @@ export const wxLogin = (data, isToggle) => {
         localstorage.set('ssoToken', res.data.ssoToken) // 储存ssoToken值
         tokenLogin({sso_token: res.data.ssoToken}).then(res0 => {
           let redirectUrl = ''
-          if (!isToggle) {
+          if (isToggle === undefined || !isToggle) {
+            // 未绑定
             if (router.history.current.query.redirect_url) {
               redirectUrl = router.history.current.query.redirect_url
+            // 已绑定
+            } else {
+              redirectUrl = router.history.current.fullPath
             }
           } else {
             let curHome = localstorage.get('curHome') // 当前首页为员工端首页
@@ -124,11 +138,6 @@ export const wxLogin = (data, isToggle) => {
             }
           })
         })
-      }
-    }).catch(e => {
-      if (e.data.httpStatus === 433) {
-        localstorage.remove('bind_code')
-        location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(location.href)}`
       }
     })
   })
