@@ -145,9 +145,19 @@ export default {
     },
     async handleAddActoinItem (key, item) {
       if (key === 'selected') {
-        circlePostToTopApi({id: this.nowChoosePost.id}).then(res => {
-          this.reverse(this.sort)
-          this.$toast({text: '置顶成功', type: 'success'})
+        let that = this
+        this.$confirm({
+          title: ' 置顶帖子 ',
+          content: ' 置顶该帖子将会自动取消原有第一条置顶帖子 ',
+          confirmBack () {
+            circlePostToTopApi({id: that.nowChoosePost.id}).then(res => {
+              that.reverse(that.sort)
+              that.$toast({text: '置顶成功', type: 'success'})
+            })
+          },
+          cancelBack () {
+            console.log(' 取消置顶 ')
+          }
         })
       } else if (key === 'del') {
         delPostApi(this.nowChoosePost.id).then(res => {
