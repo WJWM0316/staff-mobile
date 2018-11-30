@@ -53,9 +53,15 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
 
   // 开启loading
   showLoading(needLoading)
+
   // 请求
   return Vue.axios[type](url, datas, config, needLoading).then(res => {
     hideLoading()
+    // 授权码过期
+    if (res.data.data.code === 433 || res.data.data.code === 434) {
+      localstorage.remove('bind_code')
+      location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(location.href)}`
+    }
     return Promise.resolve(res.data)
   }).catch(err => {
     hideLoading()
@@ -83,16 +89,6 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
         position: 'bottom',
         width: '10em'
       })
-    }
-    // 授权码过期
-    if ((err.response.status === 433 && err.response.data.code === 433) || (err.response.status === 434 && err.response.data.code === 434)) {
-      let url = location.href
-      if (url.indexOf('bind_code') || url.indexOf('is_bind')) {
-        url = url.replace(/bind_code/g, 'old_bind_code')
-        url = url.replace(/is_bind/g, 'old_is_bind')
-      }
-      localstorage.remove('bind_code')
-      location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(url)}`
     }
     return Promise.reject(err.response)
   })

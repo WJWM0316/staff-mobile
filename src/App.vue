@@ -121,7 +121,13 @@ export default {
             is_bind: this.$route.query.is_bind
           }
           if (route.name && !route.query.redirect_url) {
-            this.$router.push(`/login?bind_code=${data.bind_code}&is_bind=${data.is_bind}&redirect_url=${encodeURIComponent(route.fullPath)}`)
+            let url = `${route.path}?auth=true`
+            for (let i in route.query) {
+              if (i !== 'is_bind' && i !== 'bind_code') {
+                url = url + `&${i}: ${route.query}`
+              }
+            }
+            this.$router.push(`/login?bind_code=${data.bind_code}&is_bind=${data.is_bind}&redirect_url=${encodeURIComponent(url)}`)
           }
         }
       }
