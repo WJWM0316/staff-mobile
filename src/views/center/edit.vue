@@ -22,7 +22,7 @@
       <span class="editBox">
         <!-- 暂时不做编辑， 需要开启即可 -->
         <!-- <span class="placeholder" v-if="pageInfo.gender !== 0 && pageInfo.gender !== 1"  @click.stop="sexShow = true">请选择性别</span> -->
-        <span class="operResult" @click="sexShow = true">{{pageInfo.gender === 0 ? '女' : '男'}}</span>
+        <span class="operResult" @click="sexShow = true">{{pageInfo.gender === 2 ? '女' : '男'}}</span>
         <actionSheet
           v-if="false"
           :showSheet="sexShow"
