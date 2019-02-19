@@ -210,6 +210,8 @@ export default {
     overflow-x: scroll;
     background: #fff;
     z-index: 2;
+    width: 100%;
+    box-sizing: border-box;
     .tabItem {
       color: #929292;
       font-weight: 300;
