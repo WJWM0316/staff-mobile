@@ -125,21 +125,21 @@ export default {
       }
       login(data, this.isToggle).catch(e => {
         // 错误三次就要输入验证码
-        if (e.code === 410) {
-          this.verification = e.data
+        if (e.data.code === 410) {
+          this.verification = e.data.data
         }
         // 密码错误
-        if (e.code === 0) {
+        if (e.data.code === 0) {
           this.passwordErr = true
           this.password = ''
         }
         // 账号错误
-        if (e.code === 400) {
+        if (e.data.code === 400) {
           this.accountErr = true
           this.account = ''
         }
         // 验证码错误
-        if (e.code === 411) {
+        if (e.data.code === 411) {
           this.vcode = ''
           this.codeErr = true
         }
