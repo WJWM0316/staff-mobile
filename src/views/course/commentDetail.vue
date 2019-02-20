@@ -193,8 +193,6 @@ export default {
         this.discussInfo.commentCount += 1
         this.getReplyList()
         this.$toast({text: '评论成功', type: 'success'})
-      }).catch(e => {
-        this.$toast({text: '评论失败'})
       })
     },
     /* 评论一级评论 */

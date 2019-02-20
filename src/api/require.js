@@ -57,13 +57,21 @@ export const request = ({type = 'post', url, data = {}, needLoading = true, conf
   // 请求
   return Vue.axios[type](url, datas, config, needLoading).then(res => {
     hideLoading()
-    // 授权码过期
-    if (res.data.data.code === 433 || res.data.data.code === 434) {
-      localstorage.remove('bind_code')
-      location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(location.href)}`
-    }
     return Promise.resolve(res.data)
   }).catch(err => {
+    // 授权码过期
+    if (err.response.data.code === 433 || err.response.data.code === 434) {
+      localstorage.remove('bind_code')
+      let curPath = router.history.current.path
+      let query = ''
+      for (let i in router.history.current.query) {
+        if (i !== 'bind_code' && i !== 'is_bind' && i !== 'state' && i !== 'expire') {
+          query = `${query}&${i}=${router.history.current.query[i]}`
+        }
+      }
+      let url = `${location.href.split('/')[0]}//${location.host}/${company}${curPath}?reAuthorize=true${query}`
+      location.href = `${settings.oauthUrl}/wechat/oauth?redirect_uri=${encodeURIComponent(url)}`
+    }
     hideLoading()
     // 错误拦截
     switch (err.response.status) {
@@ -135,6 +143,8 @@ export const wxLogin = (data, isToggle) => {
           })
         })
       }
+    }).catch(err => {
+      reject(err)
     })
   })
 }
@@ -164,6 +174,9 @@ export const login = (data, isToggle) => {
             }
           }
         })
+        resolve(res0)
+      }).catch(e => {
+        reject(e)
       })
     }
     // 没有微信授权或者微信授权后没有绑定的走正常登陆流程
@@ -177,6 +190,7 @@ export const login = (data, isToggle) => {
           localstorage.set('XPLUSCompanyName', res.data.companies[0].companyName) // 储存公司名
           localstorage.set('XPLUSCompanyList', res.data.companies) // 储存公司列表
           loginFun(res.data.companies[0].code)
+          resolve(res)
         }).catch(e => {
           reject(e)
         })
@@ -188,7 +202,11 @@ export const login = (data, isToggle) => {
     if (router.history.current.query.bind_code) {
       data.is_bind = router.history.current.query.is_bind
       data.bind_code = router.history.current.query.bind_code
-      wxLogin(data, isToggle)
+      wxLogin(data, isToggle).then(res => {
+        resolve(res)
+      }).catch(e => {
+        reject(e)
+      })
     }
   })
 }

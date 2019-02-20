@@ -123,7 +123,8 @@ export default {
         })
         return false
       }
-      login(data, this.isToggle).catch(e => {
+      login(data, this.isToggle).then(res => {
+      }).catch(e => {
         // 错误三次就要输入验证码
         if (e.data.code === 410) {
           this.verification = e.data.data
@@ -142,6 +143,7 @@ export default {
         if (e.data.code === 411) {
           this.vcode = ''
           this.codeErr = true
+          this.undataCode()
         }
       })
     },
