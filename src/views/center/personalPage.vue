@@ -17,7 +17,7 @@
       <div class="studyMsg" v-if="!userInfo.base.isExternalTutor">
         <div class="item">
           <p class="result">{{userInfo.study.studyTimeCount}}</p>
-          <p class="txt">学习时长/小时</p>
+          <p class="txt">学习时长/分钟</p>
         </div>
         <div class="item">
           <p class="result">{{userInfo.study.lessonCount}}</p>
