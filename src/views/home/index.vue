@@ -12,7 +12,7 @@
       <div class="studyInfo">
         <div class="item">
           <p class="num">{{headInfo.study.studyTimeCount}}</p>
-          <p class="txt">学习时长/小时</p>
+          <p class="txt">学习时长/分钟</p>
         </div>
         <div class="item">
           <p class="num">{{headInfo.study.lessonCount}}</p>
